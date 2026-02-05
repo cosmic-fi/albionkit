@@ -10,6 +10,7 @@ import { CommandMenuProvider } from "@/context/CommandMenuContext";
 import { ThemeProvider } from "@/components/theme-provider";
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from 'sonner';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -124,6 +125,7 @@ export default function RootLayout({
             </LoginModalProvider>
           </AuthProvider>
         </ThemeProvider>
+        {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
       </body>
     </html>
   );
