@@ -132,7 +132,7 @@ export default function PrivacyPage() {
                 Contact Us
               </h2>
               <p className="text-muted-foreground mb-0">
-                If you have any questions about this privacy policy or our privacy practices, please contact us via our Discord community or email at support@ao-pocket.com.
+                If you have any questions about this privacy policy or our privacy practices, please contact us via our Discord community or email at support@albionkit.com.
               </p>
             </section>
           </div>
