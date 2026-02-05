@@ -4,6 +4,36 @@ import { adminAuth } from '@/lib/firebase-admin';
 import { sendEmail } from '@/lib/email-service';
 import { getVerificationEmailHtml } from '@/lib/email-templates';
 
+export async function verifyCaptcha(token: string) {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  
+  if (!secretKey) {
+    console.warn('RECAPTCHA_SECRET_KEY is not set. Captcha verification skipped.');
+    return { success: true };
+  }
+
+  try {
+    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `secret=${secretKey}&response=${token}`,
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      return { success: true };
+    } else {
+      return { success: false, error: 'Captcha verification failed' };
+    }
+  } catch (error) {
+    console.error('Error verifying captcha:', error);
+    return { success: false, error: 'Error verifying captcha' };
+  }
+}
+
 export async function sendVerificationEmail(email: string) {
   console.log('[AuthAction] Starting sendVerificationEmail for:', email);
   

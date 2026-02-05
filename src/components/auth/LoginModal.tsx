@@ -5,6 +5,8 @@ import { useAuth } from '@/context/AuthContext';
 import { Loader2, X, Mail, Lock, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { toast } from 'sonner';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { verifyCaptcha } from '@/app/actions/auth';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -20,6 +22,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isOpen) {
@@ -27,6 +30,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
       setError(null);
       setEmail('');
       setPassword('');
+      setCaptchaToken(null);
       setIsRegistering(false);
     }
   }, [isOpen]);
@@ -87,6 +91,19 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
 
     try {
       if (isRegistering) {
+        if (!captchaToken) {
+          setError('Please complete the captcha.');
+          setLoading(false);
+          return;
+        }
+
+        const verification = await verifyCaptcha(captchaToken);
+        if (!verification.success) {
+          setError(verification.error || 'Captcha verification failed.');
+          setLoading(false);
+          return;
+        }
+
         await registerWithEmail(email, password);
         toast.success("Account created! Please check your email to verify.");
       } else {
@@ -218,6 +235,16 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
                 />
               </div>
             </div>
+
+            {isRegistering && (
+              <div className="flex justify-center py-2">
+                <ReCAPTCHA
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                  onChange={setCaptchaToken}
+                  theme="dark"
+                />
+              </div>
+            )}
 
             <button
               type="submit"
