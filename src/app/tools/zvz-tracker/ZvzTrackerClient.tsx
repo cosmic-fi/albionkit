@@ -49,6 +49,81 @@ const formatItemName = (type: string) => {
     return `${tier}${name}${enchant}`;
 };
 
+const BattleDetailsSkeleton = () => (
+    <div className="p-4 md:p-6 space-y-6 animate-pulse">
+        {/* Stats Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[1, 2].map((i) => (
+                <div key={i} className="p-4 rounded-xl border border-border bg-muted/10 h-32">
+                    <div className="flex justify-between items-start mb-4">
+                        <div className="space-y-2">
+                            <div className="h-3 w-16 bg-muted/20 rounded"></div>
+                            <div className="h-6 w-32 bg-muted/20 rounded"></div>
+                        </div>
+                        <div className="space-y-2 text-right">
+                             <div className="h-8 w-16 bg-muted/20 rounded ml-auto"></div>
+                             <div className="h-3 w-12 bg-muted/20 rounded ml-auto"></div>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 mt-4">
+                        {[1, 2, 3, 4].map(j => (
+                             <div key={j} className="h-10 bg-muted/20 rounded"></div>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+        
+        {/* Dominance Bar */}
+        <div className="h-2 w-full bg-muted/20 rounded-full"></div>
+        
+        {/* Tabs */}
+        <div className="flex gap-2 border-b border-border pb-2 overflow-x-auto">
+            {[1, 2, 3, 4, 5].map(i => (
+                <div key={i} className="h-9 w-24 bg-muted/20 rounded-lg shrink-0"></div>
+            ))}
+        </div>
+        
+        {/* MVP Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[1, 2, 3].map(i => (
+                <div key={i} className="h-40 bg-muted/10 border border-border rounded-xl"></div>
+            ))}
+        </div>
+    </div>
+);
+
+const BattleRowSkeleton = () => (
+    <div className="bg-card/80 border border-border/30 rounded-xl overflow-hidden animate-pulse">
+        <div className="p-4">
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+                <div className="flex items-center gap-4 flex-1">
+                    <div className="p-3 bg-muted/20 rounded-lg h-12 w-12"></div>
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                            <div className="h-6 w-32 bg-muted/20 rounded"></div>
+                            <div className="h-5 w-12 bg-muted/20 rounded-full"></div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="h-4 w-20 bg-muted/20 rounded"></div>
+                            <div className="h-4 w-20 bg-muted/20 rounded"></div>
+                            <div className="h-4 w-20 bg-muted/20 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex items-center gap-2 w-full md:w-auto">
+                    <div className="flex-1 md:flex-initial text-right pr-4 border-r border-border">
+                        <div className="h-3 w-16 bg-muted/20 rounded ml-auto mb-1"></div>
+                        <div className="h-6 w-24 bg-muted/20 rounded ml-auto"></div>
+                    </div>
+                    <div className="h-8 w-8 bg-muted/20 rounded-full"></div>
+                    <div className="h-5 w-5 bg-muted/20 rounded"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
 export default function ZvzTrackerClient() {
     const { profile } = useAuth();
     const searchParams = useSearchParams();
@@ -69,11 +144,16 @@ export default function ZvzTrackerClient() {
     const [battleDetails, setBattleDetails] = useState<any | null>(null);
     const [battleEvents, setBattleEvents] = useState<any[]>([]);
     const [detailsLoading, setDetailsLoading] = useState(false);
-    const [detailTab, setDetailTab] = useState<'players' | 'guilds' | 'alliances' | 'feed'>('guilds');
+    const [detailTab, setDetailTab] = useState<'analysis' | 'players' | 'guilds' | 'alliances' | 'feed'>('analysis');
     const [expandedEventId, setExpandedEventId] = useState<string | null>(null);
     const [feedLoading, setFeedLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemMap, setItemMap] = useState<Record<string, string>>({});
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     useEffect(() => {
         getItems().then(items => {
@@ -150,13 +230,33 @@ export default function ZvzTrackerClient() {
     // Check for shared battle in URL
     useEffect(() => {
         const sharedBattleId = searchParams.get('battleId');
-        if (sharedBattleId && battles.length > 0 && !expandedBattleId) {
+        if (sharedBattleId && !expandedBattleId && !loading) {
             const id = parseInt(sharedBattleId);
-            if (!isNaN(id) && battles.find(b => b.id === id)) {
-                handleExpandBattle(id);
+            if (!isNaN(id)) {
+                const existingBattle = battles.find(b => b.id === id);
+                
+                if (existingBattle) {
+                    handleExpandBattle(id);
+                    setTimeout(() => {
+                        document.getElementById(`battle-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 500);
+                } else {
+                    // Fetch missing battle
+                    getBattleDetails(id.toString(), region).then((res) => {
+                        if (res.battle) {
+                            setBattles(prev => {
+                                if (prev.find(b => b.id === id)) return prev;
+                                const newBattles = [...prev, res.battle];
+                                return newBattles.sort((a: any, b: any) =>
+                                    new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
+                                );
+                            });
+                        }
+                    });
+                }
             }
         }
-    }, [battles, searchParams]);
+    }, [battles, searchParams, expandedBattleId, loading, region]);
 
     // Leaderboard Logic
     const leaderboard = useMemo(() => {
@@ -209,6 +309,7 @@ export default function ZvzTrackerClient() {
         }
 
         setExpandedBattleId(battleId);
+        setBattleDetails(null); // Clear previous data
         setCurrentPage(1);
         setBattleEvents([]); // Reset events
 
@@ -282,7 +383,9 @@ export default function ZvzTrackerClient() {
                 deaths: alliance.deaths,
                 killFame: alliance.killFame,
                 participants: [] as string[],
-                playerCount: 0
+                playerCount: 0,
+                totalIp: 0,
+                averageIp: 0
             });
         });
 
@@ -300,24 +403,37 @@ export default function ZvzTrackerClient() {
                     deaths: guild.deaths,
                     killFame: guild.killFame,
                     participants: [guild.name],
-                    playerCount: 0
+                    playerCount: 0,
+                    totalIp: 0,
+                    averageIp: 0
                 });
             }
         });
 
-        // Count Players per Faction
+        // Count Players per Faction & IP
         Object.values(players).forEach((player: any) => {
             const guild = guilds[player.guildId];
             if (guild) {
+                let faction;
                 // Check if guild belongs to an alliance faction
                 if (guild.allianceId && alliances[guild.allianceId]) {
-                    const faction = factions.find(f => f.id === guild.allianceId);
-                    if (faction) faction.playerCount++;
+                    faction = factions.find(f => f.id === guild.allianceId);
                 } else {
                     // Guild faction
-                    const faction = factions.find(f => f.id === guild.id);
-                    if (faction) faction.playerCount++;
+                    faction = factions.find(f => f.id === guild.id);
                 }
+                
+                if (faction) {
+                    faction.playerCount++;
+                    faction.totalIp += (player.averageItemPower || 0);
+                }
+            }
+        });
+
+        // Finalize averages
+        factions.forEach(f => {
+            if (f.playerCount > 0) {
+                f.averageIp = Math.round(f.totalIp / f.playerCount);
             }
         });
 
@@ -479,6 +595,20 @@ export default function ZvzTrackerClient() {
             
             <div className="space-y-4">
                 {/* Live Battles */}
+                {isMounted && loading && (
+                    <div className="space-y-4 mb-8">
+                        <div className="flex items-center gap-2 mb-4">
+                            <span className="relative flex h-3 w-3">
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-muted"></span>
+                            </span>
+                            <div className="h-6 w-32 bg-muted/20 rounded animate-pulse"></div>
+                        </div>
+                        {[1, 2, 3].map(i => (
+                            <BattleRowSkeleton key={i} />
+                        ))}
+                    </div>
+                )}
+
                 {liveBattles.length > 0 && (
                     <div className="space-y-4 mb-8">
                         <div className="flex items-center gap-2 mb-4">
@@ -534,13 +664,90 @@ export default function ZvzTrackerClient() {
                                 {expandedBattleId === battle.id && (
                                     <div className="border-t border-border bg-background/50 animate-in slide-in-from-top-2">
                                         {detailsLoading ? (
-                                            <div className="p-8 flex justify-center">
-                                                <RefreshCw className="h-8 w-8 text-muted-foreground animate-spin" />
-                                            </div>
+                                            <BattleDetailsSkeleton />
                                         ) : battleDetails ? (
                                             <div className="p-4 md:p-6">
+                                                {/* Battle Summary (Enhanced Stats) */}
+                                                {getBattleSides(battleDetails).length > 0 ? (
+                                                    <div className="mb-6 animate-in fade-in slide-in-from-top-4">
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        {getBattleSides(battleDetails).slice(0, 2).map((side, idx) => (
+                                                            <div key={side.id} className={`p-4 rounded-xl border ${idx === 0 ? 'bg-success/5 border-success/20' : 'bg-destructive/5 border-destructive/20'}`}>
+                                                                <div className="flex justify-between items-start mb-4">
+                                                                    <div>
+                                                                        <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{side.type}</div>
+                                                                        <div className="text-lg font-bold flex items-center gap-2 truncate max-w-[200px]" title={side.name}>
+                                                                            {side.name}
+                                                                            {side.tag && <span className="text-sm font-normal text-muted-foreground">[{side.tag}]</span>}
+                                                                        </div>
+                                                                        <div className="text-xs text-muted-foreground mt-1">
+                                                                            {side.participants.slice(0, 3).join(', ')}
+                                                                            {side.participants.length > 3 && ` +${side.participants.length - 3}`}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="text-right">
+                                                                         <div className={`text-2xl font-mono font-bold ${idx === 0 ? 'text-success' : 'text-destructive'}`}>
+                                                                            {((side.killFame / (battleDetails.totalFame || 1)) * 100).toFixed(0)}%
+                                                                        </div>
+                                                                        <div className="text-xs text-muted-foreground">dominance</div>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div className="grid grid-cols-2 gap-2 text-sm">
+                                                                    <div className="bg-background/50 p-2 rounded">
+                                                                        <div className="text-muted-foreground text-xs">Kills</div>
+                                                                        <div className="font-mono font-bold text-success">{side.kills}</div>
+                                                                    </div>
+                                                                     <div className="bg-background/50 p-2 rounded">
+                                                                        <div className="text-muted-foreground text-xs">Deaths</div>
+                                                                        <div className="font-mono font-bold text-destructive">{side.deaths}</div>
+                                                                    </div>
+                                                                     <div className="bg-background/50 p-2 rounded">
+                                                                        <div className="text-muted-foreground text-xs">Players</div>
+                                                                        <div className="font-mono font-bold">{side.playerCount}</div>
+                                                                    </div>
+                                                                     <div className="bg-background/50 p-2 rounded">
+                                                                        <div className="text-muted-foreground text-xs">Avg IP</div>
+                                                                        <div className="font-mono font-bold text-warning">{side.averageIp || 'N/A'}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                        </div>
+
+                                                        {/* Dominance Bar */}
+                                                        {getBattleSides(battleDetails).length >= 2 && (
+                                                            <div className="mt-4 flex h-2 rounded-full overflow-hidden">
+                                                                <div 
+                                                                    className="bg-success transition-all duration-1000"
+                                                                    style={{ width: `${(getBattleSides(battleDetails)[0].killFame / (battleDetails.totalFame || 1)) * 100}%` }}
+                                                                />
+                                                                <div 
+                                                                    className="bg-destructive transition-all duration-1000"
+                                                                    style={{ width: `${(getBattleSides(battleDetails)[1].killFame / (battleDetails.totalFame || 1)) * 100}%` }}
+                                                                />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <div className="p-6 text-center text-muted-foreground bg-muted/20 rounded-xl mb-6 border border-border/50">
+                                                        <div className="flex flex-col items-center gap-2">
+                                                            <Info className="h-6 w-6 text-muted-foreground/50" />
+                                                            <p>Detailed participant stats are not available for this battle yet.</p>
+                                                            <p className="text-xs opacity-70">This usually happens for very recent battles. Try refreshing in a moment.</p>
+                                                        </div>
+                                                    </div>
+
+                                                )}
+
                                                 {/* Details Tabs */}
                                                 <div className="flex gap-2 mb-6 border-b border-border pb-2 overflow-x-auto">
+                                                    <button 
+                                                        onClick={() => setDetailTab('analysis')}
+                                                        className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'analysis' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
+                                                    >
+                                                        Analysis
+                                                    </button>
                                                     <button 
                                                         onClick={() => setDetailTab('guilds')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'guilds' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
@@ -569,6 +776,121 @@ export default function ZvzTrackerClient() {
 
                                                 {/* Tab Content */}
                                                 <div className="space-y-4">
+                                                    {detailTab === 'analysis' && (
+                                                        <div className="space-y-6 animate-in fade-in">
+                                                            {/* MVP Cards */}
+                                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                                {(() => {
+                                                                    const players = Object.values(battleDetails.players || {});
+                                                                    const guilds = Object.values(battleDetails.guilds || {});
+                                                                    
+                                                                    const topFame: any = [...players].sort((a: any, b: any) => b.killFame - a.killFame)[0];
+                                                                    const topKiller: any = [...players].sort((a: any, b: any) => b.kills - a.kills)[0];
+                                                                    const topIp: any = [...players].sort((a: any, b: any) => (Number(b.averageItemPower) || 0) - (Number(a.averageItemPower) || 0))[0];
+                                                                    
+                                                                    // Guild Efficiency (Min 5 kills to qualify)
+                                                                    const efficientGuilds = [...guilds]
+                                                                        .filter((g: any) => g.kills >= 5)
+                                                                        .sort((a: any, b: any) => {
+                                                                            const kdA = a.deaths > 0 ? a.kills / a.deaths : a.kills;
+                                                                            const kdB = b.deaths > 0 ? b.kills / b.deaths : b.kills;
+                                                                            return kdB - kdA;
+                                                                        })
+                                                                        .slice(0, 6);
+
+                                                                    return (
+                                                                        <>
+                                                                            {/* MVP Fame */}
+                                                                            <div className="bg-card border border-border p-4 rounded-xl relative overflow-hidden group">
+                                                                                <div className="absolute top-0 right-0 p-2 opacity-10">
+                                                                                    <Trophy className="h-16 w-16" />
+                                                                                </div>
+                                                                                <div className="relative z-10">
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">MVP (Most Fame)</div>
+                                                                                    {topFame ? (
+                                                                                        <>
+                                                                                            <div className="text-xl font-bold text-primary truncate">{topFame.name}</div>
+                                                                                            <div className="text-sm text-muted-foreground mb-2">{topFame.guildName}</div>
+                                                                                            <div className="flex justify-between items-end">
+                                                                                                <div className="text-3xl font-mono font-bold text-warning">{formatNumber(topFame.killFame)}</div>
+                                                                                                <div className="text-xs text-muted-foreground">Fame</div>
+                                                                                            </div>
+                                                                                        </>
+                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                </div>
+                                                                            </div>
+
+                                                                            {/* Top Killer */}
+                                                                            <div className="bg-card border border-border p-4 rounded-xl relative overflow-hidden group">
+                                                                                <div className="absolute top-0 right-0 p-2 opacity-10">
+                                                                                    <Swords className="h-16 w-16" />
+                                                                                </div>
+                                                                                <div className="relative z-10">
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">Top Killer</div>
+                                                                                    {topKiller ? (
+                                                                                        <>
+                                                                                            <div className="text-xl font-bold text-destructive truncate">{topKiller.name}</div>
+                                                                                            <div className="text-sm text-muted-foreground mb-2">{topKiller.guildName}</div>
+                                                                                            <div className="flex justify-between items-end">
+                                                                                                <div className="text-3xl font-mono font-bold text-destructive">{topKiller.kills}</div>
+                                                                                                <div className="text-xs text-muted-foreground">Kills</div>
+                                                                                            </div>
+                                                                                        </>
+                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                </div>
+                                                                            </div>
+
+                                                                            {/* Top Gear */}
+                                                                            <div className="bg-card border border-border p-4 rounded-xl relative overflow-hidden group">
+                                                                                <div className="absolute top-0 right-0 p-2 opacity-10">
+                                                                                    <Shield className="h-16 w-16" />
+                                                                                </div>
+                                                                                <div className="relative z-10">
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">Highest IP</div>
+                                                                                    {topIp ? (
+                                                                                        <>
+                                                                                            <div className="text-xl font-bold text-foreground truncate">{topIp.name}</div>
+                                                                                            <div className="text-sm text-muted-foreground mb-2">{topIp.guildName}</div>
+                                                                                            <div className="flex justify-between items-end">
+                                                                                                <div className="text-3xl font-mono font-bold text-foreground">{Math.round(Number(topIp.averageItemPower) || 0)}</div>
+                                                                                                <div className="text-xs text-muted-foreground">IP</div>
+                                                                                            </div>
+                                                                                        </>
+                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                </div>
+                                                                            </div>
+                                                                            
+                                                                            {/* Efficiency Table */}
+                                                                            <div className="col-span-1 md:col-span-3 mt-4">
+                                                                                <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">Deadliest Guilds (K/D Ratio)</h3>
+                                                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                                                    {efficientGuilds.map((guild: any, idx: number) => (
+                                                                                        <div key={guild.id} className="bg-muted/30 border border-border/50 p-3 rounded-lg flex justify-between items-center">
+                                                                                            <div className="flex items-center gap-3 overflow-hidden">
+                                                                                                <div className="font-mono text-muted-foreground font-bold">#{idx + 1}</div>
+                                                                                                <div className="truncate font-medium" title={guild.name}>{guild.name}</div>
+                                                                                            </div>
+                                                                                            <div className="flex items-center gap-3">
+                                                                                                <div className="text-right">
+                                                                                                    <div className="text-xs text-muted-foreground">K/D</div>
+                                                                                                    <div className={`font-mono font-bold ${guild.deaths === 0 ? 'text-warning' : 'text-success'}`}>
+                                                                                                        {guild.deaths > 0 ? (guild.kills / guild.deaths).toFixed(1) : 'PERFECT'}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    ))}
+                                                                                    {efficientGuilds.length === 0 && (
+                                                                                        <div className="text-muted-foreground italic col-span-3">Not enough data for efficiency rating (Min 5 Kills).</div>
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                        </>
+                                                                    );
+                                                                })()}
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                     {detailTab === 'guilds' && (
                                                         <div className="overflow-x-auto">
                                                             <table className="w-full text-sm">
@@ -645,9 +967,9 @@ export default function ZvzTrackerClient() {
                                                                         <tr key={player.id} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
                                                                             <td className="py-2 pl-2 font-medium text-foreground cursor-pointer hover:text-primary hover:underline" onClick={() => handleEntityClick('players', player.id)}>{player.name}</td>
                                                                             <td className="py-2 text-muted-foreground">{player.guildName}</td>
-                                                                            <td className="py-2 text-right font-mono text-success">{player.kills}</td>
-                                                                            <td className="py-2 text-right font-mono text-destructive">{player.deaths}</td>
-                                                                            <td className="py-2 text-right font-mono">{Math.round(player.averageItemPower)}</td>
+                                                                            <td className="py-2 text-right font-mono text-success">{player.kills || 0}</td>
+                                                                            <td className="py-2 text-right font-mono text-destructive">{player.deaths || 0}</td>
+                                                                            <td className="py-2 text-right font-mono">{Math.round(Number(player.averageItemPower) || 0)}</td>
                                                                             <td className="py-2 text-right font-mono text-warning pr-2">{formatNumber(player.killFame)}</td>
                                                                         </tr>
                                                                     ))}
@@ -669,7 +991,7 @@ export default function ZvzTrackerClient() {
                                                                     <div className="flex-1 flex items-center justify-between gap-4">
                                                                         <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
                                                                             <span className={`font-bold truncate ${event.Killer.AllianceName ? 'text-primary' : 'text-foreground'}`}>{event.Killer.Name}</span>
-                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(event.Killer.AverageItemPower)} IP)</span>
+                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Killer.AverageItemPower) || 0)} IP)</span>
                                                                         </div>
                                                                         
                                                                         <div className="flex flex-col items-center px-2">
@@ -679,7 +1001,7 @@ export default function ZvzTrackerClient() {
 
                                                                         <div className="flex items-center gap-2 flex-1 min-w-0">
                                                                             <span className={`font-bold truncate ${event.Victim.AllianceName ? 'text-destructive' : 'text-foreground'}`}>{event.Victim.Name}</span>
-                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(event.Victim.AverageItemPower)} IP)</span>
+                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Victim.AverageItemPower) || 0)} IP)</span>
                                                                         </div>
                                                                     </div>
                                                                     <div className="w-8 h-8 relative shrink-0">
@@ -776,13 +1098,88 @@ export default function ZvzTrackerClient() {
                                 {expandedBattleId === battle.id && (
                                     <div className="border-t border-border bg-background/50 animate-in slide-in-from-top-2">
                                         {detailsLoading ? (
-                                            <div className="p-8 flex justify-center">
-                                                <RefreshCw className="h-8 w-8 text-muted-foreground animate-spin" />
-                                            </div>
+                                            <BattleDetailsSkeleton />
                                         ) : battleDetails ? (
                                             <div className="p-4 md:p-6">
+                                                {/* Battle Summary (Enhanced Stats) */}
+                                                {getBattleSides(battleDetails).length > 0 ? (
+                                                    <div className="mb-6 animate-in fade-in slide-in-from-top-4">
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        {getBattleSides(battleDetails).slice(0, 2).map((side, idx) => (
+                                                            <div key={side.id} className={`p-4 rounded-xl border ${idx === 0 ? 'bg-success/5 border-success/20' : 'bg-destructive/5 border-destructive/20'}`}>
+                                                                <div className="flex justify-between items-start mb-4">
+                                                                    <div>
+                                                                        <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{side.type}</div>
+                                                                        <div className="text-lg font-bold flex items-center gap-2 truncate max-w-[200px]" title={side.name}>
+                                                                            {side.name}
+                                                                            {side.tag && <span className="text-sm font-normal text-muted-foreground">[{side.tag}]</span>}
+                                                                        </div>
+                                                                        <div className="text-xs text-muted-foreground mt-1">
+                                                                            {side.participants.slice(0, 3).join(', ')}
+                                                                            {side.participants.length > 3 && ` +${side.participants.length - 3}`}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="text-right">
+                                                                         <div className={`text-2xl font-mono font-bold ${idx === 0 ? 'text-success' : 'text-destructive'}`}>
+                                                                            {((side.killFame / (battleDetails.totalFame || 1)) * 100).toFixed(0)}%
+                                                                        </div>
+                                                                        <div className="text-xs text-muted-foreground">dominance</div>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div className="grid grid-cols-2 gap-2 text-sm">
+                                                                    <div className="bg-background/50 p-2 rounded">
+                                                                        <div className="text-muted-foreground text-xs">Kills</div>
+                                                                        <div className="font-mono font-bold text-success">{side.kills}</div>
+                                                                    </div>
+                                                                     <div className="bg-background/50 p-2 rounded">
+                                                                        <div className="text-muted-foreground text-xs">Deaths</div>
+                                                                        <div className="font-mono font-bold text-destructive">{side.deaths}</div>
+                                                                    </div>
+                                                                     <div className="bg-background/50 p-2 rounded">
+                                                                        <div className="text-muted-foreground text-xs">Players</div>
+                                                                        <div className="font-mono font-bold">{side.playerCount}</div>
+                                                                    </div>
+                                                                     <div className="bg-background/50 p-2 rounded">
+                                                                        <div className="text-muted-foreground text-xs">Avg IP</div>
+                                                                        <div className="font-mono font-bold text-warning">{side.averageIp || 'N/A'}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                        </div>
+
+                                                        {/* Dominance Bar */}
+                                                        {getBattleSides(battleDetails).length >= 2 && (
+                                                            <div className="mt-4 flex h-2 rounded-full overflow-hidden">
+                                                                <div 
+                                                                    className="bg-success transition-all duration-1000"
+                                                                    style={{ width: `${(getBattleSides(battleDetails)[0].killFame / (battleDetails.totalFame || 1)) * 100}%` }}
+                                                                />
+                                                                <div 
+                                                                    className="bg-destructive transition-all duration-1000"
+                                                                    style={{ width: `${(getBattleSides(battleDetails)[1].killFame / (battleDetails.totalFame || 1)) * 100}%` }}
+                                                                />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <div className="p-6 text-center text-muted-foreground bg-muted/20 rounded-xl mb-6 border border-border/50">
+                                                        <div className="flex flex-col items-center gap-2">
+                                                            <Info className="h-6 w-6 text-muted-foreground/50" />
+                                                            <p>Detailed participant stats are not available for this battle yet.</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+
                                                 {/* Details Tabs */}
                                                 <div className="flex gap-2 mb-6 border-b border-border pb-2 overflow-x-auto">
+                                                    <button 
+                                                        onClick={() => setDetailTab('analysis')}
+                                                        className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'analysis' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
+                                                    >
+                                                        Analysis
+                                                    </button>
                                                     <button 
                                                         onClick={() => setDetailTab('guilds')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'guilds' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
@@ -811,6 +1208,121 @@ export default function ZvzTrackerClient() {
 
                                                 {/* Tab Content - Reused */}
                                                 <div className="space-y-4">
+                                                    {detailTab === 'analysis' && (
+                                                        <div className="space-y-6 animate-in fade-in">
+                                                            {/* MVP Cards */}
+                                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                                {(() => {
+                                                                    const players = Object.values(battleDetails.players || {});
+                                                                    const guilds = Object.values(battleDetails.guilds || {});
+                                                                    
+                                                                    const topFame: any = [...players].sort((a: any, b: any) => b.killFame - a.killFame)[0];
+                                                                    const topKiller: any = [...players].sort((a: any, b: any) => b.kills - a.kills)[0];
+                                                                    const topIp: any = [...players].sort((a: any, b: any) => (Number(b.averageItemPower) || 0) - (Number(a.averageItemPower) || 0))[0];
+                                                                    
+                                                                    // Guild Efficiency (Min 5 kills to qualify)
+                                                                    const efficientGuilds = [...guilds]
+                                                                        .filter((g: any) => g.kills >= 5)
+                                                                        .sort((a: any, b: any) => {
+                                                                            const kdA = a.deaths > 0 ? a.kills / a.deaths : a.kills;
+                                                                            const kdB = b.deaths > 0 ? b.kills / b.deaths : b.kills;
+                                                                            return kdB - kdA;
+                                                                        })
+                                                                        .slice(0, 6);
+
+                                                                    return (
+                                                                        <>
+                                                                            {/* MVP Fame */}
+                                                                            <div className="bg-card border border-border p-4 rounded-xl relative overflow-hidden group">
+                                                                                <div className="absolute top-0 right-0 p-2 opacity-10">
+                                                                                    <Trophy className="h-16 w-16" />
+                                                                                </div>
+                                                                                <div className="relative z-10">
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">MVP (Most Fame)</div>
+                                                                                    {topFame ? (
+                                                                                        <>
+                                                                                            <div className="text-xl font-bold text-primary truncate">{topFame.name}</div>
+                                                                                            <div className="text-sm text-muted-foreground mb-2">{topFame.guildName}</div>
+                                                                                            <div className="flex justify-between items-end">
+                                                                                                <div className="text-3xl font-mono font-bold text-warning">{formatNumber(topFame.killFame)}</div>
+                                                                                                <div className="text-xs text-muted-foreground">Fame</div>
+                                                                                            </div>
+                                                                                        </>
+                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                </div>
+                                                                            </div>
+
+                                                                            {/* Top Killer */}
+                                                                            <div className="bg-card border border-border p-4 rounded-xl relative overflow-hidden group">
+                                                                                <div className="absolute top-0 right-0 p-2 opacity-10">
+                                                                                    <Swords className="h-16 w-16" />
+                                                                                </div>
+                                                                                <div className="relative z-10">
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">Top Killer</div>
+                                                                                    {topKiller ? (
+                                                                                        <>
+                                                                                            <div className="text-xl font-bold text-destructive truncate">{topKiller.name}</div>
+                                                                                            <div className="text-sm text-muted-foreground mb-2">{topKiller.guildName}</div>
+                                                                                            <div className="flex justify-between items-end">
+                                                                                                <div className="text-3xl font-mono font-bold text-destructive">{topKiller.kills}</div>
+                                                                                                <div className="text-xs text-muted-foreground">Kills</div>
+                                                                                            </div>
+                                                                                        </>
+                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                </div>
+                                                                            </div>
+
+                                                                            {/* Top Gear */}
+                                                                            <div className="bg-card border border-border p-4 rounded-xl relative overflow-hidden group">
+                                                                                <div className="absolute top-0 right-0 p-2 opacity-10">
+                                                                                    <Shield className="h-16 w-16" />
+                                                                                </div>
+                                                                                <div className="relative z-10">
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">Highest IP</div>
+                                                                                    {topIp ? (
+                                                                                        <>
+                                                                                            <div className="text-xl font-bold text-foreground truncate">{topIp.name}</div>
+                                                                                            <div className="text-sm text-muted-foreground mb-2">{topIp.guildName}</div>
+                                                                                            <div className="flex justify-between items-end">
+                                                                                                <div className="text-3xl font-mono font-bold text-foreground">{Math.round(Number(topIp.averageItemPower) || 0)}</div>
+                                                                                                <div className="text-xs text-muted-foreground">IP</div>
+                                                                                            </div>
+                                                                                        </>
+                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                </div>
+                                                                            </div>
+                                                                            
+                                                                            {/* Efficiency Table */}
+                                                                            <div className="col-span-1 md:col-span-3 mt-4">
+                                                                                <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">Deadliest Guilds (K/D Ratio)</h3>
+                                                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                                                    {efficientGuilds.map((guild: any, idx: number) => (
+                                                                                        <div key={guild.id} className="bg-muted/30 border border-border/50 p-3 rounded-lg flex justify-between items-center">
+                                                                                            <div className="flex items-center gap-3 overflow-hidden">
+                                                                                                <div className="font-mono text-muted-foreground font-bold">#{idx + 1}</div>
+                                                                                                <div className="truncate font-medium" title={guild.name}>{guild.name}</div>
+                                                                                            </div>
+                                                                                            <div className="flex items-center gap-3">
+                                                                                                <div className="text-right">
+                                                                                                    <div className="text-xs text-muted-foreground">K/D</div>
+                                                                                                    <div className={`font-mono font-bold ${guild.deaths === 0 ? 'text-warning' : 'text-success'}`}>
+                                                                                                        {guild.deaths > 0 ? (guild.kills / guild.deaths).toFixed(1) : 'PERFECT'}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    ))}
+                                                                                    {efficientGuilds.length === 0 && (
+                                                                                        <div className="text-muted-foreground italic col-span-3">Not enough data for efficiency rating (Min 5 Kills).</div>
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                        </>
+                                                                    );
+                                                                })()}
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                     {detailTab === 'guilds' && (
                                                         <div className="overflow-x-auto">
                                                             <table className="w-full text-sm">
@@ -886,9 +1398,9 @@ export default function ZvzTrackerClient() {
                                                                         <tr key={player.id} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
                                                                             <td className="py-2 pl-2 font-medium text-foreground cursor-pointer hover:text-primary hover:underline" onClick={() => handleEntityClick('players', player.id)}>{player.name}</td>
                                                                             <td className="py-2 text-muted-foreground">{player.guildName}</td>
-                                                                            <td className="py-2 text-right font-mono text-success">{player.kills}</td>
-                                                                            <td className="py-2 text-right font-mono text-destructive">{player.deaths}</td>
-                                                                            <td className="py-2 text-right font-mono">{Math.round(player.averageItemPower)}</td>
+                                                                            <td className="py-2 text-right font-mono text-success">{player.kills || 0}</td>
+                                                                            <td className="py-2 text-right font-mono text-destructive">{player.deaths || 0}</td>
+                                                                            <td className="py-2 text-right font-mono">{Math.round(Number(player.averageItemPower) || 0)}</td>
                                                                             <td className="py-2 text-right font-mono text-warning pr-2">{formatNumber(player.killFame)}</td>
                                                                         </tr>
                                                                     ))}
@@ -909,7 +1421,7 @@ export default function ZvzTrackerClient() {
                                                                     <div className="flex-1 flex items-center justify-between gap-4">
                                                                         <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
                                                                             <span className={`font-bold truncate ${event.Killer.AllianceName ? 'text-primary' : 'text-foreground'}`}>{event.Killer.Name}</span>
-                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(event.Killer.AverageItemPower)} IP)</span>
+                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Killer.AverageItemPower) || 0)} IP)</span>
                                                                         </div>
                                                                         
                                                                         <div className="flex flex-col items-center px-2">
@@ -919,7 +1431,7 @@ export default function ZvzTrackerClient() {
 
                                                                         <div className="flex items-center gap-2 flex-1 min-w-0">
                                                                             <span className={`font-bold truncate ${event.Victim.AllianceName ? 'text-destructive' : 'text-foreground'}`}>{event.Victim.Name}</span>
-                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(event.Victim.AverageItemPower)} IP)</span>
+                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Victim.AverageItemPower) || 0)} IP)</span>
                                                                         </div>
                                                                     </div>
                                                                     <div className="w-8 h-8 relative shrink-0">
