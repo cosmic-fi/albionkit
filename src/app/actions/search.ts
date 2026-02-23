@@ -31,10 +31,10 @@ const STATIC_PAGES: SearchResult[] = [
   { id: 'profit-labour', type: 'page', title: 'Labourer Profits', subtitle: 'Labourer yield calculator', href: '/profits/labour', icon: 'HardHat' },
   
   // Build Categories
-  { id: 'builds-solo', type: 'page', title: 'Solo Builds', subtitle: 'Best builds for solo play', href: '/builds/solo', icon: 'User' },
-  { id: 'builds-zvz', type: 'page', title: 'ZvZ Builds', subtitle: 'Meta builds for large scale', href: '/builds/zvz', icon: 'Skull' },
-  { id: 'builds-small', type: 'page', title: 'Small Scale Builds', subtitle: 'Builds for small groups', href: '/builds/small-scale', icon: 'Users' },
-  { id: 'builds-pvp', type: 'page', title: 'PvP Builds', subtitle: 'General PvP builds', href: '/builds/pvp', icon: 'Swords' },
+  { id: 'builds-solo', type: 'page', title: 'Solo Builds', subtitle: 'Best builds for solo play', href: '/builds?category=solo', icon: 'User' },
+  { id: 'builds-zvz', type: 'page', title: 'ZvZ Builds', subtitle: 'Meta builds for large scale', href: '/builds?category=zvz', icon: 'Skull' },
+  { id: 'builds-small', type: 'page', title: 'Small Scale Builds', subtitle: 'Builds for small groups', href: '/builds?category=small-scale', icon: 'Users' },
+  { id: 'builds-pvp', type: 'page', title: 'PvP Builds', subtitle: 'General PvP builds', href: '/builds?category=pvp', icon: 'Swords' },
   
   // Misc
   { id: 'settings', type: 'page', title: 'Settings', subtitle: 'App configuration', href: '/settings', icon: 'Settings' },

@@ -82,15 +82,8 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     title: 'Builds',
+    href: '/builds',
     icon: <Shield className="h-4 w-4" />,
-    submenu: [
-      { title: 'Solo', href: '/builds/solo', icon: <User className="h-4 w-4" /> },
-      { title: 'Small Scale', href: '/builds/small-scale', icon: <Users className="h-4 w-4" /> },
-      { title: 'PvP', href: '/builds/pvp', icon: <Sword className="h-4 w-4" /> },
-      { title: 'ZvZ', href: '/builds/zvz', icon: <Skull className="h-4 w-4" /> },
-      { title: 'Large Scale', href: '/builds/large-scale', icon: <Shield className="h-4 w-4" /> },
-      { title: 'Group', href: '/builds/group', icon: <Users className="h-4 w-4" /> },
-    ],
   },
 ];
 
@@ -102,7 +95,7 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [expandedMobileGroups, setExpandedMobileGroups] = useState<string[]>(['Profits', 'Tools', 'Builds']);
+  const [expandedMobileGroups, setExpandedMobileGroups] = useState<string[]>(['Profits', 'Tools']);
   const { openLoginModal } = useLoginModal();
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   

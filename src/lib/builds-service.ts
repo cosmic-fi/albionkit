@@ -169,6 +169,42 @@ export const getBuilds = async (
   }
 };
 
+export const getBuildsAll = async (
+  sort: 'recent' | 'popular' | 'rating' | 'likes' = 'recent',
+  limitCount: number = 50,
+  lastDoc?: QueryDocumentSnapshot | null
+): Promise<{ builds: Build[], lastDoc: QueryDocumentSnapshot | null }> => {
+  try {
+    const buildsRef = collection(db, COLLECTION);
+    let q = query(buildsRef);
+
+    if (sort === 'popular') {
+      q = query(q, orderBy('views', 'desc'));
+    } else if (sort === 'rating') {
+      q = query(q, orderBy('rating', 'desc'));
+    } else if (sort === 'likes') {
+      q = query(q, orderBy('likes', 'desc'));
+    } else {
+      q = query(q, orderBy('createdAt', 'desc'));
+    }
+
+    if (lastDoc) {
+      q = query(q, startAfter(lastDoc));
+    }
+
+    q = query(q, limit(limitCount));
+
+    const snapshot = await getDocs(q);
+    const builds = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Build));
+    const newLastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
+
+    return { builds, lastDoc: newLastDoc };
+  } catch (error) {
+    console.error('Error fetching all builds:', error);
+    return { builds: [], lastDoc: null };
+  }
+};
+
 export const getBuild = async (id: string): Promise<Build | null> => {
   try {
     const docRef = doc(db, COLLECTION, id);

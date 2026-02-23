@@ -30,6 +30,7 @@ import { getTickerData, getGlobalStats } from "@/lib/ticker-service";
 import { MarketTicker } from "@/components/MarketTicker";
 import { InfoStrip, InfoBanner } from "@/components/InfoStrip";
 import { FeatureSection } from "@/components/FeatureSection";
+import { LiveKillToasts } from "@/components/LiveKillToasts";
 
 export default async function Home() {
   const [tickerData, stats] = await Promise.all([
@@ -58,6 +59,7 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <LiveKillToasts />
       
       {/* Hero Section */}
       <section className="relative pt-0 overflow-hidden min-h-screen flex flex-col items-center justify-center">
@@ -81,18 +83,13 @@ export default async function Home() {
           <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto">
             {/* Hero Content */}
             <div className="space-y-8 sm:pt-10">
-              {/* <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium animate-fade-in-up justify-center">
-                <Zap className="h-3 w-3" />
-                <span>v2.0 Live: New Market Engine</span>
-              </div> */}
-              
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1] animate-fade-in-up shadow-black drop-shadow-lg">
-                Dominate the&nbsp;
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary">Open World</span>
+                Make every session count in&nbsp;
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary">Albion Online</span>
               </h1>
               
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-100 drop-shadow-md">
-                Advanced tools for Albion Online. Analyze market trends, track PvP statistics, and discover meta builds to improve your gameplay.
+                Plan your next move with live market data, PvP insights, and meta builds — all in one place so you can spend less time tabbing out and more time playing.
               </p>
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 animate-fade-in-up delay-200">
@@ -100,14 +97,14 @@ export default async function Home() {
                   href="/tools/market-flipper" 
                   className="px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-bold transition-all hover:scale-105 shadow-lg shadow-primary/20 flex items-center gap-2 w-full sm:w-auto justify-center"
                 >
-                  Start Trading
+                  Explore Market Tools
                   <ArrowRight className="h-5 w-5" />
                 </Link>
                 <Link 
                   href="/tools/pvp-intel" 
                   className="px-8 py-4 bg-secondary/80 hover:bg-secondary/90 text-foreground rounded-xl font-bold transition-all hover:scale-105 border border-border backdrop-blur-md flex items-center gap-2 w-full sm:w-auto justify-center"
                 >
-                  Check PvP Stats
+                  Scout PvP Players
                   <Sword className="h-5 w-5" />
                 </Link>
               </div>
@@ -125,7 +122,7 @@ export default async function Home() {
           <StatItem value={`${stats.itemsTracked > 0 ? stats.itemsTracked.toLocaleString() : '6,000'}+`} label="Items Tracked" />
           <StatItem value={`${stats.battlesAnalyzed > 0 ? stats.battlesAnalyzed.toLocaleString() : '50'}+`} label="Recent Battles" />
           <StatItem value={stats.marketUpdates} label="Market Updates" />
-          <StatItem value={stats.uptime} label="Safe & Secure" />
+          <StatItem value={stats.uptime} label="Server Uptime" />
         </div>
       </section>
 

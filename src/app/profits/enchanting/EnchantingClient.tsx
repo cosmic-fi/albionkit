@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, Fragment } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { useAuth } from '@/context/AuthContext';
-import { Sparkles, RefreshCw, CircleHelp, ChevronDown, Plus, Minus, Info } from 'lucide-react';
+import { Sparkles, RefreshCw, CircleHelp, ChevronDown, ChevronUp, Plus, Minus, Info, Settings } from 'lucide-react';
 import { getMarketPrices, LOCATIONS } from '@/lib/market-service';
 import { SimpleItem, getItemNameService, searchItemsService } from '@/lib/item-service';
 import { getEnchantmentMaterialCount, getMaterialId, ENCHANTMENT_MATERIALS } from './constants';
@@ -16,7 +16,7 @@ import { NumberInput } from '@/components/ui/NumberInput';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Badge } from '@/components/ui/Badge';
 import { ItemIcon } from '@/components/ItemIcon';
-import { FeatureLock } from '@/components/subscription/FeatureLock';
+import { InfoStrip, InfoBanner } from '@/components/InfoStrip';
 
 // Types
 interface MaterialRequirement {
@@ -62,7 +62,6 @@ const TIERS = [
   { value: 1, label: '.1 (Rune)' },
   { value: 2, label: '.2 (Soul)' },
   { value: 3, label: '.3 (Relic)' },
-  // .4 is Avalonian, usually handled separately or not standard loop
 ];
 
 export default function EnchantingClient() {
@@ -90,6 +89,10 @@ export default function EnchantingClient() {
   const [buyOrderType, setBuyOrderType] = useState<'buy_order' | 'sell_order'>('sell_order'); // Default: Buy from Sell Order (Instant Buy)
   const [sellOrderType, setSellOrderType] = useState<'buy_order' | 'sell_order'>('sell_order'); // Default: Sell to Sell Order (Wait)
 
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showFormDetails, setShowFormDetails] = useState(false);
+  const [showTableDetails, setShowTableDetails] = useState(false);
+
   // Initialize from preferences
   useEffect(() => {
     if (profile?.preferences) {
@@ -114,15 +117,33 @@ export default function EnchantingClient() {
   
   // Overrides (Map of ItemID -> { price?: number, count?: number })
   const [overrides, setOverrides] = useState<Record<string, { price?: number, count?: number }>>({});
+  const [targetPriceOverride, setTargetPriceOverride] = useState<number | null>(null);
 
   // --- Logic ---
 
-  // Ensure target tier > current tier
-  useEffect(() => {
-    if (targetTier <= currentTier) {
-      setTargetTier(currentTier + 1);
-    }
-  }, [currentTier]);
+  const fromTierOptions = TIERS.filter(t => t.value < 3);
+  const toTierOptions = TIERS.filter(t => t.value > 0);
+
+  const baseVisualId = selectedItem ? (currentTier === 0 ? selectedItem : `${selectedItem}@${currentTier}`) : null;
+  const targetVisualId = selectedItem ? `${selectedItem}@${targetTier}` : null;
+
+  const getTierLabel = (tier: number) => {
+    const found = TIERS.find(t => t.value === tier);
+    return found ? found.label : `. ${tier}`;
+  };
+
+  const enchantSteps = [0, 1, 2, 3].map(level => {
+    const found = TIERS.find(t => t.value === level);
+    return {
+      level,
+      label: found ? found.label : `. ${level}`
+    };
+  });
+
+  const getQualityLabel = (value: number) => {
+    const found = QUALITIES.find(q => q.value === value);
+    return found ? found.label : `Q${value}`;
+  };
 
   const handleSelectItem = (itemId: string, item?: SimpleItem) => {
     // Always store base ID (remove @1, @2 etc)
@@ -157,6 +178,7 @@ export default function EnchantingClient() {
   }, [searchQuery, isSelectOpen]);
   const loadData = async () => {
     if (!selectedItem) return;
+    if (targetTier <= currentTier) return;
 
     setLoading(true);
     try {
@@ -273,6 +295,7 @@ export default function EnchantingClient() {
 
       // We'll run calculation effect to update totals
       setData(initialCalc);
+      setTargetPriceOverride(null);
 
     } catch (error) {
       console.error(error);
@@ -302,8 +325,8 @@ export default function EnchantingClient() {
     const totalCost = updatedMats.reduce((sum, m) => sum + m.totalCost, 0);
     
     // Revenue
-    // Check if target price overridden? Maybe later. For now just base data.
-    const revenue = data.targetItem.price * quantity;
+    const targetUnitPrice = targetPriceOverride ?? data.targetItem.price;
+    const revenue = targetUnitPrice * quantity;
 
     // Tax
     // Premium: 4% (2% setup + 2% tax) - approx
@@ -368,7 +391,7 @@ export default function EnchantingClient() {
       profit,
       roi
     };
-  }, [data, overrides, quantity, isPremium, includeTax, sellOrderType]);
+  }, [data, overrides, quantity, isPremium, includeTax, sellOrderType, targetPriceOverride]);
 
   const handleOverride = (itemId: string, field: 'price' | 'count', value: number) => {
     setOverrides(prev => ({
@@ -473,15 +496,22 @@ export default function EnchantingClient() {
                 </div>
 
                 {selectedItem && (
-                    <div className="mt-4 flex items-center gap-4 p-3 bg-muted/50 rounded-lg border border-border">
-                        <ItemIcon 
-                            itemId={selectedItem}
-                            alt={selectedItemName || selectedItem}
-                            className="h-12 w-12 object-contain"
-                        />
+                    <div className="mt-4 flex items-center gap-4 p-4 bg-muted/60 rounded-xl border border-border/80">
+                        <div className="h-16 w-16 md:h-20 md:w-20 bg-background/70 rounded-xl border border-border/70 shadow-sm flex items-center justify-center">
+                            <ItemIcon 
+                                itemId={baseVisualId || selectedItem}
+                                alt={selectedItemName || selectedItem}
+                                className="h-14 w-14 md:h-16 md:w-16 object-contain"
+                            />
+                        </div>
                         <div className="min-w-0 flex-1">
                             <div className="font-bold text-foreground break-words leading-tight">{selectedItemName || selectedItem}</div>
                             <div className="text-xs text-muted-foreground truncate">{selectedItem}</div>
+                            <div className="mt-1 text-[11px] text-muted-foreground">
+                              <span>{getTierLabel(currentTier)} → {getTierLabel(targetTier)}</span>
+                              <span className="mx-1">·</span>
+                              <span>{getQualityLabel(quality)}</span>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -489,6 +519,13 @@ export default function EnchantingClient() {
 
             {/* Filters */}
             <div className="lg:col-span-8 bg-card/50 p-6 rounded-xl border border-border">
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                        <Settings className="h-4 w-4 text-muted-foreground" />
+                        <h3 className="font-bold text-foreground text-sm">Configuration</h3>
+                    </div>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     
                     {/* Column 1: Item Configuration */}
@@ -501,15 +538,35 @@ export default function EnchantingClient() {
                         <div className="grid grid-cols-2 gap-4">
                             <Select 
                                 label="From Tier"
-                                options={TIERS}
+                                options={fromTierOptions}
                                 value={currentTier}
-                                onChange={(val) => setCurrentTier(Number(val))}
+                                onChange={(val) => {
+                                  const nextFrom = Number(val);
+                                  setCurrentTier(nextFrom);
+                                  setTargetTier(prev => {
+                                    const minTarget = nextFrom + 1;
+                                    if (prev <= nextFrom || prev == null) {
+                                      const candidate = toTierOptions.find(t => t.value >= minTarget);
+                                      return candidate ? candidate.value : minTarget;
+                                    }
+                                    return prev;
+                                  });
+                                }}
                             />
                             <Select 
                                 label="To Tier"
-                                options={TIERS}
+                                options={toTierOptions.filter(t => t.value > currentTier)}
                                 value={targetTier}
-                                onChange={(val) => setTargetTier(Number(val))}
+                                onChange={(val) => {
+                                  const nextTo = Number(val);
+                                  if (nextTo <= currentTier) {
+                                    const adjustedFrom = Math.max(0, nextTo - 1);
+                                    setCurrentTier(adjustedFrom);
+                                    setTargetTier(nextTo);
+                                  } else {
+                                    setTargetTier(nextTo);
+                                  }
+                                }}
                             />
                         </div>
 
@@ -586,12 +643,127 @@ export default function EnchantingClient() {
                         </div>
                     </div>
                 </div>
+
+                {selectedItem && (
+                  <div className="mt-4 border-t border-border pt-4 space-y-3">
+                    <button
+                      onClick={() => setShowFormDetails(!showFormDetails)}
+                      className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <CircleHelp className="h-3 w-3" />
+                      {showFormDetails ? 'Hide path & tax details' : 'Show path & tax details'}
+                    </button>
+                    {showFormDetails && (
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                        <div className="bg-muted/30 rounded-lg border border-border/60 p-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-foreground">Enchant Path</span>
+                            <span className="text-muted-foreground">{getTierLabel(currentTier)} → {getTierLabel(targetTier)}</span>
+                          </div>
+                          <div className="flex flex-wrap gap-2 mt-1">
+                            {enchantSteps.map(step => {
+                              const active = step.level >= currentTier && step.level <= targetTier;
+                              return (
+                                <Badge
+                                  key={step.level}
+                                  variant={active ? 'default' : 'outline'}
+                                  className={active ? 'bg-primary/80 text-primary-foreground border-none' : 'border-border text-muted-foreground'}
+                                >
+                                  {step.label}
+                                </Badge>
+                              );
+                            })}
+                          </div>
+                        </div>
+                        <div className="bg-muted/30 rounded-lg border border-border/60 p-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-foreground">Market Strategy</span>
+                            <span className="text-muted-foreground">{buyCity} → {sellCity}</span>
+                          </div>
+                          <div className="space-y-1 mt-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-muted-foreground">Buy</span>
+                              <span className="font-mono">
+                                {buyOrderType === 'buy_order' ? 'Buy Order' : 'Instant Buy'}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-muted-foreground">Sell</span>
+                              <span className="font-mono">
+                                {sellOrderType === 'sell_order' ? 'Sell Order' : 'Instant Sell'}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-muted/30 rounded-lg border border-border/60 p-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-foreground">Taxes</span>
+                            <span className="text-muted-foreground">{includeTax ? 'Included' : 'Ignored'}</span>
+                          </div>
+                          <div className="space-y-1 mt-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-muted-foreground">Premium</span>
+                              <span className="font-mono">{isPremium ? 'On' : 'Off'}</span>
+                            </div>
+                            <p className="text-muted-foreground mt-1">
+                              Sell Orders use market tax and setup fee; Instant Sell only uses market tax.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
             </div>
         </div>
         
         {/* Results */}
         {calculation && (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                <div className="bg-card/60 border border-border rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex items-center gap-4">
+                    {baseVisualId && (
+                      <div className="flex items-center gap-4">
+                        <div className="h-16 w-16 md:h-20 md:w-20 bg-background/80 rounded-xl border border-border/80 shadow-sm flex items-center justify-center">
+                          <ItemIcon itemId={baseVisualId} className="h-14 w-14 md:h-16 md:w-16 object-contain" />
+                        </div>
+                        <div className="space-y-0.5">
+                          <div className="text-xs font-semibold text-muted-foreground uppercase">From</div>
+                          <div className="text-sm font-bold text-foreground truncate max-w-[160px]">
+                            {selectedItemName || selectedItem}
+                          </div>
+                          <div className="text-[11px] text-muted-foreground">
+                            {getTierLabel(currentTier)}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-center px-2">
+                      <Sparkles className="h-5 w-5 text-primary" />
+                    </div>
+                    {targetVisualId && (
+                      <div className="flex items-center gap-4">
+                        <div className="h-16 w-16 md:h-20 md:w-20 bg-primary/5 rounded-xl border border-primary/30 shadow-sm flex items-center justify-center">
+                          <ItemIcon itemId={targetVisualId} quality={quality} className="h-14 w-14 md:h-16 md:w-16 object-contain" />
+                        </div>
+                        <div className="space-y-0.5">
+                          <div className="text-xs font-semibold text-muted-foreground uppercase">To</div>
+                          <div className="text-sm font-bold text-foreground truncate max-w-[160px]">
+                            {selectedItemName || selectedItem}
+                          </div>
+                          <div className="text-[11px] text-muted-foreground">
+                            {getTierLabel(targetTier)} · {getQualityLabel(quality)}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-3 justify-end w-full md:w-auto text-[11px] text-muted-foreground">
+                    <span>Qty {quantity}</span>
+                    <span>Quality {getQualityLabel(quality)}</span>
+                    <span>{buyCity} → {sellCity}</span>
+                  </div>
+                </div>
                 {/* Summary Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="bg-card p-4 rounded-xl border border-border">
@@ -619,19 +791,64 @@ export default function EnchantingClient() {
                          </div>
                     </div>
                 </div>
-                
+
                 {/* Details Table */}
                 <div className="bg-card/50 rounded-xl border border-border overflow-hidden">
                     <div className="p-4 border-b border-border flex justify-between items-center bg-muted/30">
-                        <h3 className="font-bold text-foreground">Calculation Details</h3>
-                         {calculation.missingData && (
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-bold text-foreground">Calculation Details</h3>
+                          <Tooltip content="See how each component contributes to your total cost and profit.">
+                            <button className="inline-flex items-center justify-center text-muted-foreground hover:text-foreground">
+                              <CircleHelp className="h-3.5 w-3.5" />
+                            </button>
+                          </Tooltip>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => setShowTableDetails(prev => !prev)}
+                            className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs border border-border/80 bg-background/60 hover:bg-background/90 transition-colors"
+                          >
+                            <span>{showTableDetails ? 'Hide advanced metrics' : 'Show advanced metrics'}</span>
+                            <ChevronDown className={`h-3 w-3 transition-transform ${showTableDetails ? 'rotate-180' : ''}`} />
+                          </button>
+                          {calculation.missingData && (
                             <Badge variant="warning" className="gap-1">
-                                <Info className="h-3 w-3" />
-                                Missing some price data
+                              <Info className="h-3 w-3" />
+                              Missing some price data
                             </Badge>
-                        )}
+                          )}
+                        </div>
                     </div>
-                    
+
+                    {showTableDetails && (
+                      <div className="px-4 pt-4 pb-3 border-b border-border bg-muted/20 grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+                        <div>
+                          <div className="text-muted-foreground uppercase tracking-wider mb-0.5">Cost per item</div>
+                          <div className="font-mono font-semibold text-foreground">
+                            {Math.round(calculation.totalCost / quantity).toLocaleString()}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-muted-foreground uppercase tracking-wider mb-0.5">Tax per item</div>
+                          <div className="font-mono font-semibold text-destructive">
+                            -{Math.round(calculation.tax / quantity).toLocaleString()}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-muted-foreground uppercase tracking-wider mb-0.5">Profit per item</div>
+                          <div className={`font-mono font-semibold ${calculation.profit > 0 ? 'text-success' : 'text-destructive'}`}>
+                            {Math.round(calculation.profit / quantity).toLocaleString()}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-muted-foreground uppercase tracking-wider mb-0.5">Break-even price</div>
+                          <div className="font-mono font-semibold text-foreground">
+                            {Math.round((calculation.totalCost + calculation.tax) / quantity).toLocaleString()}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
@@ -640,64 +857,160 @@ export default function EnchantingClient() {
                                     <th className="p-4 text-right">Count</th>
                                     <th className="p-4 text-right">Unit Price</th>
                                     <th className="p-4 text-right">Total</th>
+                                    <th className="p-4 text-center w-10"></th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border">
-                                {/* Base Item */}
-                                <tr className="hover:bg-muted/30">
-                                    <td className="p-4 pl-6">
-                                        <div className="flex items-center gap-3">
+                                {(() => {
+                                  const baseMat = calculation.materials[0];
+                                  const baseRowId = 'base';
+                                  const baseExpanded = expandedRow === baseRowId;
+                                  const baseShare = calculation.totalCost > 0 ? (baseMat.totalCost / calculation.totalCost) * 100 : 0;
+                                  return (
+                                    <Fragment>
+                                      <tr className="hover:bg-muted/30">
+                                        <td className="p-4 pl-6">
+                                          <div className="flex items-center gap-3">
                                             <ItemIcon itemId={calculation.baseItem.id} className="h-8 w-8" />
                                             <div>
-                                                <div className="font-medium">{calculation.materials[0].name}</div>
-                                                <div className="text-xs text-muted-foreground">Base Item</div>
+                                              <div className="font-medium">{baseMat.name}</div>
+                                              <div className="text-xs text-muted-foreground">Base Item</div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td className="p-4 text-right font-mono">{calculation.materials[0].count * quantity}</td>
-                                    <td className="p-4 text-right font-mono text-muted-foreground">{calculation.materials[0].price.toLocaleString()}</td>
-                                    <td className="p-4 text-right font-mono font-medium">{calculation.materials[0].totalCost.toLocaleString()}</td>
-                                </tr>
-                                
-                                {/* Materials */}
-                                {calculation.materials.slice(1).map((mat) => (
-                                    <tr key={mat.itemId} className="hover:bg-muted/30">
-                                        <td className="p-4 pl-6">
-                                            <div className="flex items-center gap-3">
-                                                <ItemIcon itemId={mat.itemId} className="h-8 w-8" />
-                                                <div>
-                                                    <div className="font-medium">{mat.name}</div>
-                                                    <div className="text-xs text-muted-foreground">Enchantment Material</div>
+                                          </div>
+                                        </td>
+                                        <td className="p-4 text-right font-mono">{baseMat.count * quantity}</td>
+                                        <td className="p-4 text-right font-mono text-muted-foreground">{baseMat.price.toLocaleString()}</td>
+                                        <td className="p-4 text-right font-mono font-medium">{baseMat.totalCost.toLocaleString()}</td>
+                                        <td className="p-4 text-center">
+                                          <button
+                                            onClick={() => setExpandedRow(prev => (prev === baseRowId ? null : baseRowId))}
+                                            className="inline-flex items-center justify-center rounded-full border border-border/60 bg-background/60 hover:bg-background px-1.5 py-1"
+                                          >
+                                            {baseExpanded ? (
+                                              <ChevronUp className="h-3.5 w-3.5 text-muted-foreground" />
+                                            ) : (
+                                              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+                                            )}
+                                          </button>
+                                        </td>
+                                      </tr>
+                                      {baseExpanded && (
+                                        <tr className="bg-muted/15">
+                                          <td colSpan={5} className="p-4 pl-6">
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                                              <div>
+                                                <div className="text-muted-foreground uppercase tracking-wider mb-0.5">Role</div>
+                                                <div className="text-foreground font-medium">Base item cost</div>
+                                              </div>
+                                              <div>
+                                                <div className="text-muted-foreground uppercase tracking-wider mb-0.5">Cost per result</div>
+                                                <div className="font-mono text-foreground">
+                                                  {Math.round(baseMat.totalCost / quantity).toLocaleString()}
                                                 </div>
+                                              </div>
+                                              <div>
+                                                <div className="text-muted-foreground uppercase tracking-wider mb-0.5">Share of total</div>
+                                                <div className="font-mono text-foreground">
+                                                  {baseShare.toFixed(1)}%
+                                                </div>
+                                              </div>
                                             </div>
+                                          </td>
+                                        </tr>
+                                      )}
+                                    </Fragment>
+                                  );
+                                })()}
+                                
+                                {calculation.materials.slice(1).map((mat) => {
+                                  const rowId = mat.itemId;
+                                  const isExpanded = expandedRow === rowId;
+                                  const share = calculation.totalCost > 0 ? (mat.totalCost / calculation.totalCost) * 100 : 0;
+                                  return (
+                                    <Fragment key={mat.itemId}>
+                                      <tr className="hover:bg-muted/30">
+                                        <td className="p-4 pl-6">
+                                          <div className="flex items-center gap-3">
+                                            <ItemIcon itemId={mat.itemId} className="h-8 w-8" />
+                                            <div>
+                                              <div className="font-medium">{mat.name}</div>
+                                              <div className="text-xs text-muted-foreground">Enchantment Material</div>
+                                            </div>
+                                          </div>
                                         </td>
                                         <td className="p-4 text-right font-mono">{mat.count * quantity}</td>
                                         <td className="p-4 text-right font-mono text-muted-foreground">{mat.price.toLocaleString()}</td>
                                         <td className="p-4 text-right font-mono font-medium">{mat.totalCost.toLocaleString()}</td>
-                                    </tr>
-                                ))}
-                                
-                                {/* Summary Rows */}
-                                <tr className="bg-muted/10 border-t-2 border-border">
-                                    <td colSpan={3} className="p-4 text-right font-bold text-muted-foreground">Total Material Cost</td>
-                                    <td className="p-4 text-right font-mono font-bold">{calculation.totalCost.toLocaleString()}</td>
-                                </tr>
-                                <tr className="bg-muted/10">
-                                    <td colSpan={3} className="p-4 text-right font-bold text-muted-foreground">Estimated Revenue</td>
-                                    <td className="p-4 text-right font-mono font-bold text-success">{calculation.revenue.toLocaleString()}</td>
-                                </tr>
-                                <tr className="bg-muted/10">
-                                    <td colSpan={3} className="p-4 text-right font-bold text-muted-foreground">Estimated Tax & Fees</td>
-                                    <td className="p-4 text-right font-mono font-bold text-destructive">-{Math.round(calculation.tax).toLocaleString()}</td>
-                                </tr>
-                                <tr className="bg-muted/20 border-t border-border">
-                                    <td colSpan={3} className="p-4 text-right font-bold text-foreground text-lg">Net Profit</td>
-                                    <td className={`p-4 text-right font-mono font-bold text-lg ${calculation.profit > 0 ? 'text-success' : 'text-destructive'}`}>
-                                        {Math.round(calculation.profit).toLocaleString()}
-                                    </td>
-                                </tr>
+                                        <td className="p-4 text-center">
+                                          <button
+                                            onClick={() => setExpandedRow(prev => (prev === rowId ? null : rowId))}
+                                            className="inline-flex items-center justify-center rounded-full border border-border/60 bg-background/60 hover:bg-background px-1.5 py-1"
+                                          >
+                                            {isExpanded ? (
+                                              <ChevronUp className="h-3.5 w-3.5 text-muted-foreground" />
+                                            ) : (
+                                              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+                                            )}
+                                          </button>
+                                        </td>
+                                      </tr>
+                                      {isExpanded && (
+                                        <tr className="bg-muted/10">
+                                          <td colSpan={5} className="p-4 pl-6">
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                                              <div>
+                                                <div className="text-muted-foreground uppercase tracking-wider mb-0.5">Role</div>
+                                                <div className="text-foreground font-medium">Enchantment material cost</div>
+                                              </div>
+                                              <div>
+                                                <div className="text-muted-foreground uppercase tracking-wider mb-0.5">Cost per result</div>
+                                                <div className="font-mono text-foreground">
+                                                  {Math.round(mat.totalCost / quantity).toLocaleString()}
+                                                </div>
+                                              </div>
+                                              <div>
+                                                <div className="text-muted-foreground uppercase tracking-wider mb-0.5">Share of total</div>
+                                                <div className="font-mono text-foreground">
+                                                  {share.toFixed(1)}%
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      )}
+                                    </Fragment>
+                                  );
+                                })}
                             </tbody>
                         </table>
+                    </div>
+                    <div className="border-t border-border bg-muted/10 px-4 py-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                        <div>
+                          <div className="text-muted-foreground uppercase tracking-wider mb-1">Total Material Cost</div>
+                          <div className="font-mono text-sm font-bold text-foreground">
+                            {Math.round(calculation.totalCost).toLocaleString()}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-muted-foreground uppercase tracking-wider mb-1">Estimated Revenue</div>
+                          <div className="font-mono text-sm font-bold text-success">
+                            {Math.round(calculation.revenue).toLocaleString()}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-muted-foreground uppercase tracking-wider mb-1">Estimated Tax & Fees</div>
+                          <div className="font-mono text-sm font-bold text-destructive">
+                            -{Math.round(calculation.tax).toLocaleString()}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-muted-foreground uppercase tracking-wider mb-1">Net Profit (Batch)</div>
+                          <div className={`font-mono text-sm font-bold ${calculation.profit > 0 ? 'text-success' : 'text-destructive'}`}>
+                            {Math.round(calculation.profit).toLocaleString()}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -711,6 +1024,16 @@ export default function EnchantingClient() {
             </div>
         )}
       </div>
+      <InfoStrip currentPage="profits-enchanting">
+        <InfoBanner
+          icon={<Sparkles className="w-4 h-4" />}
+          color="text-purple-400"
+          title="Tips for Enchanting Profits"
+        >
+          <p>Profitable enchanting often comes from underpriced base items and cheap runes or souls in off-meta cities.</p>
+          <p className="mt-1">Pay attention to your buy and sell cities, tax settings, and enchantment tiers to mirror how enchanting really works in-game.</p>
+        </InfoBanner>
+      </InfoStrip>
     </PageShell>
   );
 }

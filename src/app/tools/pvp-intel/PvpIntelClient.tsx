@@ -867,26 +867,6 @@ export default function PvpIntelPage() {
       icon={<Sword className="h-6 w-6" />}
       headerActions={
         <div className="flex flex-wrap items-center gap-4">
-          <div className="flex items-center gap-2 mr-2">
-             <Tooltip content="Export Report (Supporter Only)">
-                <button
-                   onClick={(e) => { e.preventDefault(); !hasAccess && setShowSubscriptionModal(true); }}
-                   className={`p-2 rounded-lg transition-colors flex items-center justify-center relative ${hasAccess ? 'bg-secondary hover:bg-secondary/80 text-secondary-foreground' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
-                >
-                   <Download className="h-5 w-5" />
-                   {!hasAccess && <Lock className="h-3 w-3 text-amber-500 absolute -top-1 -right-1" />}
-                </button>
-             </Tooltip>
-             <Tooltip content="Share Report (Supporter Only)">
-                <button
-                   onClick={(e) => { e.preventDefault(); !hasAccess && setShowSubscriptionModal(true); }}
-                   className={`p-2 rounded-lg transition-colors flex items-center justify-center relative ${hasAccess ? 'bg-secondary hover:bg-secondary/80 text-secondary-foreground' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
-                >
-                   <Share2 className="h-5 w-5" />
-                   {!hasAccess && <Lock className="h-3 w-3 text-amber-500 absolute -top-1 -right-1" />}
-                </button>
-             </Tooltip>
-          </div>
           <div className="flex items-center gap-2 w-full md:w-auto">
             <div className="relative group flex-1 md:flex-none">
               <form onSubmit={handleSearch} className="relative w-full">

@@ -84,7 +84,7 @@ export function MarketTicker({ data }: MarketTickerProps) {
             <div className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4 text-info" />
               <span>Black Market: <span className="text-foreground font-bold">{data.blackMarketVolume}</span></span>
-              <span className="text-success text-xs flex items-center gap-0.5"><TrendingUp className="h-3 w-3" /> {data.blackMarketTrend}%</span>
+              {renderTrend(data.blackMarketTrend)}
             </div>
             <div className="flex items-center gap-2">
               <Swords className="h-4 w-4 text-destructive" />
