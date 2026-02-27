@@ -310,7 +310,7 @@ export default function ChoppedFishClient() {
           <button
             disabled={loading}
             onClick={loadData}
-            className="p-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors shadow-lg shadow-primary/20 disabled:opacity-50"
+            className="p-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors   disabled:opacity-50"
           >
             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -326,7 +326,7 @@ export default function ChoppedFishClient() {
             {/* Left: Chopped Fish Summary */}
             <div className="space-y-6">
                <div className="flex items-start gap-4">
-                  <div className="h-16 w-16 bg-muted rounded-xl flex items-center justify-center border border-border shadow-inner shrink-0">
+                  <div className="h-16 w-16 bg-muted rounded-xl flex items-center justify-center border border-border  shrink-0">
                       <img 
                         src={`https://render.albiononline.com/v1/item/${CHOPPED_FISH_PRODUCT_ID}`} 
                         className="h-12 w-12 object-contain"

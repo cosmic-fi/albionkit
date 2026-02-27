@@ -44,7 +44,7 @@ export function NotificationDropdown() {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const notifs: AppNotification[] = [];
       let unread = 0;
-      
+
       snapshot.docs.forEach((doc) => {
         const data = doc.data();
         const notif = {
@@ -53,7 +53,7 @@ export function NotificationDropdown() {
           // Handle Firestore Timestamp
           createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt || Date.now())
         } as AppNotification;
-        
+
         notifs.push(notif);
         if (!notif.isRead) unread++;
       });
@@ -130,11 +130,11 @@ export function NotificationDropdown() {
       </button>
 
       {isOpen && (
-        <div className="fixed left-4 right-4 top-[4.5rem] sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 bg-card border border-border rounded-xl shadow-lg z-50 animate-in fade-in slide-in-from-top-2 overflow-hidden">
+        <div className="fixed left-4 right-4 top-[4.5rem] sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 bg-card border border-border rounded-xl z-50 animate-in fade-in slide-in-from-top-2 overflow-hidden">
           <div className="p-3 border-b border-border flex items-center justify-between bg-muted/30">
             <h3 className="font-semibold text-sm">Notifications</h3>
             {unreadCount > 0 && (
-              <button 
+              <button
                 onClick={markAllAsRead}
                 className="text-xs text-primary hover:underline flex items-center gap-1"
               >
@@ -152,7 +152,7 @@ export function NotificationDropdown() {
             ) : (
               <div className="divide-y divide-border/50">
                 {notifications.map((notif) => (
-                  <div 
+                  <div
                     key={notif.id}
                     className={`p-4 hover:bg-muted/50 transition-colors relative group ${!notif.isRead ? 'bg-primary/5' : ''}`}
                     onClick={() => !notif.isRead && markAsRead(notif.id)}
@@ -175,15 +175,15 @@ export function NotificationDropdown() {
                         </p>
                       </div>
                     </div>
-                    
-                    <button 
+
+                    <button
                       onClick={(e) => deleteNotification(e, notif.id)}
                       className="absolute -top-1 right-2 p-1.5 text-muted-foreground hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
                       title="Delete notification"
                     >
                       <X className="h-4 w-4" />
                     </button>
-                    
+
                     {!notif.isRead && (
                       <div className="absolute top-4 right-2 h-2 w-2 rounded-full bg-primary" />
                     )}
@@ -192,9 +192,9 @@ export function NotificationDropdown() {
               </div>
             )}
           </div>
-          
+
           <div className="p-2 border-t border-border bg-muted/30 text-center">
-            <Link 
+            <Link
               href="/settings?tab=preferences"
               onClick={() => setIsOpen(false)}
               className="text-xs text-muted-foreground hover:text-primary transition-colors"

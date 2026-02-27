@@ -347,7 +347,7 @@ function MarketFlipperContent() {
           <button
             onClick={loadData}
             disabled={loading}
-            className="p-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors   disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -360,7 +360,7 @@ function MarketFlipperContent() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div 
             onClick={() => setShowWatchlistOnly(!showWatchlistOnly)}
-            className={`cursor-pointer group relative overflow-hidden bg-card border rounded-2xl p-4 transition-all hover:shadow-lg ${showWatchlistOnly ? 'border-primary ring-1 ring-primary/50 shadow-primary/10' : 'border-border'}`}
+            className={`cursor-pointer group relative overflow-hidden bg-card border rounded-2xl p-4 transition-all hover: ${showWatchlistOnly ? 'border-primary ring-1 ring-primary/50 ' : 'border-border'}`}
           >
             <div className="flex items-center justify-between mb-2">
               <div className={`p-2 rounded-xl ${showWatchlistOnly ? 'bg-primary text-primary-foreground' : 'bg-secondary text-amber-500'}`}>

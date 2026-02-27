@@ -16,7 +16,7 @@ interface LoginModalProps {
 
 export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
   const { signInWithGoogle, signInWithEmail, registerWithEmail } = useAuth();
-  
+
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,7 +54,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
       console.error(err);
       setError('Failed to login with Google.');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -129,9 +129,9 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-popover border border-border rounded-xl shadow-2xl p-6 animate-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-md bg-popover border border-border rounded-xl p-6 animate-in zoom-in-95 duration-200">
         {onClose && (
-          <button 
+          <button
             onClick={onClose}
             className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
           >
@@ -174,7 +174,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
             <span>Continue with Google</span>
           </button>
 
-{/* 
+          {/* 
           <button
             onClick={handleTwitterLogin}
             disabled={loading}
@@ -206,13 +206,13 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
                 <span>{error}</span>
               </div>
             )}
-            
+
             <div className="space-y-1">
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  type="email" 
-                  placeholder="Email address" 
+                <Input
+                  type="email"
+                  placeholder="Email address"
                   className="pl-9 bg-background border-input"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -224,9 +224,9 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
             <div className="space-y-1">
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  type="password" 
-                  placeholder="Password" 
+                <Input
+                  type="password"
+                  placeholder="Password"
                   className="pl-9 bg-background border-input"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -257,7 +257,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
           </form>
 
           <div className="text-center pt-2">
-            <button 
+            <button
               type="button"
               onClick={() => setIsRegistering(!isRegistering)}
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"

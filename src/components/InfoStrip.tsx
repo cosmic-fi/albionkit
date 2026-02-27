@@ -47,7 +47,7 @@ const INFO_ITEMS: InfoItem[] = [
     color: "text-slate-200",
     isExternal: true
   },
-  
+
   // Tool Promos (Cross-linking)
   {
     id: 'market-flipper',
@@ -132,14 +132,14 @@ const INFO_ITEMS: InfoItem[] = [
     color: "text-cyan-400"
   },
   {
-      id: 'feedback',
-      icon: Bug,
-      text: "Found a bug or have a suggestion? Let us know directly via GitHub.",
-      actionLabel: "Report Bug",
-      actionLink: "https://github.com/albionkit",
-      color: "text-rose-400",
-      isExternal: true
-    }
+    id: 'feedback',
+    icon: Bug,
+    text: "Found a bug or have a suggestion? Let us know directly via GitHub.",
+    actionLabel: "Report Bug",
+    actionLink: "https://github.com/albionkit",
+    color: "text-rose-400",
+    isExternal: true
+  }
 ];
 
 interface InfoStripProps {
@@ -150,18 +150,18 @@ interface InfoStripProps {
 export function InfoBanner({ title, children, icon, color = "text-blue-400" }: { title?: string, children: React.ReactNode, icon?: React.ReactNode, color?: string }) {
   return (
     <div className="w-full mb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="bg-gradient-to-r from-card/50 to-card/30 border border-border/50 rounded-lg p-4 flex items-start gap-4 shadow-sm">
-         {icon && (
-          <div className={`p-2 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-inner mt-0.5 ${color}`}>
+      <div className="bg-gradient-to-r from-card/50 to-card/30 border border-border/50 rounded-lg p-4 flex items-start gap-4">
+        {icon && (
+          <div className={`p-2 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 mt-0.5 ${color}`}>
             {icon}
           </div>
-         )}
-         <div className="flex flex-col gap-1 w-full">
-            {title && <h4 className="text-sm font-semibold text-foreground">{title}</h4>}
-            <div className="text-sm text-muted-foreground font-medium w-full leading-relaxed">
-               {children}
-            </div>
-         </div>
+        )}
+        <div className="flex flex-col gap-1 w-full">
+          {title && <h4 className="text-sm font-semibold text-foreground">{title}</h4>}
+          <div className="text-sm text-muted-foreground font-medium w-full leading-relaxed">
+            {children}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -173,7 +173,7 @@ export function InfoStrip({ currentPage, children }: InfoStripProps) {
 
   useEffect(() => {
     setMounted(true);
-    
+
     // Filter items
     const availableItems = INFO_ITEMS.filter(item => {
       if (!currentPage) return true;
@@ -189,7 +189,7 @@ export function InfoStrip({ currentPage, children }: InfoStripProps) {
   return (
     <div className="w-full my-8 flex flex-col">
       {children}
-      
+
       {randomItem && <RandomInfoCard item={randomItem} />}
     </div>
   );
@@ -202,10 +202,10 @@ function RandomInfoCard({ item }: { item: InfoItem }) {
     if (item.actionLink === '#share') {
       if (navigator.share) {
         navigator.share({
-            title: 'AlbionKit',
-            text: 'Check out AlbionKit for the best Albion Online tools!',
-            url: window.location.origin
-        }).catch(() => {});
+          title: 'AlbionKit',
+          text: 'Check out AlbionKit for the best Albion Online tools!',
+          url: window.location.origin
+        }).catch(() => { });
       } else {
         navigator.clipboard.writeText(window.location.origin);
       }
@@ -216,30 +216,30 @@ function RandomInfoCard({ item }: { item: InfoItem }) {
 
   return (
     <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="bg-gradient-to-r from-card/50 to-card/30 border border-border/50 rounded-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm hover:shadow-md transition-all duration-300 group relative overflow-hidden">
-        
+      <div className="bg-gradient-to-r from-card/50 to-card/30 border border-border/50 rounded-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all duration-300 group relative overflow-hidden">
+
         {/* Subtle background glow based on color */}
         <div className={`absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-500 bg-current ${item.color}`} />
 
         <div className="flex items-center gap-4 relative z-10">
-          <div className={`p-2.5 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-inner ${item.color}`}>
+          <div className={`p-2.5 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 ${item.color}`}>
             <Icon className="w-5 h-5" />
           </div>
           <p className="text-sm text-muted-foreground font-medium max-w-xl">
             {item.text}
           </p>
         </div>
-        
+
         <div className="relative z-10">
           {item.actionLink.startsWith('#') ? (
-             <button 
+            <button
               onClick={handleAction}
               className="whitespace-nowrap px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider rounded-md transition-all hover:scale-105 active:scale-95"
             >
               {item.actionLabel}
             </button>
           ) : (
-            <Link 
+            <Link
               href={item.actionLink}
               target={item.isExternal ? "_blank" : undefined}
               className="whitespace-nowrap px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider rounded-md transition-all hover:scale-105 active:scale-95 inline-block text-center"

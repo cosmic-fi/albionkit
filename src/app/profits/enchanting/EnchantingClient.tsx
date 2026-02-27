@@ -426,7 +426,7 @@ export default function EnchantingClient() {
           <button 
             onClick={loadData}
             disabled={loading || !selectedItem}
-            className="p-2 bg-success hover:bg-success/90 text-primary-foreground rounded-lg shadow-lg shadow-success/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 bg-success hover:bg-success/90 text-primary-foreground rounded-lg   transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -453,7 +453,7 @@ export default function EnchantingClient() {
                     </div>
 
                     {isSelectOpen && (
-                        <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg  z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
                             <div className="p-2 border-b border-border">
                                 <Input
                                     placeholder="Search item (e.g. Sword)..."
@@ -497,7 +497,7 @@ export default function EnchantingClient() {
 
                 {selectedItem && (
                     <div className="mt-4 flex items-center gap-4 p-4 bg-muted/60 rounded-xl border border-border/80">
-                        <div className="h-16 w-16 md:h-20 md:w-20 bg-background/70 rounded-xl border border-border/70 shadow-sm flex items-center justify-center">
+                        <div className="h-16 w-16 md:h-20 md:w-20 bg-background/70 rounded-xl border border-border/70  flex items-center justify-center">
                             <ItemIcon 
                                 itemId={baseVisualId || selectedItem}
                                 alt={selectedItemName || selectedItem}
@@ -724,7 +724,7 @@ export default function EnchantingClient() {
                   <div className="flex items-center gap-4">
                     {baseVisualId && (
                       <div className="flex items-center gap-4">
-                        <div className="h-16 w-16 md:h-20 md:w-20 bg-background/80 rounded-xl border border-border/80 shadow-sm flex items-center justify-center">
+                        <div className="h-16 w-16 md:h-20 md:w-20 bg-background/80 rounded-xl border border-border/80  flex items-center justify-center">
                           <ItemIcon itemId={baseVisualId} className="h-14 w-14 md:h-16 md:w-16 object-contain" />
                         </div>
                         <div className="space-y-0.5">
@@ -743,7 +743,7 @@ export default function EnchantingClient() {
                     </div>
                     {targetVisualId && (
                       <div className="flex items-center gap-4">
-                        <div className="h-16 w-16 md:h-20 md:w-20 bg-primary/5 rounded-xl border border-primary/30 shadow-sm flex items-center justify-center">
+                        <div className="h-16 w-16 md:h-20 md:w-20 bg-primary/5 rounded-xl border border-primary/30  flex items-center justify-center">
                           <ItemIcon itemId={targetVisualId} quality={quality} className="h-14 w-14 md:h-16 md:w-16 object-contain" />
                         </div>
                         <div className="space-y-0.5">

@@ -2,34 +2,36 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  User as UserIcon, 
-  LogOut, 
-  Settings, 
-  Crown, 
-  Menu, 
-  ChevronDown, 
-  User, 
-  Moon, 
+import {
+  User as UserIcon,
+  LogOut,
+  Settings,
+  Crown,
+  Menu,
+  ChevronDown,
+  User,
+  Moon,
   Sun,
-  Home, 
-  Coins, 
-  Hammer, 
-  Sword, 
-  Swords, 
-  TrendingUp, 
-  Sprout, 
-  PawPrint, 
-  Users, 
-  Sparkles, 
-  Utensils, 
-  FlaskConical, 
-  Anvil, 
-  Fish, 
+  Home,
+  Coins,
+  Hammer,
+  Sword,
+  Swords,
+  TrendingUp,
+  Sprout,
+  PawPrint,
+  Users,
+  Sparkles,
+  Utensils,
+  FlaskConical,
+  Anvil,
+  Fish,
   Shield,
   Skull,
   X,
-  Search
+  Search,
+  MessageCircle,
+  MessageSquare
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useState, useRef, useEffect } from 'react';
@@ -40,6 +42,7 @@ import { NotificationDropdown } from '@/components/notifications/NotificationDro
 import { useCommandMenu } from '@/context/CommandMenuContext';
 
 interface NavItem {
+  id: string;
   title: string;
   href?: string;
   icon: React.ReactNode;
@@ -51,39 +54,46 @@ interface NavbarProps {
 
 const NAV_ITEMS: NavItem[] = [
   {
+    id: 'home',
     title: 'Home',
     href: '/',
     icon: <Home className="h-4 w-4" />,
   },
   {
+    id: 'tools',
     title: 'Tools',
     icon: <Hammer className="h-4 w-4" />,
     submenu: [
-      { title: 'Gold Price', href: '/tools/gold-price', icon: <Coins className="h-4 w-4 text-warning" /> },
-      { title: 'Live Kill Feed', href: '/tools/kill-feed', icon: <Skull className="h-4 w-4 text-red-500" /> },
-      { title: 'PvP Intel', href: '/tools/pvp-intel', icon: <Sword className="h-4 w-4" /> },
-      { title: 'ZvZ Tracker', href: '/tools/zvz-tracker', icon: <Swords className="h-4 w-4" /> },
-      { title: 'Market Flipper', href: '/tools/market-flipper', icon: <Coins className="h-4 w-4" /> },
-      { title: 'Craft Planner', href: '/tools/crafting-calc', icon: <Hammer className="h-4 w-4" /> },
+      { id: 'gold-price', title: 'Gold Price', href: '/tools/gold-price', icon: <Coins className="h-4 w-4 text-warning" /> },
+      { id: 'kill-feed', title: 'Live Kill Feed', href: '/tools/kill-feed', icon: <Skull className="h-4 w-4 text-red-500" /> },
+      { id: 'pvp-intel', title: 'PvP Intel', href: '/tools/pvp-intel', icon: <Sword className="h-4 w-4" /> },
+      { id: 'zvz-tracker', title: 'ZvZ Tracker', href: '/tools/zvz-tracker', icon: <Swords className="h-4 w-4" /> },
+      { id: 'market-flipper', title: 'Market Flipper', href: '/tools/market-flipper', icon: <Coins className="h-4 w-4" /> },
+      { id: 'craft-planner', title: 'Craft Planner', href: '/tools/crafting-calc', icon: <Hammer className="h-4 w-4" /> },
     ],
   },
   {
+    id: 'profits',
     title: 'Profits',
     icon: <TrendingUp className="h-4 w-4" />,
     submenu: [
-      { title: 'Farming', href: '/profits/farming', icon: <Sprout className="h-4 w-4" /> },
-      { title: 'Animal', href: '/profits/animal', icon: <PawPrint className="h-4 w-4" /> },
-      { title: 'Labour', href: '/profits/labour', icon: <Users className="h-4 w-4" /> },
-      { title: 'Enchanting', href: '/profits/enchanting', icon: <Sparkles className="h-4 w-4" /> },
-      { title: 'Cooking', href: '/profits/cooking', icon: <Utensils className="h-4 w-4" /> },
-      { title: 'Alchemy', href: '/profits/alchemy', icon: <FlaskConical className="h-4 w-4" /> },
-      { title: 'Chopped Fish', href: '/profits/chopped-fish', icon: <Fish className="h-4 w-4" /> },
+      { id: 'farming', title: 'Farming', href: '/profits/farming', icon: <Sprout className="h-4 w-4" /> },
+      { id: 'animal', title: 'Animal', href: '/profits/animal', icon: <PawPrint className="h-4 w-4" /> },
+      { id: 'labour', title: 'Labour', href: '/profits/labour', icon: <Users className="h-4 w-4" /> },
+      { id: 'enchanting', title: 'Enchanting', href: '/profits/enchanting', icon: <Sparkles className="h-4 w-4" /> },
+      { id: 'cooking', title: 'Cooking', href: '/profits/cooking', icon: <Utensils className="h-4 w-4" /> },
+      { id: 'alchemy', title: 'Alchemy', href: '/profits/alchemy', icon: <FlaskConical className="h-4 w-4" /> },
+      { id: 'chopped-fish', title: 'Chopped Fish', href: '/profits/chopped-fish', icon: <Fish className="h-4 w-4" /> },
     ],
   },
   {
-    title: 'Builds',
-    href: '/builds',
-    icon: <Shield className="h-4 w-4" />,
+    id: 'community',
+    title: 'Community',
+    icon: <MessageCircle className="h-4 w-4" />,
+    submenu: [
+      { id: 'community-hub', title: 'Community Hub', href: '/community', icon: <MessageSquare className="h-4 w-4" /> },
+      { id: 'builds-db', title: 'Builds', href: '/builds', icon: <Shield className="h-4 w-4" /> },
+    ],
   },
 ];
 
@@ -98,7 +108,7 @@ export function Navbar() {
   const [expandedMobileGroups, setExpandedMobileGroups] = useState<string[]>(['Profits', 'Tools']);
   const { openLoginModal } = useLoginModal();
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
-  
+
   const profileDropdownRef = useRef<HTMLDivElement>(null);
   const navDropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -136,21 +146,44 @@ export function Navbar() {
   }, [pathname]);
 
   const toggleMobileGroup = (title: string) => {
-    setExpandedMobileGroups(prev => 
-      prev.includes(title) 
-        ? prev.filter(t => t !== title) 
+    setExpandedMobileGroups(prev =>
+      prev.includes(title)
+        ? prev.filter(t => t !== title)
         : [...prev, title]
     );
   };
+
+  if (!mounted) {
+    return (
+      <nav className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-[60] h-16">
+        <div className="container mx-auto px-4 h-full flex items-center justify-between">
+          <div className="flex items-center gap-8">
+            <div className="relative h-8 w-32 bg-muted/20 animate-pulse rounded" />
+            <div className="hidden lg:flex gap-1">
+              <div className="h-9 w-20 bg-muted/10 animate-pulse rounded-lg" />
+              <div className="h-9 w-20 bg-muted/10 animate-pulse rounded-lg" />
+              <div className="h-9 w-20 bg-muted/10 animate-pulse rounded-lg" />
+              <div className="h-9 w-20 bg-muted/10 animate-pulse rounded-lg" />
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="h-9 w-9 bg-muted/10 animate-pulse rounded-lg" />
+            <div className="h-9 w-9 bg-muted/10 animate-pulse rounded-lg" />
+            <div className="h-9 w-24 bg-primary/20 animate-pulse rounded-lg" />
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <>
       <nav className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-[60] text-foreground">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center gap-4">
-            
+
             {/* Mobile Menu Button */}
-            <button 
+            <button
               onClick={() => setIsMobileMenuOpen(true)}
               className="lg:hidden p-2 -ml-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
             >
@@ -160,14 +193,14 @@ export function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 mr-4 lg:mr-10 p-0 hover:opacity-90 transition-opacity">
               <div className="relative h-8 p-0 sm:h-8">
-                <img 
-                  src="/logo-dark.svg" 
-                  alt="AlbionKit Logo" 
+                <img
+                  src="/logo-dark.svg"
+                  alt="AlbionKit Logo"
                   className="h-full dark:hidden block"
                 />
-                <img 
-                  src="/logo-light.svg" 
-                  alt="AlbionKit Logo" 
+                <img
+                  src="/logo-light.svg"
+                  alt="AlbionKit Logo"
                   className="h-full hidden dark:block"
                 />
               </div>
@@ -175,16 +208,15 @@ export function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1" ref={navDropdownRef}>
-              {NAV_ITEMS.map((item) => {
+              {mounted && NAV_ITEMS.map((item) => {
                 if (item.submenu) {
                   const isActive = activeDropdown === item.title;
                   return (
-                    <div key={item.title} className="relative">
+                    <div key={item.id} className="relative">
                       <button
                         onClick={() => setActiveDropdown(isActive ? null : item.title)}
-                        className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                          isActive ? 'text-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                        }`}
+                        className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${isActive ? 'text-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                          }`}
                       >
                         {item.icon}
                         {item.title}
@@ -192,11 +224,11 @@ export function Navbar() {
                       </button>
 
                       {isActive && (
-                        <div className="absolute top-full left-0 mt-2 w-56 bg-popover border border-border rounded-xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+                        <div className="absolute top-full left-0 mt-2 w-56 bg-popover border border-border rounded-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
                           <div className="p-1">
                             {item.submenu.map((sub) => (
                               <Link
-                                key={sub.href}
+                                key={sub.id}
                                 href={sub.href!}
                                 onClick={() => setActiveDropdown(null)}
                                 className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
@@ -214,11 +246,10 @@ export function Navbar() {
 
                 return (
                   <Link
-                    key={item.title}
+                    key={item.id}
                     href={item.href!}
-                    className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                      pathname === item.href ? 'text-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                    }`}
+                    className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${pathname === item.href ? 'text-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                      }`}
                   >
                     {item.icon}
                     {item.title}
@@ -229,19 +260,19 @@ export function Navbar() {
 
             <div className="ml-auto flex items-center gap-2 sm:gap-4">
               {/* Search Trigger */}
-            <button 
-              onClick={() => setIsOpen(true)}
-              className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors hidden sm:flex items-center gap-2"
-              title="Search (Ctrl+K)"
-            >
+              <button
+                onClick={() => setIsOpen(true)}
+                className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors hidden sm:flex items-center gap-2"
+                title="Search (Ctrl+K)"
+              >
                 <Search className="h-5 w-5" />
                 <span className="hidden lg:inline text-xs text-muted-foreground border border-border rounded px-1.5 py-0.5">⌘K</span>
               </button>
 
               {/* Theme Toggle */}
-              <button 
+              <button
                 onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-                className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors" 
+                className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
                 title="Toggle Theme"
               >
                 {mounted && resolvedTheme === 'light' ? (
@@ -259,7 +290,7 @@ export function Navbar() {
               {!profile?.isPremium && (
                 <button
                   onClick={() => setShowSubscriptionModal(true)}
-                  className="relative overflow-hidden hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white rounded-full text-xs font-bold transition-all shadow-lg shadow-amber-900/20"
+                  className="relative overflow-hidden hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white rounded-full text-xs font-bold transition-all"
                 >
                   <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent z-10 skew-x-12" />
                   <Crown className="h-3 w-3 relative z-20" />
@@ -269,7 +300,7 @@ export function Navbar() {
 
               {user ? (
                 <div className="relative" ref={profileDropdownRef}>
-                  <button 
+                  <button
                     onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
                     className="flex items-center gap-2 group p-1.5 pr-2 hover:bg-accent rounded-full border border-transparent hover:border-border transition-all"
                   >
@@ -283,14 +314,14 @@ export function Navbar() {
                     <span className="text-sm font-medium hidden md:block group-hover:text-amber-400 transition-colors max-w-[150px] truncate">
                       {displayName}
                     </span>
-                    
+
                     {/* Badge Icon */}
                     {(profile?.isPremium || profile?.subscription?.status === 'active') && (
-                       profile?.subscription?.planType === 'guild' ? (
-                          <Shield className="h-3 w-3 text-blue-500 fill-blue-500/20" aria-label="Guild Master" />
-                       ) : (
-                          <Crown className="h-3 w-3 text-amber-500 fill-amber-500/20" aria-label="Adept" />
-                       )
+                      profile?.subscription?.planType === 'guild' ? (
+                        <Shield className="h-3 w-3 text-blue-500 fill-blue-500/20" aria-label="Guild Master" />
+                      ) : (
+                        <Crown className="h-3 w-3 text-amber-500 fill-amber-500/20" aria-label="Adept" />
+                      )
                     )}
 
                     <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${isProfileDropdownOpen ? 'rotate-180' : ''}`} />
@@ -298,14 +329,14 @@ export function Navbar() {
 
                   {/* Profile Dropdown Menu */}
                   {isProfileDropdownOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-56 bg-popover border border-border rounded-xl shadow-xl overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-100">
+                    <div className="absolute right-0 top-full mt-2 w-56 bg-popover border border-border rounded-xl overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-100">
                       <div className="p-3 border-b border-border">
                         <p className="text-sm font-medium text-foreground truncate">{displayName}</p>
                         <p className="text-xs text-muted-foreground truncate">{email}</p>
                       </div>
-                      
+
                       <div className="p-1">
-                        <Link 
+                        <Link
                           href={`/user/${user.uid}`}
                           className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
                           onClick={() => setIsProfileDropdownOpen(false)}
@@ -313,7 +344,7 @@ export function Navbar() {
                           <User className="h-4 w-4" />
                           View Profile
                         </Link>
-                        <Link 
+                        <Link
                           href="/settings"
                           className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
                           onClick={() => setIsProfileDropdownOpen(false)}
@@ -324,7 +355,7 @@ export function Navbar() {
                       </div>
 
                       <div className="border-t border-border p-1">
-                        <button 
+                        <button
                           onClick={() => {
                             logout();
                             setIsProfileDropdownOpen(false);
@@ -339,7 +370,7 @@ export function Navbar() {
                   )}
                 </div>
               ) : (
-                <button 
+                <button
                   onClick={() => openLoginModal()}
                   className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm font-medium transition-colors"
                 >
@@ -355,25 +386,25 @@ export function Navbar() {
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-[70] lg:hidden">
-          <div 
+          <div
             className="absolute inset-0 bg-background/80 backdrop-blur-sm"
             onClick={() => setIsMobileMenuOpen(false)}
           />
           <div className="absolute top-0 left-0 bottom-0 w-[280px] bg-background border-r border-border flex flex-col animate-in slide-in-from-left duration-200">
             <div className="flex items-center justify-between p-4 border-b border-border">
               <div className="relative h-8 w-32">
-                <img 
-                  src="/logo-word-dark.svg" 
-                  alt="AlbionKit Logo" 
+                <img
+                  src="/logo-word-dark.svg"
+                  alt="AlbionKit Logo"
                   className="h-full w-full object-contain object-left dark:hidden block"
                 />
-                <img 
-                  src="/logo-word-light.svg" 
-                  alt="AlbionKit Logo" 
+                <img
+                  src="/logo-word-light.svg"
+                  alt="AlbionKit Logo"
                   className="h-full w-full object-contain object-left hidden dark:block"
                 />
               </div>
-              <button 
+              <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="text-muted-foreground hover:text-foreground"
               >
@@ -389,7 +420,7 @@ export function Navbar() {
 
                 if (hasSubmenu) {
                   return (
-                    <div key={item.title}>
+                    <div key={item.id}>
                       <button
                         onClick={() => toggleMobileGroup(item.title)}
                         className="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
@@ -400,17 +431,17 @@ export function Navbar() {
                         </div>
                         <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                       </button>
-                      
+
                       {isExpanded && (
                         <div className="mt-1 ml-4 space-y-1 border-l-2 border-border pl-2">
                           {item.submenu!.map((sub) => (
                             <Link
-                              key={sub.href}
+                              key={sub.id}
                               href={sub.href!}
                               className={`
                                 flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors
                                 ${pathname === sub.href
-                                  ? 'bg-primary/10 text-primary' 
+                                  ? 'bg-primary/10 text-primary'
                                   : 'text-muted-foreground hover:text-foreground hover:bg-accent'}
                               `}
                             >
@@ -426,12 +457,12 @@ export function Navbar() {
 
                 return (
                   <Link
-                    key={item.title}
+                    key={item.id}
                     href={item.href!}
                     className={`
                       flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors
-                      ${isActive 
-                        ? 'bg-primary/10 text-primary' 
+                      ${isActive
+                        ? 'bg-primary/10 text-primary'
                         : 'text-muted-foreground hover:text-foreground hover:bg-accent'}
                     `}
                   >
@@ -442,9 +473,9 @@ export function Navbar() {
               })}
 
               <div className="h-px bg-border my-2"></div>
-              
+
               {/* Mobile Search */}
-              <button 
+              <button
                 onClick={() => {
                   setIsMobileMenuOpen(false);
                   setIsOpen(true);
@@ -457,16 +488,16 @@ export function Navbar() {
 
               {/* Mobile Support Us */}
               {!profile?.isPremium && (
-                 <button
-                   onClick={() => {
-                     setIsMobileMenuOpen(false);
-                     setShowSubscriptionModal(true);
-                   }}
-                   className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-amber-500 hover:bg-amber-500/10 rounded-lg transition-colors mt-1"
-                 >
-                   <Crown className="h-4 w-4" />
-                   Support Us
-                 </button>
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setShowSubscriptionModal(true);
+                  }}
+                  className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-amber-500 hover:bg-amber-500/10 rounded-lg transition-colors mt-1"
+                >
+                  <Crown className="h-4 w-4" />
+                  Support Us
+                </button>
               )}
             </div>
           </div>

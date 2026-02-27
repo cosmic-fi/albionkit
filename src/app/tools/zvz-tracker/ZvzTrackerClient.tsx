@@ -490,7 +490,7 @@ export default function ZvzTrackerClient() {
                         <button
                             onClick={() => loadBattles(false)}
                             disabled={loading}
-                            className="p-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-lg transition-colors shadow-lg shadow-destructive/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="p-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-lg transition-colors   disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
                         </button>
@@ -536,7 +536,7 @@ export default function ZvzTrackerClient() {
                 {/* Entity Profile Modal */}
                 {selectedEntity && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-                        <div className="bg-card border border-border rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+                        <div className="bg-card border border-border rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto  relative">
                             <button
                                 onClick={() => setSelectedEntity(null)}
                                 className="absolute top-4 right-4 p-2 bg-muted hover:bg-muted/80 rounded-full text-muted-foreground hover:text-foreground transition-colors"

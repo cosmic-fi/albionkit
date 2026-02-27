@@ -126,7 +126,7 @@ export function CommandMenu() {
         className="fixed inset-0 bg-background/80 backdrop-blur-sm transition-opacity" 
         onClick={() => setIsOpen(false)}
       />
-      <div className="relative w-full max-w-lg bg-popover border border-border rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+      <div className="relative w-full max-w-lg bg-popover border border-border rounded-xl  overflow-hidden animate-in fade-in zoom-in-95 duration-100">
         <Command className="w-full bg-transparent" shouldFilter={false} label="Global Search">
           <div className="flex items-center border-b border-border px-3" cmdk-input-wrapper="">
             <Search className="mr-2 h-4 w-4 shrink-0 opacity-50 text-muted-foreground" />

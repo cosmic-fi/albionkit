@@ -334,7 +334,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                     </div>
 
                     {searchResults.length > 0 && (
-                        <div className="max-h-60 overflow-y-auto bg-popover rounded-lg border border-border divide-y divide-border/50 shadow-lg">
+                        <div className="max-h-60 overflow-y-auto bg-popover rounded-lg border border-border divide-y divide-border/50 ">
                             {searchResults.map(guild => (
                                 <div key={guild.Id} className="p-3 hover:bg-muted/50 flex items-center justify-between group transition-colors">
                                     <div>
@@ -344,7 +344,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                                     <button 
                                         onClick={() => handleClaimLicense(guild)}
                                         disabled={isClaiming}
-                                        className="text-xs bg-primary text-primary-foreground px-3 py-1.5 rounded-md font-bold shadow-sm hover:shadow-md transition-all transform active:scale-95"
+                                        className="text-xs bg-primary text-primary-foreground px-3 py-1.5 rounded-md font-bold  hover: transition-all transform active:scale-95"
                                     >
                                         {isClaiming ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Activate'}
                                     </button>

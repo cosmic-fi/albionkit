@@ -16,12 +16,12 @@ interface FeatureLockProps {
   className?: string;
 }
 
-export function FeatureLock({ 
-  children, 
+export function FeatureLock({
+  children,
   lockedContent,
-  featureId, 
-  title = "Adept Feature", 
-  description = "Try it out for free and unlock this feature to help keep the project alive!", 
+  featureId,
+  title = "Adept Feature",
+  description = "Try it out for free and unlock this feature to help keep the project alive!",
   blur = true,
   className
 }: FeatureLockProps) {
@@ -49,21 +49,21 @@ export function FeatureLock({
       </div>
 
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center bg-background/20 backdrop-blur-[2px]">
-        <div className="bg-gradient-to-br from-amber-500/20 to-purple-500/20 p-4 rounded-full mb-4 ring-1 ring-border shadow-lg">
+        <div className="bg-gradient-to-br from-amber-500/20 to-purple-500/20 p-4 rounded-full mb-4 ring-1 ring-border ">
           <Lock className="h-8 w-8 text-primary" />
         </div>
-        
+
         <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
           {title} <Heart className="h-4 w-4 text-pink-500 fill-pink-500 animate-pulse" />
         </h3>
-        
+
         <p className="text-muted-foreground max-w-sm mb-6 text-sm">
           {description}
         </p>
 
-        <button 
+        <button
           onClick={() => setShowModal(true)}
-          className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+          className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold rounded-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
         >
           Try it out for Free
         </button>

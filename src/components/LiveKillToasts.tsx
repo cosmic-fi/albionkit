@@ -101,7 +101,7 @@ export function LiveKillToasts() {
   return (
     <div className="fixed bottom-20 left-3 right-3 md:bottom-28 md:left-4 md:right-auto z-40">
       <Link href="/tools/kill-feed" className="block">
-        <div className="relative max-w-sm md:max-w-sm mx-auto md:mx-0 bg-card border border-border rounded-xl shadow-xl p-4 flex flex-col gap-3 hover:border-red-500/60 hover:shadow-red-500/20 transition-all">
+        <div className="relative max-w-sm md:max-w-sm mx-auto md:mx-0 bg-card border border-border rounded-xl p-4 flex flex-col gap-3 hover:border-red-500/60 transition-all">
           <button
             type="button"
             onClick={e => {

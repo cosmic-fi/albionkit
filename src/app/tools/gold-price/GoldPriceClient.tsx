@@ -43,27 +43,27 @@ export default function GoldPriceClient() {
       if (timeRange === '30d') count = 24 * 30;
 
       const data = await getGoldHistory(region, count);
-      
+
       if (data.length > 0) {
         // Sort by timestamp just in case
         const sorted = [...data].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
         setHistory(sorted);
 
         const current = sorted[sorted.length - 1].price;
-        
+
         // Update converter if silver is empty or needs update based on new current price
         // Only update silver if user hasn't typed in it specifically? 
         // For simplicity, let's just update silver based on current gold amount
         if (goldAmount && !isNaN(parseFloat(goldAmount))) {
-            setSilverAmount(Math.round(parseFloat(goldAmount) * current).toString());
+          setSilverAmount(Math.round(parseFloat(goldAmount) * current).toString());
         }
 
         // Calculate stats based on the selected time range (entire fetched history)
         const startPrice = sorted[0].price;
-        
+
         const change = current - startPrice;
         const percent = (change / startPrice) * 100;
-        
+
         const high = Math.max(...sorted.map(d => d.price));
         const low = Math.min(...sorted.map(d => d.price));
 
@@ -90,8 +90,8 @@ export default function GoldPriceClient() {
   const handleGoldChange = (val: string) => {
     setGoldAmount(val);
     if (!val || isNaN(parseFloat(val))) {
-        setSilverAmount('');
-        return;
+      setSilverAmount('');
+      return;
     }
     setSilverAmount(Math.round(parseFloat(val) * stats.current).toString());
   };
@@ -99,8 +99,8 @@ export default function GoldPriceClient() {
   const handleSilverChange = (val: string) => {
     setSilverAmount(val);
     if (!val || isNaN(parseFloat(val)) || stats.current === 0) {
-        setGoldAmount('');
-        return;
+      setGoldAmount('');
+      return;
     }
     setGoldAmount((parseFloat(val) / stats.current).toFixed(2));
   };
@@ -112,7 +112,7 @@ export default function GoldPriceClient() {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-popover border border-border p-3 rounded-lg shadow-xl">
+        <div className="bg-popover border border-border p-3 rounded-lg">
           <p className="text-muted-foreground text-xs mb-1">{new Date(label).toLocaleString()}</p>
           <p className="text-primary font-bold font-mono text-lg">
             {formatPrice(payload[0].value)} Silver
@@ -124,9 +124,9 @@ export default function GoldPriceClient() {
   };
 
   return (
-    <PageShell 
+    <PageShell
       title="Gold Price Tracker"
-      backgroundImage='/background/ao-market.jpg' 
+      backgroundImage='/background/ao-market.jpg'
       description="Track the gold-to-silver exchange rate history and trends."
       icon={<Coins className="h-6 w-6" />}
       headerActions={
@@ -151,7 +151,7 @@ export default function GoldPriceClient() {
             <button
               onClick={loadData}
               disabled={loading}
-              className="p-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
             </button>
@@ -217,7 +217,7 @@ export default function GoldPriceClient() {
               Showing last {history.length} data points
             </div>
           </div>
-          
+
           <div className="h-[300px] md:h-[400px] w-full -mx-2 md:mx-0">
             {loading && history.length === 0 ? (
               <div className="h-full flex items-center justify-center">
@@ -228,39 +228,39 @@ export default function GoldPriceClient() {
                 <AreaChart data={history}>
                   <defs>
                     <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#9e9e9e6e" />
-                  <XAxis 
-                    dataKey="timestamp" 
+                  <XAxis
+                    dataKey="timestamp"
                     tickFormatter={(str) => {
                       const d = new Date(str);
-                      return timeRange === '24h' 
-                        ? d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
-                        : d.toLocaleDateString([], {month: 'short', day: 'numeric'});
+                      return timeRange === '24h'
+                        ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                        : d.toLocaleDateString([], { month: 'short', day: 'numeric' });
                     }}
                     stroke="#475569"
                     fontSize={12}
                     minTickGap={40}
                     interval="preserveStartEnd"
                   />
-                  <YAxis 
+                  <YAxis
                     domain={['auto', 'auto']}
                     stroke="var(--muted-foreground)"
                     fontSize={12}
-                    tickFormatter={(val) => `${(val/1000).toFixed(0)}k`}
+                    tickFormatter={(val) => `${(val / 1000).toFixed(0)}k`}
                     width={55}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Area 
-                    type="monotone" 
-                    dataKey="price" 
-                    stroke="var(--primary)" 
+                  <Area
+                    type="monotone"
+                    dataKey="price"
+                    stroke="var(--primary)"
                     strokeWidth={2}
-                    fillOpacity={1} 
-                    fill="url(#colorPrice)" 
+                    fillOpacity={1}
+                    fill="url(#colorPrice)"
                     animationDuration={500}
                   />
                 </AreaChart>
@@ -275,51 +275,51 @@ export default function GoldPriceClient() {
 
         {/* Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
+
           {/* Currency Converter */}
           <div className="bg-card/50 p-6 rounded-xl border border-border">
             <h3 className="text-lg font-bold text-foreground mb-6 flex items-center gap-2">
               <ArrowRightLeft className="h-5 w-5 text-primary" />
               Gold / Silver Converter
             </h3>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-xs text-muted-foreground mb-1.5">Gold Amount</label>
                 <div className="relative">
-                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                     <Coins className="h-4 w-4 text-primary" />
-                   </div>
-                   <Input 
-                      value={goldAmount}
-                      onChange={(e) => handleGoldChange(e.target.value)}
-                      className="pl-9 font-mono text-primary"
-                      placeholder="0"
-                   />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Coins className="h-4 w-4 text-primary" />
+                  </div>
+                  <Input
+                    value={goldAmount}
+                    onChange={(e) => handleGoldChange(e.target.value)}
+                    className="pl-9 font-mono text-primary"
+                    placeholder="0"
+                  />
                 </div>
               </div>
 
               <div className="flex justify-center">
-                 <div className="bg-muted p-2 rounded-full text-muted-foreground">
-                   <ArrowDown className="h-4 w-4" />
-                 </div>
+                <div className="bg-muted p-2 rounded-full text-muted-foreground">
+                  <ArrowDown className="h-4 w-4" />
+                </div>
               </div>
 
               <div>
                 <label className="block text-xs text-muted-foreground mb-1.5">Silver Value</label>
                 <div className="relative">
-                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                     <span className="text-muted-foreground text-sm font-bold">S</span>
-                   </div>
-                   <Input 
-                      value={silverAmount}
-                      onChange={(e) => handleSilverChange(e.target.value)}
-                      className="pl-9 font-mono text-foreground"
-                      placeholder="0"
-                   />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-muted-foreground text-sm font-bold">S</span>
+                  </div>
+                  <Input
+                    value={silverAmount}
+                    onChange={(e) => handleSilverChange(e.target.value)}
+                    className="pl-9 font-mono text-foreground"
+                    placeholder="0"
+                  />
                 </div>
               </div>
-              
+
               <div className="text-xs text-muted-foreground text-center pt-2">
                 Based on current price: 1 Gold = {stats.current.toLocaleString()} Silver
               </div>
@@ -332,44 +332,44 @@ export default function GoldPriceClient() {
               <Calculator className="h-5 w-5 text-info" />
               Premium Calculator
             </h3>
-            
+
             <div className="space-y-6">
-               <div className="bg-muted/50 p-4 rounded-lg border border-border">
-                 <div className="flex justify-between items-center mb-2">
-                   <span className="text-sm text-muted-foreground">Premium Gold Cost</span>
-                   <span className="text-xs text-muted-foreground">Usually 3,750 or 3,000</span>
-                 </div>
-                 <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Coins className="h-4 w-4 text-primary" />
-                    </div>
-                    <Input 
-                       value={premiumGoldCost}
-                       onChange={(e) => setPremiumGoldCost(e.target.value)}
-                       className="pl-9 font-mono bg-background"
-                    />
-                 </div>
-               </div>
+              <div className="bg-muted/50 p-4 rounded-lg border border-border">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-muted-foreground">Premium Gold Cost</span>
+                  <span className="text-xs text-muted-foreground">Usually 3,750 or 3,000</span>
+                </div>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Coins className="h-4 w-4 text-primary" />
+                  </div>
+                  <Input
+                    value={premiumGoldCost}
+                    onChange={(e) => setPremiumGoldCost(e.target.value)}
+                    className="pl-9 font-mono bg-background"
+                  />
+                </div>
+              </div>
 
-               <div className="space-y-3">
-                 <div className="flex justify-between items-center p-3 bg-muted/50 rounded border border-border">
-                   <span className="text-muted-foreground">Silver Cost</span>
-                   <span className="text-xl font-bold font-mono text-foreground">
-                     {(!isNaN(parseFloat(premiumGoldCost)) && stats.current > 0) 
-                        ? (parseFloat(premiumGoldCost) * stats.current).toLocaleString()
-                        : '---'}
-                   </span>
-                 </div>
-                 
-                 <div className="flex justify-between items-center p-3 bg-muted/50 rounded border border-border">
-                   <span className="text-muted-foreground">Real Money (Approx)</span>
-                   <span className="text-sm font-mono text-success">~$15.00 USD</span>
-                 </div>
-               </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-muted/50 rounded border border-border">
+                  <span className="text-muted-foreground">Silver Cost</span>
+                  <span className="text-xl font-bold font-mono text-foreground">
+                    {(!isNaN(parseFloat(premiumGoldCost)) && stats.current > 0)
+                      ? (parseFloat(premiumGoldCost) * stats.current).toLocaleString()
+                      : '---'}
+                  </span>
+                </div>
 
-               <p className="text-xs text-muted-foreground leading-relaxed">
-                 Use this to calculate how much Silver you need to farm to pay for your Premium status using Gold exchange.
-               </p>
+                <div className="flex justify-between items-center p-3 bg-muted/50 rounded border border-border">
+                  <span className="text-muted-foreground">Real Money (Approx)</span>
+                  <span className="text-sm font-mono text-success">~$15.00 USD</span>
+                </div>
+              </div>
+
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Use this to calculate how much Silver you need to farm to pay for your Premium status using Gold exchange.
+              </p>
             </div>
           </div>
 
@@ -377,48 +377,48 @@ export default function GoldPriceClient() {
 
         {/* Market Insights */}
         <div className="bg-card/50 p-6 rounded-xl border border-border">
-           <h3 className="text-lg font-bold text-foreground mb-4">Market Insights</h3>
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                 <h4 className="font-medium text-foreground mb-2">About Gold Price</h4>
-                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    The Gold price in Albion Online is the primary indicator of the game's economy inflation. 
-                    It is directly tied to the cost of Premium status. When more players buy Gold with Silver to purchase Premium, the price rises.
-                    Conversely, when players buy Gold with real money and sell it for Silver, the price stabilizes or drops.
-                 </p>
-                 <h4 className="font-medium text-foreground mb-2">Trading Tips</h4>
-                 <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                    <li>Prices often spike during weekends due to higher player activity.</li>
-                    <li>Major content updates usually cause Gold prices to fluctuate as players return.</li>
-                    <li>Long-term trends show a consistent inflationary pressure on Silver.</li>
-                 </ul>
+          <h3 className="text-lg font-bold text-foreground mb-4">Market Insights</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-medium text-foreground mb-2">About Gold Price</h4>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                The Gold price in Albion Online is the primary indicator of the game's economy inflation.
+                It is directly tied to the cost of Premium status. When more players buy Gold with Silver to purchase Premium, the price rises.
+                Conversely, when players buy Gold with real money and sell it for Silver, the price stabilizes or drops.
+              </p>
+              <h4 className="font-medium text-foreground mb-2">Trading Tips</h4>
+              <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+                <li>Prices often spike during weekends due to higher player activity.</li>
+                <li>Major content updates usually cause Gold prices to fluctuate as players return.</li>
+                <li>Long-term trends show a consistent inflationary pressure on Silver.</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium text-foreground mb-2">Recent Averages</h4>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm p-2 bg-muted/50 rounded">
+                  <span className="text-muted-foreground">7-Day Average</span>
+                  <span className="font-mono font-medium">
+                    {history.length > 0
+                      ? formatPrice(Math.round(history.reduce((a, b) => a + b.price, 0) / history.length))
+                      : '---'} Silver
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm p-2 bg-muted/50 rounded">
+                  <span className="text-muted-foreground">30-Day High</span>
+                  <span className="font-mono font-medium text-success">
+                    {formatPrice(stats.high24h)} Silver
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm p-2 bg-muted/50 rounded">
+                  <span className="text-muted-foreground">30-Day Low</span>
+                  <span className="font-mono font-medium text-destructive">
+                    {formatPrice(stats.low24h)} Silver
+                  </span>
+                </div>
               </div>
-              <div>
-                 <h4 className="font-medium text-foreground mb-2">Recent Averages</h4>
-                 <div className="space-y-2">
-                    <div className="flex justify-between text-sm p-2 bg-muted/50 rounded">
-                       <span className="text-muted-foreground">7-Day Average</span>
-                       <span className="font-mono font-medium">
-                          {history.length > 0 
-                             ? formatPrice(Math.round(history.reduce((a, b) => a + b.price, 0) / history.length)) 
-                             : '---'} Silver
-                       </span>
-                    </div>
-                    <div className="flex justify-between text-sm p-2 bg-muted/50 rounded">
-                       <span className="text-muted-foreground">30-Day High</span>
-                       <span className="font-mono font-medium text-success">
-                          {formatPrice(stats.high24h)} Silver
-                       </span>
-                    </div>
-                     <div className="flex justify-between text-sm p-2 bg-muted/50 rounded">
-                       <span className="text-muted-foreground">30-Day Low</span>
-                       <span className="font-mono font-medium text-destructive">
-                          {formatPrice(stats.low24h)} Silver
-                       </span>
-                    </div>
-                 </div>
-              </div>
-           </div>
+            </div>
+          </div>
         </div>
       </div>
       <InfoStrip currentPage="gold-price" />

@@ -58,7 +58,7 @@ export function ItemSelectorModal({ isOpen, onClose, onSelect, filter, title = "
 
   return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-xl shadow-2xl flex flex-col max-h-[80vh] animate-in fade-in zoom-in-95 duration-200">
+      <div className="w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-xl  flex flex-col max-h-[80vh] animate-in fade-in zoom-in-95 duration-200">
         
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-slate-800">

@@ -27,7 +27,7 @@ interface AdvancedAnalyticsProps {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-popover border border-border p-3 rounded shadow-xl text-xs">
+      <div className="bg-popover border border-border p-3 rounded  text-xs">
         <p className="font-bold text-foreground mb-1">{label}</p>
         {payload.map((p: any, i: number) => (
           <p key={i} style={{ color: p.color }} className="flex items-center gap-2">
@@ -236,7 +236,7 @@ export default function AdvancedAnalytics({ kills, deaths, playerId }: AdvancedA
                     if (active && payload && payload.length) {
                       const data = payload[0].payload;
                       return (
-                        <div className="bg-popover border border-border p-3 rounded shadow-xl text-xs">
+                        <div className="bg-popover border border-border p-3 rounded  text-xs">
                           <p className={`font-bold mb-1 ${data.type === 'Victory' ? 'text-success' : 'text-destructive'}`}>
                             {data.type} vs {data.opponent}
                           </p>

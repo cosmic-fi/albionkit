@@ -844,7 +844,7 @@ function SettingsContent() {
                                     )}
                                     {/* Banner Edit Overlay */}
                                     <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer transition-all duration-200 z-10">
-                                        <div className="bg-popover text-foreground px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform shadow-lg border border-border">
+                                        <div className="bg-popover text-foreground px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform  border border-border">
                                             <Edit2 className="h-4 w-4" /> Change Banner
                                         </div>
                                         <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, 'bannerUrl')} />
@@ -853,7 +853,7 @@ function SettingsContent() {
 
                                 {/* Avatar (Overlapping) */}
                                 <div className="absolute -bottom-10 left-4 z-20">
-                                    <div className="w-24 h-24 rounded-full bg-card border-4 border-card overflow-hidden relative group/avatar shadow-xl">
+                                    <div className="w-24 h-24 rounded-full bg-card border-4 border-card overflow-hidden relative group/avatar ">
                                         {editForm.photoURL ? (
                                             <Image src={editForm.photoURL} alt="Avatar" fill className="object-cover" />
                                         ) : (
@@ -1056,7 +1056,7 @@ function SettingsContent() {
                             <button
                                 onClick={handleSaveProfile}
                                 disabled={isSavingProfile}
-                                className="px-8 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-lg transition-colors flex items-center gap-2 shadow-lg shadow-primary/20"
+                                className="px-8 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-lg transition-colors flex items-center gap-2  "
                             >
                                 {isSavingProfile ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                                 Save Changes
@@ -1201,7 +1201,7 @@ function SettingsContent() {
                                         </div>
                                         <button 
                                             onClick={() => openSubscriptionModal('guild')}
-                                            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold text-sm transition-colors whitespace-nowrap shadow-lg shadow-blue-900/20"
+                                            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold text-sm transition-colors whitespace-nowrap  -900/20"
                                         >
                                             Upgrade
                                         </button>
@@ -1424,7 +1424,7 @@ function SettingsContent() {
                                         onClick={() => handleSavePreferences({ ...preferences, compactMode: !preferences.compactMode })}
                                         className={`w-10 h-5 rounded-full relative transition-colors ${preferences.compactMode ? 'bg-primary' : 'bg-secondary'}`}
                                      >
-                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all ${preferences.compactMode ? 'right-1' : 'left-1'}`} />
+                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full  transition-all ${preferences.compactMode ? 'right-1' : 'left-1'}`} />
                                      </button>
                                 </div>
 
@@ -1443,7 +1443,7 @@ function SettingsContent() {
                                         onClick={() => handleSavePreferences({ ...preferences, showPrices: !preferences.showPrices })}
                                         className={`w-10 h-5 rounded-full relative transition-colors ${preferences.showPrices ? 'bg-primary' : 'bg-secondary'}`}
                                      >
-                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all ${preferences.showPrices ? 'right-1' : 'left-1'}`} />
+                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full  transition-all ${preferences.showPrices ? 'right-1' : 'left-1'}`} />
                                      </button>
                                 </div>
 
@@ -1462,7 +1462,7 @@ function SettingsContent() {
                                         onClick={() => handleSavePreferences({ ...preferences, reducedMotion: !preferences.reducedMotion })}
                                         className={`w-10 h-5 rounded-full relative transition-colors ${preferences.reducedMotion ? 'bg-primary' : 'bg-secondary'}`}
                                      >
-                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all ${preferences.reducedMotion ? 'right-1' : 'left-1'}`} />
+                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full  transition-all ${preferences.reducedMotion ? 'right-1' : 'left-1'}`} />
                                      </button>
                                 </div>
 
@@ -1481,7 +1481,7 @@ function SettingsContent() {
                                         onClick={() => handleSavePreferences({ ...preferences, showBadges: !preferences.showBadges })}
                                         className={`w-10 h-5 rounded-full relative transition-colors ${preferences.showBadges ? 'bg-primary' : 'bg-secondary'}`}
                                     >
-                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all ${preferences.showBadges ? 'right-1' : 'left-1'}`} />
+                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full  transition-all ${preferences.showBadges ? 'right-1' : 'left-1'}`} />
                                     </button>
                                 </div>
                             </div>
@@ -1509,7 +1509,7 @@ function SettingsContent() {
                                         onClick={() => handleSavePreferences({ ...preferences, publicProfile: !preferences.publicProfile })}
                                         className={`w-10 h-5 rounded-full relative transition-colors ${preferences.publicProfile ? 'bg-primary' : 'bg-secondary'}`}
                                      >
-                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all ${preferences.publicProfile ? 'right-1' : 'left-1'}`} />
+                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full  transition-all ${preferences.publicProfile ? 'right-1' : 'left-1'}`} />
                                      </button>
                                 </div>
 
@@ -1528,7 +1528,7 @@ function SettingsContent() {
                                         onClick={() => handleSavePreferences({ ...preferences, emailNotifications: !preferences.emailNotifications })}
                                         className={`w-10 h-5 rounded-full relative transition-colors ${preferences.emailNotifications ? 'bg-primary' : 'bg-secondary'}`}
                                      >
-                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all ${preferences.emailNotifications ? 'right-1' : 'left-1'}`} />
+                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full  transition-all ${preferences.emailNotifications ? 'right-1' : 'left-1'}`} />
                                      </button>
                                 </div>
                             </div>
@@ -1560,7 +1560,7 @@ function SettingsContent() {
                                         onClick={() => handleSavePreferences({ ...preferences, marketAlerts: !preferences.marketAlerts })}
                                         className={`w-10 h-5 rounded-full relative transition-colors ${preferences.marketAlerts ? 'bg-primary' : 'bg-secondary'} ${!access.hasAccess ? 'cursor-not-allowed opacity-50' : ''}`}
                                      >
-                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all ${preferences.marketAlerts ? 'right-1' : 'left-1'}`} />
+                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full  transition-all ${preferences.marketAlerts ? 'right-1' : 'left-1'}`} />
                                      </button>
                                 </div>
 
@@ -1580,7 +1580,7 @@ function SettingsContent() {
                                         onClick={() => handleSavePreferences({ ...preferences, goldAlerts: !preferences.goldAlerts })}
                                         className={`w-10 h-5 rounded-full relative transition-colors ${preferences.goldAlerts ? 'bg-primary' : 'bg-secondary'} ${!access.hasAccess ? 'cursor-not-allowed opacity-50' : ''}`}
                                     >
-                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm transition-all ${preferences.goldAlerts ? 'right-1' : 'left-1'}`} />
+                                        <div className={`absolute top-1 w-3 h-3 bg-white rounded-full  transition-all ${preferences.goldAlerts ? 'right-1' : 'left-1'}`} />
                                      </button>
                                 </div>
                             </div>

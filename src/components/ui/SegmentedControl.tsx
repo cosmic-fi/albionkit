@@ -20,11 +20,10 @@ export function SegmentedControl<T extends string | number>({ options, value, on
         <button
           key={String(option.value)}
           onClick={() => onChange(option.value)}
-          className={`rounded-md font-medium transition-all ${
-            value === option.value
-              ? 'bg-background text-foreground shadow-sm'
+          className={`rounded-md font-medium transition-all ${value === option.value
+              ? 'bg-background text-foreground'
               : 'text-muted-foreground hover:text-foreground'
-          } ${size === 'sm' ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}
+            } ${size === 'sm' ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}
         >
           {option.label}
         </button>

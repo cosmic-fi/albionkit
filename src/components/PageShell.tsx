@@ -1,9 +1,12 @@
 import React from 'react';
 import { Hammer, Construction } from 'lucide-react';
+import { Breadcrumbs } from './ui/Breadcrumbs';
 
 interface PageShellProps {
   title: string;
   enableHeader?: boolean;
+  showBreadcrumbs?: boolean;
+  customBreadcrumbLabel?: string;
   description: string;
   icon?: React.ReactNode;
   children?: React.ReactNode;
@@ -12,7 +15,18 @@ interface PageShellProps {
   backgroundImage?: string;
 }
 
-export function PageShell({ title, enableHeader = true, description, icon, children, headerActions, isUnderConstruction, backgroundImage }: PageShellProps) {
+export function PageShell({
+  title,
+  enableHeader = true,
+  showBreadcrumbs = true,
+  customBreadcrumbLabel,
+  description,
+  icon,
+  children,
+  headerActions,
+  isUnderConstruction,
+  backgroundImage
+}: PageShellProps) {
   return (
     <div className="flex flex-col min-h-full">
       {enableHeader && (
@@ -25,12 +39,13 @@ export function PageShell({ title, enableHeader = true, description, icon, child
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background" />
             </div>
           )}
-          
+
           <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-4 pb-6 pt-10 flex flex-col gap-2">
+            {showBreadcrumbs && <Breadcrumbs lastSegmentLabel={customBreadcrumbLabel || title} />}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 {icon && <div className="p-2 bg-card/50 rounded-lg text-primary backdrop-blur-sm">{icon}</div>}
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground shadow-black/50 drop-shadow-md">{title}</h1>
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">{title}</h1>
               </div>
               {headerActions && (
                 <div className="flex items-center gap-3">
@@ -38,7 +53,7 @@ export function PageShell({ title, enableHeader = true, description, icon, child
                 </div>
               )}
             </div>
-            <p className="text-muted-foreground text-lg max-w-3xl drop-shadow-sm">{description}</p>
+            <p className="text-muted-foreground text-lg max-w-3xl">{description}</p>
           </div>
         </div>
       )}
@@ -51,7 +66,7 @@ export function PageShell({ title, enableHeader = true, description, icon, child
             </div>
             <h3 className="text-xl font-bold text-foreground mb-2">Coming Soon</h3>
             <p className="text-muted-foreground max-w-md text-center">
-              We're currently building this {title.toLowerCase()} tool. 
+              We're currently building this {title.toLowerCase()} tool.
               Check back later for updates!
             </p>
           </div>

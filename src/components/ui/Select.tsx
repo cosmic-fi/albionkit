@@ -19,12 +19,12 @@ interface SelectProps<T extends string | number> {
   onSearchTermChange?: (term: string) => void;
 }
 
-export function Select<T extends string | number>({ 
-  label, 
-  options, 
-  value, 
-  onChange, 
-  containerClassName = '', 
+export function Select<T extends string | number>({
+  label,
+  options,
+  value,
+  onChange,
+  containerClassName = '',
   className = '',
   placeholder = 'Select an option',
   searchable = false,
@@ -93,7 +93,7 @@ export function Select<T extends string | number>({
         </button>
 
         {isOpen && (
-          <div className="absolute z-50 w-full mt-1 bg-popover border border-border rounded-lg shadow-xl max-h-60 overflow-hidden flex flex-col">
+          <div className="absolute z-50 w-full mt-1 bg-popover border border-border rounded-lg max-h-60 overflow-hidden flex flex-col">
             {searchable && (
               <div className="p-2 border-b border-border">
                 <div className="relative">
@@ -110,7 +110,7 @@ export function Select<T extends string | number>({
                 </div>
               </div>
             )}
-            
+
             <div className="overflow-auto flex-1 p-1">
               {filteredOptions.length === 0 ? (
                 <div className="px-3 py-2 text-sm text-muted-foreground text-center">
@@ -126,14 +126,14 @@ export function Select<T extends string | number>({
                       setIsOpen(false);
                     }}
                     className={`w-full text-left px-3 py-2 rounded-md text-sm flex items-center justify-between transition-colors
-                      ${option.value === value 
-                        ? 'bg-primary/10 text-primary' 
+                      ${option.value === value
+                        ? 'bg-primary/10 text-primary'
                         : 'text-foreground hover:bg-accent hover:text-accent-foreground'
                       }`}
                   >
                     <span className="flex items-center gap-2">
-                        {option.icon}
-                        {option.label}
+                      {option.icon}
+                      {option.label}
                     </span>
                     {option.value === value && <Check className="h-4 w-4" />}
                   </button>

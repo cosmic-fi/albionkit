@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { getAllBuildsForSitemap } from '@/lib/sitemap-service';
+import { getAllBuildsForSitemap, getAllThreadsForSitemap } from '@/lib/sitemap-service';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://albionkit.com';
@@ -40,5 +40,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...routes, ...buildRoutes];
+  // 3. Dynamic Routes (Threads)
+  const threads = await getAllThreadsForSitemap();
+  const threadRoutes = threads.map((thread) => ({
+    url: `${baseUrl}/community/thread/${thread.id}`,
+    lastModified: thread.updatedAt,
+    changeFrequency: 'daily' as const,
+    priority: 0.8,
+  }));
+
+  return [...routes, ...buildRoutes, ...threadRoutes];
 }

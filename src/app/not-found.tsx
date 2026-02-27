@@ -24,11 +24,11 @@ export default function NotFound() {
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
         {/* Main Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-60" 
-          style={{ backgroundImage: 'url(/background/ao-mists.jpg)' }} 
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-60"
+          style={{ backgroundImage: 'url(/background/ao-mists.jpg)' }}
         />
-        
+
         {/* Overlay Gradients */}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/40" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
@@ -40,18 +40,18 @@ export default function NotFound() {
       </div>
 
       <div className="relative z-10 flex flex-col items-center max-w-2xl px-4 text-center space-y-8 animate-in fade-in zoom-in duration-500 slide-in-from-bottom-4">
-        
+
         {/* Icon */}
         {/* <div className="relative group cursor-default">
           <div className="absolute -inset-6 bg-gradient-to-br from-amber-500/20 to-orange-600/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700" />
-          <div className="relative bg-background/80 backdrop-blur-sm p-8 rounded-full border border-amber-500/20 shadow-2xl ring-1 ring-amber-500/10 group-hover:ring-amber-500/30 transition-all">
+          <div className="relative bg-background/80 backdrop-blur-sm p-8 rounded-full border border-amber-500/20 transition-all">
             <Ghost className="w-16 h-16 text-amber-500/80 group-hover:text-amber-500 transition-colors duration-500" />
           </div>
         </div> */}
 
         {/* Text */}
         <div className="space-y-4 pt-20 sm:pt-20">
-          <h1 className="text-6xl font-black tracking-tighter lg:text-8xl text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground to-muted-foreground drop-shadow-sm">
+          <h1 className="text-6xl font-black tracking-tighter lg:text-8xl text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground to-muted-foreground">
             404
           </h1>
           <h2 className="text-2xl font-bold text-foreground">
@@ -65,15 +65,15 @@ export default function NotFound() {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center items-center pt-2">
           <Link href="/">
-            <Button size="lg" className="min-w-[160px] gap-2 shadow-lg shadow-amber-500/10 hover:shadow-amber-500/25 transition-all">
+            <Button size="lg" className="min-w-[160px] gap-2 transition-all">
               <Home className="w-4 h-4" />
               Return Home
             </Button>
           </Link>
-          
-          <Button 
-            variant="outline" 
-            size="lg" 
+
+          <Button
+            variant="outline"
+            size="lg"
             className="min-w-[160px] gap-2 bg-background/50 backdrop-blur-sm hover:bg-accent/50"
             onClick={openSearch}
           >
@@ -97,8 +97,8 @@ export default function NotFound() {
               { label: 'Builds', href: '/builds', icon: Shield, color: 'group-hover:text-blue-500' },
               { label: 'Crafting', href: '/tools/crafting-calc', icon: Hammer, color: 'group-hover:text-amber-500' },
             ].map((item) => (
-              <Link 
-                key={item.label} 
+              <Link
+                key={item.label}
                 href={item.href}
                 className="flex flex-col items-center gap-3 p-4 rounded-xl bg-muted/30 hover:bg-muted/60 border border-transparent hover:border-border/50 transition-all duration-300 group hover:-translate-y-1"
               >

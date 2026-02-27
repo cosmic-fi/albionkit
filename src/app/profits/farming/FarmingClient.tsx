@@ -357,7 +357,7 @@ export default function FarmingClient() {
           <button
             onClick={loadData}
             disabled={loading}
-            className="p-2 bg-success hover:bg-success/90 text-primary-foreground rounded-lg transition-colors shadow-lg shadow-success/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 bg-success hover:bg-success/90 text-primary-foreground rounded-lg transition-colors   disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -484,7 +484,7 @@ export default function FarmingClient() {
                           <div className="flex items-center gap-4">
                              <div className="h-12 w-12 bg-muted rounded-lg flex items-center justify-center flex-shrink-0 border border-border relative group">
                                <ItemIcon itemId={row.seedId} alt={`${row.name} Seed`} className="h-10 w-10 object-contain" />
-                               <div className="absolute -bottom-2 -right-2 h-6 w-6 bg-card rounded-full border border-border flex items-center justify-center shadow-sm">
+                               <div className="absolute -bottom-2 -right-2 h-6 w-6 bg-card rounded-full border border-border flex items-center justify-center ">
                                  <ItemIcon itemId={row.produceId} alt={row.name} className="h-4 w-4 object-contain" />
                                </div>
                              </div>

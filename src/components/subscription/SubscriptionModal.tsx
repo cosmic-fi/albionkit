@@ -94,7 +94,7 @@ export function SubscriptionModal({ isOpen, onClose, initialPlan = 'personal' }:
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
-      <div className="relative w-full max-w-lg bg-card border border-border rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200 my-auto overflow-hidden">
+      <div className="relative w-full max-w-lg bg-card border border-border rounded-2xl  animate-in zoom-in-95 duration-200 my-auto overflow-hidden">
         <button 
           onClick={onClose}
           className="absolute top-4 right-4 p-2 bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 rounded-full transition-colors z-10"
@@ -104,7 +104,7 @@ export function SubscriptionModal({ isOpen, onClose, initialPlan = 'personal' }:
 
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-purple-500/10 p-6 md:p-8 text-center border-b border-border/50">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-orange-600 shadow-lg mb-4 ring-4 ring-background">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-orange-600  mb-4 ring-4 ring-background">
             <Heart className="h-8 w-8 text-white fill-white animate-pulse" />
           </div>
           <h2 className="text-2xl font-bold text-foreground mb-2">Support the Project</h2>
@@ -128,7 +128,7 @@ export function SubscriptionModal({ isOpen, onClose, initialPlan = 'personal' }:
                     onClick={() => setBillingInterval('month')}
                     className={`py-1.5 px-4 rounded-lg text-sm font-medium transition-all ${
                       billingInterval === 'month' 
-                        ? 'bg-background shadow-sm text-foreground ring-1 ring-border' 
+                        ? 'bg-background  text-foreground ring-1 ring-border' 
                         : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
@@ -138,7 +138,7 @@ export function SubscriptionModal({ isOpen, onClose, initialPlan = 'personal' }:
                     onClick={() => setBillingInterval('year')}
                     className={`py-1.5 px-4 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
                       billingInterval === 'year' 
-                        ? 'bg-background shadow-sm text-foreground ring-1 ring-border' 
+                        ? 'bg-background  text-foreground ring-1 ring-border' 
                         : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
@@ -159,7 +159,7 @@ export function SubscriptionModal({ isOpen, onClose, initialPlan = 'personal' }:
                   onClick={() => setPlanType('personal')}
                   className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
                     planType === 'personal' 
-                      ? 'bg-background shadow-sm text-foreground ring-1 ring-border' 
+                      ? 'bg-background  text-foreground ring-1 ring-border' 
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -169,7 +169,7 @@ export function SubscriptionModal({ isOpen, onClose, initialPlan = 'personal' }:
                   onClick={() => setPlanType('guild')}
                   className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
                     planType === 'guild' 
-                      ? 'bg-background shadow-sm text-foreground ring-1 ring-border' 
+                      ? 'bg-background  text-foreground ring-1 ring-border' 
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -188,7 +188,7 @@ export function SubscriptionModal({ isOpen, onClose, initialPlan = 'personal' }:
                   
                   <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 text-center relative overflow-hidden">
                     {!hasUsedTrial && billingInterval === 'month' && (
-                      <div className="absolute top-0 right-0 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg animate-pulse shadow-sm">
+                      <div className="absolute top-0 right-0 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg animate-pulse ">
                         FREE TRIAL
                       </div>
                     )}
@@ -216,7 +216,7 @@ export function SubscriptionModal({ isOpen, onClose, initialPlan = 'personal' }:
 
                   <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4 text-center relative overflow-hidden">
                     {!hasUsedTrial && billingInterval === 'month' && (
-                      <div className="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg animate-pulse shadow-sm">
+                      <div className="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg animate-pulse ">
                         FREE TRIAL
                       </div>
                     )}
@@ -244,7 +244,7 @@ export function SubscriptionModal({ isOpen, onClose, initialPlan = 'personal' }:
                   <button 
                     onClick={handleUpgrade}
                     disabled={!!processing}
-                    className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white rounded-xl font-bold  hover: transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2"
                   >
                     {processing ? (
                       <>

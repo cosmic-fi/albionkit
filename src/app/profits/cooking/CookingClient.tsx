@@ -462,7 +462,7 @@ export default function CookingClient() {
         >
             <div className="space-y-6">
                 {/* Main Configuration Card */}
-                <div className="bg-card rounded-xl border border-border shadow-sm transition-all duration-300">
+                <div className="bg-card rounded-xl border border-border transition-all duration-300">
                     <div className="p-4 border-b border-border bg-muted/50 flex items-center justify-between rounded-t-xl">
                         <div className="flex items-center gap-2">
                             <Settings className="h-5 w-5 text-muted-foreground" />
@@ -765,7 +765,7 @@ export default function CookingClient() {
                         </div>
 
                         {/* Main Results Table with Expandable Rows */}
-                        <div className="bg-card rounded-xl border border-border overflow-hidden shadow-sm">
+                        <div className="bg-card rounded-xl border border-border overflow-hidden">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse">
                                     <thead>
@@ -848,8 +848,8 @@ export default function CookingClient() {
                                                     </td>
                                                     <td className="p-4 text-right">
                                                         <div className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold font-mono ${row.roi >= 50 ? 'bg-success/10 text-success border border-success/20' :
-                                                                row.roi > 0 ? 'bg-success/5 text-success/80' :
-                                                                    'bg-destructive/10 text-destructive border border-destructive/20'
+                                                            row.roi > 0 ? 'bg-success/5 text-success/80' :
+                                                                'bg-destructive/10 text-destructive border border-destructive/20'
                                                             }`}>
                                                             {row.roi.toFixed(1)}%
                                                         </div>
@@ -865,7 +865,7 @@ export default function CookingClient() {
 
                                                 {/* Expanded Ingredient Details */}
                                                 {expandedRow === row.productId && (
-                                                    <tr className="bg-muted/30 shadow-inner">
+                                                    <tr className="bg-muted/30 ">
                                                         <td colSpan={7} className="p-0">
                                                             <div className="p-6 border-t border-border/50 animate-in slide-in-from-top-2 duration-200">
                                                                 <div className="space-y-8">

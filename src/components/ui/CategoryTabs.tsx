@@ -12,11 +12,11 @@ interface CategoryTabsProps<T extends string = string> {
   className?: string;
 }
 
-export function CategoryTabs<T extends string = string>({ 
-  options, 
-  value, 
-  onChange, 
-  className = '' 
+export function CategoryTabs<T extends string = string>({
+  options,
+  value,
+  onChange,
+  className = ''
 }: CategoryTabsProps<T>) {
   return (
     <div className={`flex p-1 bg-muted/50 rounded-lg border border-border w-full md:w-fit ${className}`}>
@@ -26,8 +26,8 @@ export function CategoryTabs<T extends string = string>({
           onClick={() => onChange(option.value)}
           className={`
             flex-1 md:flex-none px-6 py-2 rounded-md text-sm font-medium transition-all
-            ${value === option.value 
-              ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' 
+            ${value === option.value
+              ? 'bg-primary text-primary-foreground'
               : 'text-muted-foreground hover:text-foreground hover:bg-accent'}
           `}
         >

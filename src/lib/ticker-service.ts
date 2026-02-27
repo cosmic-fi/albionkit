@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { getGoldHistory } from './gold-service';
 import { getItems, getItemNameService } from './item-service';
 import { getMarketVolume, GAMEINFO_API, getMarketPrices } from './market-service';
@@ -30,7 +31,7 @@ export interface GlobalStats {
   uptime: string;
 }
 
-export async function getGlobalStats(): Promise<GlobalStats> {
+export const getGlobalStats = cache(async (): Promise<GlobalStats> => {
   const items = await getItems();
   
   // Fetch recent battles from Albion API to get a "real" number for activity
@@ -53,9 +54,9 @@ export async function getGlobalStats(): Promise<GlobalStats> {
     marketUpdates: "24/7",
     uptime: "99.9%"
   };
-}
+});
 
-export async function getTickerData(): Promise<TickerData> {
+export const getTickerData = cache(async (): Promise<TickerData> => {
   // 1. Fetch Gold Price
   const goldHistory = await getGoldHistory('west', 2); // Get last 2 points for trend
   
@@ -135,7 +136,10 @@ export async function getTickerData(): Promise<TickerData> {
       }
 
       if (itemVolumes.size > 0) {
-        marketMostTradedId = [...itemVolumes.entries()].sort((a, b) => b[1] - a[1])[0][0];
+        marketMostTradedId = [...itemVolumes.entries()].sort((a, b) => {
+          if (b[1] !== a[1]) return b[1] - a[1];
+          return a[0].localeCompare(b[0]);
+        })[0][0];
       }
     }
   } catch (e) {
@@ -195,11 +199,17 @@ export async function getTickerData(): Promise<TickerData> {
         });
 
         if (guildCounts.size > 0) {
-          topGuild = [...guildCounts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+          topGuild = [...guildCounts.entries()].sort((a, b) => {
+            if (b[1] !== a[1]) return b[1] - a[1];
+            return a[0].localeCompare(b[0]);
+          })[0][0];
         }
 
         if (itemCounts.size > 0) {
-          metaItemId = [...itemCounts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+          metaItemId = [...itemCounts.entries()].sort((a, b) => {
+            if (b[1] !== a[1]) return b[1] - a[1];
+            return a[0].localeCompare(b[0]);
+          })[0][0];
         }
       }
     }
@@ -294,7 +304,10 @@ export async function getTickerData(): Promise<TickerData> {
             };
           })
       );
-      hotFlips = hotFlips.filter(f => f.profit > 1000).sort((a, b) => b.profit - a.profit).slice(0, 5);
+      hotFlips = hotFlips.filter(f => f.profit > 1000).sort((a, b) => {
+        if (b.profit !== a.profit) return b.profit - a.profit;
+        return a.name.localeCompare(b.name);
+      }).slice(0, 5);
     }
   } catch (e) {
     console.error('Failed to fetch hot flips for ticker', e);
@@ -313,4 +326,4 @@ export async function getTickerData(): Promise<TickerData> {
     mostTradedItem,
     hotFlips
   };
-}
+});

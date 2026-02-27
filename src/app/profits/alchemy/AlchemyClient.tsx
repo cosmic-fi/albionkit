@@ -398,7 +398,7 @@ export default function AlchemyClient() {
     >
       <div className="space-y-6">
         {/* Main Configuration Card */}
-        <div className="bg-card rounded-xl border border-border shadow-sm transition-all duration-300">
+        <div className="bg-card rounded-xl border border-border  transition-all duration-300">
              <div className="p-4 border-b border-border bg-muted/50 flex items-center justify-between rounded-t-xl">
                  <div className="flex items-center gap-2">
                      <Settings className="h-5 w-5 text-muted-foreground" />
@@ -705,7 +705,7 @@ export default function AlchemyClient() {
                 </div>
 
                 {/* Main Results Table with Expandable Rows */}
-                <div className="bg-card rounded-xl border border-border overflow-hidden shadow-sm">
+                <div className="bg-card rounded-xl border border-border overflow-hidden ">
                    <div className="overflow-x-auto">
                        <table className="w-full text-left border-collapse">
                            <thead>

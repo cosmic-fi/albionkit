@@ -35,7 +35,7 @@ const getWeaponAnalysis = (weaponType: string) => {
   const type = weaponType.toUpperCase();
   // Default balanced stats
   let stats = { mobility: 50, damage: 50, control: 50, sustain: 50, utility: 50 };
-  
+
   if (type.includes('SWORD')) stats = { mobility: 70, damage: 75, control: 40, sustain: 60, utility: 50 };
   else if (type.includes('BOW')) stats = { mobility: 60, damage: 85, control: 30, sustain: 20, utility: 40 };
   else if (type.includes('DAGGER')) stats = { mobility: 90, damage: 90, control: 30, sustain: 30, utility: 20 };
@@ -51,7 +51,7 @@ const getWeaponAnalysis = (weaponType: string) => {
   else if (type.includes('QUARTERSTAFF')) stats = { mobility: 80, damage: 50, control: 80, sustain: 50, utility: 60 };
   else if (type.includes('GLOVES')) stats = { mobility: 85, damage: 80, control: 60, sustain: 40, utility: 30 };
   else if (type.includes('SHAPESHIFTER')) stats = { mobility: 60, damage: 70, control: 50, sustain: 60, utility: 90 };
-  
+
   return [
     { subject: 'Mobility', A: stats.mobility, fullMark: 100 },
     { subject: 'Damage', A: stats.damage, fullMark: 100 },
@@ -81,7 +81,7 @@ const calculateMastery = (kills: any[], deaths: any[]): MasteryData[] => {
     const weapon = kill.Killer.Equipment?.MainHand?.Type;
     if (weapon) {
       const baseType = weapon.replace(/^T\d+_/, '').replace(/@\d+$/, '');
-      
+
       if (!stats[baseType]) stats[baseType] = { kills: 0, deaths: 0, fame: 0, totalIp: 0, count: 0 };
       stats[baseType].kills++;
       stats[baseType].fame += kill.TotalVictimKillFame || 0;
@@ -94,8 +94,8 @@ const calculateMastery = (kills: any[], deaths: any[]): MasteryData[] => {
   deaths.forEach(death => {
     const weapon = death.Victim.Equipment?.MainHand?.Type;
     if (weapon) {
-       const baseType = weapon.replace(/^T\d+_/, '').replace(/@\d+$/, '');
-      
+      const baseType = weapon.replace(/^T\d+_/, '').replace(/@\d+$/, '');
+
       if (!stats[baseType]) stats[baseType] = { kills: 0, deaths: 0, fame: 0, totalIp: 0, count: 0 };
       stats[baseType].deaths++;
       stats[baseType].totalIp += death.Victim.AverageItemPower || 0;
@@ -114,10 +114,10 @@ const calculateMastery = (kills: any[], deaths: any[]): MasteryData[] => {
     .sort((a, b) => b.count - a.count);
 };
 
-function WeaponMasteryTable({ 
-  masteryData, 
-  expandedWeaponId, 
-  setExpandedWeaponId, 
+function WeaponMasteryTable({
+  masteryData,
+  expandedWeaponId,
+  setExpandedWeaponId,
   formatItemName,
   userProfile,
   selectedPlayer
@@ -134,323 +134,323 @@ function WeaponMasteryTable({
       {/* Mobile Card View */}
       <div className="md:hidden space-y-3">
         {masteryData.map((mastery) => {
-             const isExpanded = expandedWeaponId === mastery.id;
-             return (
-               <div key={mastery.id} className={`bg-card border border-border rounded-xl overflow-hidden transition-all ${isExpanded ? 'ring-1 ring-primary/50' : ''}`}>
-                 <div 
-                   onClick={() => setExpandedWeaponId(isExpanded ? null : mastery.id)}
-                   className="p-4 flex items-center gap-4 cursor-pointer hover:bg-accent/50"
-                 >
-                    {/* Icon */}
-                    <div className="h-12 w-12 bg-muted rounded border border-border/50 p-1 shrink-0">
-                       <ItemIcon item={mastery.sampleId} className="w-full h-full object-contain" />
-                    </div>
-                    
-                    {/* Main Info */}
-                    <div className="flex-1 min-w-0">
-                       <div className="flex items-center gap-2">
-                          <span className="font-bold text-foreground truncate">{formatItemName(mastery.sampleId)}</span>
-                          {isExpanded ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
-                       </div>
-                       <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono text-muted-foreground">
-                             {mastery.count} Matches
-                          </span>
-                          <span className="text-xs font-mono text-warning">
-                             {Math.round(mastery.avgIp)} IP
-                          </span>
-                       </div>
-                    </div>
+          const isExpanded = expandedWeaponId === mastery.id;
+          return (
+            <div key={mastery.id} className={`bg-card border border-border rounded-xl overflow-hidden transition-all ${isExpanded ? 'ring-1 ring-primary/50' : ''}`}>
+              <div
+                onClick={() => setExpandedWeaponId(isExpanded ? null : mastery.id)}
+                className="p-4 flex items-center gap-4 cursor-pointer hover:bg-accent/50"
+              >
+                {/* Icon */}
+                <div className="h-12 w-12 bg-muted rounded border border-border/50 p-1 shrink-0">
+                  <ItemIcon item={mastery.sampleId} className="w-full h-full object-contain" />
+                </div>
 
-                    {/* Win Rate Badge */}
-                    <div className="text-right">
-                       <div className={`text-lg font-bold ${mastery.winRate >= 50 ? 'text-success' : 'text-destructive'}`}>
-                          {Math.round(mastery.winRate)}%
-                       </div>
-                       <div className="text-[10px] text-muted-foreground uppercase">Win Rate</div>
-                    </div>
-                 </div>
-                 
-                 {/* Expanded Details */}
-                 {isExpanded && (
-                    <div className="border-t border-border bg-muted/30">
-                       <div className="grid grid-cols-3 divide-x divide-border border-b border-border">
-                          <div className="p-3 text-center">
-                             <div className="text-[10px] uppercase text-muted-foreground mb-1">K/D Ratio</div>
-                             <div className="font-mono text-sm font-medium">
-                                <span className="text-success">{mastery.kills}</span> / <span className="text-destructive">{mastery.deaths}</span>
-                             </div>
-                          </div>
-                          <div className="p-3 text-center">
-                             <div className="text-[10px] uppercase text-muted-foreground mb-1">Total Fame</div>
-                             <div className="font-mono text-sm font-medium text-warning">{formatNumber(mastery.fame)}</div>
-                          </div>
-                          <div className="p-3 text-center">
-                             <div className="text-[10px] uppercase text-muted-foreground mb-1">Efficiency</div>
-                             <div className="font-mono text-sm font-medium text-purple-400">
-                                {Math.round((mastery.fame / (mastery.totalIp / mastery.count || 1)) * 10)}
-                             </div>
-                          </div>
-                       </div>
-                       
-                           <FeatureLock 
-                              title="Advanced Weapon Analysis" 
-                              description="Unlock deep insights, radar charts, and performance metrics for this weapon."
-                              lockedContent={
-                                <div className="p-8 flex flex-col items-center justify-center text-center bg-muted/10">
-                                  <div className="bg-primary/10 p-3 rounded-full mb-3">
-                                    <Activity className="h-6 w-6 text-primary" />
-                                  </div>
-                                  <h3 className="text-sm font-bold mb-1">Analytics Locked</h3>
-                                  <p className="text-xs text-muted-foreground">
-                                    Try it out for Free to view detailed performance metrics.
-                                  </p>
-                                </div>
-                              }
-                           >
-                           <div className="p-4 animate-in fade-in slide-in-from-top-2">
-                                <div className="space-y-6">
-                                 {/* Radar Chart */}
-                                 <div className="bg-card/50 rounded-xl border border-border p-3">
-                                    <h4 className="text-xs font-bold text-muted-foreground mb-3 flex items-center gap-2">
-                                       <Activity className="h-3 w-3" /> Weapon Profile
-                                    </h4>
-                                    <div className="h-56 w-full">
-                                       <ResponsiveContainer width="100%" height="100%">
-                                          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={getWeaponAnalysis(mastery.id)}>
-                                             <PolarGrid stroke="var(--border)" />
-                                             <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--muted-foreground)', fontSize: 10 }} />
-                                             <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                                             <Radar name="Stats" dataKey="A" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.4} />
-                                          </RadarChart>
-                                       </ResponsiveContainer>
-                                    </div>
-                                 </div>
+                {/* Main Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-foreground truncate">{formatItemName(mastery.sampleId)}</span>
+                    {isExpanded ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono text-muted-foreground">
+                      {mastery.count} Matches
+                    </span>
+                    <span className="text-xs font-mono text-warning">
+                      {Math.round(mastery.avgIp)} IP
+                    </span>
+                  </div>
+                </div>
 
-                                 {/* Advanced Stats */}
-                                 <div className="space-y-3">
-                                    <h4 className="text-xs font-bold text-muted-foreground mb-3 flex items-center gap-2">
-                                       <BarChart2 className="h-3 w-3" /> Metrics
-                                    </h4>
-                                    <div className="grid grid-cols-2 gap-3">
-                                       <div className="bg-card/50 p-3 rounded-lg border border-border">
-                                          <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Fame/Match</div>
-                                          <div className="text-lg font-mono text-success">
-                                             {formatNumber(Math.round(mastery.fame / mastery.count))}
-                                          </div>
-                                       </div>
-                                       <div className="bg-card/50 p-3 rounded-lg border border-border">
-                                          <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Survival</div>
-                                          <div className="text-lg font-mono text-info">
-                                             {Math.round((mastery.kills / (mastery.kills + mastery.deaths || 1)) * 100)}%
-                                          </div>
-                                       </div>
-                                    </div>
-                                    
-                                    <div className="bg-card/50 p-3 rounded-lg border border-border mt-3">
-                                       <div className="flex items-center gap-2 mb-2">
-                                          <Zap className="h-3 w-3 text-warning" />
-                                          <span className="text-sm font-bold text-foreground">Insight</span>
-                                       </div>
-                                       <p className="text-xs text-muted-foreground leading-relaxed">
-                                          This weapon shows a <strong>{mastery.winRate >= 50 ? 'positive' : 'negative'}</strong> win rate trend.
-                                          {mastery.kills > mastery.deaths * 1.5 
-                                             ? ' Highly effective for you.' 
-                                             : (mastery.deaths > mastery.kills 
-                                                ? ' Statistics suggest you struggle with this build.' 
-                                                : ' Performance is balanced.')}
-                                       </p>
-                                    </div>
-                                 </div>
+                {/* Win Rate Badge */}
+                <div className="text-right">
+                  <div className={`text-lg font-bold ${mastery.winRate >= 50 ? 'text-success' : 'text-destructive'}`}>
+                    {Math.round(mastery.winRate)}%
+                  </div>
+                  <div className="text-[10px] text-muted-foreground uppercase">Win Rate</div>
+                </div>
+              </div>
+
+              {/* Expanded Details */}
+              {isExpanded && (
+                <div className="border-t border-border bg-muted/30">
+                  <div className="grid grid-cols-3 divide-x divide-border border-b border-border">
+                    <div className="p-3 text-center">
+                      <div className="text-[10px] uppercase text-muted-foreground mb-1">K/D Ratio</div>
+                      <div className="font-mono text-sm font-medium">
+                        <span className="text-success">{mastery.kills}</span> / <span className="text-destructive">{mastery.deaths}</span>
+                      </div>
+                    </div>
+                    <div className="p-3 text-center">
+                      <div className="text-[10px] uppercase text-muted-foreground mb-1">Total Fame</div>
+                      <div className="font-mono text-sm font-medium text-warning">{formatNumber(mastery.fame)}</div>
+                    </div>
+                    <div className="p-3 text-center">
+                      <div className="text-[10px] uppercase text-muted-foreground mb-1">Efficiency</div>
+                      <div className="font-mono text-sm font-medium text-purple-400">
+                        {Math.round((mastery.fame / (mastery.totalIp / mastery.count || 1)) * 10)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <FeatureLock
+                    title="Advanced Weapon Analysis"
+                    description="Unlock deep insights, radar charts, and performance metrics for this weapon."
+                    lockedContent={
+                      <div className="p-8 flex flex-col items-center justify-center text-center bg-muted/10">
+                        <div className="bg-primary/10 p-3 rounded-full mb-3">
+                          <Activity className="h-6 w-6 text-primary" />
+                        </div>
+                        <h3 className="text-sm font-bold mb-1">Analytics Locked</h3>
+                        <p className="text-xs text-muted-foreground">
+                          Try it out for Free to view detailed performance metrics.
+                        </p>
+                      </div>
+                    }
+                  >
+                    <div className="p-4 animate-in fade-in slide-in-from-top-2">
+                      <div className="space-y-6">
+                        {/* Radar Chart */}
+                        <div className="bg-card/50 rounded-xl border border-border p-3">
+                          <h4 className="text-xs font-bold text-muted-foreground mb-3 flex items-center gap-2">
+                            <Activity className="h-3 w-3" /> Weapon Profile
+                          </h4>
+                          <div className="h-56 w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <RadarChart cx="50%" cy="50%" outerRadius="70%" data={getWeaponAnalysis(mastery.id)}>
+                                <PolarGrid stroke="var(--border)" />
+                                <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--muted-foreground)', fontSize: 10 }} />
+                                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                                <Radar name="Stats" dataKey="A" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.4} />
+                              </RadarChart>
+                            </ResponsiveContainer>
+                          </div>
+                        </div>
+
+                        {/* Advanced Stats */}
+                        <div className="space-y-3">
+                          <h4 className="text-xs font-bold text-muted-foreground mb-3 flex items-center gap-2">
+                            <BarChart2 className="h-3 w-3" /> Metrics
+                          </h4>
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="bg-card/50 p-3 rounded-lg border border-border">
+                              <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Fame/Match</div>
+                              <div className="text-lg font-mono text-success">
+                                {formatNumber(Math.round(mastery.fame / mastery.count))}
                               </div>
-                           </div>
-                           </FeatureLock>
+                            </div>
+                            <div className="bg-card/50 p-3 rounded-lg border border-border">
+                              <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Survival</div>
+                              <div className="text-lg font-mono text-info">
+                                {Math.round((mastery.kills / (mastery.kills + mastery.deaths || 1)) * 100)}%
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="bg-card/50 p-3 rounded-lg border border-border mt-3">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Zap className="h-3 w-3 text-warning" />
+                              <span className="text-sm font-bold text-foreground">Insight</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                              This weapon shows a <strong>{mastery.winRate >= 50 ? 'positive' : 'negative'}</strong> win rate trend.
+                              {mastery.kills > mastery.deaths * 1.5
+                                ? ' Highly effective for you.'
+                                : (mastery.deaths > mastery.kills
+                                  ? ' Statistics suggest you struggle with this build.'
+                                  : ' Performance is balanced.')}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                 )}
-               </div>
-             );
+                  </FeatureLock>
+                </div>
+              )}
+            </div>
+          );
         })}
         {masteryData.length === 0 && (
-           <div className="p-8 text-center text-muted-foreground italic border border-border border-dashed rounded-xl">
-              No weapon data available.
-           </div>
+          <div className="p-8 text-center text-muted-foreground italic border border-border border-dashed rounded-xl">
+            No weapon data available.
+          </div>
         )}
       </div>
 
       <div className="hidden md:block overflow-x-auto sm:p-3">
         <table className="w-full text-left border-collapse">
           <thead>
-              <tr className="bg-muted/50 text-muted-foreground text-xs uppercase tracking-wider border-b border-border">
-                <th className="p-4 font-medium">Weapon</th>
-                <th className="p-4 font-medium text-center">Matches</th>
-                <th className="p-4 font-medium text-center">
-                    <Tooltip content="Percentage of lethal fights won">
-                      <span className="border-b border-dotted border-muted-foreground cursor-help">Win Rate</span>
-                    </Tooltip>
-                </th>
-                <th className="p-4 font-medium text-center">Avg IP</th>
-                <th className="p-4 font-medium text-right">Kill Fame</th>
-              </tr>
+            <tr className="bg-muted/50 text-muted-foreground text-xs uppercase tracking-wider border-b border-border">
+              <th className="p-4 font-medium">Weapon</th>
+              <th className="p-4 font-medium text-center">Matches</th>
+              <th className="p-4 font-medium text-center">
+                <Tooltip content="Percentage of lethal fights won">
+                  <span className="border-b border-dotted border-muted-foreground cursor-help">Win Rate</span>
+                </Tooltip>
+              </th>
+              <th className="p-4 font-medium text-center">Avg IP</th>
+              <th className="p-4 font-medium text-right">Kill Fame</th>
+            </tr>
           </thead>
           <tbody className="divide-y divide-border">
-              {masteryData.map((mastery) => (
-                <Fragment key={mastery.id}>
-                    <tr 
-                      onClick={() => setExpandedWeaponId(expandedWeaponId === mastery.id ? null : mastery.id)}
-                      className={`cursor-pointer transition-colors ${expandedWeaponId === mastery.id ? 'bg-muted/50' : 'hover:bg-muted/30'}`}
-                    >
-                      <td className="p-3">
-                          <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 bg-card rounded border border-border/50 flex-shrink-0">
-                                <ItemIcon item={mastery.sampleId} className="w-full h-full object-contain p-0.5" />
-                            </div>
-                            <div>
-                                <div className="font-medium text-foreground flex items-center gap-2">
-                                  {formatItemName(mastery.sampleId)}
-                                  {expandedWeaponId === mastery.id ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
-                                </div>
-                                <div className="text-xs text-muted-foreground">
-                                  {mastery.kills} Kills / {mastery.deaths} Deaths
-                                </div>
-                            </div>
-                          </div>
-                      </td>
-                      <td className="p-3 text-center font-mono text-foreground">
-                          {mastery.count}
-                      </td>
-                      <td className="p-3 text-center">
-                          <div className="flex items-center justify-center gap-2">
-                            <span className={`font-bold ${mastery.winRate >= 50 ? 'text-success' : 'text-destructive'}`}>
-                                {Math.round(mastery.winRate)}%
-                            </span>
-                            <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
-                                <div 
-                                  className={`h-full ${mastery.winRate >= 50 ? 'bg-success' : 'bg-destructive'}`} 
-                                  style={{ width: `${mastery.winRate}%` }}
-                                />
-                            </div>
-                          </div>
-                      </td>
-                      <td className="p-3 text-center font-mono text-warning">
-                          {Math.round(mastery.avgIp)}
-                      </td>
-                      <td className="p-3 text-right font-mono text-foreground">
-                        {formatNumber(mastery.fame)}
-                      </td>
-                  </tr>
-                    
-                    {expandedWeaponId === mastery.id && (
-                      <tr className="bg-muted/30">
-                          <td colSpan={5} className="p-0 border-b border-border">
-                            <FeatureLock 
-                                title="Advanced Weapon Analysis" 
-                                description="Unlock deep insights, radar charts, and performance metrics for this weapon."
-                                lockedContent={
-                                  <div className="p-12 flex flex-col items-center justify-center text-center bg-muted/10">
-                                    <div className="bg-primary/10 p-4 rounded-full mb-4">
-                                      <Activity className="h-8 w-8 text-primary" />
-                                    </div>
-                                    <h3 className="text-lg font-bold mb-2">Weapon Analytics Locked</h3>
-                                    <p className="text-muted-foreground max-w-md">
-                                      Get detailed breakdown of win rates, average IP, and playstyle analysis for this weapon build.
-                                    </p>
-                                  </div>
-                                }
-                            >
-                            <div className="p-6 animate-in fade-in slide-in-from-top-2">
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                  {/* Left: Radar Chart */}
-                                  <div className="bg-card/50 rounded-xl border border-border p-4">
-                                      <h4 className="text-sm font-bold text-muted-foreground mb-4 flex items-center gap-2">
-                                        <Activity className="h-4 w-4" /> Weapon Profile
-                                      </h4>
-                                      <div className="h-64 w-full">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={getWeaponAnalysis(mastery.id)}>
-                                              <PolarGrid stroke="var(--border)" />
-                                              <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--muted-foreground)', fontSize: 10 }} />
-                                              <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                                              <Radar name="Stats" dataKey="A" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.4} />
-                                            </RadarChart>
-                                        </ResponsiveContainer>
-                                      </div>
-                                  </div>
-
-                                  {/* Right: Advanced Stats */}
-                                  <div className="space-y-4">
-                                      <h4 className="text-sm font-bold text-muted-foreground mb-4 flex items-center gap-2">
-                                        <BarChart2 className="h-4 w-4" /> Performance Metrics
-                                      </h4>
-                                      <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-card/50 p-4 rounded-lg border border-border">
-                                            <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Fame per Match</div>
-                                            <div className="text-xl font-mono text-success">
-                                              {formatNumber(Math.round(mastery.fame / mastery.count))}
-                                            </div>
-                                        </div>
-                                        <div className="bg-card/50 p-4 rounded-lg border border-border">
-                                            <Tooltip content="Percentage of fights where you survived (Win or Escape)">
-                                              <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1 w-fit">
-                                                Survival Rate <AlertCircle className="h-3 w-3" />
-                                              </div>
-                                            </Tooltip>
-                                            <div className="text-xl font-mono text-info">
-                                              {Math.round((mastery.kills / (mastery.kills + mastery.deaths || 1)) * 100)}%
-                                            </div>
-                                        </div>
-                                        <div className="bg-card/50 p-4 rounded-lg border border-border">
-                                            <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Total Fame</div>
-                                            <div className="text-xl font-mono text-warning">
-                                              {formatNumber(mastery.fame)}
-                                            </div>
-                                        </div>
-                                        <div className="bg-card/50 p-4 rounded-lg border border-border">
-                                            <Tooltip content="Fame gained per point of IP risked. Higher = Better Risk/Reward.">
-                                              <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1 w-fit">
-                                                Efficiency Score <AlertCircle className="h-3 w-3" />
-                                              </div>
-                                            </Tooltip>
-                                            <div className="text-xl font-mono text-purple-400">
-                                              {Math.round((mastery.fame / (mastery.totalIp / mastery.count)) * 10)}
-                                            </div>
-                                        </div>
-                                      </div>
-                                      
-                                      <div className="bg-card/50 p-4 rounded-lg border border-border mt-4">
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <Zap className="h-4 w-4 text-warning" />
-                                            <span className="font-bold text-foreground">Weapon Insight</span>
-                                        </div>
-                                        <p className="text-sm text-muted-foreground leading-relaxed">
-                                            This weapon shows a <strong>{mastery.winRate >= 50 ? 'positive' : 'negative'}</strong> win rate trend 
-                                            with an average IP of <span className="text-foreground">{Math.round(mastery.avgIp)}</span>. 
-                                            {mastery.kills > mastery.deaths * 1.5 
-                                              ? (userProfile?.characterName === selectedPlayer.Name 
-                                                  ? ' Highly effective for you.' 
-                                                  : ` Highly effective for ${selectedPlayer.Name}.`)
-                                              : (mastery.deaths > mastery.kills 
-                                                  ? (userProfile?.characterName === selectedPlayer.Name 
-                                                    ? ' Statistics suggest you struggle with this build.' 
-                                                    : ` Statistics suggest ${selectedPlayer.Name} struggles with this build.`)
-                                                  : ' Performance is balanced.')}
-                                        </p>
-                                      </div>
-                                  </div>
-                                </div>
-                            </div>
-                            </FeatureLock>
-                          </td>
-                      </tr>
-                    )}
-                </Fragment>
-              ))}
-              {masteryData.length === 0 && (
-                <tr>
-                    <td colSpan={5} className="p-8 text-center text-muted-foreground italic">
-                      No weapon data available from recent matches.
-                    </td>
+            {masteryData.map((mastery) => (
+              <Fragment key={mastery.id}>
+                <tr
+                  onClick={() => setExpandedWeaponId(expandedWeaponId === mastery.id ? null : mastery.id)}
+                  className={`cursor-pointer transition-colors ${expandedWeaponId === mastery.id ? 'bg-muted/50' : 'hover:bg-muted/30'}`}
+                >
+                  <td className="p-3">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 bg-card rounded border border-border/50 flex-shrink-0">
+                        <ItemIcon item={mastery.sampleId} className="w-full h-full object-contain p-0.5" />
+                      </div>
+                      <div>
+                        <div className="font-medium text-foreground flex items-center gap-2">
+                          {formatItemName(mastery.sampleId)}
+                          {expandedWeaponId === mastery.id ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {mastery.kills} Kills / {mastery.deaths} Deaths
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="p-3 text-center font-mono text-foreground">
+                    {mastery.count}
+                  </td>
+                  <td className="p-3 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <span className={`font-bold ${mastery.winRate >= 50 ? 'text-success' : 'text-destructive'}`}>
+                        {Math.round(mastery.winRate)}%
+                      </span>
+                      <div className="w-16 h-1.5 bg-muted rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ${mastery.winRate >= 50 ? 'bg-success' : 'bg-destructive'}`}
+                          style={{ width: `${mastery.winRate}%` }}
+                        />
+                      </div>
+                    </div>
+                  </td>
+                  <td className="p-3 text-center font-mono text-warning">
+                    {Math.round(mastery.avgIp)}
+                  </td>
+                  <td className="p-3 text-right font-mono text-foreground">
+                    {formatNumber(mastery.fame)}
+                  </td>
                 </tr>
-              )}
+
+                {expandedWeaponId === mastery.id && (
+                  <tr className="bg-muted/30">
+                    <td colSpan={5} className="p-0 border-b border-border">
+                      <FeatureLock
+                        title="Advanced Weapon Analysis"
+                        description="Unlock deep insights, radar charts, and performance metrics for this weapon."
+                        lockedContent={
+                          <div className="p-12 flex flex-col items-center justify-center text-center bg-muted/10">
+                            <div className="bg-primary/10 p-4 rounded-full mb-4">
+                              <Activity className="h-8 w-8 text-primary" />
+                            </div>
+                            <h3 className="text-lg font-bold mb-2">Weapon Analytics Locked</h3>
+                            <p className="text-muted-foreground max-w-md">
+                              Get detailed breakdown of win rates, average IP, and playstyle analysis for this weapon build.
+                            </p>
+                          </div>
+                        }
+                      >
+                        <div className="p-6 animate-in fade-in slide-in-from-top-2">
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            {/* Left: Radar Chart */}
+                            <div className="bg-card/50 rounded-xl border border-border p-4">
+                              <h4 className="text-sm font-bold text-muted-foreground mb-4 flex items-center gap-2">
+                                <Activity className="h-4 w-4" /> Weapon Profile
+                              </h4>
+                              <div className="h-64 w-full">
+                                <ResponsiveContainer width="100%" height="100%">
+                                  <RadarChart cx="50%" cy="50%" outerRadius="70%" data={getWeaponAnalysis(mastery.id)}>
+                                    <PolarGrid stroke="var(--border)" />
+                                    <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--muted-foreground)', fontSize: 10 }} />
+                                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                                    <Radar name="Stats" dataKey="A" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.4} />
+                                  </RadarChart>
+                                </ResponsiveContainer>
+                              </div>
+                            </div>
+
+                            {/* Right: Advanced Stats */}
+                            <div className="space-y-4">
+                              <h4 className="text-sm font-bold text-muted-foreground mb-4 flex items-center gap-2">
+                                <BarChart2 className="h-4 w-4" /> Performance Metrics
+                              </h4>
+                              <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-card/50 p-4 rounded-lg border border-border">
+                                  <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Fame per Match</div>
+                                  <div className="text-xl font-mono text-success">
+                                    {formatNumber(Math.round(mastery.fame / mastery.count))}
+                                  </div>
+                                </div>
+                                <div className="bg-card/50 p-4 rounded-lg border border-border">
+                                  <Tooltip content="Percentage of fights where you survived (Win or Escape)">
+                                    <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1 w-fit">
+                                      Survival Rate <AlertCircle className="h-3 w-3" />
+                                    </div>
+                                  </Tooltip>
+                                  <div className="text-xl font-mono text-info">
+                                    {Math.round((mastery.kills / (mastery.kills + mastery.deaths || 1)) * 100)}%
+                                  </div>
+                                </div>
+                                <div className="bg-card/50 p-4 rounded-lg border border-border">
+                                  <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Total Fame</div>
+                                  <div className="text-xl font-mono text-warning">
+                                    {formatNumber(mastery.fame)}
+                                  </div>
+                                </div>
+                                <div className="bg-card/50 p-4 rounded-lg border border-border">
+                                  <Tooltip content="Fame gained per point of IP risked. Higher = Better Risk/Reward.">
+                                    <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1 w-fit">
+                                      Efficiency Score <AlertCircle className="h-3 w-3" />
+                                    </div>
+                                  </Tooltip>
+                                  <div className="text-xl font-mono text-purple-400">
+                                    {Math.round((mastery.fame / (mastery.totalIp / mastery.count)) * 10)}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="bg-card/50 p-4 rounded-lg border border-border mt-4">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <Zap className="h-4 w-4 text-warning" />
+                                  <span className="font-bold text-foreground">Weapon Insight</span>
+                                </div>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                  This weapon shows a <strong>{mastery.winRate >= 50 ? 'positive' : 'negative'}</strong> win rate trend
+                                  with an average IP of <span className="text-foreground">{Math.round(mastery.avgIp)}</span>.
+                                  {mastery.kills > mastery.deaths * 1.5
+                                    ? (userProfile?.characterName === selectedPlayer.Name
+                                      ? ' Highly effective for you.'
+                                      : ` Highly effective for ${selectedPlayer.Name}.`)
+                                    : (mastery.deaths > mastery.kills
+                                      ? (userProfile?.characterName === selectedPlayer.Name
+                                        ? ' Statistics suggest you struggle with this build.'
+                                        : ` Statistics suggest ${selectedPlayer.Name} struggles with this build.`)
+                                      : ' Performance is balanced.')}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </FeatureLock>
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
+            ))}
+            {masteryData.length === 0 && (
+              <tr>
+                <td colSpan={5} className="p-8 text-center text-muted-foreground italic">
+                  No weapon data available from recent matches.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -701,23 +701,23 @@ export default function PvpIntelPage() {
 
   const handleSelectPlayer = async (playerId: string, playerRegion?: 'west' | 'east' | 'europe') => {
     let targetRegion = playerRegion || region;
-    
+
     setStatsLoading(true);
     let { stats, kills, deaths, error } = await getPlayerStats(playerId, targetRegion);
 
     // If failed and we didn't specify a region (e.g. auto-reset), try others
     if (!stats && !playerRegion) {
-        const otherRegions = (['west', 'east', 'europe'] as const).filter(r => r !== targetRegion);
-        for (const r of otherRegions) {
-            const retry = await getPlayerStats(playerId, r);
-            if (retry.stats) {
-                stats = retry.stats;
-                kills = retry.kills;
-                deaths = retry.deaths;
-                targetRegion = r;
-                break;
-            }
+      const otherRegions = (['west', 'east', 'europe'] as const).filter(r => r !== targetRegion);
+      for (const r of otherRegions) {
+        const retry = await getPlayerStats(playerId, r);
+        if (retry.stats) {
+          stats = retry.stats;
+          kills = retry.kills;
+          deaths = retry.deaths;
+          targetRegion = r;
+          break;
         }
+      }
     }
 
     if (stats) {
@@ -727,11 +727,11 @@ export default function PvpIntelPage() {
       setRecentDeaths(deaths || []);
       setResults([]); // Clear results to show profile
     } else if (!playerRegion) {
-        // Only clear if this was an auto-attempt (no specific region)
-        setSelectedPlayer(null);
-        setRecentKills([]);
-        setRecentDeaths([]);
-        setResults([]);
+      // Only clear if this was an auto-attempt (no specific region)
+      setSelectedPlayer(null);
+      setRecentKills([]);
+      setRecentDeaths([]);
+      setResults([]);
     }
     setStatsLoading(false);
   };
@@ -897,7 +897,7 @@ export default function PvpIntelPage() {
             <button
               onClick={(e) => { e.preventDefault(); handleSearch(e as any); }}
               disabled={loading}
-              className="p-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-lg transition-colors shadow-lg shadow-destructive/20 disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+              className="p-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
             >
               <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
             </button>
@@ -907,9 +907,9 @@ export default function PvpIntelPage() {
     >
 
 
-      <SubscriptionModal 
-        isOpen={showSubscriptionModal} 
-        onClose={() => setShowSubscriptionModal(false)} 
+      <SubscriptionModal
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
       />
 
       {/* Search Results */}
@@ -948,18 +948,18 @@ export default function PvpIntelPage() {
       {/* Empty State / Call to Action */}
       {!selectedPlayer && !loading && !statsLoading && results.length === 0 && (
         <div className="flex flex-col items-center justify-center py-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          {/* <div className="w-24 h-24 bg-muted/50 rounded-full flex items-center justify-center mb-6 border border-border shadow-xl shadow-black/20">
+          {/* <div className="w-24 h-24 bg-muted/50 rounded-full flex items-center justify-center mb-6 border border-border">
             <UserIcon className="h-10 w-10 text-muted-foreground" />
           </div> */}
           <h2 className="text-2xl font-bold text-foreground mb-3">No Player Selected</h2>
           <p className="text-muted-foreground max-w-md text-center mb-8 leading-relaxed">
             Search for a player above to view their combat statistics, or link your Albion Online character to automatically see your own stats.
           </p>
-          
+
           {user && !userProfile?.characterId && (
-            <Link 
+            <Link
               href="/settings"
-              className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-primary/20"
+              className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-lg transition-all flex items-center gap-2"
             >
               <UserIcon className="h-4 w-4" />
               Link Your Character
@@ -967,11 +967,11 @@ export default function PvpIntelPage() {
           )}
 
           {!user && (
-             <div className="flex gap-4">
-                 <div className="text-sm text-muted-foreground bg-muted/50 px-4 py-2 rounded-lg border border-border">
-                    💡 Tip: Sign in to save your default region and character.
-                 </div>
-             </div>
+            <div className="flex gap-4">
+              <div className="text-sm text-muted-foreground bg-muted/50 px-4 py-2 rounded-lg border border-border">
+                💡 Tip: Sign in to save your default region and character.
+              </div>
+            </div>
           )}
         </div>
       )}
@@ -979,17 +979,17 @@ export default function PvpIntelPage() {
       {/* Player Stats */}
       {statsLoading && (
         <div className="text-center py-20">
-            <RefreshCw className="h-10 w-10 animate-spin mx-auto mb-4 text-primary" />
-            <p className="text-muted-foreground">Analyzing combat data...</p>
+          <RefreshCw className="h-10 w-10 animate-spin mx-auto mb-4 text-primary" />
+          <p className="text-muted-foreground">Analyzing combat data...</p>
         </div>
       )}
 
       {selectedPlayer && (
         <div className="space-y-8 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="p-6 bg-card/80 rounded-xl border border-border relative overflow-hidden">
-             <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-                <Sword className="h-64 w-64 text-muted-foreground" />
-             </div>
+            <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+              <Sword className="h-64 w-64 text-muted-foreground" />
+            </div>
 
             {userProfile?.characterId === selectedPlayer.Id && (
               <div className="absolute top-5 right-4 px-3 py-1 bg-primary/20 text-primary border border-primary/50 rounded-full text-xs font-bold flex items-center gap-1 w-fit z-10">
@@ -1185,7 +1185,7 @@ export default function PvpIntelPage() {
                       <div key={weapon} className="flex items-center justify-between bg-muted/50 p-2 rounded border border-border">
                         <div className="flex items-center gap-3">
                           <div className="h-10 w-10 bg-card rounded border border-border/50 flex-shrink-0">
-                             <ItemIcon item={weapon} className="w-full h-full object-contain p-0.5" />
+                            <ItemIcon item={weapon} className="w-full h-full object-contain p-0.5" />
                           </div>
                           <span className="text-foreground text-sm font-medium">
                             {formatItemName(weapon)}
@@ -1232,12 +1232,12 @@ export default function PvpIntelPage() {
               {/* Weapon Mastery History */}
               <div className="bg-card/50 rounded-xl border border-border overflow-hidden mb-8">
                 <div className="p-4 border-b border-border bg-muted/30">
-                   <h3 className="font-bold text-foreground flex items-center gap-2">
-                      <Trophy className="h-5 w-5 text-warning" />
-                      Advanced Weapon Mastery History
-                   </h3>
+                  <h3 className="font-bold text-foreground flex items-center gap-2">
+                    <Trophy className="h-5 w-5 text-warning" />
+                    Advanced Weapon Mastery History
+                  </h3>
                 </div>
-                
+
                 <FeatureLock
                   title="Weapon Mastery Analysis"
                   description="Unlock detailed weapon performance stats including win rates, average IP, and efficiency scores for every weapon you use."
@@ -1264,8 +1264,8 @@ export default function PvpIntelPage() {
               </div>
 
               {/* Advanced Analytics */}
-              <FeatureLock 
-                title="Combat Analytics" 
+              <FeatureLock
+                title="Combat Analytics"
                 description="Unlock deep combat insights including fame trends, hourly activity, and IP performance analysis."
                 lockedContent={
                   <AdvancedAnalytics
@@ -1275,11 +1275,11 @@ export default function PvpIntelPage() {
                   />
                 }
               >
-              <AdvancedAnalytics
-                kills={recentKills}
-                deaths={recentDeaths}
-                playerId={selectedPlayer.Id}
-              />
+                <AdvancedAnalytics
+                  kills={recentKills}
+                  deaths={recentDeaths}
+                  playerId={selectedPlayer.Id}
+                />
               </FeatureLock>
 
               {/* Recent Fights Feed */}
@@ -1341,44 +1341,44 @@ export default function PvpIntelPage() {
 
                         return (
                           <div key={event.EventId} className={`rounded-lg border transition-all duration-300 ${isKill
-                              ? (isKnockout ? 'bg-success/10 border-success/30 hover:bg-success/20' : 'bg-success/10 border-success/30 hover:bg-success/20')
-                              : (isKnockout ? 'bg-warning/10 border-warning/30 hover:bg-warning/20' : 'bg-destructive/10 border-destructive/30 hover:bg-destructive/20')
+                            ? (isKnockout ? 'bg-success/10 border-success/30 hover:bg-success/20' : 'bg-success/10 border-success/30 hover:bg-success/20')
+                            : (isKnockout ? 'bg-warning/10 border-warning/30 hover:bg-warning/20' : 'bg-destructive/10 border-destructive/30 hover:bg-destructive/20')
                             } ${isExpanded ? 'bg-opacity-50 border-opacity-80' : ''}`}>
                             <div
-                            className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 cursor-pointer gap-3 sm:gap-0"
-                            onClick={() => setExpandedFightId(isExpanded ? null : event.EventId)}
-                          >
-                            <div className="flex items-center gap-4 w-full sm:w-auto">
-                              <div className={`w-16 text-center text-xs font-bold py-1 rounded shrink-0 ${isKill
+                              className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 cursor-pointer gap-3 sm:gap-0"
+                              onClick={() => setExpandedFightId(isExpanded ? null : event.EventId)}
+                            >
+                              <div className="flex items-center gap-4 w-full sm:w-auto">
+                                <div className={`w-16 text-center text-xs font-bold py-1 rounded shrink-0 ${isKill
                                   ? (isKnockout ? 'bg-success/20 text-success' : 'bg-success/20 text-success')
                                   : (isKnockout ? 'bg-warning/20 text-warning' : 'bg-destructive/20 text-destructive')
-                                }`}>
-                                {isKnockout ? 'KO' : (isKill ? 'KILL' : 'DEATH')}
-                              </div>
+                                  }`}>
+                                  {isKnockout ? 'KO' : (isKill ? 'KILL' : 'DEATH')}
+                                </div>
 
-                              {/* Weapon Icon */}
-                              <Tooltip content={formatItemName(event.Killer.Equipment?.MainHand?.Type)}>
-                                <div className="h-10 w-10 bg-card/50 rounded border border-border/50 flex items-center justify-center overflow-hidden shrink-0">
-                                  <ItemIcon item={event.Killer.Equipment?.MainHand} className="w-full h-full object-contain" />
-                                </div>
-                              </Tooltip>
+                                {/* Weapon Icon */}
+                                <Tooltip content={formatItemName(event.Killer.Equipment?.MainHand?.Type)}>
+                                  <div className="h-10 w-10 bg-card/50 rounded border border-border/50 flex items-center justify-center overflow-hidden shrink-0">
+                                    <ItemIcon item={event.Killer.Equipment?.MainHand} className="w-full h-full object-contain" />
+                                  </div>
+                                </Tooltip>
 
-                              <div className="min-w-0 flex-1">
-                                <div className="font-bold text-foreground truncate">
-                                  {isKill
-                                    ? (isKnockout ? 'Knocked Out' : 'Killed')
-                                    : (isKnockout ? 'Knocked Out by' : 'Killed by')
-                                  } <span className={isKill ? 'text-destructive' : 'text-success'}>{isKill ? event.Victim.Name : event.Killer.Name}</span>
-                                </div>
-                                <div className="text-xs text-muted-foreground flex items-center gap-2 truncate">
-                                  <span className="truncate">{isKill ? event.Victim.GuildName : event.Killer.GuildName || 'No Guild'}</span>
-                                  <span>•</span>
-                                  <span className="shrink-0">IP: {Math.round(isKill ? event.Victim.AverageItemPower : event.Killer.AverageItemPower)}</span>
+                                <div className="min-w-0 flex-1">
+                                  <div className="font-bold text-foreground truncate">
+                                    {isKill
+                                      ? (isKnockout ? 'Knocked Out' : 'Killed')
+                                      : (isKnockout ? 'Knocked Out by' : 'Killed by')
+                                    } <span className={isKill ? 'text-destructive' : 'text-success'}>{isKill ? event.Victim.Name : event.Killer.Name}</span>
+                                  </div>
+                                  <div className="text-xs text-muted-foreground flex items-center gap-2 truncate">
+                                    <span className="truncate">{isKill ? event.Victim.GuildName : event.Killer.GuildName || 'No Guild'}</span>
+                                    <span>•</span>
+                                    <span className="shrink-0">IP: {Math.round(isKill ? event.Victim.AverageItemPower : event.Killer.AverageItemPower)}</span>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pl-[5.5rem] sm:pl-0">
-                              <div className="text-right">
+                              <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pl-[5.5rem] sm:pl-0">
+                                <div className="text-right">
                                   <div className={`font-mono ${isKill ? 'text-success' : 'text-destructive'}`}>
                                     {isKill ? '+' : '-'}{event.TotalVictimKillFame.toLocaleString()} Fame
                                   </div>
@@ -1411,21 +1411,21 @@ export default function PvpIntelPage() {
 
                                     {/* Equipment Grid */}
                                     <div className="grid grid-cols-3 gap-1 w-fit mx-auto">
-                                       {renderItemSlot(event.Killer.Equipment?.Bag)}
-                                       {renderItemSlot(event.Killer.Equipment?.Head)}
-                                       {renderItemSlot(event.Killer.Equipment?.Cape)}
-                                       
-                                       {renderItemSlot(event.Killer.Equipment?.MainHand)}
-                                       {renderItemSlot(event.Killer.Equipment?.Armor)}
-                                       {renderItemSlot(event.Killer.Equipment?.OffHand)}
-                                       
-                                       {renderItemSlot(event.Killer.Equipment?.Potion)}
-                                       {renderItemSlot(event.Killer.Equipment?.Shoes)}
-                                       {renderItemSlot(event.Killer.Equipment?.Food)}
-                                       
-                                       <div />
-                                       {renderItemSlot(event.Killer.Equipment?.Mount)}
-                                       <div />
+                                      {renderItemSlot(event.Killer.Equipment?.Bag)}
+                                      {renderItemSlot(event.Killer.Equipment?.Head)}
+                                      {renderItemSlot(event.Killer.Equipment?.Cape)}
+
+                                      {renderItemSlot(event.Killer.Equipment?.MainHand)}
+                                      {renderItemSlot(event.Killer.Equipment?.Armor)}
+                                      {renderItemSlot(event.Killer.Equipment?.OffHand)}
+
+                                      {renderItemSlot(event.Killer.Equipment?.Potion)}
+                                      {renderItemSlot(event.Killer.Equipment?.Shoes)}
+                                      {renderItemSlot(event.Killer.Equipment?.Food)}
+
+                                      <div />
+                                      {renderItemSlot(event.Killer.Equipment?.Mount)}
+                                      <div />
                                     </div>
                                   </div>
 
@@ -1444,21 +1444,21 @@ export default function PvpIntelPage() {
 
                                     {/* Equipment Grid */}
                                     <div className="grid grid-cols-3 gap-1 w-fit mx-auto">
-                                       {renderItemSlot(event.Victim.Equipment?.Bag)}
-                                       {renderItemSlot(event.Victim.Equipment?.Head)}
-                                       {renderItemSlot(event.Victim.Equipment?.Cape)}
-                                       
-                                       {renderItemSlot(event.Victim.Equipment?.MainHand)}
-                                       {renderItemSlot(event.Victim.Equipment?.Armor)}
-                                       {renderItemSlot(event.Victim.Equipment?.OffHand)}
-                                       
-                                       {renderItemSlot(event.Victim.Equipment?.Potion)}
-                                       {renderItemSlot(event.Victim.Equipment?.Shoes)}
-                                       {renderItemSlot(event.Victim.Equipment?.Food)}
-                                       
-                                       <div />
-                                       {renderItemSlot(event.Victim.Equipment?.Mount)}
-                                       <div />
+                                      {renderItemSlot(event.Victim.Equipment?.Bag)}
+                                      {renderItemSlot(event.Victim.Equipment?.Head)}
+                                      {renderItemSlot(event.Victim.Equipment?.Cape)}
+
+                                      {renderItemSlot(event.Victim.Equipment?.MainHand)}
+                                      {renderItemSlot(event.Victim.Equipment?.Armor)}
+                                      {renderItemSlot(event.Victim.Equipment?.OffHand)}
+
+                                      {renderItemSlot(event.Victim.Equipment?.Potion)}
+                                      {renderItemSlot(event.Victim.Equipment?.Shoes)}
+                                      {renderItemSlot(event.Victim.Equipment?.Food)}
+
+                                      <div />
+                                      {renderItemSlot(event.Victim.Equipment?.Mount)}
+                                      <div />
                                     </div>
                                   </div>
                                 </div>

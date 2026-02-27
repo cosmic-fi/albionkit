@@ -98,7 +98,7 @@ export function ItemPicker({ label, value, onChange, placeholder, filter }: Item
           </div>
 
           {isOpen && query && (
-            <div className="absolute z-50 w-full mt-1 bg-popover border border-border rounded-lg shadow-xl max-h-60 overflow-y-auto">
+            <div className="absolute z-50 w-full mt-1 bg-popover border border-border rounded-lg  max-h-60 overflow-y-auto">
               {filteredItems.length > 0 ? (
                 filteredItems.map((item) => (
                   <button

@@ -39,7 +39,7 @@ export function Tooltip({ content, children, className = '' }: TooltipProps) {
 
   return (
     <>
-      <div 
+      <div
         ref={triggerRef}
         className={`inline-flex items-center gap-1 cursor-help group ${className}`}
         onMouseEnter={handleMouseEnter}
@@ -48,12 +48,12 @@ export function Tooltip({ content, children, className = '' }: TooltipProps) {
         {children}
       </div>
       {isVisible && typeof document !== 'undefined' && createPortal(
-        <div 
-          className="fixed z-[9999] px-3 py-2 bg-popover border border-border text-popover-foreground text-xs rounded-lg shadow-xl pointer-events-none max-w-[200px] text-center animate-in fade-in zoom-in-95 duration-150"
-          style={{ 
-            top: position.top, 
-            left: position.left, 
-            transform: 'translate(-50%, -100%)' 
+        <div
+          className="fixed z-[9999] px-3 py-2 bg-popover border border-border text-popover-foreground text-xs rounded-lg pointer-events-none max-w-[200px] text-center animate-in fade-in zoom-in-95 duration-150"
+          style={{
+            top: position.top,
+            left: position.left,
+            transform: 'translate(-50%, -100%)'
           }}
         >
           {content}

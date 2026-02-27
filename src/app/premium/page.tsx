@@ -119,7 +119,7 @@ export default function PremiumPage() {
             onClick={() => setBillingInterval('month')}
             className={`py-2 px-6 rounded-lg text-sm font-medium transition-all ${
               billingInterval === 'month' 
-                ? 'bg-amber-600 text-white shadow-lg shadow-amber-900/20' 
+                ? 'bg-amber-600 text-white ' 
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -129,7 +129,7 @@ export default function PremiumPage() {
             onClick={() => setBillingInterval('year')}
             className={`py-2 px-6 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
               billingInterval === 'year' 
-                ? 'bg-amber-600 text-white shadow-lg shadow-amber-900/20' 
+                ? 'bg-amber-600 text-white ' 
                 : 'text-slate-400 hover:text-white'
             }`}
           >

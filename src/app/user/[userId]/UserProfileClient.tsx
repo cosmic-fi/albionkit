@@ -347,7 +347,7 @@ export default function UserProfileClient({ userId }: { userId: string }) {
                 <div className="flex flex-col md:flex-row gap-4 items-center md:items-start">
                     {/* Avatar */}
                     <div className="shrink-0">
-                        <div className="w-24 h-24 md:w-25 md:h-25 rounded-full bg-card border-4 border-card overflow-hidden shadow-xl relative group">
+                        <div className="w-24 h-24 md:w-25 md:h-25 rounded-full bg-card border-4 border-card overflow-hidden  relative group">
                             {profile.photoURL ? (
                                 <Image 
                                     src={profile.photoURL} 
@@ -458,7 +458,7 @@ export default function UserProfileClient({ userId }: { userId: string }) {
                                                 <div className="text-muted-foreground hover:text-[#5865F2] transition-colors p-1.5 hover:bg-[#5865F2]/10 rounded-lg">
                                                     <MessageCircle className="h-5 w-5" />
                                                 </div>
-                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-popover text-popover-foreground text-xs font-medium rounded-lg border border-border shadow-xl whitespace-nowrap opacity-0 group-hover/discord:opacity-100 transition-opacity pointer-events-none z-50">
+                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-popover text-popover-foreground text-xs font-medium rounded-lg border border-border  whitespace-nowrap opacity-0 group-hover/discord:opacity-100 transition-opacity pointer-events-none z-50">
                                                     {profile.socialLinks.discord}
                                                     <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-popover border-b border-r border-border rotate-45"></div>
                                                 </div>
@@ -479,7 +479,7 @@ export default function UserProfileClient({ userId }: { userId: string }) {
                                                     <BadgeIcon icon={badge.icon} className="h-4 w-4" />
                                                 </div>
                                                 {/* Tooltip */}
-                                                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 px-3 py-2 bg-popover text-popover-foreground rounded-lg border border-border shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 min-w-[150px]">
+                                                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 px-3 py-2 bg-popover text-popover-foreground rounded-lg border border-border  opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 min-w-[150px]">
                                                     <div className="font-bold text-xs mb-0.5">{badge.label}</div>
                                                     <div className="text-muted-foreground text-[10px] leading-tight">{badge.description}</div>
                                                 </div>

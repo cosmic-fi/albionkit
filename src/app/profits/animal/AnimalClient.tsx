@@ -20,7 +20,7 @@ import { Tooltip } from '@/components/ui/Tooltip';
 // Helper to generate animal stats based on Tier and Type
 const getAnimalStats = (tier: number, id: string, type: 'pasture' | 'mount'): Partial<Animal> => {
   const isMount = type === 'mount';
-  
+
   // Growth Time (Hours)
   let growthTime = 0;
   if (isMount) {
@@ -80,7 +80,7 @@ const getAnimalStats = (tier: number, id: string, type: 'pasture' | 'mount'): Pa
   // Produce ID
   let produceId: string | undefined;
   let produceYield: number | undefined;
-  
+
   if (!isMount) {
     if (id === 'chicken') { produceId = 'T3_EGG'; produceYield = 10; } // Hen Eggs
     else if (id === 'goat') { produceId = 'T4_MILK'; produceYield = 10; } // Goat Milk
@@ -120,7 +120,7 @@ interface AnimalData extends Animal {
   babyVolume: number;
   adultPrice: number;
   adultVolume: number;
-  
+
   // Food
   foodPrice: number; // Price per unit of generic food (Carrots)
   foodVolume: number;
@@ -130,7 +130,7 @@ interface AnimalData extends Animal {
   // Products
   productPrice: number;
   productVolume: number;
-  
+
   // Butchering
   meatPrice: number;
   meatVolume: number;
@@ -141,9 +141,9 @@ interface AnimalData extends Animal {
   profitPerPlot: number; // For Breeding/Products
   roi: number;
   totalProfit: number; // Based on quantity
-  
+
   warning?: string;
-  
+
   // User override flags
   isCustomBabyPrice?: boolean;
   isCustomAdultPrice?: boolean;
@@ -161,7 +161,7 @@ interface AnimalData extends Animal {
   originalMeatPrice?: number;
 }
 
-const CITIES = LOCATIONS.filter(l => l !== 'Black Market' && l !== 'Caerleon'); 
+const CITIES = LOCATIONS.filter(l => l !== 'Black Market' && l !== 'Caerleon');
 const ALL_CITIES = LOCATIONS;
 
 type Tab = 'breeding' | 'products' | 'butchering';
@@ -171,12 +171,12 @@ export default function AnimalClient() {
   const { server: region, setServer: setRegion } = useServer();
   const [buyCity, setBuyCity] = useState<string>('Martlock');
   const [sellCity, setSellCity] = useState<string>('Martlock');
-  
+
   const [usePremium, setUsePremium] = useState(true);
   const [useFocus, setUseFocus] = useState(false);
   const [useFavoriteFood, setUseFavoriteFood] = useState(true); // Default to using favorite food
   const [quantity, setQuantity] = useState(1);
-  
+
   const [loading, setLoading] = useState(true);
   const [animals, setAnimals] = useState<Animal[]>([]); // Dynamic animals list
   const [data, setData] = useState<AnimalData[]>([]);
@@ -185,23 +185,23 @@ export default function AnimalClient() {
   // Generate Animals List
   useEffect(() => {
     const generated: Animal[] = [];
-    
+
     // Process definitions
     for (const def of ANIMAL_DEFINITIONS) {
       if (def.type === 'mount') {
         // Generate T3-T8 for mounts
         for (let tier = 3; tier <= 8; tier++) {
-           const stats = getAnimalStats(tier, def.id, 'mount');
-           const babyId = `T${tier}_FARM_${def.id.toUpperCase()}_BABY`;
-           const adultId = `T${tier}_FARM_${def.id.toUpperCase()}_GROWN`;
-           generated.push({
-             id: `${def.id}_t${tier}`,
-             name: `${def.id.charAt(0).toUpperCase() + def.id.slice(1)} (T${tier})`,
-             tier,
-             babyId,
-             adultId,
-             ...stats
-           } as Animal);
+          const stats = getAnimalStats(tier, def.id, 'mount');
+          const babyId = `T${tier}_FARM_${def.id.toUpperCase()}_BABY`;
+          const adultId = `T${tier}_FARM_${def.id.toUpperCase()}_GROWN`;
+          generated.push({
+            id: `${def.id}_t${tier}`,
+            name: `${def.id.charAt(0).toUpperCase() + def.id.slice(1)} (T${tier})`,
+            tier,
+            babyId,
+            adultId,
+            ...stats
+          } as Animal);
         }
       } else {
         // Pasture animals (single tier)
@@ -209,12 +209,12 @@ export default function AnimalClient() {
         const babyId = `T${def.tier}_FARM_${def.id.toUpperCase()}_BABY`;
         const adultId = `T${def.tier}_FARM_${def.id.toUpperCase()}_GROWN`;
         generated.push({
-             id: def.id,
-             name: def.id.charAt(0).toUpperCase() + def.id.slice(1),
-             tier: def.tier,
-             babyId,
-             adultId,
-             ...stats
+          id: def.id,
+          name: def.id.charAt(0).toUpperCase() + def.id.slice(1),
+          tier: def.tier,
+          babyId,
+          adultId,
+          ...stats
         } as Animal);
       }
     }
@@ -235,7 +235,7 @@ export default function AnimalClient() {
   };
 
   // Global generic food price state (fetched from market)
-  const [globalFoodPrice, setGlobalFoodPrice] = useState(350); 
+  const [globalFoodPrice, setGlobalFoodPrice] = useState(350);
   const [globalFoodVolume, setGlobalFoodVolume] = useState(0);
 
   const toggleRow = (id: string) => {
@@ -257,12 +257,12 @@ export default function AnimalClient() {
       const cycles = Math.max(1, Math.round(row.growthTime / 22));
       const foodPerCycle = useFavoriteFood ? (row.foodConsumption / 2) : row.foodConsumption;
       const totalFoodUnits = foodPerCycle * cycles;
-      
+
       let foodCost = 0;
       if (useFavoriteFood && row.favoriteFoodId) {
-          foodCost = totalFoodUnits * row.favoriteFoodPrice;
+        foodCost = totalFoodUnits * row.favoriteFoodPrice;
       } else {
-          foodCost = totalFoodUnits * row.foodPrice;
+        foodCost = totalFoodUnits * row.foodPrice;
       }
 
       if (activeTab === 'breeding') {
@@ -278,36 +278,36 @@ export default function AnimalClient() {
 
       } else if (activeTab === 'products') {
         if (!row.produceId) {
-            profit = 0; cost = 1; // Avoid div by zero
+          profit = 0; cost = 1; // Avoid div by zero
         } else {
-            // Cost = Food (per day/cycle)
-            // For products, we usually calculate "Per Day" profit.
-            // So we use 1 cycle of food cost.
-            const dailyFoodCost = foodPerCycle * (useFavoriteFood && row.favoriteFoodId ? row.favoriteFoodPrice : row.foodPrice);
-            cost = dailyFoodCost;
-            
-            // Revenue = Product Yield * Product Price
-            // "Premium status doubles the yield of crops and animal products"
-            const adjustedYield = (row.produceYield || 0) * (usePremium ? 1 : 0.5);
-            revenue = adjustedYield * row.productPrice;
-            profit = revenue - cost;
+          // Cost = Food (per day/cycle)
+          // For products, we usually calculate "Per Day" profit.
+          // So we use 1 cycle of food cost.
+          const dailyFoodCost = foodPerCycle * (useFavoriteFood && row.favoriteFoodId ? row.favoriteFoodPrice : row.foodPrice);
+          cost = dailyFoodCost;
+
+          // Revenue = Product Yield * Product Price
+          // "Premium status doubles the yield of crops and animal products"
+          const adjustedYield = (row.produceYield || 0) * (usePremium ? 1 : 0.5);
+          revenue = adjustedYield * row.productPrice;
+          profit = revenue - cost;
         }
 
       } else if (activeTab === 'butchering') {
         if (!row.meatId) {
-            profit = 0; cost = 1;
+          profit = 0; cost = 1;
         } else {
-            // Cost = Grown Animal
-            cost = row.adultPrice; // You buy the adult to butcher
-            
-            // Revenue = Meat Yield * Meat Price
-            revenue = (row.meatYield || 0) * row.meatPrice;
-            profit = revenue - cost;
+          // Cost = Grown Animal
+          cost = row.adultPrice; // You buy the adult to butcher
+
+          // Revenue = Meat Yield * Meat Price
+          revenue = (row.meatYield || 0) * row.meatPrice;
+          profit = revenue - cost;
         }
       }
 
       const roi = cost > 0 ? (profit / cost) * 100 : 0;
-      
+
       return {
         ...row,
         cost,
@@ -341,40 +341,40 @@ export default function AnimalClient() {
 
   const handleResetPrice = (id: string, field: keyof AnimalData) => {
     setData(prev => {
-        const newData = prev.map(row => {
-            if (row.id === id) {
-                const updatedRow = { ...row };
-                
-                if (field === 'babyPrice') {
-                    updatedRow.babyPrice = row.originalBabyPrice || 0;
-                    updatedRow.isCustomBabyPrice = false;
-                }
-                if (field === 'adultPrice') {
-                    updatedRow.adultPrice = row.originalAdultPrice || 0;
-                    updatedRow.isCustomAdultPrice = false;
-                }
-                if (field === 'foodPrice') {
-                    updatedRow.foodPrice = row.originalFoodPrice || 350;
-                    updatedRow.isCustomFoodPrice = false;
-                }
-                if (field === 'favoriteFoodPrice') {
-                    updatedRow.favoriteFoodPrice = row.originalFavoriteFoodPrice || 0;
-                    updatedRow.isCustomFavoriteFoodPrice = false;
-                }
-                if (field === 'productPrice') {
-                    updatedRow.productPrice = row.originalProductPrice || 0;
-                    updatedRow.isCustomProductPrice = false;
-                }
-                if (field === 'meatPrice') {
-                    updatedRow.meatPrice = row.originalMeatPrice || 0;
-                    updatedRow.isCustomMeatPrice = false;
-                }
+      const newData = prev.map(row => {
+        if (row.id === id) {
+          const updatedRow = { ...row };
 
-                return updatedRow;
-            }
-            return row;
-        });
-        return updateCalculation(newData);
+          if (field === 'babyPrice') {
+            updatedRow.babyPrice = row.originalBabyPrice || 0;
+            updatedRow.isCustomBabyPrice = false;
+          }
+          if (field === 'adultPrice') {
+            updatedRow.adultPrice = row.originalAdultPrice || 0;
+            updatedRow.isCustomAdultPrice = false;
+          }
+          if (field === 'foodPrice') {
+            updatedRow.foodPrice = row.originalFoodPrice || 350;
+            updatedRow.isCustomFoodPrice = false;
+          }
+          if (field === 'favoriteFoodPrice') {
+            updatedRow.favoriteFoodPrice = row.originalFavoriteFoodPrice || 0;
+            updatedRow.isCustomFavoriteFoodPrice = false;
+          }
+          if (field === 'productPrice') {
+            updatedRow.productPrice = row.originalProductPrice || 0;
+            updatedRow.isCustomProductPrice = false;
+          }
+          if (field === 'meatPrice') {
+            updatedRow.meatPrice = row.originalMeatPrice || 0;
+            updatedRow.isCustomMeatPrice = false;
+          }
+
+          return updatedRow;
+        }
+        return row;
+      });
+      return updateCalculation(newData);
     });
   };
 
@@ -415,8 +415,8 @@ export default function AnimalClient() {
         volumesSell = vols;
       } else {
         const [volsBuy, volsSell] = await Promise.all([
-            getMarketVolume(uniqueItemIds, region, buyCity),
-            getMarketVolume(uniqueItemIds, region, sellCity)
+          getMarketVolume(uniqueItemIds, region, buyCity),
+          getMarketVolume(uniqueItemIds, region, sellCity)
         ]);
         volumesBuy = volsBuy;
         volumesSell = volsSell;
@@ -426,7 +426,7 @@ export default function AnimalClient() {
       const foodStats = prices.filter(p => p.item_id === 'T1_CARROT' && p.city === buyCity);
       const validFoodPrices = foodStats.filter(s => s.sell_price_min > 0).map(s => s.sell_price_min);
       const fetchedFoodPrice = validFoodPrices.length > 0 ? Math.min(...validFoodPrices) : 350;
-      
+
       const foodVolData = volumesBuy.find(v => v.item_id === 'T1_CARROT');
       const fetchedFoodVolume = foodVolData?.data?.[foodVolData.data.length - 1]?.item_count || 0;
 
@@ -435,23 +435,23 @@ export default function AnimalClient() {
 
       // Fetch Names from API for nicer display (Optional, can run in parallel)
       // For now we rely on the generated names, but we could update them here.
-      
+
       const calculated = animals.map(animal => {
         const getPrice = (id: string, city: string) => {
-            const stats = prices.filter(p => p.item_id === id && p.city === city);
-            const valid = stats.filter(s => s.sell_price_min > 0).map(s => s.sell_price_min);
-            return valid.length > 0 ? Math.min(...valid) : 0;
+          const stats = prices.filter(p => p.item_id === id && p.city === city);
+          const valid = stats.filter(s => s.sell_price_min > 0).map(s => s.sell_price_min);
+          return valid.length > 0 ? Math.min(...valid) : 0;
         };
 
         const getVolume = (id: string, city: string, isBuyCity: boolean) => {
-            const vols = isBuyCity ? volumesBuy : volumesSell;
-            const volData = vols.find(v => v.item_id === id);
-            return volData?.data?.[volData.data.length - 1]?.item_count || 0;
+          const vols = isBuyCity ? volumesBuy : volumesSell;
+          const volData = vols.find(v => v.item_id === id);
+          return volData?.data?.[volData.data.length - 1]?.item_count || 0;
         };
 
         const babyPrice = getPrice(animal.babyId, buyCity);
         const babyVolume = getVolume(animal.babyId, buyCity, true);
-        
+
         const adultPrice = getPrice(animal.adultId, sellCity); // Sell adult in Sell City
         const adultVolume = getVolume(animal.adultId, sellCity, false);
 
@@ -497,7 +497,7 @@ export default function AnimalClient() {
       });
 
       const initialCalculated = updateCalculation(calculated);
-      
+
       setData(initialCalculated);
 
     } catch (error) {
@@ -509,31 +509,31 @@ export default function AnimalClient() {
 
   useEffect(() => {
     if (animals.length > 0) {
-        loadData();
+      loadData();
     }
   }, [region, buyCity, sellCity, animals]);
 
   // Re-sort when data or activeTab changes
   const sortedData = [...data]
     .filter(row => {
-        if (activeTab === 'products') return !!row.produceId;
-        if (activeTab === 'butchering') return !!row.meatId;
-        return true;
+      if (activeTab === 'products') return !!row.produceId;
+      if (activeTab === 'butchering') return !!row.meatId;
+      return true;
     })
     .sort((a, b) => {
-        const { key, direction } = sortConfig;
-        let aValue: any = a[key];
-        let bValue: any = b[key];
+      const { key, direction } = sortConfig;
+      let aValue: any = a[key];
+      let bValue: any = b[key];
 
-        // Handle string comparison
-        if (typeof aValue === 'string') {
-            aValue = aValue.toLowerCase();
-            bValue = bValue.toLowerCase();
-        }
+      // Handle string comparison
+      if (typeof aValue === 'string') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
 
-        if (aValue < bValue) return direction === 'asc' ? -1 : 1;
-        if (aValue > bValue) return direction === 'asc' ? 1 : -1;
-        return 0;
+      if (aValue < bValue) return direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return direction === 'asc' ? 1 : -1;
+      return 0;
     });
 
   const cityOptions = LOCATIONS.filter(l => l !== 'Black Market').map(city => ({
@@ -551,18 +551,18 @@ export default function AnimalClient() {
   };
 
   return (
-    <PageShell 
-      title="Animal Calculator" 
-      backgroundImage='/background/ao-crafting.jpg'  
+    <PageShell
+      title="Animal Calculator"
+      backgroundImage='/background/ao-crafting.jpg'
       description="Calculate profits for Breeding, Products, and Butchering."
       icon={<PawPrint className="h-6 w-6" />}
       headerActions={
         <div className="flex flex-wrap items-center gap-4">
-           <ServerSelector selectedServer={region} onServerChange={setRegion} />
+          <ServerSelector selectedServer={region} onServerChange={setRegion} />
           <button
             onClick={loadData}
             disabled={loading}
-            className="p-2 bg-success hover:bg-success/90 text-success-foreground rounded-lg transition-colors shadow-lg shadow-success/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 bg-success hover:bg-success/90 text-success-foreground rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -572,80 +572,80 @@ export default function AnimalClient() {
       <div className="space-y-6">
         {/* Category Tabs */}
         <CategoryTabs
-            options={[
-                { value: 'breeding', label: 'Breeding' },
-                { value: 'products', label: 'Products' },
-                { value: 'butchering', label: 'Butchering' },
-            ]}
-            value={activeTab}
-            onChange={(val) => setActiveTab(val as Tab)}
+          options={[
+            { value: 'breeding', label: 'Breeding' },
+            { value: 'products', label: 'Products' },
+            { value: 'butchering', label: 'Butchering' },
+          ]}
+          value={activeTab}
+          onChange={(val) => setActiveTab(val as Tab)}
         />
 
         {/* Controls */}
         <div className="bg-card/50 p-6 rounded-xl border border-border space-y-6">
-          
+
           <div className="flex flex-col md:flex-row gap-6 items-center">
             <div className="flex-1 w-full">
-               <Select 
-                 label={activeTab === 'butchering' ? "Buy Adult From" : "Buy Baby & Food From"}
-                 options={cityOptions}
-                 value={buyCity}
-                 onChange={setBuyCity}
-               />
+              <Select
+                label={activeTab === 'butchering' ? "Buy Adult From" : "Buy Baby & Food From"}
+                options={cityOptions}
+                value={buyCity}
+                onChange={setBuyCity}
+              />
             </div>
-             
+
             <div className="hidden md:flex pt-6 text-muted-foreground">
-                <ArrowRight className="h-5 w-5" />
+              <ArrowRight className="h-5 w-5" />
             </div>
 
             <div className="flex-1 w-full">
-               <Select 
-                 label={activeTab === 'butchering' ? "Sell Meat To" : (activeTab === 'products' ? "Sell Products To" : "Sell Grown Animal To")}
-                 options={allCityOptions}
-                 value={sellCity}
-                 onChange={setSellCity}
-               />
+              <Select
+                label={activeTab === 'butchering' ? "Sell Meat To" : (activeTab === 'products' ? "Sell Products To" : "Sell Grown Animal To")}
+                options={allCityOptions}
+                value={sellCity}
+                onChange={setSellCity}
+              />
             </div>
-            
+
             {/* Quantity Input */}
             <div className="w-full md:w-32">
-                <div className="mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">Quantity</div>
-                <NumberInput 
-                    value={quantity}
-                    onChange={setQuantity}
-                    min={1}
-                    className="bg-background border-border"
-                />
+              <div className="mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">Quantity</div>
+              <NumberInput
+                value={quantity}
+                onChange={setQuantity}
+                min={1}
+                className="bg-background border-border"
+              />
             </div>
           </div>
-          
+
           <div className="h-px bg-border" />
 
           {/* Bottom Row: Toggles */}
           <div className="flex flex-wrap gap-8">
-            <Checkbox 
-               label="Premium Status" 
-               description={activeTab === 'products' ? "Doubles product yield" : "Halves growth time"}
-               checked={usePremium}
-               onChange={(e) => setUsePremium(e.target.checked)}
+            <Checkbox
+              label="Premium Status"
+              description={activeTab === 'products' ? "Doubles product yield" : "Halves growth time"}
+              checked={usePremium}
+              onChange={(e) => setUsePremium(e.target.checked)}
             />
-            
+
             {(activeTab === 'breeding' || activeTab === 'products') && (
-                <Checkbox 
-                    label="Use Favorite Food" 
-                    description="Halves food consumption"
-                    checked={useFavoriteFood}
-                    onChange={(e) => setUseFavoriteFood(e.target.checked)}
-                />
+              <Checkbox
+                label="Use Favorite Food"
+                description="Halves food consumption"
+                checked={useFavoriteFood}
+                onChange={(e) => setUseFavoriteFood(e.target.checked)}
+              />
             )}
-            
+
             {activeTab === 'breeding' && (
-                <Checkbox 
-                label="Nurture (Focus)" 
+              <Checkbox
+                label="Nurture (Focus)"
                 description="Increases offspring chance"
                 checked={useFocus}
                 onChange={(e) => setUseFocus(e.target.checked)}
-                />
+              />
             )}
           </div>
         </div>
@@ -658,35 +658,35 @@ export default function AnimalClient() {
                 <tr className="bg-muted border-b border-border text-muted-foreground text-xs uppercase tracking-wider">
                   <th className="p-4 font-medium pl-8 cursor-pointer hover:text-foreground transition-colors" onClick={() => handleSort('name')}>
                     <div className="flex items-center gap-1">
-                        Item
-                        {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
+                      Item
+                      {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                     </div>
                   </th>
                   <th className="p-4 font-medium text-right cursor-pointer hover:text-foreground transition-colors" onClick={() => handleSort('profit')}>
                     <div className="flex items-center justify-end gap-1">
-                        <Tooltip content="Profit per unit (Revenue - Cost)">
-                           <span>Profit / Unit</span>
-                           <CircleHelp className="h-3 w-3 text-muted-foreground" />
-                        </Tooltip>
-                        {sortConfig.key === 'profit' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
+                      <Tooltip content="Profit per unit (Revenue - Cost)">
+                        <span>Profit / Unit</span>
+                        <CircleHelp className="h-3 w-3 text-muted-foreground" />
+                      </Tooltip>
+                      {sortConfig.key === 'profit' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                     </div>
                   </th>
                   <th className="p-4 font-medium text-right cursor-pointer hover:text-foreground transition-colors" onClick={() => handleSort('totalProfit')}>
                     <div className="flex items-center justify-end gap-1">
-                        <Tooltip content="Total Profit (Profit / Unit * Quantity)">
-                           <span>Total Profit</span>
-                           <CircleHelp className="h-3 w-3 text-muted-foreground" />
-                        </Tooltip>
-                        {sortConfig.key === 'totalProfit' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
+                      <Tooltip content="Total Profit (Profit / Unit * Quantity)">
+                        <span>Total Profit</span>
+                        <CircleHelp className="h-3 w-3 text-muted-foreground" />
+                      </Tooltip>
+                      {sortConfig.key === 'totalProfit' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                     </div>
                   </th>
                   <th className="p-4 font-medium text-right cursor-pointer hover:text-foreground transition-colors" onClick={() => handleSort('roi')}>
                     <div className="flex items-center justify-end gap-1">
-                        <Tooltip content="Return on Investment %">
-                           <span>ROI</span>
-                           <CircleHelp className="h-3 w-3 text-muted-foreground" />
-                        </Tooltip>
-                        {sortConfig.key === 'roi' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
+                      <Tooltip content="Return on Investment %">
+                        <span>ROI</span>
+                        <CircleHelp className="h-3 w-3 text-muted-foreground" />
+                      </Tooltip>
+                      {sortConfig.key === 'roi' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                     </div>
                   </th>
                   <th className="p-4 font-medium text-center w-16"></th>
@@ -709,7 +709,7 @@ export default function AnimalClient() {
                 ) : (
                   sortedData.map((row) => (
                     <React.Fragment key={row.id}>
-                      <tr 
+                      <tr
                         onClick={() => toggleRow(row.id)}
                         className={`
                           cursor-pointer transition-colors border-l-2
@@ -718,46 +718,46 @@ export default function AnimalClient() {
                       >
                         <td className="p-4 pl-8">
                           <div className="flex items-center gap-4">
-                             <div className="h-12 w-12 bg-muted rounded-lg flex items-center justify-center flex-shrink-0 border border-border relative group">
-                               <img 
-                                 src={`https://render.albiononline.com/v1/item/${activeTab === 'breeding' ? row.babyId : (activeTab === 'butchering' ? row.adultId : row.adultId)}`} 
-                                 alt={row.name}
-                                 className="h-10 w-10 object-contain"
-                               />
-                               {activeTab === 'breeding' && (
-                                   <div className="absolute -bottom-2 -right-2 h-6 w-6 bg-card rounded-full border border-border flex items-center justify-center shadow-sm">
-                                    <img 
-                                        src={`https://render.albiononline.com/v1/item/${row.adultId}`} 
-                                        alt="Adult"
-                                        className="h-4 w-4 object-contain"
-                                    />
-                                    </div>
-                               )}
-                               {activeTab === 'products' && row.produceId && (
-                                   <div className="absolute -bottom-2 -right-2 h-6 w-6 bg-card rounded-full border border-border flex items-center justify-center shadow-sm">
-                                    <img 
-                                        src={`https://render.albiononline.com/v1/item/${row.produceId}`} 
-                                        alt="Product"
-                                        className="h-4 w-4 object-contain"
-                                    />
-                                    </div>
-                               )}
-                               {activeTab === 'butchering' && row.meatId && (
-                                   <div className="absolute -bottom-2 -right-2 h-6 w-6 bg-card rounded-full border border-border flex items-center justify-center shadow-sm">
-                                    <img 
-                                        src={`https://render.albiononline.com/v1/item/${row.meatId}`} 
-                                        alt="Meat"
-                                        className="h-4 w-4 object-contain"
-                                    />
-                                    </div>
-                               )}
-                             </div>
-                             <div>
-                                <div className="font-medium text-foreground">{row.name}</div>
-                                <div className="text-xs text-muted-foreground">
-                                    {activeTab === 'breeding' ? 'Breeding' : activeTab === 'products' ? 'Product' : 'Butchering'} • T{row.tier}
+                            <div className="h-12 w-12 bg-muted rounded-lg flex items-center justify-center flex-shrink-0 border border-border relative group">
+                              <img
+                                src={`https://render.albiononline.com/v1/item/${activeTab === 'breeding' ? row.babyId : (activeTab === 'butchering' ? row.adultId : row.adultId)}`}
+                                alt={row.name}
+                                className="h-10 w-10 object-contain"
+                              />
+                              {activeTab === 'breeding' && (
+                                <div className="absolute -bottom-2 -right-2 h-6 w-6 bg-card rounded-full border border-border flex items-center justify-center ">
+                                  <img
+                                    src={`https://render.albiononline.com/v1/item/${row.adultId}`}
+                                    alt="Adult"
+                                    className="h-4 w-4 object-contain"
+                                  />
                                 </div>
-                             </div>
+                              )}
+                              {activeTab === 'products' && row.produceId && (
+                                <div className="absolute -bottom-2 -right-2 h-6 w-6 bg-card rounded-full border border-border flex items-center justify-center ">
+                                  <img
+                                    src={`https://render.albiononline.com/v1/item/${row.produceId}`}
+                                    alt="Product"
+                                    className="h-4 w-4 object-contain"
+                                  />
+                                </div>
+                              )}
+                              {activeTab === 'butchering' && row.meatId && (
+                                <div className="absolute -bottom-2 -right-2 h-6 w-6 bg-card rounded-full border border-border flex items-center justify-center ">
+                                  <img
+                                    src={`https://render.albiononline.com/v1/item/${row.meatId}`}
+                                    alt="Meat"
+                                    className="h-4 w-4 object-contain"
+                                  />
+                                </div>
+                              )}
+                            </div>
+                            <div>
+                              <div className="font-medium text-foreground">{row.name}</div>
+                              <div className="text-xs text-muted-foreground">
+                                {activeTab === 'breeding' ? 'Breeding' : activeTab === 'products' ? 'Product' : 'Butchering'} • T{row.tier}
+                              </div>
+                            </div>
                           </div>
                         </td>
                         <td className={`p-4 text-right font-medium ${row.profit > 0 ? 'text-success' : 'text-destructive'}`}>
@@ -778,209 +778,209 @@ export default function AnimalClient() {
                         <tr className="bg-muted/30 border-b border-border">
                           <td colSpan={5} className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                
-                                {/* Input Column */}
-                                <div className="space-y-3">
-                                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-                                        <CircleDollarSign className="h-4 w-4" /> Costs & Inputs
-                                    </h4>
-                                    <div className="bg-card/50 rounded-lg p-4 border border-border space-y-3">
-                                    
-                                    {/* Baby Price */}
-                                    {activeTab === 'breeding' && (
-                                        <div className="flex items-start gap-3">
-                                            <img src={`https://render.albiononline.com/v1/item/${row.babyId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
-                                            <div className="w-full">
-                                                <NumberInput 
-                                                    label="Baby Price"
-                                                    value={row.babyPrice}
-                                                    onChange={(val) => handlePriceUpdate(row.id, 'babyPrice', val)}
-                                                    className="h-9 text-sm bg-background"
-                                                    isCustom={row.isCustomBabyPrice}
-                                                    onReset={() => handleResetPrice(row.id, 'babyPrice')}
-                                                />
-                                                <div className="flex justify-end mt-1">
-                                                    <span className="text-xs text-muted-foreground">24h Vol: {row.babyVolume?.toLocaleString()}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
 
-                                    {/* Adult Price (Butchering Input) */}
-                                    {activeTab === 'butchering' && (
-                                        <div className="flex items-start gap-3">
-                                            <img src={`https://render.albiononline.com/v1/item/${row.adultId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
-                                            <div className="w-full">
-                                                <NumberInput 
-                                                    label="Adult Price"
-                                                    value={row.adultPrice}
-                                                    onChange={(val) => handlePriceUpdate(row.id, 'adultPrice', val)}
-                                                    className="h-9 text-sm bg-background"
-                                                    isCustom={row.isCustomAdultPrice}
-                                                    onReset={() => handleResetPrice(row.id, 'adultPrice')}
-                                                />
-                                                <div className="flex justify-end mt-1">
-                                                    <span className="text-xs text-muted-foreground">24h Vol: {row.adultVolume?.toLocaleString()}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
+                              {/* Input Column */}
+                              <div className="space-y-3">
+                                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                                  <CircleDollarSign className="h-4 w-4" /> Costs & Inputs
+                                </h4>
+                                <div className="bg-card/50 rounded-lg p-4 border border-border space-y-3">
 
-                                    {/* Food Cost */}
-                                    {(activeTab === 'breeding' || activeTab === 'products') && (
-                                        <div className="flex items-start gap-3">
-                                            <img 
-                                                src={`https://render.albiononline.com/v1/item/${useFavoriteFood && row.favoriteFoodId ? row.favoriteFoodId : 'T1_CARROT'}`} 
-                                                className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" 
-                                            />
-                                            <div className="w-full">
-                                                <NumberInput 
-                                                    label={useFavoriteFood 
-                                                        ? `Fav. Food: ${row.favoriteFoodId ? formatItemName(row.favoriteFoodId) : 'None'}` 
-                                                        : 'Generic Food'}
-                                                    value={useFavoriteFood ? row.favoriteFoodPrice : row.foodPrice}
-                                                    onChange={(val) => handlePriceUpdate(row.id, useFavoriteFood ? 'favoriteFoodPrice' : 'foodPrice', val)}
-                                                    className="h-9 text-sm bg-background"
-                                                    isCustom={useFavoriteFood ? row.isCustomFavoriteFoodPrice : row.isCustomFoodPrice}
-                                                    onReset={() => handleResetPrice(row.id, useFavoriteFood ? 'favoriteFoodPrice' : 'foodPrice')}
-                                                />
-                                                <div className="flex flex-col items-end mt-1 gap-1">
-                                                    <span className="text-xs text-muted-foreground">
-                                                        24h Vol: {useFavoriteFood ? row.favoriteFoodVolume?.toLocaleString() : row.foodVolume?.toLocaleString()}
-                                                    </span>
-                                                    <div className="text-xs text-muted-foreground text-right">
-                                                        {activeTab === 'breeding' ? (
-                                                            <>
-                                                                <div>x {useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption} / cycle</div>
-                                                                <div>Total: {(useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption) * Math.max(1, Math.round(row.growthTime / 22))} units</div>
-                                                            </>
-                                                        ) : (
-                                                            <>x {useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption} units / cycle</>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
+                                  {/* Baby Price */}
+                                  {activeTab === 'breeding' && (
+                                    <div className="flex items-start gap-3">
+                                      <img src={`https://render.albiononline.com/v1/item/${row.babyId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
+                                      <div className="w-full">
+                                        <NumberInput
+                                          label="Baby Price"
+                                          value={row.babyPrice}
+                                          onChange={(val) => handlePriceUpdate(row.id, 'babyPrice', val)}
+                                          className="h-9 text-sm bg-background"
+                                          isCustom={row.isCustomBabyPrice}
+                                          onReset={() => handleResetPrice(row.id, 'babyPrice')}
+                                        />
+                                        <div className="flex justify-end mt-1">
+                                          <span className="text-xs text-muted-foreground">24h Vol: {row.babyVolume?.toLocaleString()}</span>
                                         </div>
-                                    )}
+                                      </div>
                                     </div>
-                                </div>
+                                  )}
 
-                                {/* Output Column */}
-                                <div className="space-y-3">
-                                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-                                        <Leaf className="h-4 w-4" /> Output & Revenue
-                                    </h4>
-                                    <div className="bg-card/50 rounded-lg p-4 border border-border space-y-3">
-
-                                    {/* Adult Price (Breeding Output) */}
-                                    {activeTab === 'breeding' && (
-                                        <div className="flex items-start gap-3">
-                                            <img src={`https://render.albiononline.com/v1/item/${row.adultId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
-                                            <div className="w-full">
-                                                <NumberInput 
-                                                    label="Grown Animal"
-                                                    value={row.adultPrice}
-                                                    onChange={(val) => handlePriceUpdate(row.id, 'adultPrice', val)}
-                                                    className="h-9 text-sm bg-background"
-                                                    isCustom={row.isCustomAdultPrice}
-                                                    onReset={() => handleResetPrice(row.id, 'adultPrice')}
-                                                />
-                                                <div className="flex justify-end mt-1">
-                                                    <span className="text-xs text-muted-foreground">24h Vol: {row.adultVolume?.toLocaleString()}</span>
-                                                </div>
-                                            </div>
+                                  {/* Adult Price (Butchering Input) */}
+                                  {activeTab === 'butchering' && (
+                                    <div className="flex items-start gap-3">
+                                      <img src={`https://render.albiononline.com/v1/item/${row.adultId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
+                                      <div className="w-full">
+                                        <NumberInput
+                                          label="Adult Price"
+                                          value={row.adultPrice}
+                                          onChange={(val) => handlePriceUpdate(row.id, 'adultPrice', val)}
+                                          className="h-9 text-sm bg-background"
+                                          isCustom={row.isCustomAdultPrice}
+                                          onReset={() => handleResetPrice(row.id, 'adultPrice')}
+                                        />
+                                        <div className="flex justify-end mt-1">
+                                          <span className="text-xs text-muted-foreground">24h Vol: {row.adultVolume?.toLocaleString()}</span>
                                         </div>
-                                    )}
-
-                                    {/* Product Output */}
-                                    {activeTab === 'products' && row.produceId && (
-                                        <div className="flex items-start gap-3">
-                                            <img src={`https://render.albiononline.com/v1/item/${row.produceId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
-                                            <div className="w-full">
-                                                <NumberInput 
-                                                    label="Product (e.g. Eggs/Milk)"
-                                                    value={row.productPrice}
-                                                    onChange={(val) => handlePriceUpdate(row.id, 'productPrice', val)}
-                                                    className="h-9 text-sm bg-background"
-                                                    isCustom={row.isCustomProductPrice}
-                                                    onReset={() => handleResetPrice(row.id, 'productPrice')}
-                                                />
-                                                <div className="flex flex-col items-end mt-1 gap-1">
-                                                    <span className="text-xs text-muted-foreground">24h Vol: {row.productVolume?.toLocaleString()}</span>
-                                                    <div className="text-xs text-muted-foreground text-right">
-                                                        Yield: {((row.produceYield || 0) * (usePremium ? 1 : 0.5)).toFixed(1)}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Meat Output */}
-                                    {activeTab === 'butchering' && row.meatId && (
-                                        <div className="flex items-start gap-3">
-                                            <img src={`https://render.albiononline.com/v1/item/${row.meatId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
-                                            <div className="w-full">
-                                                <NumberInput 
-                                                    label="Meat"
-                                                    value={row.meatPrice}
-                                                    onChange={(val) => handlePriceUpdate(row.id, 'meatPrice', val)}
-                                                    className="h-9 text-sm bg-background"
-                                                    isCustom={row.isCustomMeatPrice}
-                                                    onReset={() => handleResetPrice(row.id, 'meatPrice')}
-                                                />
-                                                <div className="flex flex-col items-end mt-1 gap-1">
-                                                    <span className="text-xs text-muted-foreground">24h Vol: {row.meatVolume?.toLocaleString()}</span>
-                                                    <div className="text-xs text-muted-foreground text-right">
-                                                        Yield: {row.meatYield}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
+                                      </div>
                                     </div>
-                                </div>
+                                  )}
 
-                                {/* Stats Column */}
-                                <div className="space-y-4 bg-muted/30 p-4 rounded-lg border border-border/50">
-                                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
-                                        <Info className="h-4 w-4" /> Statistics
-                                    </h4>
-                                    
-                                    <div className="space-y-3 text-sm">
-                                        <div className="flex justify-between">
-                                            <span className="text-muted-foreground">Est. Cost</span>
-                                            <span className="text-foreground">{row.cost?.toLocaleString()}</span>
+                                  {/* Food Cost */}
+                                  {(activeTab === 'breeding' || activeTab === 'products') && (
+                                    <div className="flex items-start gap-3">
+                                      <img
+                                        src={`https://render.albiononline.com/v1/item/${useFavoriteFood && row.favoriteFoodId ? row.favoriteFoodId : 'T1_CARROT'}`}
+                                        className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border"
+                                      />
+                                      <div className="w-full">
+                                        <NumberInput
+                                          label={useFavoriteFood
+                                            ? `Fav. Food: ${row.favoriteFoodId ? formatItemName(row.favoriteFoodId) : 'None'}`
+                                            : 'Generic Food'}
+                                          value={useFavoriteFood ? row.favoriteFoodPrice : row.foodPrice}
+                                          onChange={(val) => handlePriceUpdate(row.id, useFavoriteFood ? 'favoriteFoodPrice' : 'foodPrice', val)}
+                                          className="h-9 text-sm bg-background"
+                                          isCustom={useFavoriteFood ? row.isCustomFavoriteFoodPrice : row.isCustomFoodPrice}
+                                          onReset={() => handleResetPrice(row.id, useFavoriteFood ? 'favoriteFoodPrice' : 'foodPrice')}
+                                        />
+                                        <div className="flex flex-col items-end mt-1 gap-1">
+                                          <span className="text-xs text-muted-foreground">
+                                            24h Vol: {useFavoriteFood ? row.favoriteFoodVolume?.toLocaleString() : row.foodVolume?.toLocaleString()}
+                                          </span>
+                                          <div className="text-xs text-muted-foreground text-right">
+                                            {activeTab === 'breeding' ? (
+                                              <>
+                                                <div>x {useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption} / cycle</div>
+                                                <div>Total: {(useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption) * Math.max(1, Math.round(row.growthTime / 22))} units</div>
+                                              </>
+                                            ) : (
+                                              <>x {useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption} units / cycle</>
+                                            )}
+                                          </div>
                                         </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-muted-foreground">Growth Time</span>
-                                            <span className="text-foreground">{row.growthTime}h ({Math.max(1, Math.round(row.growthTime / 22))} cycles)</span>
-                                        </div>
-                                        
-                                        {activeTab === 'breeding' && (
-                                            <>
-                                                <div className="flex justify-between">
-                                                    <span className="text-muted-foreground">Offspring Chance</span>
-                                                    <span className="text-foreground">{useFocus ? row.offspringRateFocus : row.offspringRate}%</span>
-                                                </div>
-                                            </>
-                                        )}
-                                        
-                                        <div className="h-px bg-border my-2" />
-                                        
-                                        <div className="flex justify-between">
-                                            <span className="text-muted-foreground">Total Profit</span>
-                                            <span className={`font-medium ${row.totalProfit > 0 ? 'text-success' : 'text-destructive'}`}>
-                                                {row.totalProfit?.toLocaleString()}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-muted-foreground">Profit / Plot (9x)</span>
-                                            <span className={`font-medium ${row.profitPerPlot > 0 ? 'text-success' : 'text-destructive'}`}>
-                                                {row.profitPerPlot?.toLocaleString()}
-                                            </span>
-                                        </div>
+                                      </div>
                                     </div>
+                                  )}
                                 </div>
+                              </div>
+
+                              {/* Output Column */}
+                              <div className="space-y-3">
+                                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                                  <Leaf className="h-4 w-4" /> Output & Revenue
+                                </h4>
+                                <div className="bg-card/50 rounded-lg p-4 border border-border space-y-3">
+
+                                  {/* Adult Price (Breeding Output) */}
+                                  {activeTab === 'breeding' && (
+                                    <div className="flex items-start gap-3">
+                                      <img src={`https://render.albiononline.com/v1/item/${row.adultId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
+                                      <div className="w-full">
+                                        <NumberInput
+                                          label="Grown Animal"
+                                          value={row.adultPrice}
+                                          onChange={(val) => handlePriceUpdate(row.id, 'adultPrice', val)}
+                                          className="h-9 text-sm bg-background"
+                                          isCustom={row.isCustomAdultPrice}
+                                          onReset={() => handleResetPrice(row.id, 'adultPrice')}
+                                        />
+                                        <div className="flex justify-end mt-1">
+                                          <span className="text-xs text-muted-foreground">24h Vol: {row.adultVolume?.toLocaleString()}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {/* Product Output */}
+                                  {activeTab === 'products' && row.produceId && (
+                                    <div className="flex items-start gap-3">
+                                      <img src={`https://render.albiononline.com/v1/item/${row.produceId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
+                                      <div className="w-full">
+                                        <NumberInput
+                                          label="Product (e.g. Eggs/Milk)"
+                                          value={row.productPrice}
+                                          onChange={(val) => handlePriceUpdate(row.id, 'productPrice', val)}
+                                          className="h-9 text-sm bg-background"
+                                          isCustom={row.isCustomProductPrice}
+                                          onReset={() => handleResetPrice(row.id, 'productPrice')}
+                                        />
+                                        <div className="flex flex-col items-end mt-1 gap-1">
+                                          <span className="text-xs text-muted-foreground">24h Vol: {row.productVolume?.toLocaleString()}</span>
+                                          <div className="text-xs text-muted-foreground text-right">
+                                            Yield: {((row.produceYield || 0) * (usePremium ? 1 : 0.5)).toFixed(1)}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {/* Meat Output */}
+                                  {activeTab === 'butchering' && row.meatId && (
+                                    <div className="flex items-start gap-3">
+                                      <img src={`https://render.albiononline.com/v1/item/${row.meatId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
+                                      <div className="w-full">
+                                        <NumberInput
+                                          label="Meat"
+                                          value={row.meatPrice}
+                                          onChange={(val) => handlePriceUpdate(row.id, 'meatPrice', val)}
+                                          className="h-9 text-sm bg-background"
+                                          isCustom={row.isCustomMeatPrice}
+                                          onReset={() => handleResetPrice(row.id, 'meatPrice')}
+                                        />
+                                        <div className="flex flex-col items-end mt-1 gap-1">
+                                          <span className="text-xs text-muted-foreground">24h Vol: {row.meatVolume?.toLocaleString()}</span>
+                                          <div className="text-xs text-muted-foreground text-right">
+                                            Yield: {row.meatYield}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Stats Column */}
+                              <div className="space-y-4 bg-muted/30 p-4 rounded-lg border border-border/50">
+                                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+                                  <Info className="h-4 w-4" /> Statistics
+                                </h4>
+
+                                <div className="space-y-3 text-sm">
+                                  <div className="flex justify-between">
+                                    <span className="text-muted-foreground">Est. Cost</span>
+                                    <span className="text-foreground">{row.cost?.toLocaleString()}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-muted-foreground">Growth Time</span>
+                                    <span className="text-foreground">{row.growthTime}h ({Math.max(1, Math.round(row.growthTime / 22))} cycles)</span>
+                                  </div>
+
+                                  {activeTab === 'breeding' && (
+                                    <>
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Offspring Chance</span>
+                                        <span className="text-foreground">{useFocus ? row.offspringRateFocus : row.offspringRate}%</span>
+                                      </div>
+                                    </>
+                                  )}
+
+                                  <div className="h-px bg-border my-2" />
+
+                                  <div className="flex justify-between">
+                                    <span className="text-muted-foreground">Total Profit</span>
+                                    <span className={`font-medium ${row.totalProfit > 0 ? 'text-success' : 'text-destructive'}`}>
+                                      {row.totalProfit?.toLocaleString()}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-muted-foreground">Profit / Plot (9x)</span>
+                                    <span className={`font-medium ${row.profitPerPlot > 0 ? 'text-success' : 'text-destructive'}`}>
+                                      {row.profitPerPlot?.toLocaleString()}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
 
                             </div>
                           </td>
