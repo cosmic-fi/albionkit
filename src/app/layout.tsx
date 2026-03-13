@@ -104,8 +104,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const messages = await getMessages();
-  const locale = await getLocale();
+  // Default to English - users can change via language switcher
+  const locale = 'en';
+  const messages = (await import(`@/../messages/${locale}.json`)).default;
 
   return (
     <html lang={locale} suppressHydrationWarning>
