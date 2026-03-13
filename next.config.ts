@@ -12,11 +12,23 @@ const withPWA = withPWAInit({
   disable: process.env.NODE_ENV === "development",
   workboxOptions: {
     disableDevLogs: true,
-    // Skip caching for www/non-www redirect issues
     skipWaiting: true,
     clientsClaim: true,
-    // Don't cache redirect responses
-    runtimeCaching: [],
+    // Don't cache cross-origin or redirect responses
+    runtimeCaching: [
+      {
+        // Cache same-origin static assets only
+        urlPattern: /^https:\/\/albionkit\.com\/_next\/static\/.*/i,
+        handler: 'CacheFirst',
+        options: {
+          cacheName: 'next-static',
+          expiration: {
+            maxEntries: 64,
+            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+          },
+        },
+      },
+    ],
   },
 });
 

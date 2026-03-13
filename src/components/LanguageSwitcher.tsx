@@ -42,10 +42,11 @@ export function LanguageSwitcher() {
       setIsOpen(false);
       return;
     }
-    
+
     await setLocale(locale);
     setIsOpen(false);
-    window.location.reload();
+    // Force a full page reload to apply the new locale
+    window.location.href = window.location.pathname;
   };
 
   return (

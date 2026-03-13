@@ -104,8 +104,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Default to English - users can change via language switcher
-  const locale = 'en';
+  // Get locale from cookies (set by language switcher)
+  // Default to English if no cookie
+  const { cookies } = await import('next/headers');
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
+  
   const messages = (await import(`@/../messages/${locale}.json`)).default;
 
   return (
