@@ -9,7 +9,7 @@
         }
       ],
       "destination": "https://albionkit.com/:path*",
-      "permanent": 308
+      "permanent": true
     }
   ],
   "headers": [
