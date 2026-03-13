@@ -2,10 +2,9 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const host = request.headers.get('host') || '';
-  const pathname = request.nextUrl.pathname;
-
   // Skip middleware for static files, API routes, and SEO files
+  const pathname = request.nextUrl.pathname;
+  
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
@@ -19,23 +18,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // ONLY redirect www to non-www
-  if (host.startsWith('www.')) {
-    const url = request.nextUrl.clone();
-    url.hostname = 'albionkit.com';
-    url.protocol = 'https:';
-    return NextResponse.redirect(url, 308);
-  }
-
-  // Force HTTPS
-  if (request.nextUrl.protocol === 'http:' && !host.includes('localhost')) {
-    const url = request.nextUrl.clone();
-    url.protocol = 'https:';
-    return NextResponse.redirect(url, 308);
-  }
-
-  // NO automatic locale detection - just continue
-  // Users can manually change language via language switcher
+  // NO redirects - Vercel handles www and HTTPS automatically
+  // Just continue with the request
   return NextResponse.next();
 }
 
