@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Plus, X } from 'lucide-react';
 import { ItemIcon } from './ItemIcon';
 import { ItemSelectorModal } from './ItemSelectorModal';
@@ -10,6 +11,20 @@ import { SimpleItem } from '@/lib/item-service';
 const formatItemName = (id: string) => {
   if (!id) return '';
   return id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+};
+
+// Mapping of English labels to translation keys
+const labelToRoleKeyMap: Record<string, string> = {
+  'Main Hand': 'main',
+  'Off Hand': 'off',
+  'Head': 'head',
+  'Armor': 'armor',
+  'Shoes': 'shoes',
+  'Cape': 'cape',
+  'Potion': 'potion',
+  'Food': 'food',
+  'Mount': 'mount',
+  'Bag': 'bag',
 };
 
 interface EquipmentSlotProps {
@@ -33,8 +48,13 @@ export function EquipmentSlot({
   placeholderIcon,
   disabled = false,
 }: EquipmentSlotProps) {
+  const t = useTranslations('CreateBuild');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectingFor, setSelectingFor] = useState<'main' | 'alt'>('main');
+
+  // Get the localized label
+  const roleKey = labelToRoleKeyMap[label];
+  const localizedLabel = roleKey ? t(`roles.${roleKey}`) : label;
 
   const handleSelect = (item: SimpleItem) => {
     if (selectingFor === 'main') {
@@ -58,11 +78,11 @@ export function EquipmentSlot({
       <div className="relative group">
         {/* Slot Label */}
         <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-medium text-muted-foreground uppercase tracking-wider whitespace-nowrap">
-          {label}
+          {localizedLabel}
         </div>
 
         {/* Main Slot */}
-        <Tooltip content={value ? formatItemName(value) : (disabled ? `${label} (Disabled)` : label)}>
+        <Tooltip content={value ? formatItemName(value) : (disabled ? `${localizedLabel} (Disabled)` : localizedLabel)}>
           <div 
             onClick={() => {
               if (!disabled) {
@@ -153,7 +173,7 @@ export function EquipmentSlot({
         onClose={() => setIsModalOpen(false)}
         onSelect={handleSelect}
         filter={filter}
-        title={selectingFor === 'main' ? `Select ${label}` : `Select Alternative ${label}`}
+        title={selectingFor === 'main' ? `Select ${localizedLabel}` : `Select Alternative ${localizedLabel}`}
       />
     </div>
   );

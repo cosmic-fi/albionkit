@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Skull, Swords, X } from 'lucide-react';
 import type { Event } from '@/lib/kill-feed-service';
+import { useTranslations } from 'next-intl';
 
 function formatFame(fame: number) {
   if (fame >= 1_000_000) return (fame / 1_000_000).toFixed(2) + 'm';
@@ -11,18 +12,20 @@ function formatFame(fame: number) {
   return fame.toLocaleString();
 }
 
-function formatTimeAgo(timestamp: string) {
+function formatTimeAgo(timestamp: string, t: any) {
   const diff = Date.now() - new Date(timestamp).getTime();
   const seconds = Math.floor(diff / 1000);
-  if (seconds < 60) return 'Just now';
+  if (seconds < 60) return t('justNow');
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return t('minutesAgo', { n: minutes });
   const hours = Math.floor(minutes / 60);
-  return `${hours}h ago`;
+  return t('hoursAgo', { n: hours });
 }
 
 export function LiveKillToasts() {
+  const t = useTranslations('LiveKillToasts');
   const [queue, setQueue] = useState<Event[]>([]);
+  // ... rest of component
   const [current, setCurrent] = useState<Event | null>(null);
   const [muted, setMuted] = useState(false);
   const seenIdsRef = useRef<Set<number>>(new Set());
@@ -119,16 +122,16 @@ export function LiveKillToasts() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
               </span>
-              <span className="uppercase tracking-wide font-semibold">Live Kill</span>
+              <span className="uppercase tracking-wide font-semibold">{t('liveKill')}</span>
             </div>
             <span>•</span>
-            <span>{formatTimeAgo(current.TimeStamp)}</span>
+            <span>{formatTimeAgo(current.TimeStamp, t)}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex flex-col min-w-0">
-                  <div className="text-xs text-muted-foreground">Killer</div>
+                  <div className="text-xs text-muted-foreground">{t('killer')}</div>
                   <div className="font-bold text-sm text-emerald-400 truncate">{killer.Name}</div>
                   {killer.GuildName && (
                     <div className="text-[10px] text-muted-foreground truncate">{killer.GuildName}</div>
@@ -140,7 +143,7 @@ export function LiveKillToasts() {
                   </div>
                 </div>
                 <div className="flex flex-col items-end min-w-0">
-                  <div className="text-xs text-muted-foreground text-right">Victim</div>
+                  <div className="text-xs text-muted-foreground text-right">{t('victim')}</div>
                   <div className="font-bold text-sm text-red-400 truncate">{victim.Name}</div>
                   {victim.GuildName && (
                     <div className="text-[10px] text-muted-foreground truncate">{victim.GuildName}</div>
@@ -150,7 +153,7 @@ export function LiveKillToasts() {
               <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Skull className="h-3 w-3 text-amber-500" />
-                  <span className="font-mono text-amber-400 font-semibold">{formatFame(current.TotalVictimKillFame)} Fame</span>
+                  <span className="font-mono text-amber-400 font-semibold">{formatFame(current.TotalVictimKillFame)} {t('fame')}</span>
                 </div>
                 {current.Location && (
                   <div className="truncate max-w-[60%] text-right">
@@ -159,7 +162,7 @@ export function LiveKillToasts() {
                 )}
               </div>
               <div className="mt-2 text-[11px] text-primary flex items-center justify-between">
-                <span className="underline">Open Live Kill Feed</span>
+                <span className="underline">{t('openFeed')}</span>
               </div>
             </div>
           </div>

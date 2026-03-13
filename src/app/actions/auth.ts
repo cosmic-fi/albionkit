@@ -1,5 +1,6 @@
 'use server';
 
+import { getTranslations } from 'next-intl/server';
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
 import { sendEmail } from '@/lib/email-service';
 import { getVerificationEmailHtml } from '@/lib/email-templates';
@@ -107,10 +108,11 @@ export async function sendVerificationEmail(email: string) {
 
     // Send the email using Resend
     console.log('[AuthAction] Sending email via Resend...');
+    const t = await getTranslations('Emails');
     const result = await sendEmail({
       to: email,
-      subject: 'Verify your email for AlbionKit',
-      html: getVerificationEmailHtml(link),
+      subject: t('verification.subject'),
+      html: getVerificationEmailHtml(link, t),
     });
 
     if (!result.success) {

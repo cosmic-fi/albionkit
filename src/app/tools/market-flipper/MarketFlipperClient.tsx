@@ -3,6 +3,7 @@
 import { useState, useEffect, Fragment, Suspense } from 'react';
 import { RefreshCw, TrendingUp, ArrowRight, Info, ChevronDown, ChevronUp, Star, Plus, Trash2, Filter, Tag, Search as SearchIcon, Layers, DollarSign, Percent, Sparkles, CircleHelp, Lock, Loader2 } from 'lucide-react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { FeatureLock } from '@/components/subscription/FeatureLock';
@@ -13,7 +14,7 @@ import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { SubscriptionModal } from '@/components/subscription/SubscriptionModal';
 import { InfoStrip, InfoBanner } from '@/components/InfoStrip';
 
-import { ITEM_CATEGORIES } from './item-categories';
+import { ITEM_CATEGORIES, CATEGORY_LABEL_IDS } from './item-categories';
 import { Select } from '@/components/ui/Select';
 import { Input } from '@/components/ui/Input';
 import { ServerSelector, ServerRegion } from '@/components/ServerSelector';
@@ -25,6 +26,7 @@ import { Tooltip } from '@/components/ui/Tooltip';
 import { ItemIcon } from '@/components/ItemIcon';
 
 function MarketFlipperContent() {
+  const t = useTranslations('MarketFlipper');
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user } = useAuth();
@@ -46,7 +48,7 @@ function MarketFlipperContent() {
   // Helper to get friendly Tier label
   const getTierLabel = (itemId: string) => {
     const match = itemId.match(/^T(\d+)/);
-    if (match) return `Tier ${match[1]}`;
+    if (match) return t('tierN', { n: match[1] });
     return '';
   };
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -333,9 +335,9 @@ function MarketFlipperContent() {
 
   return (
     <PageShell
-      title="Market Flipper"
+      title={t('title')}
       backgroundImage='/background/ao-market.jpg'
-      description="Real-time trading opportunities across all Royal Cities."
+      description={t('description')}
       icon={<TrendingUp className="h-6 w-6" />}
       headerActions={
         <div className="flex flex-wrap items-center gap-4">
@@ -368,13 +370,13 @@ function MarketFlipperContent() {
               </div>
               {watchlistSummary.profitable > 0 && (
                 <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-success/10 text-success px-2 py-0.5 rounded-full border border-success/20 animate-pulse">
-                  {watchlistSummary.profitable} Hot
+                  {watchlistSummary.profitable} {t('hot')}
                 </span>
               )}
             </div>
-            <h3 className="text-sm font-bold text-foreground">My Watchlist</h3>
+            <h3 className="text-sm font-bold text-foreground">{t('myWatchlist')}</h3>
             <p className="text-xs text-muted-foreground mt-1">
-              {watchlist.length} items tracked • {showWatchlistOnly ? 'Filter active' : 'Click to filter'}
+              {t('watchlistInfo', { count: watchlist.length, filterStatus: showWatchlistOnly ? t('filterActive') : t('clickToFilter') })}
             </p>
             {showWatchlistOnly && (
               <div className="absolute top-2 right-2">
@@ -385,7 +387,7 @@ function MarketFlipperContent() {
 
           <div className="bg-card border border-border rounded-2xl p-4 flex flex-col justify-center">
             <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">
-              <TrendingUp className="h-3 w-3 text-success" /> Best Watchlist ROI
+              <TrendingUp className="h-3 w-3 text-success" /> {t('bestROI')}
             </div>
             {watchlistSummary.topPick ? (
               <div className="flex items-center justify-between">
@@ -398,17 +400,17 @@ function MarketFlipperContent() {
                 </div>
                 <div className="text-right shrink-0">
                   <div className="text-sm font-bold text-success">+{watchlistSummary.topPick.roi.toFixed(1)}%</div>
-                  <div className="text-[10px] text-muted-foreground">ROI</div>
+                  <div className="text-[10px] text-muted-foreground">{t('roi')}</div>
                 </div>
               </div>
             ) : (
-              <div className="text-sm font-medium text-muted-foreground italic">No data yet</div>
+              <div className="text-sm font-medium text-muted-foreground italic">{t('noData')}</div>
             )}
           </div>
 
           <div className="bg-card border border-border rounded-2xl p-4 flex flex-col justify-center">
             <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">
-              <DollarSign className="h-3 w-3 text-primary" /> Total Potential Profit
+              <DollarSign className="h-3 w-3 text-primary" /> {t('totalPotentialProfit')}
             </div>
             {(() => {
               const totalProfit = flips
@@ -418,7 +420,7 @@ function MarketFlipperContent() {
               return (
                 <div className="flex items-baseline gap-2">
                   <div className="text-2xl font-black text-foreground">{Math.round(totalProfit).toLocaleString()}</div>
-                  <div className="text-xs text-muted-foreground font-bold italic">Silver</div>
+                  <div className="text-xs text-muted-foreground font-bold italic">{t('silver')}</div>
                 </div>
               );
             })()}
@@ -433,7 +435,7 @@ function MarketFlipperContent() {
               {/* Universal Search - Full width on mobile, 1 col on desktop */}
               <div className="col-span-2 md:col-span-1">
                 <label className="text-xs text-muted-foreground block mb-2 font-medium flex items-center gap-1 uppercase tracking-wider">
-                  <SearchIcon className="h-3 w-3" /> Search
+                  <SearchIcon className="h-3 w-3" /> {t('search')}
                 </label>
                 <Select
                   value={searchSelectValue}
@@ -446,7 +448,7 @@ function MarketFlipperContent() {
                   }}
                   options={searchOptions}
                   searchable={true}
-                  placeholder={searchLoading ? 'Searching...' : 'Search item...'}
+                  placeholder={searchLoading ? t('searching') : t('searchPlaceholder')}
                   onSearchTermChange={async (term) => {
                     if (term.length < 2) {
                       setSearchOptions([]);
@@ -473,23 +475,26 @@ function MarketFlipperContent() {
                 className="col-span-2 md:col-span-1"
                 label={
                   <>
-                    <Tag className="h-3 w-3" /> Category
-                    <Tooltip content="Filter items by market category">
+                    <Tag className="h-3 w-3" /> {t('category')}
+                    <Tooltip content={t('tooltips.category')}>
                       <CircleHelp className="h-3 w-3 text-muted-foreground" />
                     </Tooltip>
                   </>
                 }
                 value={selectedCategory}
                 onChange={(value) => setSelectedCategory(value)}
-                options={Object.keys(ITEM_CATEGORIES).map(cat => ({ label: cat, value: cat }))}
+                options={Object.keys(ITEM_CATEGORIES).map(cat => ({
+                  label: t(`categoryLabels.${CATEGORY_LABEL_IDS[cat] as any}`),
+                  value: cat
+                }))}
               />
 
               <Select
                 className="col-span-1"
                 label={
                   <>
-                    <Layers className="h-3 w-3" /> Tier
-                    <Tooltip content="Filter to a specific tier (e.g., T6 only)">
+                    <Layers className="h-3 w-3" /> {t('tier')}
+                    <Tooltip content={t('tooltips.tier')}>
                       <CircleHelp className="h-3 w-3 text-muted-foreground" />
                     </Tooltip>
                   </>
@@ -497,12 +502,12 @@ function MarketFlipperContent() {
                 value={selectedTier}
                 onChange={(value) => setSelectedTier(value)}
                 options={[
-                  { label: 'All Tiers', value: 'All' },
-                  { label: 'Tier 4', value: 'T4' },
-                  { label: 'Tier 5', value: 'T5' },
-                  { label: 'Tier 6', value: 'T6' },
-                  { label: 'Tier 7', value: 'T7' },
-                  { label: 'Tier 8', value: 'T8' },
+                  { label: t('allTiers'), value: 'All' },
+                  { label: t('tierN', { n: 4 }), value: 'T4' },
+                  { label: t('tierN', { n: 5 }), value: 'T5' },
+                  { label: t('tierN', { n: 6 }), value: 'T6' },
+                  { label: t('tierN', { n: 7 }), value: 'T7' },
+                  { label: t('tierN', { n: 8 }), value: 'T8' },
                 ]}
               />
 
@@ -510,8 +515,8 @@ function MarketFlipperContent() {
                 className="col-span-1"
                 label={
                   <>
-                    <Sparkles className="h-3 w-3" /> Enchant
-                    <Tooltip content="Item enchantment level (.0 to .4)">
+                    <Sparkles className="h-3 w-3" /> {t('enchant')}
+                    <Tooltip content={t('tooltips.enchant')}>
                       <CircleHelp className="h-3 w-3 text-muted-foreground" />
                     </Tooltip>
                   </>
@@ -519,7 +524,7 @@ function MarketFlipperContent() {
                 value={selectedEnchantment}
                 onChange={(value) => setSelectedEnchantment(Number(value))}
                 options={[
-                  { label: 'Flat (0)', value: 0 },
+                  { label: t('flat'), value: 0 },
                   { label: '.1', value: 1 },
                   { label: '.2', value: 2 },
                   { label: '.3', value: 3 },
@@ -532,8 +537,8 @@ function MarketFlipperContent() {
                <NumberInput
                   label={
                     <>
-                      <DollarSign className="h-3 w-3" /> Min Profit
-                      <Tooltip content="Minimum net profit required per item">
+                      <DollarSign className="h-3 w-3" /> {t('minProfit')}
+                      <Tooltip content={t('tooltips.minProfit')}>
                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                       </Tooltip>
                     </>
@@ -546,8 +551,8 @@ function MarketFlipperContent() {
                <NumberInput
                   label={
                     <>
-                      <Percent className="h-3 w-3" /> Min Margin %
-                      <Tooltip content="Minimum margin percentage relative to buy price">
+                      <Percent className="h-3 w-3" /> {t('minMargin')}
+                      <Tooltip content={t('tooltips.minMargin')}>
                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                       </Tooltip>
                     </>
@@ -560,8 +565,8 @@ function MarketFlipperContent() {
                <NumberInput
                   label={
                     <>
-                      <ArrowRight className="h-3 w-3" /> Est. Travel Cost
-                      <Tooltip content="Estimated silver cost for transporting the item">
+                      <ArrowRight className="h-3 w-3" /> {t('estTravelCost')}
+                      <Tooltip content={t('tooltips.travelCost')}>
                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                       </Tooltip>
                     </>
@@ -573,14 +578,14 @@ function MarketFlipperContent() {
                
                <div className="flex flex-col gap-2 pt-1">
                   <Checkbox
-                    label="Premium (4% Tax)"
+                    label={t('premiumTax')}
                     checked={isPremiumTax}
                     onChange={(e) => setIsPremiumTax(e.target.checked)}
                   />
                   <Checkbox
                     label={
                       <div className="flex items-center gap-1">
-                        Unique Items Only
+                        {t('uniqueOnly')}
                         {!hasAccess && <Lock className="h-3 w-3 text-amber-500" />}
                       </div>
                     }
@@ -594,7 +599,7 @@ function MarketFlipperContent() {
                     }}
                   />
                   <Checkbox
-                    label="Watchlist Only"
+                    label={t('watchlistOnly')}
                     checked={showWatchlistOnly}
                     onChange={(e) => setShowWatchlistOnly(e.target.checked)}
                   />
@@ -603,16 +608,16 @@ function MarketFlipperContent() {
 
             {customItems.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-border flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Custom Items:</span>
+                  <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('customItems')}</span>
                   <div className="flex flex-wrap gap-2">
                       <span className="px-2 py-1 bg-info/10 text-info border border-info/20 rounded text-xs font-bold">
-                        {customItems.length} items active
+                        {t('itemsActive', { count: customItems.length })}
                       </span>
                       <button 
                         onClick={() => setCustomItems([])} 
                         className="flex items-center gap-1 px-2 py-1 bg-destructive/10 text-destructive border border-destructive/20 rounded text-xs hover:bg-destructive/20 transition-colors"
                       >
-                        <Trash2 className="h-3 w-3" /> Clear All
+                        <Trash2 className="h-3 w-3" /> {t('clearAll')}
                       </button>
                   </div>
                 </div>
@@ -623,7 +628,7 @@ function MarketFlipperContent() {
         {loading && flips.length === 0 ? (
           <div className="text-center py-20 text-muted-foreground">
             <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-warning" />
-            <p>Scanning markets...</p>
+            <p>{t('scanningMarkets')}</p>
           </div>
         ) : (
             <div className="bg-card/50 rounded-xl border border-border overflow-hidden">
@@ -631,7 +636,7 @@ function MarketFlipperContent() {
                 <div className="md:hidden divide-y divide-border">
                   {currentItems.length === 0 ? (
                     <div className="p-8 text-center text-muted-foreground">
-                      No profitable flips found matching your filters.
+                      {t('noResults')}
                     </div>
                   ) : (
                     currentItems.map((flip, index) => {
@@ -669,7 +674,7 @@ function MarketFlipperContent() {
                                      {flip.netProfit > 1000 ? `${(flip.netProfit/1000).toFixed(1)}k` : flip.netProfit}
                                   </div>
                                   <div className={`text-xs ${flip.roi > 20 ? 'text-success' : 'text-muted-foreground'}`}>
-                                     {flip.roi.toFixed(0)}% ROI
+                                     {flip.roi.toFixed(0)}% {t('roi')}
                                   </div>
                                </div>
                             </div>
@@ -677,19 +682,19 @@ function MarketFlipperContent() {
                             {/* Details Grid */}
                             <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-sm">
                                <div className="flex justify-between">
-                                  <span className="text-xs text-muted-foreground">Buy From</span>
+                                  <span className="text-xs text-muted-foreground">{t('colBuyFrom')}</span>
                                   <span className="font-medium text-right">{flip.buyCity}</span>
                                </div>
                                <div className="flex justify-between">
-                                  <span className="text-xs text-muted-foreground">Volume</span>
+                                  <span className="text-xs text-muted-foreground">{t('colVol')}</span>
                                   <span className="font-medium text-right">{flip.dailyVolume > 0 ? flip.dailyVolume.toLocaleString() : '-'}</span>
                                </div>
                                <div className="flex justify-between">
-                                  <span className="text-xs text-muted-foreground">Buy Price</span>
+                                  <span className="text-xs text-muted-foreground">{t('colBuyPrice')}</span>
                                   <span className="font-medium text-right">{flip.buyPrice.toLocaleString()}</span>
                                </div>
                                <div className="flex justify-between">
-                                  <span className="text-xs text-muted-foreground">Sell Price</span>
+                                  <span className="text-xs text-muted-foreground">{t('colSellPrice')}</span>
                                   <span className="font-medium text-right">{flip.sellPrice.toLocaleString()}</span>
                                </div>
                             </div>
@@ -700,20 +705,26 @@ function MarketFlipperContent() {
                                     <div className="flex items-center justify-between mb-4">
                                         <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
                                             <TrendingUp className="h-4 w-4 text-primary" />
-                                            Market Analysis
+                                            {t('marketAnalysis')}
                                         </h4>
                                         <div className="flex gap-2">
                                             <button 
                                                 className="px-4 py-2 text-sm bg-primary/10 text-primary hover:bg-primary/20 rounded-full transition-colors active:scale-95"
                                                 onClick={() => window.open(`https://albiononline2d.com/en/item/id/${flip.itemId}`, '_blank')}
                                             >
-                                                View on 2D
+                                                {t('viewOn2D')}
                                             </button>
                                         </div>
                                     </div>
                                     <div className="w-full mt-2">
                                         <Suspense fallback={<div className="h-[300px] flex items-center justify-center bg-muted/50 rounded-lg border border-border"><Loader2 className="animate-spin text-muted-foreground" /></div>}>
-                                            <MarketHistoryChart itemId={flip.itemId} buyCity={flip.buyCity} region={region} />
+                                            <FeatureLock
+                                                title={t('marketHistoryLocked')}
+                                                description={t('marketHistoryLockedDesc')}
+                                                lockedContent={<div className="h-[240px] sm:h-[280px] md:h-[320px] flex items-center justify-center bg-muted/50 rounded-lg text-muted-foreground text-sm sm:text-base">{t('upgradeToView')}</div>}
+                                            >
+                                                <MarketHistoryChart itemId={flip.itemId} buyCity={flip.buyCity} region={region} />
+                                            </FeatureLock>
                                         </Suspense>
                                     </div>
                                 </div>
@@ -731,9 +742,9 @@ function MarketFlipperContent() {
                             <tr className="bg-muted text-muted-foreground text-xs uppercase tracking-wider border-b border-border">
                                 <th className="p-4 font-medium pl-6 cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('item')}>
                                     <div className="flex items-center gap-1">
-                                        Item <SortIcon colKey="item" />
+                                        {t('colItem')} <SortIcon colKey="item" />
                                         <div onClick={(e) => e.stopPropagation()}>
-                                            <Tooltip content="Item Name and Tier">
+                                            <Tooltip content={t('tooltips.colItem')}>
                                                 <CircleHelp className="h-3 w-3 text-muted-foreground/60 hover:text-muted-foreground" />
                                             </Tooltip>
                                         </div>
@@ -741,17 +752,17 @@ function MarketFlipperContent() {
                                 </th>
                                 <th className="p-4 font-medium whitespace-nowrap">
                                     <div className="flex items-center gap-1">
-                                        Buy From
-                                        <Tooltip content="City with the lowest sell price">
+                                        {t('colBuyFrom')}
+                                        <Tooltip content={t('tooltips.colBuyFrom')}>
                                             <CircleHelp className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                                         </Tooltip>
                                     </div>
                                 </th>
                                 <th className="p-4 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('volume')}>
                                     <div className="flex items-center justify-end gap-1">
-                                        Vol <SortIcon colKey="volume" />
+                                        {t('colVol')} <SortIcon colKey="volume" />
                                         <div onClick={(e) => e.stopPropagation()}>
-                                            <Tooltip content="Average daily trading volume (Black Market)">
+                                            <Tooltip content={t('tooltips.colVol')}>
                                                 <CircleHelp className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                                             </Tooltip>
                                         </div>
@@ -759,9 +770,9 @@ function MarketFlipperContent() {
                                 </th>
                                 <th className="p-4 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('buyPrice')}>
                                     <div className="flex items-center justify-end gap-1">
-                                        Buy Price <SortIcon colKey="buyPrice" />
+                                        {t('colBuyPrice')} <SortIcon colKey="buyPrice" />
                                         <div onClick={(e) => e.stopPropagation()}>
-                                            <Tooltip content="Lowest sell order in Royal Cities">
+                                            <Tooltip content={t('tooltips.colBuyPrice')}>
                                                 <CircleHelp className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                                             </Tooltip>
                                         </div>
@@ -769,9 +780,9 @@ function MarketFlipperContent() {
                                 </th>
                                 <th className="p-4 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('sellPrice')}>
                                     <div className="flex items-center justify-end gap-1">
-                                        Sell Price <SortIcon colKey="sellPrice" />
+                                        {t('colSellPrice')} <SortIcon colKey="sellPrice" />
                                         <div onClick={(e) => e.stopPropagation()}>
-                                            <Tooltip content="Highest buy order in Black Market">
+                                            <Tooltip content={t('tooltips.colSellPrice')}>
                                                 <CircleHelp className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                                             </Tooltip>
                                         </div>
@@ -779,9 +790,9 @@ function MarketFlipperContent() {
                                 </th>
                                 <th className="p-4 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('profit')}>
                                     <div className="flex items-center justify-end gap-1">
-                                        Net Profit <SortIcon colKey="profit" />
+                                        {t('colNetProfit')} <SortIcon colKey="profit" />
                                         <div onClick={(e) => e.stopPropagation()}>
-                                            <Tooltip content="Profit after taxes and travel costs">
+                                            <Tooltip content={t('tooltips.colNetProfit')}>
                                                 <CircleHelp className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                                             </Tooltip>
                                         </div>
@@ -793,7 +804,7 @@ function MarketFlipperContent() {
                             {currentItems.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="p-8 text-center text-muted-foreground">
-                                        No profitable flips found matching your filters.
+                                        {t('noResults')}
                                     </td>
                                 </tr>
                             ) : (
@@ -841,14 +852,14 @@ function MarketFlipperContent() {
                                                </td>
                                                <td className="p-4 text-right">
                                                    <div className="font-mono text-foreground">{flip.sellPrice.toLocaleString()}</div>
-                                                   <div className="text-xs text-muted-foreground">Black Market</div>
+                                                   <div className="text-xs text-muted-foreground">{t('blackMarket')}</div>
                                                </td>
                                                <td className="p-4 text-right">
                                                    <div className={`font-mono font-bold ${flip.netProfit > 0 ? 'text-success' : 'text-destructive'}`}>
                                                       {flip.netProfit.toLocaleString()}
                                                    </div>
                                                    <div className={`text-xs ${flip.roi > 20 ? 'text-success' : 'text-muted-foreground'}`}>
-                                                      {flip.roi.toFixed(1)}% ROI
+                                                      {flip.roi.toFixed(1)}% {t('roi')}
                                                    </div>
                                                </td>
                                             </tr>
@@ -858,9 +869,9 @@ function MarketFlipperContent() {
                                                         <div className="p-4 border-b border-border animate-in slide-in-from-top-2 duration-200">
                                                            <div className="grid md:grid-cols-2 gap-6">
                                                               <FeatureLock
-                                                                  title="Market History (Supporter Only)"
-                                                                  description="Unlock historical price data and trends by becoming a supporter!"
-                                                                  lockedContent={<div className="h-[300px] flex items-center justify-center bg-muted/50 rounded-lg text-muted-foreground">Upgrade to view charts</div>}
+                                                                  title={t('marketHistoryLocked')}
+                                                                  description={t('marketHistoryLockedDesc')}
+                                                                  lockedContent={<div className="h-[240px] sm:h-[280px] md:h-[320px] flex items-center justify-center bg-muted/50 rounded-lg text-muted-foreground text-sm sm:text-base">{t('upgradeToView')}</div>}
                                                               >
                                                                   <MarketHistoryChart
                                                                     itemId={flip.itemId}
@@ -870,39 +881,38 @@ function MarketFlipperContent() {
                                                               </FeatureLock>
                                                                 <div className="space-y-4">
                                                                    <div>
-                                                                        <h4 className="text-sm font-medium text-foreground mb-2">Profit Breakdown</h4>
+                                                                        <h4 className="text-sm font-medium text-foreground mb-2">{t('profitBreakdown')}</h4>
                                                                         <div className="bg-muted p-4 rounded-lg border border-border space-y-2 text-sm">
                                                                            {((isPremiumTax) => {
                                                                                 const taxRate = isPremiumTax ? 0.04 : 0.08;
                                                                                 const setupFee = 0.025;
                                                                                 const grossProfit = flip.sellPrice - flip.buyPrice;
                                                                                 const totalTax = Math.round(flip.sellPrice * (taxRate + setupFee));
-                                                                                
+
                                                                                 return (
                                                                                   <>
                                                                                     <div className="flex justify-between">
-                                                                                        <span className="text-muted-foreground">Buy Price ({flip.buyCity})</span>
+                                                                                        <span className="text-muted-foreground">{t('buyPriceAt', { city: flip.buyCity })}</span>
                                                                                         <span className="font-mono text-foreground">{flip.buyPrice.toLocaleString()}</span>
                                                                                     </div>
                                                                                     <div className="flex justify-between">
-                                                                                        <span className="text-muted-foreground">Sell Price (Black Market)</span>
+                                                                                        <span className="text-muted-foreground">{t('sellPriceAt', { city: t('blackMarket') })}</span>
                                                                                         <span className="font-mono text-foreground">{flip.sellPrice.toLocaleString()}</span>
                                                                                     </div>
                                                                                     <div className="border-t border-border my-2"></div>
                                                                                     <div className="flex justify-between">
-                                                                                        <span className="text-muted-foreground">Gross Profit</span>
+                                                                                        <span className="text-muted-foreground">{t('grossProfit')}</span>
                                                                                         <span className="font-mono text-success/70">+{grossProfit.toLocaleString()}</span>
                                                                                     </div>
                                                                                     <div className="flex justify-between text-xs">
-                                                                                        <span className="text-muted-foreground">Market Taxes ({Math.round((taxRate + setupFee) * 1000) / 10}%)</span>
+                                                                                        <span className="text-muted-foreground">{t('marketTaxes', { rate: Math.round((taxRate + setupFee) * 1000) / 10 })}</span>
                                                                                         <span className="font-mono text-destructive/70">-{totalTax.toLocaleString()}</span>
-                                                                                    </div>
-                                                                                    <div className="flex justify-between text-xs">
-                                                                                        <span className="text-muted-foreground">Travel Cost</span>
+                                                                                    </div>                                                                                    <div className="flex justify-between text-xs">
+                                                                                        <span className="text-muted-foreground">{t('estTravelCost')}</span>
                                                                                         <span className="font-mono text-destructive/70">-{Math.round(travelCost).toLocaleString()}</span>
                                                                                     </div>
                                                                                     <div className="border-t border-border pt-2 flex justify-between font-bold text-base">
-                                                                                        <span className="text-foreground">Net Profit</span>
+                                                                                        <span className="text-foreground">{t('colNetProfit')}</span>
                                                                                         <span className={`font-mono ${flip.netProfit > 0 ? 'text-success' : 'text-destructive'}`}>
                                                                                             {flip.netProfit > 0 ? '+' : ''}{flip.netProfit.toLocaleString()}
                                                                                         </span>
@@ -914,8 +924,8 @@ function MarketFlipperContent() {
                                                                    </div>
                                                                    
                                                                    <div className="text-xs text-muted-foreground">
-                                                                      <p className="mb-1">Last updated: {new Date(flip.updatedAt).toLocaleString()}</p>
-                                                                      <p>Prices are based on recent market snapshots. Always verify current prices in-game before transporting.</p>
+                                                                      <p className="mb-1">{t('lastUpdated', { time: new Date(flip.updatedAt).toLocaleString() })}</p>
+                                                                      <p>{t('verifyDisclaimer')}</p>
                                                                    </div>
                                                                 </div>
                                                            </div>
@@ -933,27 +943,27 @@ function MarketFlipperContent() {
             
             {/* Pagination Controls */}
             {filteredFlips.length > 0 && (
-              <div className="flex justify-between items-center p-4 border-t border-border bg-muted/30">
-                <div className="text-sm text-muted-foreground">
-                  Showing <span className="text-foreground font-medium">{startIndex + 1}</span> to <span className="text-foreground font-medium">{Math.min(startIndex + itemsPerPage, filteredFlips.length)}</span> of <span className="text-foreground font-medium">{filteredFlips.length}</span> results
+              <div className="flex flex-col sm:flex-row justify-between items-center p-4 border-t border-border bg-muted/30 gap-4">
+                <div className="text-sm text-muted-foreground text-center sm:text-left">
+                  {t('showingResults', { start: startIndex + 1, end: Math.min(startIndex + itemsPerPage, filteredFlips.length), total: filteredFlips.length })}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap justify-center">
                   <button
                     onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="px-4 py-2 bg-secondary border border-border rounded-lg text-sm font-medium hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-secondary-foreground"
+                    className="px-3 py-2 bg-secondary border border-border rounded-lg text-sm font-medium hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-secondary-foreground"
                   >
-                    Previous
+                    {t('previous')}
                   </button>
-                  <div className="flex items-center px-4 py-2 bg-card border border-border rounded-lg text-sm font-medium text-foreground">
-                    Page {currentPage} of {totalPages}
+                  <div className="flex items-center px-3 py-2 bg-card border border-border rounded-lg text-sm font-medium text-foreground">
+                    {t('pageOf', { current: currentPage, total: totalPages })}
                   </div>
                   <button
                     onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                    className="px-4 py-2 bg-secondary border border-border rounded-lg text-sm font-medium hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-secondary-foreground"
+                    className="px-3 py-2 bg-secondary border border-border rounded-lg text-sm font-medium hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-secondary-foreground"
                   >
-                    Next
+                    {t('next')}
                   </button>
                 </div>
               </div>
@@ -961,22 +971,24 @@ function MarketFlipperContent() {
             </div>
         )}
       </div>
-            {/* Subscription Modal */}
-            <SubscriptionModal 
-              isOpen={showSubscriptionModal}
-              onClose={() => setShowSubscriptionModal(false)}   
-            />
-            <InfoStrip currentPage="market-flipper">
-        <InfoBanner icon={<TrendingUp className="w-4 h-4" />} color="text-green-400" title="Community Market Data">
-          <p>Market data is aggregated from user uploads via the Albion Data Project.</p>
+      
+      {/* Subscription Modal */}
+      <SubscriptionModal 
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}   
+      />
+
+      <InfoStrip currentPage="market-flipper">
+        <InfoBanner icon={<TrendingUp className="w-4 h-4" />} color="text-green-400" title={t('communityMarketData')}>
+          <p>{t('marketDataAggregated')}</p>
           <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
             <div className="bg-background/40 p-2 rounded">
-              <span className="font-semibold block mb-0.5">Prices may vary</span>
-              Data depends on recent uploads. Always verify in-game.
+              <span className="font-semibold block mb-0.5">{t('pricesMayVary')}</span>
+              {t('pricesMayVaryDesc')}
             </div>
             <div className="bg-background/40 p-2 rounded">
-               <span className="font-semibold block mb-0.5">Contribute</span>
-               Run the Albion Data Client to help update prices for everyone.
+               <span className="font-semibold block mb-0.5">{t('contribute')}</span>
+               {t('contributeDesc')}
             </div>
           </div>
         </InfoBanner>
@@ -986,11 +998,12 @@ function MarketFlipperContent() {
 }
 
 export default function MarketFlipperClient() {
+  const t = useTranslations('MarketFlipper');
   return (
     <Suspense fallback={<div className="flex items-center justify-center min-h-[50vh]">
       <div className="flex flex-col items-center gap-4">
         <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-        <p className="text-muted-foreground animate-pulse">Loading market data...</p>
+        <p className="text-muted-foreground animate-pulse">{t('loadingMarketData')}</p>
       </div>
     </div>}>
       <MarketFlipperContent />

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getBuild } from '@/lib/builds-service';
 import { BuildView } from './BuildView';
+import { getTranslations } from 'next-intl/server';
 
 interface PageProps {
     params: Promise<{ category: string; id: string }>;
@@ -9,11 +10,12 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { id } = await params;
     const build = await getBuild(id);
+    const t = await getTranslations('BuildView');
 
     if (!build) {
         return {
-            title: 'Build Not Found | AlbionKit',
-            description: 'The requested build could not be found.',
+            title: `${t('notFound')} | AlbionKit`,
+            description: t('notFoundDesc'),
         };
     }
 
@@ -26,12 +28,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         }
     }
 
+    const description = build.description || t('checkoutBuild', { category: build.category, author: build.authorName });
+
     return {
         title: `${build.title} | AlbionKit`,
-        description: build.description || `Check out this ${build.category} build by ${build.authorName} on AlbionKit.`,
+        description: description,
         openGraph: {
             title: build.title,
-            description: build.description || `Check out this ${build.category} build by ${build.authorName} on AlbionKit.`,
+            description: description,
             type: 'article',
             images: images.map(url => ({ url })),
             authors: [build.authorName],
@@ -41,7 +45,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         twitter: {
             card: 'summary_large_image',
             title: build.title,
-            description: build.description || `Check out this ${build.category} build by ${build.authorName} on AlbionKit.`,
+            description: description,
             images: images,
         }
     };

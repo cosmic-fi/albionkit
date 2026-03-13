@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input';
 import { toast } from 'sonner';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { verifyCaptcha } from '@/app/actions/auth';
+import { useTranslations } from 'next-intl';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ interface LoginModalProps {
 }
 
 export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
+  const t = useTranslations('Auth');
   const { signInWithGoogle, signInWithEmail, registerWithEmail } = useAuth();
 
   const [isRegistering, setIsRegistering] = useState(false);
@@ -37,7 +39,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
 
   if (!isOpen) return null;
 
-  const defaultMessage = isRegistering ? 'Create an account to continue' : 'Sign in to continue';
+  const defaultMessage = isRegistering ? t('createAccountToContinue') : t('signInToContinue');
   const displayMessage = message || defaultMessage;
 
   const handleGoogleLogin = async () => {
@@ -52,31 +54,11 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
         return;
       }
       console.error(err);
-      setError('Failed to login with Google.');
+      setError(t('googleFailed'));
     } finally {
       setLoading(false);
     }
   };
-
-  /*
-  const handleTwitterLogin = async () => {
-    setError(null);
-    setLoading(true);
-    try {
-      await signInWithTwitter();
-      onClose?.();
-    } catch (err: any) {
-      if (err.code === 'auth/popup-closed-by-user') {
-        setLoading(false);
-        return;
-      }
-      console.error(err);
-      setError('Failed to login with Twitter.');
-    } finally {
-        setLoading(false);
-    }
-  };
-  */
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +66,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
     setLoading(true);
 
     if (!email || !password) {
-      setError('Please enter both email and password.');
+      setError(t('emailPasswordRequired'));
       setLoading(false);
       return;
     }
@@ -92,35 +74,35 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
     try {
       if (isRegistering) {
         if (!captchaToken) {
-          setError('Please complete the captcha.');
+          setError(t('captchaRequired'));
           setLoading(false);
           return;
         }
 
         const verification = await verifyCaptcha(captchaToken);
         if (!verification.success) {
-          setError(verification.error || 'Captcha verification failed.');
+          setError(verification.error || t('captchaFailed'));
           setLoading(false);
           return;
         }
 
         await registerWithEmail(email, password);
-        toast.success("Account created! Please check your email to verify.");
+        toast.success(t('accountCreated'));
       } else {
         await signInWithEmail(email, password);
-        toast.success("Successfully signed in!");
+        toast.success(t('signedIn'));
       }
       onClose?.();
     } catch (err: any) {
       console.error(err);
       if (err.code === 'auth/email-already-in-use') {
-        setError('Email already in use.');
+        setError(t('errors.emailInUse'));
       } else if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-        setError('Invalid email or password.');
+        setError(t('errors.invalidCredentials'));
       } else if (err.code === 'auth/weak-password') {
-        setError('Password should be at least 6 characters.');
+        setError(t('errors.weakPassword'));
       } else {
-        setError('Authentication failed. Please try again.');
+        setError(t('errors.failed'));
       }
     } finally {
       setLoading(false);
@@ -140,7 +122,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
         )}
 
         <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-foreground">{isRegistering ? 'Create Account' : 'Welcome Back'}</h2>
+          <h2 className="text-xl font-bold text-foreground">{isRegistering ? t('registerTitle') : t('loginTitle')}</h2>
           <p className="text-muted-foreground text-sm mt-1">{displayMessage}</p>
         </div>
 
@@ -171,30 +153,15 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
                 />
               </svg>
             )}
-            <span>Continue with Google</span>
+            <span>{t('continueGoogle')}</span>
           </button>
-
-          {/* 
-          <button
-            onClick={handleTwitterLogin}
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-2 bg-[#1DA1F2] text-white font-bold py-2.5 rounded-lg hover:bg-[#1a91da] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : (
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-              </svg>
-            )}
-            <span>Continue with Twitter</span>
-          </button>
-          */}
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-border"></div>
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-popover px-2 text-muted-foreground">Or continue with email</span>
+              <span className="bg-popover px-2 text-muted-foreground">{t('orEmail')}</span>
             </div>
           </div>
 
@@ -212,7 +179,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="email"
-                  placeholder="Email address"
+                  placeholder={t('emailLabel')}
                   className="pl-9 bg-background border-input"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -226,7 +193,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="password"
-                  placeholder="Password"
+                  placeholder={t('passwordLabel')}
                   className="pl-9 bg-background border-input"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -252,7 +219,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-2.5 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-              {isRegistering ? 'Create Account' : 'Sign In'}
+              {isRegistering ? t('signUp') : t('signIn')}
             </button>
           </form>
 
@@ -262,7 +229,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
               onClick={() => setIsRegistering(!isRegistering)}
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"
             >
-              {isRegistering ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+              {isRegistering ? t('alreadyHaveAccount') : t('dontHaveAccount')}
             </button>
           </div>
         </div>

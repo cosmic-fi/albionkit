@@ -5,6 +5,7 @@ import { usePremiumAccess } from '@/hooks/usePremiumAccess';
 import { Lock, Heart } from 'lucide-react';
 import { SubscriptionModal } from './SubscriptionModal';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface FeatureLockProps {
   children: React.ReactNode;
@@ -20,19 +21,20 @@ export function FeatureLock({
   children,
   lockedContent,
   featureId,
-  title = "Adept Feature",
-  description = "Try it out for free and unlock this feature to help keep the project alive!",
+  title,
+  description,
   blur = true,
   className
 }: FeatureLockProps) {
   const { hasAccess, loading } = usePremiumAccess();
   const [showModal, setShowModal] = useState(false);
+  const t = useTranslations('Subscription');
 
   if (loading) {
     return (
-      <div className={cn("animate-pulse bg-muted/20 rounded-lg p-4 h-full min-h-[100px]", className)}>
+      <div className={cn("animate-pulse bg-muted/20 rounded-lg p-3 sm:p-4 h-full min-h-[80px] sm:min-h-[100px]", className)}>
         <div className="h-full w-full flex items-center justify-center">
-          <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          <div className="h-4 w-4 sm:h-6 sm:w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       </div>
     );
@@ -43,29 +45,32 @@ export function FeatureLock({
   }
 
   return (
-    <div className={cn("relative overflow-hidden rounded-xl border border-border/50 bg-card/50", className)}>
+    <div className={cn("relative overflow-hidden rounded-lg sm:rounded-xl border border-border/50 bg-card/50 min-h-[280px] sm:min-h-[320px] md:min-h-[360px]", className)}>
       <div className={cn(blur ? "filter blur-md pointer-events-none opacity-50 select-none" : "hidden")}>
         {lockedContent || children}
       </div>
 
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center bg-background/20 backdrop-blur-[2px]">
-        <div className="bg-gradient-to-br from-amber-500/20 to-purple-500/20 p-4 rounded-full mb-4 ring-1 ring-border ">
-          <Lock className="h-8 w-8 text-primary" />
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 text-center bg-background/20 backdrop-blur-[2px] gap-3 sm:gap-4 md:gap-5">
+        <div className="bg-gradient-to-br from-amber-500/20 to-purple-500/20 p-4 sm:p-5 md:p-6 rounded-full ring-1 ring-border flex-shrink-0">
+          <Lock className="h-10 w-10 sm:h-12 md:h-14 sm:w-10 md:w-12 lg:h-14 lg:w-14 text-primary" />
         </div>
 
-        <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
-          {title} <Heart className="h-4 w-4 text-pink-500 fill-pink-500 animate-pulse" />
-        </h3>
+        <div className="flex flex-col items-center gap-2 sm:gap-3 flex-shrink-0">
+          <Heart className="h-5 w-5 sm:h-6 md:h-7 sm:w-5 md:w-6 text-pink-500 fill-pink-500 animate-pulse" />
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center max-w-[240px] sm:max-w-sm md:max-w-md">
+            {title}
+          </h3>
+        </div>
 
-        <p className="text-muted-foreground max-w-sm mb-6 text-sm">
+        <p className="text-muted-foreground max-w-[280px] sm:max-w-xs md:max-w-sm text-xs sm:text-sm md:text-base leading-tight flex-shrink-0">
           {description}
         </p>
 
         <button
           onClick={() => setShowModal(true)}
-          className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold rounded-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+          className="px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold rounded-lg md:rounded-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-sm sm:text-base md:text-lg shadow-lg hover:shadow-xl flex-shrink-0"
         >
-          Try it out for Free
+          {t('tryFree')}
         </button>
       </div>
 

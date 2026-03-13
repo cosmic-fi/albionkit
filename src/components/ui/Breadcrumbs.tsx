@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface BreadcrumbItem {
   label: string;
@@ -16,6 +17,7 @@ interface BreadcrumbsProps {
 
 export function Breadcrumbs({ lastSegmentLabel }: BreadcrumbsProps) {
   const pathname = usePathname();
+  const t = useTranslations('NotFound.breadcrumbs');
 
   // Convert path to breadcrumbs
   const pathSegments = pathname.split('/').filter(segment => segment !== '');
@@ -40,12 +42,26 @@ export function Breadcrumbs({ lastSegmentLabel }: BreadcrumbsProps) {
 
     if (isLast && lastSegmentLabel) {
       label = lastSegmentLabel;
-    } else if (segment.length > 20 || (segment.includes('-') && segment.length > 15)) {
+    } else if (
+      // Long segments are always "Detail"
+      segment.length > 20 || 
+      // Segments with dashes (like build-slugs) longer than 15 chars
+      (segment.includes('-') && segment.length > 15) || 
+      // Pure alphanumeric 16+ chars (UUIDs, build IDs)
+      /^[A-Za-z0-9]{16,}$/.test(segment)
+    ) {
+      // UUIDs and random strings should not be translated
       label = 'Detail';
     } else {
-      label = segment
-        .replace(/-/g, ' ')
-        .replace(/\b\w/g, l => l.toUpperCase());
+      // Try to get translated label first, fallback to formatted segment
+      const translatedLabel = t(segment as any);
+      if (translatedLabel && translatedLabel !== segment) {
+        label = translatedLabel;
+      } else {
+        label = segment
+          .replace(/-/g, ' ')
+          .replace(/\b\w/g, l => l.toUpperCase());
+      }
     }
 
     return { label, href };
@@ -60,7 +76,7 @@ export function Breadcrumbs({ lastSegmentLabel }: BreadcrumbsProps) {
         className="hover:text-primary transition-colors flex items-center gap-1"
       >
         <Home className="h-3 w-3" />
-        Home
+        {t('home')}
       </Link>
 
       {breadcrumbs.map((crumb, index) => (

@@ -12,7 +12,10 @@ import { Input } from '@/components/ui/Input';
 import { useAuth } from '@/context/AuthContext';
 import { InfoStrip } from '@/components/InfoStrip';
 
+import { useTranslations } from 'next-intl';
+
 export default function GoldPriceClient() {
+  const t = useTranslations('GoldPrice');
   const { profile } = useAuth();
   const { server: region, setServer: setRegion } = useServer();
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('7d');
@@ -115,7 +118,7 @@ export default function GoldPriceClient() {
         <div className="bg-popover border border-border p-3 rounded-lg">
           <p className="text-muted-foreground text-xs mb-1">{new Date(label).toLocaleString()}</p>
           <p className="text-primary font-bold font-mono text-lg">
-            {formatPrice(payload[0].value)} Silver
+            {formatPrice(payload[0].value)} {t('silver')}
           </p>
         </div>
       );
@@ -125,17 +128,17 @@ export default function GoldPriceClient() {
 
   return (
     <PageShell
-      title="Gold Price Tracker"
+      title={t('title')}
       backgroundImage='/background/ao-market.jpg'
-      description="Track the gold-to-silver exchange rate history and trends."
+      description={t('description')}
       icon={<Coins className="h-6 w-6" />}
       headerActions={
         <div className="flex flex-col md:flex-full md:flex-row  md:px-0 sm:items-end sm:items-start md:items-start gap-4">
           <SegmentedControl
             options={[
-              { label: '24h', value: '24h' },
-              { label: '7 Days', value: '7d' },
-              { label: '30 Days', value: '30d' },
+              { label: t('ranges.24h'), value: '24h' },
+              { label: t('ranges.7d'), value: '7d' },
+              { label: t('ranges.30d'), value: '30d' },
             ]}
             value={timeRange}
             onChange={(val) => setTimeRange(val as any)}
@@ -163,15 +166,15 @@ export default function GoldPriceClient() {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-card/50 p-6 rounded-xl border border-border">
-            <div className="text-muted-foreground text-sm mb-2">Current Price</div>
+            <div className="text-muted-foreground text-sm mb-2">{t('currentPrice')}</div>
             <div className="text-3xl font-bold font-mono text-primary flex items-end gap-2">
               {loading ? <span className="animate-pulse">...</span> : formatPrice(stats.current)}
-              <span className="text-sm text-muted-foreground font-sans mb-1">Silver</span>
+              <span className="text-sm text-muted-foreground font-sans mb-1">{t('silver')}</span>
             </div>
           </div>
 
           <div className="bg-card/50 p-6 rounded-xl border border-border">
-            <div className="text-muted-foreground text-sm mb-2">Change ({timeRange})</div>
+            <div className="text-muted-foreground text-sm mb-2">{t('change', { range: t(`ranges.${timeRange}`) })}</div>
             <div className={`text-2xl font-bold font-mono flex items-center gap-2 ${stats.change24h > 0 ? 'text-success' : stats.change24h < 0 ? 'text-destructive' : 'text-muted-foreground'}`}>
               {loading ? (
                 <span className="animate-pulse">...</span>
@@ -190,7 +193,7 @@ export default function GoldPriceClient() {
           </div>
 
           <div className="bg-card/50 p-6 rounded-xl border border-border">
-            <div className="text-muted-foreground text-sm mb-2">High ({timeRange})</div>
+            <div className="text-muted-foreground text-sm mb-2">{t('high', { range: t(`ranges.${timeRange}`) })}</div>
             <div className="text-2xl font-bold font-mono text-success flex items-center gap-2">
               {loading ? <span className="animate-pulse">...</span> : formatPrice(stats.high24h)}
               <ArrowUp className="h-4 w-4 text-success/50" />
@@ -198,7 +201,7 @@ export default function GoldPriceClient() {
           </div>
 
           <div className="bg-card/50 p-6 rounded-xl border border-border">
-            <div className="text-muted-foreground text-sm mb-2">Low ({timeRange})</div>
+            <div className="text-muted-foreground text-sm mb-2">{t('low', { range: t(`ranges.${timeRange}`) })}</div>
             <div className="text-2xl font-bold font-mono text-destructive flex items-center gap-2">
               {loading ? <span className="animate-pulse">...</span> : formatPrice(stats.low24h)}
               <ArrowDown className="h-4 w-4 text-destructive/50" />
@@ -211,10 +214,10 @@ export default function GoldPriceClient() {
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-2 md:gap-0">
             <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
               <Calendar className="h-5 w-5 text-muted-foreground" />
-              Price History
+              {t('priceHistory')}
             </h3>
             <div className="text-xs text-muted-foreground">
-              Showing last {history.length} data points
+              {t('dataPoints', { count: history.length })}
             </div>
           </div>
 
@@ -267,7 +270,7 @@ export default function GoldPriceClient() {
               </ResponsiveContainer>
             ) : (
               <div className="h-full flex items-center justify-center text-muted-foreground">
-                No data available
+                {t('noData')}
               </div>
             )}
           </div>
@@ -280,12 +283,12 @@ export default function GoldPriceClient() {
           <div className="bg-card/50 p-6 rounded-xl border border-border">
             <h3 className="text-lg font-bold text-foreground mb-6 flex items-center gap-2">
               <ArrowRightLeft className="h-5 w-5 text-primary" />
-              Gold / Silver Converter
+              {t('converterTitle')}
             </h3>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs text-muted-foreground mb-1.5">Gold Amount</label>
+                <label className="block text-xs text-muted-foreground mb-1.5">{t('goldAmount')}</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Coins className="h-4 w-4 text-primary" />
@@ -306,7 +309,7 @@ export default function GoldPriceClient() {
               </div>
 
               <div>
-                <label className="block text-xs text-muted-foreground mb-1.5">Silver Value</label>
+                <label className="block text-xs text-muted-foreground mb-1.5">{t('silverValue')}</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <span className="text-muted-foreground text-sm font-bold">S</span>
@@ -321,7 +324,7 @@ export default function GoldPriceClient() {
               </div>
 
               <div className="text-xs text-muted-foreground text-center pt-2">
-                Based on current price: 1 Gold = {stats.current.toLocaleString()} Silver
+                {t('basedOnPrice', { price: stats.current.toLocaleString() })}
               </div>
             </div>
           </div>
@@ -330,14 +333,14 @@ export default function GoldPriceClient() {
           <div className="bg-card/50 p-6 rounded-xl border border-border">
             <h3 className="text-lg font-bold text-foreground mb-6 flex items-center gap-2">
               <Calculator className="h-5 w-5 text-info" />
-              Premium Calculator
+              {t('premiumCalculator')}
             </h3>
 
             <div className="space-y-6">
               <div className="bg-muted/50 p-4 rounded-lg border border-border">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-muted-foreground">Premium Gold Cost</span>
-                  <span className="text-xs text-muted-foreground">Usually 3,750 or 3,000</span>
+                  <span className="text-sm text-muted-foreground">{t('premiumGoldCost')}</span>
+                  <span className="text-xs text-muted-foreground">{t('premiumNote')}</span>
                 </div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -353,7 +356,7 @@ export default function GoldPriceClient() {
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center p-3 bg-muted/50 rounded border border-border">
-                  <span className="text-muted-foreground">Silver Cost</span>
+                  <span className="text-muted-foreground">{t('silverCost')}</span>
                   <span className="text-xl font-bold font-mono text-foreground">
                     {(!isNaN(parseFloat(premiumGoldCost)) && stats.current > 0)
                       ? (parseFloat(premiumGoldCost) * stats.current).toLocaleString()
@@ -362,13 +365,13 @@ export default function GoldPriceClient() {
                 </div>
 
                 <div className="flex justify-between items-center p-3 bg-muted/50 rounded border border-border">
-                  <span className="text-muted-foreground">Real Money (Approx)</span>
+                  <span className="text-muted-foreground">{t('realMoney')}</span>
                   <span className="text-sm font-mono text-success">~$15.00 USD</span>
                 </div>
               </div>
 
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Use this to calculate how much Silver you need to farm to pay for your Premium status using Gold exchange.
+                {t('premiumCalculatorDesc')}
               </p>
             </div>
           </div>
@@ -377,43 +380,41 @@ export default function GoldPriceClient() {
 
         {/* Market Insights */}
         <div className="bg-card/50 p-6 rounded-xl border border-border">
-          <h3 className="text-lg font-bold text-foreground mb-4">Market Insights</h3>
+          <h3 className="text-lg font-bold text-foreground mb-4">{t('marketInsights')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-medium text-foreground mb-2">About Gold Price</h4>
+              <h4 className="font-medium text-foreground mb-2">{t('aboutGoldPrice')}</h4>
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                The Gold price in Albion Online is the primary indicator of the game's economy inflation.
-                It is directly tied to the cost of Premium status. When more players buy Gold with Silver to purchase Premium, the price rises.
-                Conversely, when players buy Gold with real money and sell it for Silver, the price stabilizes or drops.
+                {t('aboutGoldPriceDesc')}
               </p>
-              <h4 className="font-medium text-foreground mb-2">Trading Tips</h4>
+              <h4 className="font-medium text-foreground mb-2">{t('tradingTips')}</h4>
               <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-                <li>Prices often spike during weekends due to higher player activity.</li>
-                <li>Major content updates usually cause Gold prices to fluctuate as players return.</li>
-                <li>Long-term trends show a consistent inflationary pressure on Silver.</li>
+                <li>{t('tip1')}</li>
+                <li>{t('tip2')}</li>
+                <li>{t('tip3')}</li>
               </ul>
             </div>
             <div>
-              <h4 className="font-medium text-foreground mb-2">Recent Averages</h4>
+              <h4 className="font-medium text-foreground mb-2">{t('recentAverages')}</h4>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm p-2 bg-muted/50 rounded">
-                  <span className="text-muted-foreground">7-Day Average</span>
+                  <span className="text-muted-foreground">{t('average7d')}</span>
                   <span className="font-mono font-medium">
                     {history.length > 0
                       ? formatPrice(Math.round(history.reduce((a, b) => a + b.price, 0) / history.length))
-                      : '---'} Silver
+                      : '---'} {t('silver')}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm p-2 bg-muted/50 rounded">
-                  <span className="text-muted-foreground">30-Day High</span>
+                  <span className="text-muted-foreground">{t('high30d')}</span>
                   <span className="font-mono font-medium text-success">
-                    {formatPrice(stats.high24h)} Silver
+                    {formatPrice(stats.high24h)} {t('silver')}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm p-2 bg-muted/50 rounded">
-                  <span className="text-muted-foreground">30-Day Low</span>
+                  <span className="text-muted-foreground">{t('low30d')}</span>
                   <span className="font-mono font-medium text-destructive">
-                    {formatPrice(stats.low24h)} Silver
+                    {formatPrice(stats.low24h)} {t('silver')}
                   </span>
                 </div>
               </div>

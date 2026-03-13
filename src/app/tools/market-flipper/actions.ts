@@ -3,6 +3,7 @@
 import { POPULAR_ITEMS } from './constants';
 import { searchItemsService, getItems } from '@/lib/item-service';
 import { getMarketHistory as getHistoryService, getMarketPrices, getMarketVolume, MarketHistory as ServiceMarketHistory, MarketStat as ServiceMarketStat, MarketHistoryPoint as ServiceHistoryPoint } from '@/lib/market-service';
+import { getLocale } from 'next-intl/server';
 
 import { notifyUser } from '@/lib/notification-service';
 import { adminDb } from '@/lib/firebase-admin';
@@ -193,5 +194,6 @@ export async function triggerWatchlistAlerts(userId: string, region: 'west' | 'e
 }
 
 export async function searchAlbionItems(query: string) {
-  return await searchItemsService(query);
+  const locale = await getLocale();
+  return await searchItemsService(query, locale);
 }

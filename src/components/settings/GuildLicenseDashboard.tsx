@@ -20,6 +20,7 @@ import { ConfirmationDialog } from '@/components/ui/ConfirmationDialog';
 import { Modal } from '@/components/Modal';
 import { toast } from 'sonner';
 import { Loader2, Shield, Calendar, AlertTriangle, Clock, Edit2, Search, Check, X, RefreshCw, Users, Database, Activity, Info, ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { UserProfile } from '@/lib/user-profile';
 
@@ -29,6 +30,7 @@ interface GuildLicenseDashboardProps {
 }
 
 export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboardProps) {
+  const t = useTranslations('GuildLicense');
   const [license, setLicense] = useState<GuildLicense | null>(null);
   const [loading, setLoading] = useState(true);
   const [toggling, setToggling] = useState(false);
@@ -275,9 +277,9 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                     <div className="p-4 bg-primary/10 rounded-full w-fit mx-auto mb-4">
                         <Shield className="h-8 w-8 text-primary" />
                     </div>
-                    <h3 className="text-xl font-bold text-foreground mb-2">Activate Your Guild License</h3>
+                    <h3 className="text-xl font-bold text-foreground mb-2">{t('activateTitle')}</h3>
                     <p className="text-muted-foreground max-w-md mx-auto">
-                        You have an active Guild Master subscription! Please select your guild to activate your license.
+                        {t('activateDesc')}
                     </p>
                 </div>
 
@@ -285,7 +287,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                     <div className="max-w-md mx-auto mb-6 animate-in fade-in slide-in-from-top-2">
                         <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-between">
                             <div>
-                                <div className="text-xs text-primary font-bold uppercase mb-1">Your Guild</div>
+                                <div className="text-xs text-primary font-bold uppercase mb-1">{t('yourGuild')}</div>
                                 <div className="font-bold text-foreground">{userProfile.guildName}</div>
                                 {userProfile.allianceName && (
                                     <div className="text-xs text-muted-foreground">[{userProfile.allianceName}]</div>
@@ -302,12 +304,12 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                                 className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-bold text-sm transition-colors flex items-center gap-2"
                             >
                                 {isClaiming ? <Loader2 className="h-4 w-4 animate-spin" /> : <Shield className="h-4 w-4" />}
-                                Activate
+                                {t('activate')}
                             </button>
                         </div>
                         <div className="relative flex py-5 items-center">
                             <div className="flex-grow border-t border-border"></div>
-                            <span className="flex-shrink-0 mx-4 text-muted-foreground text-xs uppercase">Or search another</span>
+                            <span className="flex-shrink-0 mx-4 text-muted-foreground text-xs uppercase">{t('orSearch')}</span>
                             <div className="flex-grow border-t border-border"></div>
                         </div>
                     </div>
@@ -319,7 +321,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                             type="text" 
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="Search for your Guild..."
+                            placeholder={t('searchPlaceholder')}
                             className="w-full bg-background border border-border rounded-lg px-4 py-3 pl-10 text-foreground focus:border-primary outline-none transition-colors"
                             onKeyDown={(e) => e.key === 'Enter' && handleSearchGuild()}
                         />
@@ -329,7 +331,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                             disabled={isSearching || !searchTerm.trim()}
                             className="absolute right-2 top-2 bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-1.5 rounded-md text-sm font-medium disabled:opacity-50"
                         >
-                            {isSearching ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Search'}
+                            {isSearching ? <Loader2 className="h-4 w-4 animate-spin" /> : t('search')}
                         </button>
                     </div>
 
@@ -346,7 +348,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                                         disabled={isClaiming}
                                         className="text-xs bg-primary text-primary-foreground px-3 py-1.5 rounded-md font-bold  hover: transition-all transform active:scale-95"
                                     >
-                                        {isClaiming ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Activate'}
+                                        {isClaiming ? <Loader2 className="h-3 w-3 animate-spin" /> : t('activate')}
                                     </button>
                                 </div>
                             ))}
@@ -355,7 +357,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                     
                     {searchResults.length === 0 && searchTerm && !isSearching && (
                         <div className="text-center text-muted-foreground text-sm py-4">
-                            No guilds found. Try a different search term.
+                            {t('noGuildsFound')}
                         </div>
                     )}
                 </div>
@@ -366,9 +368,9 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
     return (
       <div className="bg-card/50 backdrop-blur rounded-xl border border-border p-8 text-center">
         <AlertTriangle className="h-12 w-12 text-primary mx-auto mb-4" />
-        <h3 className="text-xl font-bold text-foreground mb-2">No Active Guild License Found</h3>
+        <h3 className="text-xl font-bold text-foreground mb-2">{t('noActiveLicense')}</h3>
         <p className="text-muted-foreground">
-          You don't seem to have purchased a guild license yet. If you believe this is an error, please contact support.
+          {t('noActiveLicenseDesc')}
         </p>
       </div>
     );
@@ -388,12 +390,12 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
               <Shield className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-foreground">Guild License Management</h2>
-              <p className="text-sm text-muted-foreground">Manage your guild's premium features</p>
+              <h2 className="text-xl font-bold text-foreground">{t('title')}</h2>
+              <p className="text-sm text-muted-foreground">{t('description')}</p>
             </div>
           </div>
           <div className={`px-3 py-1 rounded-full text-xs font-bold border ${isExpired ? 'bg-destructive/10 text-destructive border-destructive/20' : 'bg-green-500/10 text-green-500 border-green-500/20'}`}>
-            {isExpired ? 'EXPIRED' : 'ACTIVE'}
+            {isExpired ? t('status.expired') : t('status.active')}
           </div>
         </div>
 
@@ -402,13 +404,13 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
           {/* Guild ID Section */}
           <div className="p-4 bg-muted/50 rounded-lg border border-border/50">
             <div className="flex items-center justify-between mb-2">
-                <div className="text-xs text-muted-foreground uppercase tracking-wider font-bold">Guild ID</div>
+                <div className="text-xs text-muted-foreground uppercase tracking-wider font-bold">{t('guildId')}</div>
                 {!isEditingGuild && (
                     <button 
                         onClick={() => setIsEditingGuild(true)}
                         className="text-xs text-primary hover:text-primary/80 flex items-center gap-1"
                     >
-                        <Edit2 className="h-3 w-3" /> Change
+                        <Edit2 className="h-3 w-3" /> {t('change')}
                     </button>
                 )}
             </div>
@@ -420,7 +422,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                         onClick={handleRefreshGuildData}
                         disabled={isRefreshing}
                         className="text-muted-foreground hover:text-foreground transition-colors"
-                        title="Refresh Guild Data"
+                        title={t('refreshData')}
                     >
                         <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
                     </button>
@@ -432,7 +434,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                             type="text" 
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="Search Guild Name..."
+                            placeholder={t('searchPlaceholder')}
                             className="flex-1 bg-background border border-border rounded px-3 py-1 text-sm text-foreground focus:border-primary outline-none"
                             onKeyDown={(e) => e.key === 'Enter' && handleSearchGuild()}
                         />
@@ -478,31 +480,31 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
           <div className="p-4 bg-muted/50 rounded-lg border border-border/50 md:col-span-2 animate-in fade-in slide-in-from-bottom-4">
              <div className="flex items-center gap-2 mb-4">
                 <Activity className="h-4 w-4 text-primary" />
-                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">Guild Activity Dashboard</h3>
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-green-500/10 text-green-500 border border-green-500/20 animate-pulse">LIVE</span>
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">{t('activityDashboard')}</h3>
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-green-500/10 text-green-500 border border-green-500/20 animate-pulse">{t('live')}</span>
              </div>
              
              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="p-3 bg-background rounded border border-border/50">
-                   <div className="text-xs text-muted-foreground mb-1">Active Members</div>
+                   <div className="text-xs text-muted-foreground mb-1">{t('activeMembers')}</div>
                    <div className="text-xl font-bold text-foreground">
                       {allianceDetails ? (allianceDetails.NumPlayers ? allianceDetails.NumPlayers.toLocaleString() : 'N/A') : (license.guildId ? 'Tracking...' : '-')}
                    </div>
                 </div>
                  <div className="p-3 bg-background rounded border border-border/50">
-                   <div className="text-xs text-muted-foreground mb-1">Tools Used Today</div>
+                   <div className="text-xs text-muted-foreground mb-1">{t('toolsUsed')}</div>
                    <div className="text-xl font-bold text-foreground">
                       {license.isActive ? Math.floor(Math.random() * 50) + 12 : '-'}
                    </div>
                 </div>
                  <div className="p-3 bg-background rounded border border-border/50">
-                   <div className="text-xs text-muted-foreground mb-1">Kill Feed Events</div>
+                   <div className="text-xs text-muted-foreground mb-1">{t('killFeedEvents')}</div>
                    <div className="text-xl font-bold text-foreground">
                        {license.isActive ? Math.floor(Math.random() * 200) + 50 : '-'}
                    </div>
                 </div>
                  <div className="p-3 bg-background rounded border border-border/50">
-                   <div className="text-xs text-muted-foreground mb-1">Market Scans</div>
+                   <div className="text-xs text-muted-foreground mb-1">{t('marketScans')}</div>
                    <div className="text-xl font-bold text-foreground">
                        {license.isActive ? Math.floor(Math.random() * 100) + 20 : '-'}
                    </div>
@@ -510,12 +512,12 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
              </div>
              <p className="text-[10px] text-muted-foreground mt-3 text-right flex items-center justify-end gap-1">
                 <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                Real-time data aggregation active
+                {t('realtimeActive')}
              </p>
           </div>
           
           <div className="p-4 bg-muted/50 rounded-lg border border-border/50">
-            <div className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1">Next Renewal</div>
+            <div className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1">{t('nextRenewal')}</div>
             <div className="flex items-center gap-2 text-foreground">
               <Clock className="h-4 w-4 text-muted-foreground" />
               {isValidDate ? expiresDate.toLocaleDateString() : 'Unknown'}
@@ -525,7 +527,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
           <div className="p-4 bg-muted/50 rounded-lg border border-border/50 md:col-span-2">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
               <div>
-                <div className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1">Alliance Access</div>
+                <div className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-1">{t('allianceAccess')}</div>
                 <div className="text-foreground font-medium flex items-center gap-2 flex-wrap">
                   {allianceDetails ? (
                       <>
@@ -533,14 +535,14 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                           {allianceDetails.AllianceName}
                       </>
                   ) : (
-                      license.allianceName || license.allianceId || <span className="text-muted-foreground italic">No Alliance Linked</span>
+                      license.allianceName || license.allianceId || <span className="text-muted-foreground italic">{t('noAlliance')}</span>
                   )}
                   
                   {license.allianceId && (
                       license.allowAllianceAccess ? (
-                        <span className="text-xs bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full border border-green-500/20">Enabled</span>
+                        <span className="text-xs bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full border border-green-500/20">{t('enabled')}</span>
                       ) : (
-                        <span className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded-full border border-border">Disabled</span>
+                        <span className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded-full border border-border">{t('disabled')}</span>
                       )
                   )}
                 </div>
@@ -550,7 +552,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                   {/* Refresh Button for Alliance Data specifically */}
                   {license.allianceId && (
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground">Share Access</span>
+                        <span className="text-sm text-muted-foreground">{t('shareAccess')}</span>
                         <button
                             onClick={() => handleToggleAlliance(!license.allowAllianceAccess)}
                             disabled={toggling}
@@ -574,7 +576,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                           className="text-xs bg-secondary hover:bg-secondary/80 text-foreground px-3 py-1.5 rounded-lg font-medium transition-colors flex items-center gap-2"
                       >
                           <RefreshCw className={`h-3 w-3 ${isRefreshing ? 'animate-spin' : ''}`} />
-                          Check for Alliance
+                          {t('checkForAlliance')}
                       </button>
                   )}
               </div>
@@ -583,14 +585,14 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
             {allianceDetails && (
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 pt-4 border-t border-border/50">
                     <div>
-                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold mb-1">Alliance Population</div>
+                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold mb-1">{t('alliancePopulation')}</div>
                         <div className="flex items-center gap-1.5 text-foreground text-sm">
                             <Users className="h-3.5 w-3.5 text-muted-foreground" />
                             {allianceDetails.NumPlayers?.toLocaleString() || '0'}
                         </div>
                     </div>
                     <div>
-                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold mb-1">Guilds</div>
+                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold mb-1">{t('guilds')}</div>
                         <div className="flex items-center gap-1.5 text-foreground text-sm">
                             <Shield className="h-3.5 w-3.5 text-muted-foreground" />
                             {/* Fallback to Guilds.length if NumGuilds is missing */}
@@ -604,20 +606,20 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                                     onClick={() => setIsGuildListOpen(true)}
                                     className="ml-1 text-[10px] bg-secondary hover:bg-secondary/80 text-secondary-foreground px-1.5 py-0.5 rounded border border-border transition-colors flex items-center gap-0.5"
                                 >
-                                    View <ChevronRight className="h-2.5 w-2.5" />
+                                    {t('view')} <ChevronRight className="h-2.5 w-2.5" />
                                 </button>
                             )}
                         </div>
                     </div>
                     <div>
-                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold mb-1">Alliance ID</div>
+                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold mb-1">{t('allianceId')}</div>
                         <div className="flex items-center gap-1.5 text-foreground text-sm">
                             <Database className="h-3.5 w-3.5 text-muted-foreground" />
                             <span className="truncate max-w-[100px]" title={allianceDetails.AllianceId}>{allianceDetails.AllianceId}</span>
                         </div>
                     </div>
                     <div>
-                         <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold mb-1">Founded</div>
+                         <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold mb-1">{t('founded')}</div>
                          <div className="text-foreground text-sm">
                              {allianceDetails.Founded ? new Date(allianceDetails.Founded).toLocaleDateString() : '-'}
                          </div>
@@ -629,11 +631,14 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
                 <div className="mt-4 pt-4 border-t border-border/50">
                     {isLoadingAlliance ? (
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <Loader2 className="h-3 w-3 animate-spin" /> Loading alliance details...
+                            <Loader2 className="h-3 w-3 animate-spin" /> {t('loadingAlliance')}
                         </div>
                     ) : (
                         <p className="text-xs text-muted-foreground">
-                            Enable to share your premium benefits with all guilds in the <strong>{license.allianceName || license.allianceId}</strong> alliance.
+                            {t.rich('shareBenefitsDesc', {
+                                name: license.allianceName || license.allianceId,
+                                strong: (chunks) => <strong>{chunks}</strong>
+                            })}
                         </p>
                     )}
                 </div>
@@ -649,8 +654,8 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
             <Info className="h-5 w-5 text-blue-500" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-foreground">How Guild Licenses Work</h3>
-            <p className="text-sm text-muted-foreground">Everything you need to know about your Guild Master benefits</p>
+            <h3 className="text-lg font-bold text-foreground">{t('howItWorks.title')}</h3>
+            <p className="text-sm text-muted-foreground">{t('howItWorks.subtitle')}</p>
           </div>
         </div>
         
@@ -658,40 +663,44 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
             {/* Feature 1: Guild Wide */}
             <div className="p-4 bg-background/40 hover:bg-background/60 transition-colors rounded-lg border border-border/50">
                 <h4 className="font-bold text-foreground mb-2 flex items-center gap-2">
-                    <Users className="h-4 w-4 text-primary" /> Guild-Wide Access
+                    <Users className="h-4 w-4 text-primary" /> {t('howItWorks.f1Title')}
                 </h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                    Every single member of your guild automatically receives <strong>Adept</strong> status. They get unlimited watchlists, advanced analytics, and ad-free browsing just by being in your guild.
+                    {t.rich('howItWorks.f1Desc', {
+                        strong: (chunks) => <strong>{chunks}</strong>
+                    })}
                 </p>
             </div>
 
             {/* Feature 2: Alliance Sharing */}
             <div className="p-4 bg-background/40 hover:bg-background/60 transition-colors rounded-lg border border-border/50">
                 <h4 className="font-bold text-foreground mb-2 flex items-center gap-2">
-                    <Shield className="h-4 w-4 text-green-500" /> Alliance Sharing
+                    <Shield className="h-4 w-4 text-green-500" /> {t('howItWorks.f2Title')}
                 </h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                    Enable "Alliance Access" to extend these benefits to <strong>every guild</strong> in your alliance. This is perfect for large coalitions looking to standardize their market tools.
+                    {t.rich('howItWorks.f2Desc', {
+                        strong: (chunks) => <strong>{chunks}</strong>
+                    })}
                 </p>
             </div>
 
              {/* Feature 3: Transferable */}
              <div className="p-4 bg-background/40 hover:bg-background/60 transition-colors rounded-lg border border-border/50">
                 <h4 className="font-bold text-foreground mb-2 flex items-center gap-2">
-                    <RefreshCw className="h-4 w-4 text-amber-500" /> Fully Transferable
+                    <RefreshCw className="h-4 w-4 text-amber-500" /> {t('howItWorks.f3Title')}
                 </h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                    Changing guilds? You can transfer your license to a new guild at any time using the "Change" button in the Guild ID section above.
+                    {t('howItWorks.f3Desc')}
                 </p>
             </div>
 
             {/* Feature 4: Live Analytics */}
             <div className="p-4 bg-background/40 hover:bg-background/60 transition-colors rounded-lg border border-border/50">
                 <h4 className="font-bold text-foreground mb-2 flex items-center gap-2">
-                    <Activity className="h-4 w-4 text-purple-500" /> Live Guild Analytics
+                    <Activity className="h-4 w-4 text-purple-500" /> {t('howItWorks.f4Title')}
                 </h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                    Track your guild's engagement with real-time stats on member activity, tool usage, and market operations directly from this dashboard.
+                    {t('howItWorks.f4Desc')}
                 </p>
             </div>
         </div>
@@ -701,9 +710,9 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
         isOpen={isTransferDialogOpen}
         onClose={() => !isTransferring && setIsTransferDialogOpen(false)}
         onConfirm={confirmTransfer}
-        title="Confirm License Transfer"
-        description={`Are you sure you want to transfer your Guild Master license from "${license.guildId}" to "${pendingGuild?.Name}"? This action cannot be undone.`}
-        confirmText="Transfer License"
+        title={t('transferDialog.title')}
+        description={t('transferDialog.desc', { oldGuild: license.guildId, newGuild: pendingGuild?.Name })}
+        confirmText={t('transferDialog.confirm')}
         loading={isTransferring}
       />
       
@@ -711,7 +720,7 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
       <Modal 
         isOpen={isGuildListOpen} 
         onClose={() => setIsGuildListOpen(false)}
-        title={`Alliance Guilds (${allianceDetails?.Guilds?.length || 0})`}
+        title={t('allianceModalTitle', { count: allianceDetails?.Guilds?.length || 0 })}
       >
           <div className="max-h-[60vh] overflow-y-auto pr-2">
               <div className="grid grid-cols-1 gap-2">
@@ -732,8 +741,8 @@ export function GuildLicenseDashboard({ uid, userProfile }: GuildLicenseDashboar
               <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg flex gap-3">
                   <Info className="h-5 w-5 text-blue-500 shrink-0 mt-0.5" />
                   <div className="text-xs text-muted-foreground">
-                      <p className="font-bold text-foreground mb-1">About Member Counts</p>
-                      The "Alliance Population" ({allianceDetails?.NumPlayers?.toLocaleString()}) represents the total combined members of all guilds listed above, as reported by the Albion Online API.
+                      <p className="font-bold text-foreground mb-1">{t('aboutMemberCounts')}</p>
+                      {t('memberCountsDesc', { count: allianceDetails?.NumPlayers?.toLocaleString() })}
                   </div>
               </div>
           </div>

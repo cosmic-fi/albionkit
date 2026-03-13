@@ -19,8 +19,21 @@ import {
   Skull
 } from 'lucide-react';
 import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
+import { Metadata } from 'next';
 
-export default function AboutPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Pages.about');
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
+
+export default async function AboutPage() {
+  const t = await getTranslations('AboutPage');
+  const tFooter = await getTranslations('Footer');
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -43,13 +56,13 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
             <Crown className="h-4 w-4" />
-            <span>The Ultimate Companion</span>
+            <span>{t('heroBadge')}</span>
           </div>
           <h1 className="text-5xl font-bold mb-6 text-foreground tracking-tight">
-            Empowering Your <span className="text-primary">Albion Journey</span>
+            {t('heroTitle')}<span className="text-primary">{t('heroJourney')}</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            AlbionKit is a suite of advanced tools designed to give you the competitive edge in Albion Online. From market flipping to PvP analytics, we've got you covered.
+            {t('heroSubtitle')}
           </p>
         </div>
       </div>
@@ -62,23 +75,23 @@ export default function AboutPage() {
             
             <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-3xl font-bold mb-6 text-foreground">Our Mission</h2>
+                <h2 className="text-3xl font-bold mb-6 text-foreground">{t('missionTitle')}</h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    Albion Online is a complex sandbox MMORPG driven by a player-driven economy and full-loot PvP. Success requires knowledge, strategy, and the right data.
+                    {t('missionP1')}
                   </p>
                   <p>
-                    Our mission is to democratize access to high-level game analytics. We believe every player, from solo wanderers to guild leaders, deserves professional-grade tools to maximize their efficiency and enjoyment.
+                    {t('missionP2')}
                   </p>
                   <p>
-                    Built by players, for players, AlbionKit is constantly evolving to meet the changing needs of the Albion community.
+                    {t('missionP3')}
                   </p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <StatCard number="100k+" label="Items Tracked" icon={Database} />
-                <StatCard number="24/7" label="Market Updates" icon={Clock} />
-                <StatCard number="Free" label="Core Features" icon={Heart} />
+                <StatCard number="100k+" label={t('itemsTracked')} icon={Database} />
+                <StatCard number="24/7" label={t('marketUpdates')} icon={Clock} />
+                <StatCard number="Free" label={t('coreFeatures')} icon={Heart} />
               </div>
             </div>
           </div>
@@ -86,54 +99,54 @@ export default function AboutPage() {
 
         {/* Core Features */}
         <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-foreground text-center">Everything You Need</h2>
+          <h2 className="text-3xl font-bold mb-12 text-foreground text-center">{t('everythingYouNeed')}</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <FeatureCard 
               icon={Coins}
-              title="Market Flipper"
-              description="Real-time price analysis across all royal cities to find the best arbitrage opportunities."
+              title={t('marketFlipper')}
+              description={t('marketFlipperDesc')}
               color="text-primary"
               bg="bg-primary/10"
             />
             <FeatureCard 
               icon={Sword}
-              title="PvP Intel"
-              description="Deep dive into killboards, analyze guild performance, and track your personal K/D stats."
+              title={t('pvpIntel')}
+              description={t('pvpIntelDesc')}
               color="text-destructive"
               bg="bg-destructive/10"
             />
             <FeatureCard 
               icon={Skull}
-              title="Live Kill Feed"
-              description="Real-time stream of player kills with instant activity graphs and build inspection."
+              title={t('killFeed')}
+              description={t('killFeedDesc')}
               color="text-destructive"
               bg="bg-destructive/10"
             />
             <FeatureCard 
               icon={Hammer}
-              title="Crafting Calculator"
-              description="Calculate exact profit margins for crafting, refining, and enchanting with up-to-date prices."
+              title={t('craftingCalc')}
+              description={t('craftingCalcDesc')}
               color="text-info"
               bg="bg-info/10"
             />
             <FeatureCard 
               icon={BarChart3}
-              title="Meta Builds"
-              description="Discover, create, and share the most effective builds for any content type."
+              title={t('metaBuilds')}
+              description={t('metaBuildsDesc')}
               color="text-success"
               bg="bg-success/10"
             />
             <FeatureCard 
               icon={Users}
-              title="Guild Management"
-              description="Tools for guild leaders to manage rosters, track attendance, and distribute gear."
+              title={t('guildManagement')}
+              description={t('guildManagementDesc')}
               color="text-primary"
               bg="bg-primary/10"
             />
             <FeatureCard 
               icon={Globe}
-              title="Global Server Support"
-              description="Full support for Americas, Asia, and Europe servers with region-specific data."
+              title={t('globalSupport')}
+              description={t('globalSupportDesc')}
               color="text-info"
               bg="bg-info/10"
             />
@@ -145,11 +158,12 @@ export default function AboutPage() {
           <div className="bg-card rounded-xl p-8 border border-border">
             <div className="flex items-center gap-3 mb-4">
               <Database className="h-6 w-6 text-info" />
-              <h3 className="text-xl font-bold text-foreground">Data Sources</h3>
+              <h3 className="text-xl font-bold text-foreground">{t('dataSources')}</h3>
             </div>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              Market data is powered by the <strong>Albion Data Project</strong>, a community-driven effort to collect and distribute game data. 
-              We encourage all users to contribute by running the Albion Data Client.
+              {t.rich('dataSourcesDesc', {
+                strong: (chunks: React.ReactNode) => <strong>{chunks}</strong>
+              })}
             </p>
             <a 
               href="https://www.albion-online-data.com/" 
@@ -157,26 +171,24 @@ export default function AboutPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-info hover:text-info/80 transition-colors"
             >
-              Learn more about ADP <ExternalLink className="h-4 w-4" />
+              {t('learnMoreADP')} <ExternalLink className="h-4 w-4" />
             </a>
           </div>
 
           <div className="bg-card rounded-xl p-8 border border-border">
             <div className="flex items-center gap-3 mb-4">
               <Shield className="h-6 w-6 text-muted-foreground" />
-              <h3 className="text-xl font-bold text-foreground">Legal Disclaimer</h3>
+              <h3 className="text-xl font-bold text-foreground">{t('legalDisclaimer')}</h3>
             </div>
             <p className="text-xs text-muted-foreground/80 max-w-2xl leading-relaxed">
-              AlbionKit is a community-created tool and is not affiliated with, endorsed by, or sponsored by Sandbox Interactive GmbH. 
-              Albion Online and the Albion Online logo are trademarks of Sandbox Interactive GmbH. 
-              All game content and assets are property of their respective owners.
+              {tFooter('disclaimer')}
             </p>
           </div>
         </div>
 
         {/* Connect Section */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-8 text-foreground">Join the Community</h2>
+          <h2 className="text-2xl font-bold mb-8 text-foreground">{t('joinCommunity')}</h2>
           <div className="flex justify-center gap-6">
             <a 
               href="https://twitter.com/Albion_Kit" 
@@ -185,7 +197,7 @@ export default function AboutPage() {
               className="flex items-center gap-3 px-6 py-3 bg-info/10 hover:bg-info/20 text-info rounded-lg transition-all border border-info/20 hover:border-info/40"
             >
               <Twitter className="h-5 w-5" />
-              <span>Twitter</span>
+              <span>{t('twitter')}</span>
             </a>
           </div>
         </div>
@@ -215,5 +227,3 @@ function FeatureCard({ title, description, icon: Icon, color, bg }: { title: str
     </div>
   );
 }
-
-

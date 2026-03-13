@@ -7,7 +7,10 @@ import { AlertTriangle, Send, CheckCircle, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { verifyBeforeUpdateEmail } from 'firebase/auth';
 
+import { useTranslations } from 'next-intl';
+
 export function VerificationBanner() {
+  const t = useTranslations('Auth.verification');
   const { user, profile, loading } = useAuth();
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -44,15 +47,15 @@ export function VerificationBanner() {
       }
 
       setSent(true);
-      toast.success(`Verification email sent to ${targetEmail}! Check your inbox (and spam).`);
+      toast.success(t('sentToast', { email: targetEmail }));
     } catch (error: any) {
       console.error('Error sending verification email:', error);
       if (error.code === 'auth/too-many-requests') {
-        toast.error('Too many requests. Please wait a bit before trying again.');
+        toast.error(t('tooManyRequests'));
       } else if (error.code === 'auth/requires-recent-login') {
-        toast.error('Security update: Please log out and log in again to verify your new email.');
+        toast.error(t('requiresRecentLogin'));
       } else {
-        toast.error(error.message || 'Failed to send verification email.');
+        toast.error(error.message || t('failedToSend'));
       }
     } finally {
       setSending(false);
@@ -64,21 +67,22 @@ export function VerificationBanner() {
       <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
         <div className="flex items-center gap-3 text-amber-500">
           <AlertTriangle className="h-5 w-5 shrink-0" />
-          <p>
+          <div>
             <span className="font-bold">
-                {isPendingUpdate ? 'Confirm New Email:' : 'Verification Required:'}
+                {isPendingUpdate ? t('confirmNewEmail') : t('verificationRequired')}
             </span> 
-            {' '}Please verify your email address 
-            <span className="font-mono bg-amber-500/10 px-1.5 py-0.5 rounded ml-1 text-xs break-all">{targetEmail}</span> 
-            {' '}to {isPendingUpdate ? 'complete the update' : 'access all features'}.
-          </p>
+            {' '}{t.rich('pleaseVerifyEmail', {
+              email: targetEmail ?? '',
+              action: isPendingUpdate ? t('completeUpdate') : t('accessAllFeatures')
+            })}
+          </div>
         </div>
 
         <div className="flex items-center gap-3 w-full sm:w-auto">
           {sent ? (
             <div className="flex items-center gap-2 text-green-500 font-medium bg-green-500/10 px-3 py-1.5 rounded-md w-full sm:w-auto justify-center">
               <CheckCircle className="h-4 w-4" />
-              <span>Email Sent!</span>
+              <span>{t('emailSent')}</span>
             </div>
           ) : (
             <button 
@@ -87,11 +91,11 @@ export function VerificationBanner() {
               className="flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 py-1.5 rounded-md transition-colors w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
             >
               {sending ? (
-                <>Sending...</>
+                <>{t('sending')}</>
               ) : (
                 <>
                   <Send className="h-3 w-3" />
-                  Resend Email
+                  {t('resendEmail')}
                 </>
               )}
             </button>

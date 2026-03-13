@@ -56,7 +56,7 @@ export const getGlobalStats = cache(async (): Promise<GlobalStats> => {
   };
 });
 
-export const getTickerData = cache(async (): Promise<TickerData> => {
+export const getTickerData = cache(async (locale: string = 'en'): Promise<TickerData> => {
   // 1. Fetch Gold Price
   const goldHistory = await getGoldHistory('west', 2); // Get last 2 points for trend
   
@@ -223,7 +223,7 @@ export const getTickerData = cache(async (): Promise<TickerData> => {
   const resolveItemName = async (id: string | null) => {
     if (!id) return '';
     try {
-      const resolved = await getItemNameService(id);
+      const resolved = await getItemNameService(id, locale);
       if (resolved) return resolved;
       return id
         .replace(/^T\d+_/, '')

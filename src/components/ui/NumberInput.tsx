@@ -1,8 +1,11 @@
 import React from 'react';
-import { Minus, Plus, RotateCcw } from 'lucide-react';
+import { Minus, Plus, RotateCcw, AlertCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Tooltip } from './Tooltip';
 
 interface NumberInputProps {
   label?: React.ReactNode;
+  tooltip?: string;
   value: number;
   onChange: (value: number) => void;
   min?: number;
@@ -18,6 +21,7 @@ interface NumberInputProps {
 
 export function NumberInput({
   label,
+  tooltip,
   value,
   onChange,
   min = 0,
@@ -30,6 +34,7 @@ export function NumberInput({
   onReset,
   placeholder,
 }: NumberInputProps) {
+  const t = useTranslations('Common');
   
   const handleDecrement = () => {
     if (disabled) return;
@@ -57,13 +62,18 @@ export function NumberInput({
         <div className="flex justify-between items-center mb-2">
             <label className="text-xs text-muted-foreground font-medium flex items-center gap-2">
             {label}
-            {isCustom && <span className="text-primary text-[10px] uppercase font-bold">(Custom)</span>}
+            {tooltip && (
+              <Tooltip content={tooltip}>
+                <AlertCircle className="h-3 w-3 text-muted-foreground/50 hover:text-muted-foreground cursor-help transition-colors" />
+              </Tooltip>
+            )}
+            {isCustom && <span className="text-primary text-[10px] uppercase font-bold">{t('custom')}</span>}
             </label>
             {isCustom && onReset && (
                 <button 
                     onClick={onReset}
                     className="text-muted-foreground hover:text-primary transition-colors"
-                    title="Reset to market price"
+                    title={t('resetToMarket')}
                     type="button"
                 >
                     <RotateCcw className="h-3 w-3" />

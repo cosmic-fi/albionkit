@@ -1,24 +1,26 @@
 import { Metadata } from 'next';
 import MarketFlipperClient from './MarketFlipperClient';
 import { getItemNameService } from '@/lib/item-service';
+import { getTranslations, getLocale } from 'next-intl/server';
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  let title = 'Albion Online Market Flipper - Profit Calculator | AlbionKit';
-  let description = 'Find the most profitable items to flip in Albion Online. Real-time market data, arbitrage calculator, and historical price charts for all cities and the Black Market.';
+  const t = await getTranslations('Pages.marketFlipper');
+  const locale = await getLocale();
+  let title = t('title');
+  let description = t('description');
   
   const resolvedSearchParams = await searchParams;
   const itemId = resolvedSearchParams?.item;
 
   if (typeof itemId === 'string' && itemId) {
     try {
-      const itemName = await getItemNameService(itemId);
+      const itemName = await getItemNameService(itemId, locale);
       if (itemName) {
-        title = `Flip ${itemName} for Profit - Market Flipper | AlbionKit`;
-        description = `Check real-time market prices and arbitrage opportunities for ${itemName}. Compare prices between Royal Cities and the Black Market instantly.`;
+        title = `${itemName} | ${t('title')}`;
       }
     } catch (e) {
       console.error('Failed to fetch Market Flipper metadata', e);
@@ -28,7 +30,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   return {
     title,
     description,
-    keywords: ['Albion Online Market Flipper', 'Albion Flipping Tool', 'Albion Market Arbitrage', 'Black Market Flipper', 'Albion Online Economy', 'Albion Trading'],
+    keywords: ['Albion Online', 'Market Flipper', 'Arbitrage', 'Black Market', 'Trading', 'Economy'],
     openGraph: {
       title,
       description,
@@ -40,10 +42,16 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       title,
       description,
     }
+    ,
+    alternates: {
+      canonical: 'https://albionkit.com/tools/market-flipper'
+    }
   };
 }
 
-export default function MarketFlipperPage() {
+export default async function MarketFlipperPage() {
+  const tNav = await getTranslations('Navbar');
+  const tPage = await getTranslations('MarketFlipper');
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
@@ -70,19 +78,19 @@ export default function MarketFlipperPage() {
       {
         '@type': 'ListItem',
         position: 1,
-        name: 'Home',
+        name: tNav('home'),
         item: 'https://albionkit.com',
       },
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'Tools',
+        name: tNav('tools'),
         item: 'https://albionkit.com/tools',
       },
       {
         '@type': 'ListItem',
         position: 3,
-        name: 'Market Flipper',
+        name: tPage('title'),
         item: 'https://albionkit.com/tools/market-flipper',
       },
     ],

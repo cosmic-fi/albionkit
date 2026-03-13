@@ -18,7 +18,7 @@ export default async function EditThreadPage({ params }: { params: Promise<{ id:
   const result = await getThreadByIdAction(resolvedParams.id);
   
   if (!result.success || !result.thread) {
-    redirect('/community');
+    redirect('/forum');
   }
 
   return <EditThreadClient initialThread={result.thread} />;

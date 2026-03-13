@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     openGraph: {
       title: thread.title,
       description: cleanDescription,
-      url: `https://albionkit.com/community/thread/${thread.id}`,
+      url: `https://albionkit.com/forum/thread/${thread.id}`,
       siteName: 'Albion_Kit',
       type: 'article',
       publishedTime: thread.createdAt,
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       description: cleanDescription,
     },
     alternates: {
-      canonical: `https://albionkit.com/community/thread/${thread.id}`,
+      canonical: `https://albionkit.com/forum/thread/${thread.id}`,
     }
   };
 }

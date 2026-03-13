@@ -32,10 +32,26 @@ import { MarketTicker } from "@/components/MarketTicker";
 import { InfoStrip, InfoBanner } from "@/components/InfoStrip";
 import { FeatureSection } from "@/components/FeatureSection";
 import { LiveKillToasts } from "@/components/LiveKillToasts";
+import { useTranslations } from 'next-intl';
+import { getTranslations, getLocale } from 'next-intl/server';
+import { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Pages.home');
+  return {
+    title: t('title'),
+    description: t('description'),
+    alternates: {
+      canonical: 'https://albionkit.com/'
+    }
+  };
+}
 
 export default async function Home() {
+  const t = await getTranslations('HomePage');
+  const locale = await getLocale();
   const [tickerData, stats] = await Promise.all([
-    getTickerData(),
+    getTickerData(locale),
     getGlobalStats()
   ]);
 
@@ -85,12 +101,12 @@ export default async function Home() {
             {/* Hero Content */}
             <div className="space-y-8 sm:pt-10">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
-                Make every session count in&nbsp;
+                {t('heroTitle')}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary">Albion Online</span>
               </h1>
 
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-100">
-                Plan your next move with live market data, PvP insights, and meta builds — all in one place so you can spend less time tabbing out and more time playing.
+                {t('heroSubtitle')}
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 animate-fade-in-up delay-200">
@@ -98,14 +114,14 @@ export default async function Home() {
                   href="/tools/market-flipper"
                   className="px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-bold transition-all hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center"
                 >
-                  Explore Market Tools
+                  {t('exploreMarket')}
                   <ArrowRight className="h-5 w-5" />
                 </Link>
                 <Link
                   href="/tools/pvp-intel"
                   className="px-8 py-4 bg-secondary/80 hover:bg-secondary/90 text-foreground rounded-xl font-bold transition-all hover:scale-105 border border-border backdrop-blur-md flex items-center gap-2 w-full sm:w-auto justify-center"
                 >
-                  Scout PvP Players
+                  {t('scoutPvP')}
                   <Sword className="h-5 w-5" />
                 </Link>
               </div>
@@ -120,30 +136,30 @@ export default async function Home() {
       {/* Stats Strip */}
       <section className="bg-muted/50 backdrop-blur-sm relative z-20 border-b-5 border-muted">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0 py-6 md:py-10 container mx-auto px-4">
-          <StatItem value={`${stats.itemsTracked > 0 ? stats.itemsTracked.toLocaleString() : '6,000'}+`} label="Items Tracked" />
-          <StatItem value={`${stats.battlesAnalyzed > 0 ? stats.battlesAnalyzed.toLocaleString() : '50'}+`} label="Recent Battles" />
-          <StatItem value={stats.marketUpdates} label="Market Updates" />
-          <StatItem value={stats.uptime} label="Server Uptime" />
+          <StatItem value={`${stats.itemsTracked > 0 ? stats.itemsTracked.toLocaleString() : '6,000'}+`} label={t('itemsTracked')} />
+          <StatItem value={`${stats.battlesAnalyzed > 0 ? stats.battlesAnalyzed.toLocaleString() : '50'}+`} label={t('recentBattles')} />
+          <StatItem value={stats.marketUpdates} label={t('marketUpdates')} />
+          <StatItem value={stats.uptime} label={t('serverUptime')} />
         </div>
       </section>
 
       {/* Feature Sections */}
       <div className="flex flex-col">
         <FeatureSection
-          title="Market Flipping Made Easy"
-          description="Identify profitable trade routes between cities. Compare buy and sell orders with automatic tax calculations to maximize your margins."
+          title={t('marketTitle')}
+          description={t('marketDescription')}
           link="/tools/market-flipper"
-          linkText="Start Flipping"
+          linkText={t('startFlipping')}
           backgroundImage="/background/ao-market.jpg"
           previewImageLight="/background/ak-marketflipper-light.png"
           previewImageDark="/background/ak-marketflipper-dark.png"
         />
 
         <FeatureSection
-          title="Live PvP Activity Feed"
-          description="Monitor server-wide PvP kills as they happen. Track active players and popular equipment in real-time."
+          title={t('pvpTitle')}
+          description={t('pvpDescription')}
           link="/tools/kill-feed"
-          linkText="Watch Live Feed"
+          linkText={t('watchFeed')}
           backgroundImage="/background/ao-pvp.jpg"
           previewImageLight="/background/ak-killfeed-light.png"
           previewImageDark="/background/ak-killfeed-dark.png"
@@ -151,10 +167,10 @@ export default async function Home() {
         />
 
         <FeatureSection
-          title="ZvZ Battle Tracker"
-          description="Analyze large-scale battles with detailed metrics on guild performance, attendance, and gear composition."
+          title={t('zvzTitle')}
+          description={t('zvzDescription')}
           link="/tools/zvz-tracker"
-          linkText="Analyze Battles"
+          linkText={t('analyzeBattles')}
           backgroundImage="/background/ao-zvz.jpg"
           previewImageLight="/background/ak-zvztracker-light.png"
           previewImageDark="/background/ak-zvztracker-dark.png"
@@ -165,27 +181,27 @@ export default async function Home() {
       <section className="py-10 bg-muted relative overflow-hidden border-y border-border">
         <div className="container mx-auto px-4 text-center space-y-16">
           <div className="max-w-3xl mx-auto space-y-4">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">Safe, Secure, and Compliant</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">{t('safeTitle')}</h2>
             <p className="text-muted-foreground text-lg">
-              We use the Albion Data Project to gather public market data. Our tools are strictly read-only and do not interact with the game client in any bannable way.
+              {t('safeDescription')}
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="p-8 bg-card rounded-2xl border border-border hover:border-primary/30 transition-colors">
               <Shield className="h-10 w-10 text-success mx-auto mb-6" />
-              <h3 className="text-xl font-bold text-foreground mb-3">Safe to Use</h3>
-              <p className="text-muted-foreground">No injection, no memory reading, no automation. We rely on community-gathered data.</p>
+              <h3 className="text-xl font-bold text-foreground mb-3">{t('safeToUse')}</h3>
+              <p className="text-muted-foreground">{t('safeToUseDesc')}</p>
             </div>
             <div className="p-8 bg-card rounded-2xl border border-border hover:border-primary/30 transition-colors">
               <Server className="h-10 w-10 text-info mx-auto mb-6" />
-              <h3 className="text-xl font-bold text-foreground mb-3">Albion Data Project</h3>
-              <p className="text-muted-foreground">Powered by the largest decentralized data network in Albion. Contribute to help others!</p>
+              <h3 className="text-xl font-bold text-foreground mb-3">{t('dataProject')}</h3>
+              <p className="text-muted-foreground">{t('dataProjectDesc')}</p>
             </div>
             <div className="p-8 bg-card rounded-2xl border border-border hover:border-primary/30 transition-colors">
               <Lock className="h-10 w-10 text-primary mx-auto mb-6" />
-              <h3 className="text-xl font-bold text-foreground mb-3">Privacy First</h3>
-              <p className="text-muted-foreground">We don't track your personal game activity or link your character unless you choose to.</p>
+              <h3 className="text-xl font-bold text-foreground mb-3">{t('privacyFirst')}</h3>
+              <p className="text-muted-foreground">{t('privacyFirstDesc')}</p>
             </div>
           </div>
         </div>
@@ -198,7 +214,7 @@ export default async function Home() {
 
         <div className="container mx-auto px-4 space-y-8 md:space-y-12 relative z-10">
           <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">Explore More Tools</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-foreground">{t('exploreMore')}</h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -206,24 +222,24 @@ export default async function Home() {
               href="/tools/pvp-intel"
               icon={<Shield className="h-6 w-6 text-info" />}
               itemImage="T8_2H_CLAYMORE"
-              title="PvP Intel"
-              description="Instantly analyze enemy players, check their IP and win rates before you engage."
+              title={t('pvpIntel')}
+              description={t('pvpIntelDesc')}
               color="blue"
             />
             <FeatureCard
               href="/tools/crafting-calc"
               icon={<Hammer className="h-6 w-6 text-success" />}
               itemImage="T8_2H_TOOL_HAMMER_AVALON"
-              title="Crafting Calculator"
-              description="Optimize your focus usage. Calculate profit margins for refining and crafting."
+              title={t('craftingCalc')}
+              description={t('craftingCalcDesc')}
               color="emerald"
             />
             <FeatureCard
               href="/profits/farming"
               icon={<TrendingUp className="h-6 w-6 text-success" />}
               itemImage="T8_FARM_YARROW_SEED"
-              title="Farming Profits"
-              description="Calculate the most profitable crops and animals to raise on your island."
+              title={t('farmingProfits')}
+              description={t('farmingProfitsDesc')}
               color="green"
             />
           </div>
@@ -236,27 +252,27 @@ export default async function Home() {
         <div className="absolute inset-0 bg-background/90" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground text-center mb-10">Frequently Asked Questions</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold text-foreground text-center mb-10">{t('faqTitle')}</h2>
           <div className="max-w-3xl mx-auto space-y-4">
             <FAQItem
-              question="Is this tool free to use?"
-              answer="Yes! Core features like Market Flipping, PvP Kill Feed, and Build Browsing are 100% free. We offer an 'Adept Tier' that unlocks advanced analytics and helps cover server costs to keep the app alive and running."
+              question={t('faq.q1')}
+              answer={t('faq.a1')}
             />
             <FAQItem
-              question="Is it safe? Will I get banned?"
-              answer="AlbionKit is completely safe. We do not inspect game memory, inject code, or automate actions. We strictly follow SBI's Terms of Service. All market data is crowdsourced via the approved Albion Data Project."
+              question={t('faq.q2')}
+              answer={t('faq.a2')}
             />
             <FAQItem
-              question="How accurate is the market data?"
-              answer="Prices are updated by real players using the Albion Data Client. In major cities like Lymhurst and Fort Sterling, data is typically just minutes old. Less popular items may have older data."
+              question={t('faq.q3')}
+              answer={t('faq.a3')}
             />
             <FAQItem
-              question="What is the Guild Master plan?"
-              answer="The Guild Master plan is a special tier that unlocks Adept perks for ALL members of your guild. It also includes exclusive guild-level dashboards and kill feed integrations."
+              question={t('faq.q4')}
+              answer={t('faq.a4')}
             />
             <FAQItem
-              question="Do you have a mobile app?"
-              answer="AlbionKit is a Progressive Web App (PWA). You can install it directly on your phone or tablet for a native-like experience without needing an app store."
+              question={t('faq.q5')}
+              answer={t('faq.a5')}
             />
           </div>
         </div>
@@ -278,9 +294,9 @@ export default async function Home() {
               </div>
             </div>
             <div className="space-y-2">
-              <h2 className="text-3xl lg:text-4xl font-bold text-foreground">Stay Updated</h2>
+              <h2 className="text-3xl lg:text-4xl font-bold text-foreground">{t('stayUpdated')}</h2>
               <p className="text-muted-foreground text-lg">
-                Follow us on Twitter or subscribe to our newsletter for the latest meta updates and market insights.
+                {t('stayUpdatedDesc')}
               </p>
             </div>
           </div>
@@ -293,14 +309,14 @@ export default async function Home() {
               className="px-8 py-4 bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white rounded-xl font-bold transition-all text-center whitespace-nowrap flex items-center gap-3 justify-center"
             >
               <Twitter className="h-5 w-5 fill-current" />
-              Follow on Twitter
+              {t('followTwitter')}
             </Link>
             <Link
               href="/settings"
               className="px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-bold transition-all text-center whitespace-nowrap flex items-center gap-3 justify-center"
             >
               <Mail className="h-5 w-5" />
-              Manage Alerts
+              {t('manageAlerts')}
             </Link>
           </div>
 

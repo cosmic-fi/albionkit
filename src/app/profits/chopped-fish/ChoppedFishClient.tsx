@@ -1,17 +1,19 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { useAuth } from '@/context/AuthContext';
 import { Fish, RefreshCw, ChevronUp, ChevronDown, AlertCircle, CircleHelp } from 'lucide-react';
 import { ServerSelector } from '@/components/ServerSelector';
 import { useServer } from '@/hooks/useServer';
 import { getMarketPrices, getMarketVolume, LOCATIONS } from '@/lib/market-service';
+import { getItemNameService } from '@/lib/item-service';
 import { FISH_DEFINITIONS, CHOPPED_FISH_PRODUCT_ID, FishType } from './constants';
 import { NumberInput } from '@/components/ui/NumberInput';
 import { Select } from '@/components/ui/Select';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { useTranslations, useLocale } from 'next-intl';
 
 // Helper to generate fish stats
 const getFishStats = (tier: number, isRare: boolean = false, id: string): Partial<FishType> => {
@@ -66,11 +68,22 @@ interface FishData extends FishType {
 const CITY_OPTIONS = LOCATIONS.filter(l => l !== 'Black Market').map(city => ({ value: city, label: city }));
 
 export default function ChoppedFishClient() {
+  const t = useTranslations('ChoppedFish');
+  const tCommon = useTranslations('CraftingCalc');
   const { profile } = useAuth();
+  
+  // Create translated city options
+  const cityOptions = useMemo(() =>
+    LOCATIONS.filter(l => l !== 'Black Market').map(city => ({
+      value: city,
+      label: tCommon(`cities.${city}`)
+    })), [tCommon]
+  );
   const [loading, setLoading] = useState(false);
   const [fishTypes, setFishTypes] = useState<FishType[]>([]);
   const [data, setData] = useState<FishData[]>([]);
   const { server: region, setServer: setRegion } = useServer();
+  const locale = useLocale();
   
   // Controls
   const [buyCity, setBuyCity] = useState<string>('Lymhurst');
@@ -89,6 +102,31 @@ export default function ChoppedFishClient() {
     });
     setFishTypes(generated);
   }, []);
+  
+  // Fetch localized fish names
+  const [localizedNames, setLocalizedNames] = useState<Record<string, string>>({});
+  
+  useEffect(() => {
+    const loadLocalizedNames = async () => {
+      const names: Record<string, string> = {};
+      
+      for (const fish of fishTypes) {
+        try {
+          const localizedName = await getItemNameService(fish.id, locale);
+          const cleanName = localizedName ? localizedName.replace(/^Item/, '') : localizedName;
+          names[fish.id] = cleanName || fish.name;
+        } catch (error) {
+          names[fish.id] = fish.name;
+        }
+      }
+      
+      setLocalizedNames(names);
+    };
+    
+    if (fishTypes.length > 0) {
+      loadLocalizedNames();
+    }
+  }, [fishTypes, locale]);
   
   // Controls state is initialized above
   const [choppedFishRequired, setChoppedFishRequired] = useState<number>(5000);
@@ -297,9 +335,9 @@ export default function ChoppedFishClient() {
 
   return (
     <PageShell 
-      title="Chopped Fish Calculator" 
+      title={t('title')} 
       backgroundImage='/background/ao-crafting.jpg'  
-      description="Calculate profits from converting fish into chopped fish."
+      description={t('description')}
       icon={<Fish className="h-6 w-6" />}
       headerActions={
         <div className="flex items-center gap-4">
@@ -330,22 +368,22 @@ export default function ChoppedFishClient() {
                       <img 
                         src={`https://render.albiononline.com/v1/item/${CHOPPED_FISH_PRODUCT_ID}`} 
                         className="h-12 w-12 object-contain"
-                        alt="Chopped Fish"
+                        alt={t('choppingProfit')}
                       />
                   </div>
                   <div className="flex-1">
-                      <h3 className="text-lg font-bold text-foreground mb-1">Chopped Fish</h3>
+                      <h3 className="text-lg font-bold text-foreground mb-1">{t('choppingProfit')}</h3>
                       <div className="flex items-baseline gap-2 mb-1">
                           <span className="text-2xl font-mono font-bold text-success">
                               {choppedFishStats.price.toLocaleString()}
                           </span>
-                          <span className="text-sm text-muted-foreground">silver/unit</span>
+                          <span className="text-sm text-muted-foreground">{t('silverUnit')}</span>
                       </div>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <span>{choppedFishStats.volume.toLocaleString()} items sold (24h)</span>
+                          <span>{t('itemsSold', { val: choppedFishStats.volume.toLocaleString() })}</span>
                           {choppedFishStats.price === 0 && (
                               <span className="text-warning flex items-center gap-1">
-                                  <AlertCircle className="h-3 w-3" /> No price data
+                                  <AlertCircle className="h-3 w-3" /> {t('noPriceData')}
                               </span>
                           )}
                       </div>
@@ -355,7 +393,7 @@ export default function ChoppedFishClient() {
                {/* Target Input */}
                <div className="bg-muted/50 rounded-lg p-4 border border-border">
                    <div className="flex justify-between items-center mb-2">
-                       <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Chopped Fish Required</label>
+                       <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{t('required')}</label>
                    </div>
                    <NumberInput
                        value={choppedFishRequired}
@@ -369,38 +407,38 @@ export default function ChoppedFishClient() {
             {/* Right: Settings & Filters */}
             <div className="space-y-6">
                <div className="grid grid-cols-2 gap-4">
-                   <Select 
-                       label="Buy Fish From"
-                       options={CITY_OPTIONS}
-                       value={buyCity}
-                       onChange={(value) => setBuyCity(value)}
-                   />
-                   <Select 
-                       label="Sell Chopped To"
-                       options={CITY_OPTIONS}
-                       value={sellCity}
-                       onChange={(value) => setSellCity(value)}
-                   />
+                    <Select 
+                        label={t('buyFishFrom')}
+                        options={cityOptions}
+                        value={buyCity}
+                        onChange={(value) => setBuyCity(value)}
+                    />
+                    <Select 
+                        label={t('sellChoppedTo')}
+                        options={cityOptions}
+                        value={sellCity}
+                        onChange={(value) => setSellCity(value)}
+                    />
                </div>
                
                <div className="h-px bg-border" />
                
                <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                    <Checkbox 
-                       label="Use Buy Order"
-                       description="Buy fish via buy orders (+2.5% fee)"
+                       label={t('useBuyOrder')}
+                       description={t('useBuyOrderDesc')}
                        checked={useBuyOrder}
                        onChange={(e) => setUseBuyOrder(e.target.checked)}
                    />
                    <Checkbox 
-                       label="Include Tax"
-                       description="Deduct sales tax & setup fees"
+                       label={t('includeTax')}
+                       description={t('includeTaxDesc')}
                        checked={includeTax}
                        onChange={(e) => setIncludeTax(e.target.checked)}
                    />
                    <Checkbox 
-                       label="Premium Status"
-                       description="Lower tax rate (4% vs 8%)"
+                       label={t('premiumStatus')}
+                       description={t('premiumStatusDesc')}
                        checked={usePremium}
                        onChange={(e) => setUsePremium(e.target.checked)}
                        disabled={!includeTax}
@@ -417,13 +455,13 @@ export default function ChoppedFishClient() {
               <thead>
                 <tr className="bg-muted text-muted-foreground text-xs uppercase tracking-wider border-b border-border">
                   <th className="p-4 pl-6 font-medium cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('tier')}>
-                      <div className="flex items-center gap-1">Fish {sortKey === 'tier' && (sortDirection === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}</div>
+                      <div className="flex items-center gap-1">{t('fish')} {sortKey === 'tier' && (sortDirection === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}</div>
                   </th>
                   {showPrices && (
                     <th className="w-[1%] p-4 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('fishPrice')}>
                       <div className="flex items-center justify-end gap-1">
-                        <Tooltip content="Market price of raw fish based on selected city and order type.">
-                           <span>Price</span>
+                        <Tooltip content={t('priceTooltip')}>
+                           <span>{t('price')}</span>
                            <CircleHelp className="h-3 w-3 text-muted-foreground" />
                         </Tooltip>
                         {sortKey === 'fishPrice' && (sortDirection === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
@@ -432,14 +470,14 @@ export default function ChoppedFishClient() {
                   )}
                   <th className="w-[1%] p-4 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('fishVolume')}>
                       <div className="flex items-center justify-end gap-1">
-                        <span>Volume (24h)</span>
+                        <span>{t('volume24h')}</span>
                         {sortKey === 'fishVolume' && (sortDirection === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                       </div>
                   </th>
                   <th className="w-[1%] p-4 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('choppedYield')}>
                       <div className="flex items-center justify-end gap-1">
-                        <Tooltip content="Average chopped fish yield per raw fish.">
-                           <span>Chopped Fish</span>
+                        <Tooltip content={t('choppedFishTooltip')}>
+                           <span>{t('choppedFish')}</span>
                            <CircleHelp className="h-3 w-3 text-muted-foreground" />
                         </Tooltip>
                         {sortKey === 'choppedYield' && (sortDirection === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
@@ -447,8 +485,8 @@ export default function ChoppedFishClient() {
                   </th>
                   <th className="w-[1%] p-4 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('fishRequired')}>
                       <div className="flex items-center justify-end gap-1">
-                        <Tooltip content={`Raw fish required to produce ${choppedFishRequired.toLocaleString()} chopped fish.`}>
-                           <span>Fish Req.</span>
+                        <Tooltip content={t('fishReqTooltip', { val: choppedFishRequired.toLocaleString() })}>
+                           <span>{t('fishReq')}</span>
                            <CircleHelp className="h-3 w-3 text-muted-foreground" />
                         </Tooltip>
                         {sortKey === 'fishRequired' && (sortDirection === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
@@ -457,8 +495,8 @@ export default function ChoppedFishClient() {
                   {showPrices && (
                     <th className="w-[1%] p-4 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('pricePerChopped')}>
                       <div className="flex items-center justify-end gap-1">
-                        <Tooltip content="Effective cost per unit of chopped fish produced.">
-                           <span>Price / Chopped</span>
+                        <Tooltip content={t('priceChoppedTooltip')}>
+                           <span>{t('priceChopped')}</span>
                            <CircleHelp className="h-3 w-3 text-muted-foreground" />
                         </Tooltip>
                         {sortKey === 'pricePerChopped' && (sortDirection === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
@@ -467,8 +505,8 @@ export default function ChoppedFishClient() {
                   )}
                   <th className="w-[1%] p-4 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('profit')}>
                       <div className="flex items-center justify-end gap-1">
-                        <Tooltip content={`Total profit for producing ${choppedFishRequired.toLocaleString()} chopped fish.`}>
-                           <span>Profit</span>
+                        <Tooltip content={t('profitTooltip', { val: choppedFishRequired.toLocaleString() })}>
+                           <span>{t('profit')}</span>
                            <CircleHelp className="h-3 w-3 text-muted-foreground" />
                         </Tooltip>
                         {sortKey === 'profit' && (sortDirection === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
@@ -476,7 +514,7 @@ export default function ChoppedFishClient() {
                   </th>
                   <th className="w-[1%] p-4 pr-6 font-medium text-right cursor-pointer hover:text-foreground whitespace-nowrap" onClick={() => handleSort('roi')}>
                       <div className="flex items-center justify-end gap-1">
-                        <span>ROI</span>
+                        <span>{t('roi')}</span>
                         {sortKey === 'roi' && (sortDirection === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                       </div>
                   </th>
@@ -491,17 +529,17 @@ export default function ChoppedFishClient() {
                                 <img 
                                     src={`https://render.albiononline.com/v1/item/${row.id}`} 
                                     className="h-8 w-8 object-contain"
-                                    alt={row.name}
+                                    alt={localizedNames[row.id] || row.name}
                                 />
                                 <div className="absolute -bottom-1 -right-1 bg-background text-[10px] border border-border px-1 rounded-full font-mono text-muted-foreground">
                                     T{row.tier}
                                 </div>
                             </div>
                             <div>
-                                <div className="font-medium text-foreground">{row.name}</div>
+                                <div className="font-medium text-foreground">{localizedNames[row.id] || row.name}</div>
                                 <div className="text-xs text-muted-foreground flex items-center gap-1">
                                     <span className="font-mono">{row.id}</span>
-                                    {row.isRare && <span className="text-amber-500 font-bold">• Rare</span>}
+                                    {row.isRare && <span className="text-amber-500 font-bold">• {t('rare')}</span>}
                                 </div>
                             </div>
                         </div>
@@ -510,7 +548,7 @@ export default function ChoppedFishClient() {
                     {showPrices && (
                         <td className="p-4 text-right font-mono">
                             <div className="text-foreground">{row.fishPrice.toLocaleString()}</div>
-                            {row.isCustomFishPrice && <span className="text-[10px] text-primary uppercase font-bold tracking-wider">Custom</span>}
+                            {row.isCustomFishPrice && <span className="text-[10px] text-primary uppercase font-bold tracking-wider">{t('custom')}</span>}
                         </td>
                     )}
 
@@ -549,7 +587,7 @@ export default function ChoppedFishClient() {
                 {sortedData.length === 0 && !loading && (
                     <tr>
                         <td colSpan={8} className="p-8 text-center text-muted-foreground">
-                            No fish data available.
+                            {t('noData')}
                         </td>
                     </tr>
                 )}
@@ -559,7 +597,7 @@ export default function ChoppedFishClient() {
                         <td colSpan={8} className="p-8 text-center text-muted-foreground">
                             <div className="flex items-center justify-center gap-2">
                                 <RefreshCw className="h-4 w-4 animate-spin" />
-                                Loading market data...
+                                {t('loading')}
                             </div>
                         </td>
                     </tr>

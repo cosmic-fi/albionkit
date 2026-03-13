@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { X, Cookie } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export function CookieBanner() {
+  const t = useTranslations('CookieBanner');
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -36,12 +38,11 @@ export function CookieBanner() {
         <div className="flex-1 space-y-2">
           <div className="flex items-center gap-2 text-primary font-bold text-lg">
             <Cookie className="h-5 w-5" />
-            <span>We value your privacy</span>
+            <span>{t('title')}</span>
           </div>
           <p className="text-muted-foreground text-sm leading-relaxed">
-            We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic.
-            By clicking "Accept All", you consent to our use of cookies.
-            Read our <Link href="/cookies" className="text-primary hover:text-primary/80 underline">Cookie Policy</Link>.
+            {t('description')}
+            <Link href="/cookies" className="text-primary hover:text-primary/80 underline">{t('cookiePolicy')}</Link>.
           </p>
         </div>
 
@@ -50,13 +51,13 @@ export function CookieBanner() {
             onClick={handleDecline}
             className="flex-1 md:flex-none px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg text-sm font-medium transition-colors"
           >
-            Decline
+            {t('decline')}
           </button>
           <button
             onClick={handleAccept}
             className="flex-1 md:flex-none px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm font-bold transition-all hover:scale-105"
           >
-            Accept All
+            {t('acceptAll')}
           </button>
         </div>
 

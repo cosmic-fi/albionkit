@@ -7,9 +7,9 @@ export async function getEventMetadataAction(event: any, region: 'west' | 'east'
   return await getEventMetadata(event, region);
 }
 
-export async function resolveItemNameAction(itemId: string) {
+export async function resolveItemNameAction(itemId: string, locale: string = 'en') {
   try {
-    const name = await getItemNameService(itemId);
+    const name = await getItemNameService(itemId, locale);
     return name || itemId;
   } catch (error) {
     console.error('Error resolving item name:', error);

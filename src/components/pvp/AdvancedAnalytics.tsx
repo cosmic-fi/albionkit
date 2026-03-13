@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   LineChart,
   Line,
@@ -24,7 +25,7 @@ interface AdvancedAnalyticsProps {
   playerId: string;
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload, label, t }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-popover border border-border p-3 rounded  text-xs">
@@ -38,7 +39,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
           </p>
         ))}
         {payload[0].payload.opponent && (
-           <p className="text-muted-foreground mt-1">vs {payload[0].payload.opponent}</p>
+           <p className="text-muted-foreground mt-1">{t ? t('vs') : 'vs'} {payload[0].payload.opponent}</p>
         )}
       </div>
     );
@@ -47,6 +48,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function AdvancedAnalytics({ kills, deaths, playerId }: AdvancedAnalyticsProps) {
+  const t = useTranslations('PvpIntel.analytics');
   
   // Process data for Fame Trend (Cumulative Kill Fame)
   const fameData = useMemo(() => {
@@ -131,14 +133,14 @@ export default function AdvancedAnalytics({ kills, deaths, playerId }: AdvancedA
     <div className="mt-8 space-y-0 animate-in fade-in slide-in-from-bottom-8 duration-700">
       <h3 className="text-xl font-bold flex items-center gap-2 text-foreground border-b border-border pb-4">
         <Target className="h-6 w-6 text-primary" />
-        Advanced Analytics
+        {t('title')}
       </h3>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
         <div className="bg-card rounded-xl p-4 border border-border">
           <h4 className="font-bold text-card-foreground mb-6 flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-success" />
-            Recent Fame Trend
+            {t('recentFameTrend')}
           </h4>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -155,11 +157,11 @@ export default function AdvancedAnalytics({ kills, deaths, playerId }: AdvancedA
                   fontSize={12}
                   tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip content={<CustomTooltip t={t} />} />
                 <Line 
                   type="monotone" 
                   dataKey="fame" 
-                  name="Cumulative Fame" 
+                  name={t('cumulativeFame')}
                   stroke="#10b981" 
                   strokeWidth={2}
                   dot={false}
@@ -174,7 +176,7 @@ export default function AdvancedAnalytics({ kills, deaths, playerId }: AdvancedA
         <div className="bg-card rounded-xl p-4 border border-border">
           <h4 className="font-bold text-card-foreground mb-6 flex items-center gap-2">
             <Clock className="h-4 w-4 text-primary" />
-            Activity by Hour (UTC)
+            {t('activityByHour')}
           </h4>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -191,8 +193,8 @@ export default function AdvancedAnalytics({ kills, deaths, playerId }: AdvancedA
                   contentStyle={{ backgroundColor: 'var(--popover)', borderColor: 'var(--border)', color: 'var(--popover-foreground)' }}
                 />
                 <Legend />
-                <Bar dataKey="kills" name="Kills" fill="#10b981" stackId="a" radius={[0, 0, 4, 4]} />
-                <Bar dataKey="deaths" name="Deaths" fill="#ef4444" stackId="a" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="kills" name={t('kills')} fill="#10b981" stackId="a" radius={[0, 0, 4, 4]} />
+                <Bar dataKey="deaths" name={t('deaths')} fill="#ef4444" stackId="a" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -203,11 +205,11 @@ export default function AdvancedAnalytics({ kills, deaths, playerId }: AdvancedA
           <div className="flex justify-between items-start mb-6">
             <h4 className="font-bold text-card-foreground flex items-center gap-2">
               <Target className="h-4 w-4 text-primary" />
-              Opponent IP vs Fame Value
+              {t('opponentIpVsFame')}
             </h4>
             <div className="text-xs text-muted-foreground flex gap-4">
-              <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-success"></div> Victory</span>
-              <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-destructive"></div> Defeat</span>
+              <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-success"></div> {t('victory')}</span>
+              <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-destructive"></div> {t('defeat')}</span>
             </div>
           </div>
           <div className="h-[350px] w-full">
@@ -217,18 +219,18 @@ export default function AdvancedAnalytics({ kills, deaths, playerId }: AdvancedA
                 <XAxis 
                   type="number" 
                   dataKey="ip" 
-                  name="Item Power" 
+                  name={t('itemPower')}
                   stroke="var(--muted-foreground)" 
                   domain={['auto', 'auto']}
-                  label={{ value: 'Item Power', position: 'bottom', fill: 'var(--muted-foreground)', offset: 0 }}
+                  label={{ value: t('itemPower'), position: 'bottom', fill: 'var(--muted-foreground)', offset: 0 }}
                 />
                 <YAxis 
                   type="number" 
                   dataKey="fame" 
-                  name="Fame" 
+                  name={t('fame')}
                   stroke="var(--muted-foreground)"
                   tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
-                  label={{ value: 'Fame', angle: -90, position: 'left', fill: 'var(--muted-foreground)' }}
+                  label={{ value: t('fame'), angle: -90, position: 'left', fill: 'var(--muted-foreground)' }}
                 />
                 <Tooltip 
                   cursor={{ strokeDasharray: '3 3' }}
@@ -238,10 +240,10 @@ export default function AdvancedAnalytics({ kills, deaths, playerId }: AdvancedA
                       return (
                         <div className="bg-popover border border-border p-3 rounded  text-xs">
                           <p className={`font-bold mb-1 ${data.type === 'Victory' ? 'text-success' : 'text-destructive'}`}>
-                            {data.type} vs {data.opponent}
+                            {data.type === 'Victory' ? t('victory') : t('defeat')} {t('vs')} {data.opponent}
                           </p>
                           <p className="text-muted-foreground">IP: {data.ip}</p>
-                          <p className="text-muted-foreground">Fame: {data.fame.toLocaleString()}</p>
+                          <p className="text-muted-foreground">{t('fame')}: {data.fame.toLocaleString()}</p>
                           {data.weapon && (
                              <p className="text-muted-foreground mt-1 opacity-75">
                                {data.weapon.replace(/^T\d+_/, '').replace(/_/g, ' ')}
@@ -253,8 +255,8 @@ export default function AdvancedAnalytics({ kills, deaths, playerId }: AdvancedA
                     return null;
                   }}
                 />
-                <Scatter name="Wins" data={ipData.filter(d => d.type === 'Victory')} fill="#10b981" />
-                <Scatter name="Losses" data={ipData.filter(d => d.type === 'Defeat')} fill="#ef4444" />
+                <Scatter name={t('wins')} data={ipData.filter(d => d.type === 'Victory')} fill="#10b981" />
+                <Scatter name={t('losses')} data={ipData.filter(d => d.type === 'Defeat')} fill="#ef4444" />
               </ScatterChart>
             </ResponsiveContainer>
           </div>

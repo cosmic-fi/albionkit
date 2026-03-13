@@ -85,6 +85,7 @@ export interface UserProfile {
   isAdmin?: boolean; // Admin role flag
   hasPendingGuildLicense?: boolean; // Purchased guild license but not yet linked to a guild
   updatedAt: string;
+  locale?: string;
   subscription?: UserSubscription;
   preferences?: UserPreferences;
   socialLinks?: SocialLinks;

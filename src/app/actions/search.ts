@@ -2,6 +2,7 @@
 
 import { searchItemsService, SimpleItem } from '@/lib/item-service';
 import { searchBuildsService } from '@/lib/builds-service';
+import { getLocale } from 'next-intl/server';
 
 export type SearchResultType = 'page' | 'item' | 'tool' | 'build';
 
@@ -26,9 +27,10 @@ const STATIC_PAGES: SearchResult[] = [
   { id: 'profit-farming', type: 'page', title: 'Farming Profits', subtitle: 'Crop and animal yield calculator', href: '/profits/farming', icon: 'Sprout' },
   { id: 'profit-cooking', type: 'page', title: 'Cooking Profits', subtitle: 'Food crafting calculator', href: '/profits/cooking', icon: 'Utensils' },
   { id: 'profit-alchemy', type: 'page', title: 'Alchemy Profits', subtitle: 'Potion brewing calculator', href: '/profits/alchemy', icon: 'FlaskConical' },
-  { id: 'profit-animal', type: 'page', title: 'Animal Breeding', subtitle: 'Breeding profit calculator', href: '/profits/animal', icon: 'Rabbit' }, // Using Rabbit as generic animal icon
+  { id: 'profit-animal', type: 'page', title: 'Animal Breeding', subtitle: 'Breeding profit calculator', href: '/profits/animal', icon: 'Rabbit' },
   { id: 'profit-enchant', type: 'page', title: 'Enchanting Profits', subtitle: 'Enchanting profit calculator', href: '/profits/enchanting', icon: 'Sparkles' },
   { id: 'profit-labour', type: 'page', title: 'Labourer Profits', subtitle: 'Labourer yield calculator', href: '/profits/labour', icon: 'HardHat' },
+  { id: 'profit-choppedFish', type: 'page', title: 'Chopped Fish Profits', subtitle: 'Fish processing calculator', href: '/profits/chopped-fish', icon: 'Fish' },
   
   // Build Categories
   { id: 'builds-solo', type: 'page', title: 'Solo Builds', subtitle: 'Best builds for solo play', href: '/builds?category=solo', icon: 'User' },
@@ -44,11 +46,12 @@ const STATIC_PAGES: SearchResult[] = [
 export async function globalSearch(query: string): Promise<SearchResult[]> {
   if (!query || query.length < 2) return [];
 
+  const locale = await getLocale();
   const lowerQuery = query.toLowerCase();
   const results: SearchResult[] = [];
 
   // 1. Search Static Pages & Tools
-  const matchingPages = STATIC_PAGES.filter(page => 
+  const matchingPages = STATIC_PAGES.filter((page: SearchResult) => 
     page.title.toLowerCase().includes(lowerQuery) || 
     page.subtitle?.toLowerCase().includes(lowerQuery)
   );
@@ -57,7 +60,7 @@ export async function globalSearch(query: string): Promise<SearchResult[]> {
   // 2. Search Items and then Builds
   let matchedItemIds: string[] = [];
   try {
-    const items = await searchItemsService(query);
+    const items = await searchItemsService(query, locale);
     matchedItemIds = items.map(i => i.id);
     
     const itemResults: SearchResult[] = items.slice(0, 5).map(item => ({

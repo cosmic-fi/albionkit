@@ -107,3 +107,15 @@ export const ITEM_CATEGORIES = {
     '2H_INFERNOSTAFF', '2H_DIVINESTAFF', '2H_WILDSTAFF', '2H_DEMONICSTAFF', '2H_ENIGMATICSTAFF', '2H_GLACIALSTAFF'
   ])
 };
+
+// Map category keys to stable label IDs for i18n
+export const CATEGORY_LABEL_IDS: Record<string, string> = {
+  'Popular': 'popular',
+  'Melee Weapons': 'melee',
+  'Ranged/Magic': 'ranged',
+  'Armor (Plate)': 'armor_plate',
+  'Armor (Leather)': 'armor_leather',
+  'Armor (Cloth)': 'armor_cloth',
+  'Accessories': 'accessories',
+  'Artifact Weapons': 'artifact_weapons',
+};

@@ -8,7 +8,7 @@ import { InfoStrip } from '@/components/InfoStrip';
 import { EquipmentSlot } from '@/components/EquipmentSlot';
 import { Select } from '@/components/ui/Select';
 import { TagInput } from '@/components/ui/TagInput';
-import { createBuild, BuildCategory, BuildEquipment } from '@/lib/builds-service';
+import { createBuild, BuildEquipment } from '@/lib/builds-service';
 import { LoginModal } from '@/components/auth/LoginModal';
 import { Loader2, Save, ArrowLeft, Info, Shield } from 'lucide-react';
 import Link from 'next/link';
@@ -16,10 +16,12 @@ import dynamic from 'next/dynamic';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { useTheme } from 'next-themes';
+import { useTranslations } from 'next-intl';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
 export default function CreateBuildPage() {
+  const t = useTranslations('CreateBuild');
   const { user, profile, loading } = useAuth();
   const router = useRouter();
   const { resolvedTheme } = useTheme();
@@ -30,7 +32,6 @@ export default function CreateBuildPage() {
     title: '',
     description: '',
     longDescription: '',
-    category: 'solo' as BuildCategory,
     youtubeLink: '',
   });
 
@@ -67,7 +68,7 @@ export default function CreateBuildPage() {
   const [mobility, setMobility] = useState<'low' | 'medium' | 'high'>('medium');
   const [tags, setTags] = useState<string[]>([]);
 
-  const tagOptions = ['PvP', 'PvE', 'ZvZ', 'Escape/Gathering', 'Ganking', 'Other'];
+  const tagOptions = ['Solo', 'Small Scale', 'PvP', 'ZvZ', 'Large Scale', 'Group', 'PvE', 'Escape/Gathering', 'Ganking', 'Other'];
 
   const toggleTag = (tag: string) => {
     setTags(prev =>
@@ -117,13 +118,26 @@ export default function CreateBuildPage() {
       router.push('/builds');
       return;
     }
-    if (!formData.title) return toast.error('Title is required');
-    if (!items.MainHand) return toast.error('Main Hand weapon is required');
+    if (!formData.title) return toast.error(t('titleRequired'));
+    if (!items.MainHand) return toast.error(t('weaponRequired'));
 
     setSubmitting(true);
     try {
+      // Determine category from tags or default to 'solo'
+      const categoryTags = ['Solo', 'Small Scale', 'PvP', 'ZvZ', 'Large Scale', 'Group'];
+      const selectedCategory = tags.find(tag => categoryTags.includes(tag)) || 'Solo';
+      const categoryMap: { [key: string]: any } = {
+        'Solo': 'solo',
+        'Small Scale': 'small-scale',
+        'PvP': 'pvp',
+        'ZvZ': 'zvz',
+        'Large Scale': 'large-scale',
+        'Group': 'group',
+      };
+
       await createBuild({
         ...formData,
+        category: categoryMap[selectedCategory] || 'solo',
         items,
         authorId: user.uid,
         authorName: profile?.displayName || user.displayName || 'Anonymous',
@@ -132,10 +146,10 @@ export default function CreateBuildPage() {
         mobility,
         tags,
       });
-      router.push(`/builds/${formData.category}`);
+      router.push(`/builds/solo`);
     } catch (error) {
       console.error(error);
-      toast.error('Failed to create build');
+      toast.error(t('saveError'));
     } finally {
       setSubmitting(false);
     }
@@ -143,35 +157,26 @@ export default function CreateBuildPage() {
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen text-muted-foreground">
-      <Loader2 className="animate-spin mr-2" /> Loading...
+      <Loader2 className="animate-spin mr-2" /> {t('loading')}
     </div>
   );
 
-  const categoryOptions = [
-    { value: 'solo', label: 'Solo' },
-    { value: 'small-scale', label: 'Small Scale' },
-    { value: 'pvp', label: 'PvP' },
-    { value: 'zvz', label: 'ZvZ' },
-    { value: 'large-scale', label: 'Large Scale' },
-    { value: 'group', label: 'Group' },
-  ];
-
   const mobilityOptions = [
-    { value: 'low', label: 'Low Mobility' },
-    { value: 'medium', label: 'Medium Mobility' },
-    { value: 'high', label: 'High Mobility' },
+    { value: 'low', label: t('mobilityLow') },
+    { value: 'medium', label: t('mobilityMedium') },
+    { value: 'high', label: t('mobilityHigh') },
   ];
 
   const isMainHand2H = items.MainHand?.Type?.includes('_2H_') || false;
 
   return (
-    <PageShell title="Create Build" description="Share your knowledge with the community">
+    <PageShell title={t('title')} description={t('description')}>
       <LoginModal
         isOpen={!user}
         onClose={() => {
           if (!user) router.push('/builds');
         }}
-        message="You need to be logged in to create a build."
+        message={t('loginRequired')}
       />
 
       {user && !user.emailVerified ? (
@@ -179,17 +184,16 @@ export default function CreateBuildPage() {
           <div className="bg-amber-500/10 p-6 rounded-full mb-6 ring-1 ring-amber-500/20">
             <Shield className="h-12 w-12 text-amber-500" />
           </div>
-          <h2 className="text-2xl font-bold mb-3 text-foreground">Email Verification Required</h2>
+          <h2 className="text-2xl font-bold mb-3 text-foreground">{t('emailVerifyTitle')}</h2>
           <p className="text-muted-foreground max-w-md mb-8 text-lg">
-            To maintain the quality of our community builds, we require all accounts to be verified.
-            Please check your email inbox for a verification link or use the banner at the top of the page to resend it.
+            {t('emailVerifyDesc')}
           </p>
           <div className="flex gap-4">
             <Button onClick={() => window.location.reload()} variant="default">
-              I've Verified
+              {t('verifiedBtn')}
             </Button>
             <Button onClick={() => router.push('/builds')} variant="outline">
-              Return to Builds
+              {t('returnBtn')}
             </Button>
           </div>
         </div>
@@ -224,12 +228,12 @@ export default function CreateBuildPage() {
               href="/builds/solo"
               className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6 transition-colors"
               onClick={(e) => {
-                if (isDirty && !confirm('You have unsaved changes. Are you sure you want to discard them?')) {
+                if (isDirty && !confirm(t('discardWarning'))) {
                   e.preventDefault();
                 }
               }}
             >
-              <ArrowLeft className="h-4 w-4 mr-1" /> Back to Builds
+              <ArrowLeft className="h-4 w-4 mr-1" /> {t('backToBuilds')}
             </Link>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -240,16 +244,21 @@ export default function CreateBuildPage() {
                   <div className="bg-card/50 border border-border rounded-xl p-4">
                     <h3 className="text-lg font-bold text-foreground mb-9 pb-2 border-b border-border flex items-center gap-2">
                       <Shield className="h-5 w-5 text-primary" />
-                      Equipment
+                      {t('equipment')}
                     </h3>
 
                     {/* Albion-style Grid */}
                     <div className="flex flex-col items-center gap-6">
                       {/* Row 1: [Bag] [Head] [Cape] */}
                       <div className="grid grid-cols-3 gap-4">
-                        <div className="opacity-30 pointer-events-none grayscale">
-                          <EquipmentSlot label="Bag" onChange={() => { }} placeholderIcon={<span className="text-xs">BAG</span>} />
-                        </div>
+                        <EquipmentSlot
+                          label="Bag"
+                          value={items.Bag?.Type}
+                          onChange={v => handleItemChange('Bag', v)}
+                          alternatives={items.Bag?.Alternatives}
+                          onAlternativesChange={alts => handleAlternativesChange('Bag', alts)}
+                          filter={i => i.id.includes('_BAG')}
+                        />
                         <EquipmentSlot
                           label="Head"
                           value={items.Head?.Type}
@@ -328,9 +337,14 @@ export default function CreateBuildPage() {
                       {/* Row 4: [Mount] */}
                       <div className="grid grid-cols-3 gap-4">
                         <div></div>
-                        <div className="opacity-30 pointer-events-none grayscale">
-                          <EquipmentSlot label="Mount" onChange={() => { }} placeholderIcon={<span className="text-xs">Mount</span>} />
-                        </div>
+                        <EquipmentSlot
+                          label="Mount"
+                          value={items.Mount?.Type}
+                          onChange={v => handleItemChange('Mount', v)}
+                          alternatives={items.Mount?.Alternatives}
+                          onAlternativesChange={alts => handleAlternativesChange('Mount', alts)}
+                          filter={i => i.id.includes('_MOUNT')}
+                        />
                         <div></div>
                       </div>
                     </div>
@@ -343,30 +357,24 @@ export default function CreateBuildPage() {
                   <div className="bg-card/50 border border-border rounded-xl p-4">
                     <h3 className="text-lg font-bold text-foreground mb-4 pb-2 flex items-center border-b border-border gap-2">
                       <Info className="h-5 w-5 text-primary" />
-                      Build Details
+                      {t('buildDetails')}
                     </h3>
                     <div className="grid gap-6">
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-1">Build Title</label>
+                        <label className="block text-sm font-medium text-muted-foreground mb-1">{t('buildTitle')}</label>
                         <input
                           type="text"
                           required
                           className="w-full bg-background border border-input rounded-lg px-4 py-2 text-foreground focus:border-primary outline-none transition-colors"
-                          placeholder="e.g. 1H Sword Mist Fighter"
+                          placeholder={t('titlePlaceholder')}
                           value={formData.title}
                           onChange={e => setFormData({ ...formData, title: e.target.value })}
                         />
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
                         <Select
-                          label="Category"
-                          options={categoryOptions}
-                          value={formData.category}
-                          onChange={value => setFormData({ ...formData, category: value as BuildCategory })}
-                        />
-                        <Select
-                          label="Mobility"
+                          label={t('mobility')}
                           options={mobilityOptions}
                           value={mobility}
                           onChange={value => setMobility(value as any)}
@@ -375,7 +383,7 @@ export default function CreateBuildPage() {
 
                       {/* Tags Selection */}
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">Tags</label>
+                        <label className="block text-sm font-medium text-muted-foreground mb-2">{t('tags')}</label>
                         <div className="flex flex-wrap gap-2">
                           {tagOptions.map(tag => (
                             <button
@@ -390,18 +398,18 @@ export default function CreateBuildPage() {
                                 }
                                         `}
                             >
-                              {tag}
+                              {t(`tagOptions.${tag === 'Escape/Gathering' ? 'EscapeGathering' : tag}` as any) || tag}
                             </button>
                           ))}
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-1">YouTube Video (Optional)</label>
+                        <label className="block text-sm font-medium text-muted-foreground mb-1">{t('youtube')}</label>
                         <input
                           type="url"
                           className="w-full bg-background border border-input rounded-lg px-4 py-2 text-foreground focus:border-primary outline-none transition-colors"
-                          placeholder="https://youtube.com/watch?v=..."
+                          placeholder={t('youtubePlaceholder')}
                           value={formData.youtubeLink}
                           onChange={e => setFormData({ ...formData, youtubeLink: e.target.value })}
                         />
@@ -410,28 +418,28 @@ export default function CreateBuildPage() {
                       {/* Strengths & Weaknesses */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <TagInput
-                          label="Strengths"
+                          label={t('strengths')}
                           value={strengths}
                           onChange={setStrengths}
-                          placeholder="e.g. High DPS, Fast Clear, Cheap"
+                          placeholder={t('strengthsPlaceholder')}
                         />
                         <TagInput
-                          label="Weaknesses"
+                          label={t('weaknesses')}
                           value={weaknesses}
                           onChange={setWeaknesses}
-                          placeholder="e.g. Low Mobility, Expensive, Squishy"
+                          placeholder={t('weaknessesPlaceholder')}
                         />
                       </div>
 
                       {/* Description Editor */}
 
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-1">Short Description</label>
+                        <label className="block text-sm font-medium text-muted-foreground mb-1">{t('shortDescription')}</label>
                         <textarea
                           required
                           rows={3}
                           className="w-full bg-background border border-input rounded-lg px-4 py-2 text-foreground focus:border-primary outline-none transition-colors"
-                          placeholder="Brief summary of the build..."
+                          placeholder={t('shortDescPlaceholder')}
                           value={formData.description}
                           onChange={e => setFormData({ ...formData, description: e.target.value })}
                         />
@@ -443,7 +451,7 @@ export default function CreateBuildPage() {
 
               {/* Advanced Guide - Full Width */}
               <div className="w-full bg-card/50 border border-border rounded-xl p-5" data-color-mode={resolvedTheme === 'dark' ? 'dark' : 'light'}>
-                <h3 className="text-lg font-bold text-foreground mb-4 pb-2 border-b border-border">Detailed Guide</h3>
+                <h3 className="text-lg font-bold text-foreground mb-4 pb-2 border-b border-border">{t('detailedGuide')}</h3>
                 <div className="bg-background border border-input rounded-lg overflow-hidden">
                   <MDEditor
                     value={formData.longDescription}
@@ -452,7 +460,7 @@ export default function CreateBuildPage() {
                     height={500}
                     style={{ backgroundColor: 'transparent', color: 'hsl(var(--foreground))' }}
                     textareaProps={{
-                      placeholder: "Write a detailed guide about how to play this build, matchups, rotations, etc..."
+                      placeholder: t('editorPlaceholder')
                     }}
                   />
                 </div>
@@ -465,7 +473,7 @@ export default function CreateBuildPage() {
                   className="px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50"
                 >
                   {submitting ? <Loader2 className="animate-spin h-5 w-5" /> : <Save className="h-5 w-5" />}
-                  Publish Build
+                  {t('publish')}
                 </button>
               </div>
             </form>

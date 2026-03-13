@@ -2,6 +2,8 @@ import React from 'react';
 import { Hammer, Construction } from 'lucide-react';
 import { Breadcrumbs } from './ui/Breadcrumbs';
 
+import { useTranslations } from 'next-intl';
+
 interface PageShellProps {
   title: string;
   enableHeader?: boolean;
@@ -27,6 +29,8 @@ export function PageShell({
   isUnderConstruction,
   backgroundImage
 }: PageShellProps) {
+  const t = useTranslations('Common');
+
   return (
     <div className="flex flex-col min-h-full">
       {enableHeader && (
@@ -64,10 +68,9 @@ export function PageShell({
             <div className="h-16 w-16 bg-muted rounded-full flex items-center justify-center mb-4">
               <Construction className="h-8 w-8 text-primary" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-2">Coming Soon</h3>
+            <h3 className="text-xl font-bold text-foreground mb-2">{t('comingSoon')}</h3>
             <p className="text-muted-foreground max-w-md text-center">
-              We're currently building this {title.toLowerCase()} tool.
-              Check back later for updates!
+              {t('underConstructionDesc', { tool: title.toLowerCase() })}
             </p>
           </div>
         ) : (

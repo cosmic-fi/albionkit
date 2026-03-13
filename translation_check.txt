@@ -1,0 +1,349 @@
+
+> albion-app@0.1.0 i18n:check
+> node check_translations.js
+
+
+Checking de.json...
+  Key Count: English (2235) vs de.json (2221)
+  [MISSING KEYS] (17):
+    - Footer.smallScaleBuilds
+    - Footer.pvpBuilds
+    - Footer.soloBuildsDesc
+    - Footer.zvzBuildsDesc
+    - Footer.smallScaleBuildsDesc
+    - Footer.pvpBuildsDesc
+    - Pages.settings
+    - Cooking.meals.T1_MEAL_SOUP
+    - Cooking.meals.T2_MEAL_SALAD
+    - Cooking.meals.T3_MEAL_SOUP
+    - Cooking.meals.T3_MEAL_ROAST
+    - Cooking.meals.T3_MEAL_PIE
+    - Cooking.meals.T3_MEAL_OMELETTE
+    - UserProfile.user
+    - UserProfile.userProfileDesc
+    - CreateBuild.youtubePlaceholder
+    - BuildView.checkoutBuild
+  [IDENTICAL TO ENGLISH] (122) - might be untranslated
+    - Common.online
+    - Common.offline
+    - Common.Emails.rankUp.title
+    - CommandMenu.builds
+    - Navbar.forum
+    - Navbar.builds
+    - HomePage.dataProject
+    - AboutPage.twitter
+    - MarketFlipper.roi
+    - Farming.roi
+    ... and 112 more.
+
+Checking es.json...
+  Key Count: English (2235) vs es.json (2237)
+  [MISSING KEYS] (17):
+    - Footer.smallScaleBuilds
+    - Footer.pvpBuilds
+    - Footer.soloBuildsDesc
+    - Footer.zvzBuildsDesc
+    - Footer.smallScaleBuildsDesc
+    - Footer.pvpBuildsDesc
+    - Pages.settings
+    - Cooking.meals.T1_MEAL_SOUP
+    - Cooking.meals.T2_MEAL_SALAD
+    - Cooking.meals.T3_MEAL_SOUP
+    - Cooking.meals.T3_MEAL_ROAST
+    - Cooking.meals.T3_MEAL_PIE
+    - Cooking.meals.T3_MEAL_OMELETTE
+    - UserProfile.user
+    - UserProfile.userProfileDesc
+    - CreateBuild.youtubePlaceholder
+    - BuildView.checkoutBuild
+  [IDENTICAL TO ENGLISH] (100) - might be untranslated
+    - regions.Asia
+    - Common.error
+    - CommandMenu.builds
+    - Navbar.builds
+    - Footer.legal
+    - HomePage.dataProject
+    - AboutPage.metaBuilds
+    - AboutPage.twitter
+    - MarketFlipper.tier
+    - MarketFlipper.tierN
+    ... and 90 more.
+
+Checking fr.json...
+  Key Count: English (2235) vs fr.json (2217)
+  [MISSING KEYS] (17):
+    - Footer.smallScaleBuilds
+    - Footer.pvpBuilds
+    - Footer.soloBuildsDesc
+    - Footer.zvzBuildsDesc
+    - Footer.smallScaleBuildsDesc
+    - Footer.pvpBuildsDesc
+    - Pages.settings
+    - Cooking.meals.T1_MEAL_SOUP
+    - Cooking.meals.T2_MEAL_SALAD
+    - Cooking.meals.T3_MEAL_SOUP
+    - Cooking.meals.T3_MEAL_ROAST
+    - Cooking.meals.T3_MEAL_PIE
+    - Cooking.meals.T3_MEAL_OMELETTE
+    - UserProfile.user
+    - UserProfile.userProfileDesc
+    - CreateBuild.youtubePlaceholder
+    - BuildView.checkoutBuild
+  [IDENTICAL TO ENGLISH] (161) - might be untranslated
+    - regions.Europe
+    - Common.notifications
+    - CommandMenu.builds
+    - Navbar.forum
+    - Navbar.profits
+    - Navbar.builds
+    - HomePage.dataProject
+    - AboutPage.metaBuilds
+    - AboutPage.twitter
+    - MarketFlipper.colVol
+    ... and 151 more.
+
+Checking ko.json...
+  Key Count: English (2235) vs ko.json (2219)
+  [MISSING KEYS] (15):
+    - Footer.smallScaleBuilds
+    - Footer.pvpBuilds
+    - Footer.soloBuildsDesc
+    - Footer.zvzBuildsDesc
+    - Footer.smallScaleBuildsDesc
+    - Footer.pvpBuildsDesc
+    - Pages.settings
+    - UserProfile.user
+    - UserProfile.userProfileDesc
+    - CreateBuild.loading
+    - CreateBuild.tagOptions.Solo
+    - CreateBuild.tagOptions.Small Scale
+    - CreateBuild.tagOptions.Large Scale
+    - CreateBuild.tagOptions.Group
+    - BuildView.checkoutBuild
+  [IDENTICAL TO ENGLISH] (38) - might be untranslated
+    - HomePage.dataProject
+    - AboutPage.twitter
+    - KillFeed.ip
+    - Metadata.template
+    - Alchemy.roi
+    - Cooking.roi
+    - Enchanting.roi
+    - ChoppedFish.roi
+    - PvpIntel.analytics.vs
+    - ZvzTracker.kd
+    ... and 28 more.
+
+Checking pl.json...
+  Key Count: English (2235) vs pl.json (2213)
+  [MISSING KEYS] (21):
+    - Footer.smallScaleBuilds
+    - Footer.pvpBuilds
+    - Footer.soloBuildsDesc
+    - Footer.zvzBuildsDesc
+    - Footer.smallScaleBuildsDesc
+    - Footer.pvpBuildsDesc
+    - Pages.settings
+    - Cooking.meals.T1_MEAL_SOUP
+    - Cooking.meals.T2_MEAL_SALAD
+    - Cooking.meals.T3_MEAL_SOUP
+    - Cooking.meals.T3_MEAL_ROAST
+    - Cooking.meals.T3_MEAL_PIE
+    - Cooking.meals.T3_MEAL_OMELETTE
+    - UserProfile.user
+    - UserProfile.userProfileDesc
+    - CreateBuild.loading
+    - CreateBuild.tagOptions.Solo
+    - CreateBuild.tagOptions.Small Scale
+    - CreateBuild.tagOptions.Large Scale
+    - CreateBuild.tagOptions.Group
+    - BuildView.checkoutBuild
+  [IDENTICAL TO ENGLISH] (95) - might be untranslated
+    - Common.online
+    - Common.offline
+    - Navbar.forum
+    - HomePage.dataProject
+    - AboutPage.twitter
+    - MarketFlipper.tier
+    - MarketFlipper.tierN
+    - MarketFlipper.roi
+    - Farming.tier
+    - Farming.roi
+    ... and 85 more.
+
+Checking pt.json...
+  Key Count: English (2235) vs pt.json (2209)
+  [MISSING KEYS] (25):
+    - Footer.smallScaleBuilds
+    - Footer.pvpBuilds
+    - Footer.soloBuildsDesc
+    - Footer.zvzBuildsDesc
+    - Footer.smallScaleBuildsDesc
+    - Footer.pvpBuildsDesc
+    - Pages.settings
+    - Cooking.meals.T1_MEAL_SOUP
+    - Cooking.meals.T2_MEAL_SALAD
+    - Cooking.meals.T3_MEAL_SOUP
+    - Cooking.meals.T3_MEAL_ROAST
+    - Cooking.meals.T3_MEAL_PIE
+    - Cooking.meals.T3_MEAL_OMELETTE
+    - Builds.tagOptions.Solo
+    - Builds.tagOptions.Small Scale
+    - Builds.tagOptions.Large Scale
+    - Builds.tagOptions.Group
+    - UserProfile.user
+    - UserProfile.userProfileDesc
+    - CreateBuild.loading
+    - CreateBuild.tagOptions.Solo
+    - CreateBuild.tagOptions.Small Scale
+    - CreateBuild.tagOptions.Large Scale
+    - CreateBuild.tagOptions.Group
+    - BuildView.checkoutBuild
+  [IDENTICAL TO ENGLISH] (732) - might be untranslated
+    - Common.online
+    - Common.offline
+    - CommandMenu.builds
+    - Navbar.builds
+    - Footer.legal
+    - HomePage.dataProject
+    - AboutPage.metaBuilds
+    - AboutPage.twitter
+    - MarketFlipper.tier
+    - MarketFlipper.tierN
+    ... and 722 more.
+
+Checking ru.json...
+  Key Count: English (2235) vs ru.json (2213)
+  [MISSING KEYS] (21):
+    - Footer.smallScaleBuilds
+    - Footer.pvpBuilds
+    - Footer.soloBuildsDesc
+    - Footer.zvzBuildsDesc
+    - Footer.smallScaleBuildsDesc
+    - Footer.pvpBuildsDesc
+    - Pages.settings
+    - Cooking.meals.T1_MEAL_SOUP
+    - Cooking.meals.T2_MEAL_SALAD
+    - Cooking.meals.T3_MEAL_SOUP
+    - Cooking.meals.T3_MEAL_ROAST
+    - Cooking.meals.T3_MEAL_PIE
+    - Cooking.meals.T3_MEAL_OMELETTE
+    - UserProfile.user
+    - UserProfile.userProfileDesc
+    - CreateBuild.loading
+    - CreateBuild.tagOptions.Solo
+    - CreateBuild.tagOptions.Small Scale
+    - CreateBuild.tagOptions.Large Scale
+    - CreateBuild.tagOptions.Group
+    - BuildView.checkoutBuild
+  [IDENTICAL TO ENGLISH] (54) - might be untranslated
+    - HomePage.dataProject
+    - AboutPage.twitter
+    - MarketFlipper.roi
+    - MarketFlipper.categoryLabels.popular
+    - MarketFlipper.categoryLabels.melee
+    - MarketFlipper.categoryLabels.ranged
+    - MarketFlipper.categoryLabels.armor_plate
+    - MarketFlipper.categoryLabels.armor_leather
+    - MarketFlipper.categoryLabels.armor_cloth
+    - MarketFlipper.categoryLabels.accessories
+    ... and 44 more.
+
+Checking tr.json...
+  Key Count: English (2235) vs tr.json (2226)
+  [MISSING KEYS] (9):
+    - Cooking.meals.T1_MEAL_SOUP
+    - Cooking.meals.T2_MEAL_SALAD
+    - Cooking.meals.T3_MEAL_SOUP
+    - Cooking.meals.T3_MEAL_ROAST
+    - Cooking.meals.T3_MEAL_PIE
+    - Cooking.meals.T3_MEAL_OMELETTE
+    - UserProfile.user
+    - UserProfile.userProfileDesc
+    - BuildView.checkoutBuild
+  [IDENTICAL TO ENGLISH] (71) - might be untranslated
+    - Navbar.forum
+    - HomePage.dataProject
+    - AboutPage.twitter
+    - MarketFlipper.tier
+    - MarketFlipper.tierN
+    - MarketFlipper.roi
+    - Farming.tier
+    - Farming.roi
+    - Animal.tier
+    - Animal.roi
+    ... and 61 more.
+
+Checking zh.json...
+  Key Count: English (2235) vs zh.json (2078)
+  [MISSING KEYS] (59):
+    - regions
+    - Common.markAllAsRead
+    - Common.Emails
+    - Footer.smallScaleBuilds
+    - Footer.pvpBuilds
+    - Footer.soloBuildsDesc
+    - Footer.zvzBuildsDesc
+    - Footer.smallScaleBuildsDesc
+    - Footer.pvpBuildsDesc
+    - MarketFlipper.categoryLabels
+    - KillFeed.regions
+    - KillFeed.deathFame
+    - KillFeed.pveFame
+    - KillFeed.killDeathRatio
+    - KillFeed.killDeathRatioTooltip
+    - KillFeed.lethalKills
+    - KillFeed.lethalDeaths
+    - KillFeed.knockouts
+    - KillFeed.knockedOut
+    - KillFeed.killed
+    - KillFeed.knockedOutBy
+    - KillFeed.killedBy
+    - KillFeed.killType
+    - Pages.crafting
+    - Pages.settings
+    - Cooking.meals.T1_MEAL_SOUP
+    - Cooking.meals.T2_MEAL_SALAD
+    - Cooking.meals.T3_MEAL_SOUP
+    - Cooking.meals.T3_MEAL_ROAST
+    - Cooking.meals.T3_MEAL_PIE
+    - Cooking.meals.T3_MEAL_OMELETTE
+    - PvpIntel.analytics
+    - Settings.identity.apiUnavailable
+    - Settings.identity.searchFailed
+    - Settings.identity.unexpectedError
+    - Settings.identity.cancel
+    - Settings.identity.backToList
+    - Settings.identity.multipleFound
+    - Settings.identity.select
+    - Settings.identity.edit
+    - Settings.profile.regions
+    - Settings.profile.discordPlaceholder
+    - Settings.profile.twitterPlaceholder
+    - Settings.profile.twitchPlaceholder
+    - Settings.profile.youtubePlaceholder
+    - Settings.billing.pdf
+    - Settings.billing.subscriptionRenewal
+    - Settings.billing.statusTypes
+    - Settings.preferences.selectServer
+    - Settings.preferences.selectCity
+    - Settings.security.newEmailPlaceholder
+    - Settings.security.passwordPlaceholder
+    - Settings.security.policiesSubtext
+    - Settings.security.privacySubtext
+    - Settings.security.termsSubtext
+    - UserProfile.regions
+    - UserProfile.user
+    - UserProfile.userProfileDesc
+    - UserProfile.roles
+  [IDENTICAL TO ENGLISH] (30) - might be untranslated
+    - HomePage.dataProject
+    - AboutPage.twitter
+    - MarketFlipper.roi
+    - Farming.roi
+    - Animal.roi
+    - KillFeed.ip
+    - MarketTicker.meta
+    - Metadata.template
+    - Alchemy.roi
+    - Cooking.roi
+    ... and 20 more.

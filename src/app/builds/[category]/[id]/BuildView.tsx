@@ -4,10 +4,13 @@ import { useState, useEffect } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
 import { ItemIcon } from '@/components/ItemIcon';
-import { getBuild, Build, toggleBuildLike, getBuildLikeStatus, rateBuild, getBuildUserRating, getBuilds } from '@/lib/builds-service';
+import { ConfirmDialog } from '@/components/ConfirmDialog';
+import { getBuild, Build, toggleBuildLike, getBuildLikeStatus, rateBuild, getBuildUserRating, getBuilds, hideBuild } from '@/lib/builds-service';
+import { deleteBuildAction, hideBuildAction } from '@/app/actions/builds';
 import { getUserProfile, UserProfile } from '@/lib/user-profile';
 import { getMarketPrices, LOCATIONS } from '@/lib/market-service';
-import { Loader2, User, Clock, Eye, Star, Share2, ThumbsUp, Calendar, Shield, Zap, Wind, BookOpen, Check, X as XIcon, ArrowLeft, ArrowRight, Heart, Link as LinkIcon, Copy, Sparkles, Coins, MessageSquare, Plus, Send } from 'lucide-react';
+import { getItemNameService } from '@/lib/item-service';
+import { Loader2, User, Clock, Eye, Star, Share2, ThumbsUp, Calendar, Shield, Zap, Wind, BookOpen, Check, X as XIcon, ArrowLeft, ArrowRight, Heart, Link as LinkIcon, Copy, Sparkles, Coins, MessageSquare, Plus, Send, EyeOff, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
@@ -20,6 +23,8 @@ import { Comment } from '@/lib/community-service';
 import { addCommentAction, createThreadAction, getCommentsAction, getThreadByBuildIdAction } from '@/app/actions/community';
 import { incrementBuildViewAction } from '@/app/actions/builds';
 import { useLoginModal } from '@/context/LoginModalContext';
+import { useTranslations, useLocale } from 'next-intl';
+import { useRouter, usePathname } from 'next/navigation';
 
 const Markdown = dynamic(
     () => import('@uiw/react-md-editor').then((mod) => mod.default.Markdown),
@@ -32,7 +37,24 @@ interface BuildViewProps {
 }
 
 export function BuildView({ id, category }: BuildViewProps) {
+    const t = useTranslations('BuildView');
+    const tCommon = useTranslations('Common');
+    const tBuilds = useTranslations('Builds');
     const { user, profile } = useAuth();
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const getCategoryLabel = (cat: string) => {
+        switch (cat.toLowerCase()) {
+            case 'solo': return tBuilds('solo');
+            case 'small-scale': return tBuilds('smallScale');
+            case 'pvp': return tBuilds('pvp');
+            case 'zvz': return tBuilds('zvz');
+            case 'large-scale': return tBuilds('largeScale');
+            case 'group': return tBuilds('group');
+            default: return cat.replace('-', ' ');
+        }
+    };
     const [build, setBuild] = useState<Build | null>(null);
     const [loading, setLoading] = useState(true);
     const [isLiked, setIsLiked] = useState(false);
@@ -45,7 +67,17 @@ export function BuildView({ id, category }: BuildViewProps) {
     const [similarBuilds, setSimilarBuilds] = useState<Build[]>([]);
     const [estPrice, setEstPrice] = useState<number | null>(null);
     const [authorProfile, setAuthorProfile] = useState<UserProfile | null>(null);
+    const [isHidden, setIsHidden] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isHiding, setIsHiding] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [showHideDialog, setShowHideDialog] = useState(false);
     const { openLoginModal } = useLoginModal();
+
+    // Check if current user is author or admin
+    const isAuthor = user && build && user.uid === build.authorId;
+    const isAdmin = profile?.isAdmin === true;
+    const canManage = isAuthor || isAdmin;
 
     // Community Integration
     const [comments, setComments] = useState<Comment[]>([]);
@@ -84,7 +116,7 @@ export function BuildView({ id, category }: BuildViewProps) {
     const handlePostComment = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!user || !profile) {
-            openLoginModal('Please sign in to comment');
+            openLoginModal(t('signInToComment'));
             return;
         }
 
@@ -129,13 +161,61 @@ export function BuildView({ id, category }: BuildViewProps) {
                     if (cRes.success && cRes.comments) {
                         setComments(cRes.comments);
                     }
-                    toast.success('Comment posted!');
+                    toast.success(t('commentPosted'));
                 }
             }
         } catch (error) {
             toast.error('Failed to post comment');
         } finally {
             setIsSubmittingComment(false);
+        }
+    };
+
+    // Build Management Functions
+    const handleDeleteBuild = async () => {
+        setShowDeleteDialog(false);
+        setIsDeleting(true);
+        const buildCategory = build?.category; // Capture category before delete
+        try {
+            const result = await deleteBuildAction(build!.id!, user!.uid);
+            if (result.success) {
+                toast.success(t('buildDeleted'));
+                // Smart redirect based on where user came from
+                if (pathname.includes('/user/')) {
+                    // Came from profile page - redirect to that user's profile
+                    const profileId = pathname.split('/user/')[1]?.split('/')[0];
+                    router.push(`/user/${profileId || user!.uid}`);
+                } else {
+                    // Came from builds list - redirect to category builds
+                    router.push(`/builds/${buildCategory || 'solo'}`);
+                }
+            } else {
+                toast.error(result.error || t('deleteError'));
+            }
+        } catch (error: any) {
+            console.error('Failed to delete build:', error);
+            toast.error(error.message || t('deleteError'));
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    const handleHideBuild = async () => {
+        setShowHideDialog(false);
+        setIsHiding(true);
+        try {
+            const result = await hideBuildAction(build!.id!, user!.uid, !isHidden);
+            if (result.success) {
+                setIsHidden(!isHidden);
+                toast.success(isHidden ? t('buildUnhidden') : t('buildHidden'));
+            } else {
+                toast.error(result.error || t('hideError'));
+            }
+        } catch (error: any) {
+            console.error('Failed to hide build:', error);
+            toast.error(error.message || t('hideError'));
+        } finally {
+            setIsHiding(false);
         }
     };
 
@@ -191,7 +271,8 @@ export function BuildView({ id, category }: BuildViewProps) {
         const fetchBuild = async () => {
             setLoading(true);
             try {
-                const data = await getBuild(id);
+                // Pass user ID to getBuild so hidden builds are visible to author/admin
+                const data = await getBuild(id, user?.uid);
                 setBuild(data);
                 setLikeCount(data?.likes || 0);
 
@@ -240,7 +321,7 @@ export function BuildView({ id, category }: BuildViewProps) {
             setUserRating(rating);
 
             // Refresh build to get updated average
-            const updatedBuild = await getBuild(build.id);
+            const updatedBuild = await getBuild(build.id, user.uid);
             if (updatedBuild) setBuild(updatedBuild);
 
             toast.success("Rating submitted!");
@@ -293,13 +374,13 @@ export function BuildView({ id, category }: BuildViewProps) {
     if (!build) {
         return (
             <PageShell
-                title="Build Not Found"
+                title={t('notFound')}
                 backgroundImage={`/background/ao-builds.jpg`}
                 description="">
                 <div className="text-center py-20">
-                    <h2 className="text-xl text-muted-foreground">This build does not exist or has been removed.</h2>
+                    <h2 className="text-xl text-muted-foreground">{t('notFoundDesc')}</h2>
                     <Link href="/builds/solo" className="text-amber-500 hover:underline mt-4 block">
-                        Browse Builds
+                        {t('browseBuilds')}
                     </Link>
                 </div>
             </PageShell>
@@ -312,11 +393,34 @@ export function BuildView({ id, category }: BuildViewProps) {
         <PageShell
             title={build.title}
             backgroundImage={`/background/ao-builds.jpg`}
-            description={`By ${build.authorName}`}>
+            description={`${t('createdBy')} ${build.authorName}`}
+            headerActions={canManage ? (
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => setShowHideDialog(true)}
+                        className={`flex items-center gap-2 px-4 py-2 font-medium rounded-lg transition-colors text-sm ${
+                            isHidden 
+                                ? 'bg-green-600 hover:bg-green-700 text-white' 
+                                : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'
+                        }`}
+                    >
+                        {isHidden ? <Check className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                        {isHidden ? t('unhide') : t('hide')}
+                    </button>
+                    <button
+                        onClick={() => setShowDeleteDialog(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground font-medium rounded-lg transition-colors text-sm"
+                    >
+                        <Trash2 className="h-4 w-4" />
+                        {t('delete')}
+                    </button>
+                </div>
+            ) : undefined}
+        >
             <div className=" mx-auto">
                 <div className="mb-6 flex items-center justify-between">
                     <Link href={`/builds/${build.category}`} className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors">
-                        <ArrowLeft className="h-4 w-4 mr-1" /> Back to {build.category} Builds
+                        <ArrowLeft className="h-4 w-4 mr-1" /> {t('backToCategory', { category: getCategoryLabel(build.category) })}
                     </Link>
                 </div>
 
@@ -327,13 +431,13 @@ export function BuildView({ id, category }: BuildViewProps) {
                             <User className="h-7 w-7" />
                         </div>
                         <div>
-                            <div className="text-sm text-muted-foreground">Created by</div>
+                            <div className="text-sm text-muted-foreground">{t('createdBy')}</div>
                             <Link href={`/user/${build.authorId}`} className="text-lg font-bold text-amber-500 hover:underline">
                                 {build.authorName}
                             </Link>
                             <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
                                 <Calendar className="h-3 w-3" />
-                                <span>Updated {build.updatedAt?.toDate ? build.updatedAt.toDate().toLocaleDateString() : 'Recently'}</span>
+                                <span>{build.updatedAt?.toDate ? t('updated', { date: build.updatedAt.toDate().toLocaleDateString() }) : t('recently')}</span>
                             </div>
                         </div>
                     </div>
@@ -349,7 +453,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                             ? `${(estPrice / 1000).toFixed(1)}k`
                                             : estPrice}
                                 </div>
-                                <div className="text-xs text-muted-foreground">Est. Cost</div>
+                                <div className="text-xs text-muted-foreground">{t('estCost')}</div>
                             </div>
                         )}
 
@@ -357,11 +461,11 @@ export function BuildView({ id, category }: BuildViewProps) {
                             <div className="text-2xl font-bold text-foreground flex items-center justify-center gap-2 cursor-help">
                                 <Star className="h-5 w-5 text-amber-500 fill-amber-500" />{build.rating.toFixed(1)}
                             </div>
-                            <div className="text-xs text-muted-foreground">{build.ratingCount} ratings</div>
+                            <div className="text-xs text-muted-foreground">{t('ratings', { count: build.ratingCount })}</div>
 
                             {/* Rating Popup */}
                             <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-popover border border-border rounded-lg p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 min-w-[160px]">
-                                <div className="text-xs text-muted-foreground mb-2 font-medium">Rate this build</div>
+                                <div className="text-xs text-muted-foreground mb-2 font-medium">{t('rateThis')}</div>
                                 <div className="flex items-center justify-center gap-1">
                                     {[1, 2, 3, 4, 5].map((star) => (
                                         <button
@@ -381,7 +485,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                         </button>
                                     ))}
                                 </div>
-                                {userRating && <div className="text-[10px] text-muted-foreground mt-2">Your rating: {userRating}</div>}
+                                {userRating && <div className="text-[10px] text-muted-foreground mt-2">{t('yourRating', { rating: userRating })}</div>}
                             </div>
                         </div>
 
@@ -394,14 +498,14 @@ export function BuildView({ id, category }: BuildViewProps) {
                                 <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
                                 {likeCount}
                             </div>
-                            <div className="text-xs text-muted-foreground group-hover:text-foreground">Likes</div>
+                            <div className="text-xs text-muted-foreground group-hover:text-foreground">{t('likes')}</div>
                         </button>
 
                         <div className="text-center">
                             <div className="text-2xl font-bold text-foreground flex items-center justify-center gap-2">
                                 <Eye className="h-5 w-5 text-muted-foreground" />{build.views}
                             </div>
-                            <div className="text-xs text-muted-foreground">Views</div>
+                            <div className="text-xs text-muted-foreground">{t('views')}</div>
                         </div>
 
                         <button
@@ -412,7 +516,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                 {copied ? <Check className="h-5 w-5 text-green-500" /> : <LinkIcon className="h-5 w-5" />}
                             </div>
                             <div className={`text-xs ${copied ? 'text-green-500' : 'text-muted-foreground group-hover:text-foreground'}`}>
-                                {copied ? 'Copied!' : 'Share'}
+                                {copied ? t('copied') : t('share')}
                             </div>
                         </button>
                     </div>
@@ -425,33 +529,39 @@ export function BuildView({ id, category }: BuildViewProps) {
                     <div className="lg:col-span-2 space-y-6">
                         <div className="bg-card/50 border border-border rounded-xl p-6 h-full">
                             <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-6 pb-4 border-b border-border/50 flex items-center gap-2">
-                                <Shield className="h-4 w-4" /> Equipment
+                                <Shield className="h-4 w-4" /> {t('equipment')}
                             </h3>
 
                             <div className="space-y-4">
                                 {/* List Header */}
                                 <div className="flex items-center justify-between text-xs font-bold text-muted-foreground uppercase tracking-wider px-2">
-                                    <div>Recommended</div>
-                                    <div>Alternatives</div>
+                                    <div>{t('recommended')}</div>
+                                    <div>{t('alternatives')}</div>
                                 </div>
 
                                 {/* Equipment Rows */}
                                 {[
-                                    { item: build.items.MainHand, label: "Main Hand" },
-                                    { item: is2H ? null : build.items.OffHand, label: "Off Hand", hidden: is2H },
-                                    { item: build.items.Head, label: "Head" },
-                                    { item: build.items.Armor, label: "Armor" },
-                                    { item: build.items.Shoes, label: "Shoes" },
-                                    { item: build.items.Cape, label: "Cape" },
+                                    { item: build.items.MainHand, label: t('roles.main') },
+                                    { item: is2H ? null : build.items.OffHand, label: t('roles.off'), hidden: is2H },
+                                    { item: build.items.Head, label: t('roles.head') },
+                                    { item: build.items.Armor, label: t('roles.armor') },
+                                    { item: build.items.Shoes, label: t('roles.shoes') },
+                                    { item: build.items.Cape, label: t('roles.cape') },
                                 ].map((row, idx) => !row.hidden && (
                                     <div key={idx} className="bg-muted/30 rounded-lg p-4 border border-border/50 flex items-center justify-between group hover:border-muted transition-colors">
                                         {/* Left: Recommended */}
                                         <div className="flex items-center gap-6">
                                             <div className="w-20 h-20">
-                                                <EquipmentSlot item={row.item} label={row.label} showAlternatives={false} />
+                                                <EquipmentSlot item={row.item} label={row.label as string} showAlternatives={false} />
                                             </div>
                                             <div>
-                                                <div className="text-lg font-bold text-foreground">{row.item?.Type ? formatItemName(row.item.Type) : <span className="text-muted-foreground">{row.label}</span>}</div>
+                                                <div className="text-lg font-bold text-foreground">
+                                                    {row.item?.Type ? (
+                                                        <LocalizedItemName itemId={row.item.Type} />
+                                                    ) : (
+                                                        <span className="text-muted-foreground">{row.label}</span>
+                                                    )}
+                                                </div>
                                                 <div className="text-sm text-muted-foreground font-medium">{row.label}</div>
                                             </div>
                                         </div>
@@ -470,7 +580,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                                     </div>
                                                 ))
                                             ) : (
-                                                <div className="text-xs text-muted-foreground italic px-2 font-medium">No alternatives</div>
+                                                <div className="text-xs text-muted-foreground italic px-2 font-medium">{t('noAlternatives')}</div>
                                             )}
                                         </div>
                                     </div>
@@ -479,20 +589,26 @@ export function BuildView({ id, category }: BuildViewProps) {
 
                             {/* Consumables Section */}
                             <div className="mt-8 pt-6 border-t border-border/50">
-                                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4">Consumables & Mounts</h4>
+                                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4">{t('consumables')}</h4>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {[
-                                        { item: build.items.Potion, label: "Potion" },
-                                        { item: build.items.Food, label: "Food" },
-                                        { item: build.items.Mount, label: "Mount" },
-                                        { item: build.items.Bag, label: "Bag" }
+                                        { item: build.items.Potion, label: t('roles.potion') },
+                                        { item: build.items.Food, label: t('roles.food') },
+                                        { item: build.items.Mount, label: t('roles.mount') },
+                                        { item: build.items.Bag, label: t('roles.bag') }
                                     ].map((row, idx) => (
                                         <div key={idx} className="bg-muted/30 rounded-lg p-3 border border-border/50 flex items-center gap-4">
                                             <div className="w-14 h-14">
-                                                <EquipmentSlot item={row.item} label={row.label} />
+                                                <EquipmentSlot item={row.item} label={row.label as string} />
                                             </div>
                                             <div>
-                                                <div className="text-base font-bold text-foreground">{row.item?.Type ? formatItemName(row.item.Type) : <span className="text-muted-foreground">{row.label}</span>}</div>
+                                                <div className="text-base font-bold text-foreground">
+                                                    {row.item?.Type ? (
+                                                        <LocalizedItemName itemId={row.item.Type} />
+                                                    ) : (
+                                                        <span className="text-muted-foreground">{row.label}</span>
+                                                    )}
+                                                </div>
                                                 <div className="text-xs text-muted-foreground font-medium">{row.label}</div>
                                             </div>
                                         </div>
@@ -508,7 +624,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                         {/* Inventory Grid Card */}
                         <div className="bg-card/50 border border-border rounded-xl p-6">
                             <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-6 pb-4 border-b border-border/50 flex items-center gap-2">
-                                <Zap className="h-4 w-4" /> Inventory
+                                <Zap className="h-4 w-4" /> {t('inventory')}
                             </h3>
 
                             {/* 3x3 Grid mimicking Albion Inventory */}
@@ -520,7 +636,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                 ].map((item, i) => (
                                     <div key={i} className="aspect-square bg-muted/50 rounded border border-border flex items-center justify-center p-1">
                                         {item ? (
-                                            <ItemIcon item={item} size={217} className="w-full h-full object-contain" />
+                                            <ItemIcon item={item} size={217} className="w-full h-full object-contain" alt={item.Type || 'Item'} />
                                         ) : (
                                             <div className="w-full h-full bg-muted/20"></div>
                                         )}
@@ -528,37 +644,37 @@ export function BuildView({ id, category }: BuildViewProps) {
                                 ))}
                             </div>
                             <div className="mt-4 text-center">
-                                <div className="text-xs text-muted-foreground">Estimated Market Value</div>
+                                <div className="text-xs text-muted-foreground">{t('estMarketValue')}</div>
                                 <div className="text-lg font-bold text-primary">
-                                    {estPrice ? `≈ ${estPrice >= 1000000 ? (estPrice / 1000000).toFixed(2) + 'm' : Math.round(estPrice / 1000) + 'k'} Silver` : 'Calculating...'}
+                                    {estPrice ? `≈ ${estPrice >= 1000000 ? (estPrice / 1000000).toFixed(2) + 'm' : Math.round(estPrice / 1000) + 'k'} ${tCommon('silver')}` : t('calculating')}
                                 </div>
                             </div>
                         </div>
 
                         {/* Build Stats (Moved here) */}
                         <div className="bg-card/50 border border-border rounded-xl p-6">
-                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">Overview</h3>
+                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">{t('overview')}</h3>
                             <div className="space-y-4">
                                 <div>
-                                    <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Category</div>
+                                    <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{t('category')}</div>
                                     <div className="font-medium text-foreground capitalize flex items-center gap-2">
                                         <span className="w-2 h-2 rounded-full bg-primary"></span>
-                                        {build.category.replace('-', ' ')}
+                                        {getCategoryLabel(build.category)}
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Mobility</div>
+                                    <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{t('mobility')}</div>
                                     <div className="font-medium text-foreground capitalize flex items-center gap-2">
                                         <Wind className="h-4 w-4 text-muted-foreground" />
-                                        {build.mobility || 'Medium'}
+                                        {t(`mobilityValues.${build.mobility || 'medium'}`)}
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Tags</div>
+                                    <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{t('tags')}</div>
                                     <div className="flex flex-wrap gap-2">
                                         {build.tags && build.tags.length > 0 ? build.tags.map(tag => (
                                             <span key={tag} className="px-2.5 py-1 bg-muted text-muted-foreground text-xs rounded-md border border-border">
-                                                {tag}
+                                                {t(`tagOptions.${tag === 'Escape/Gathering' ? 'EscapeGathering' : tag}`)}
                                             </span>
                                         )) : <span className="text-muted-foreground text-sm">-</span>}
                                     </div>
@@ -573,7 +689,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                     {build.strengths && build.strengths.length > 0 && (
                                         <div>
                                             <h4 className="text-xs font-bold text-green-500 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                                <Check className="h-3 w-3" /> Strengths
+                                                <Check className="h-3 w-3" /> {t('strengths')}
                                             </h4>
                                             <ul className="space-y-1">
                                                 {build.strengths.map((s, i) => (
@@ -588,7 +704,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                     {build.weaknesses && build.weaknesses.length > 0 && (
                                         <div>
                                             <h4 className="text-xs font-bold text-red-500 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                                <XIcon className="h-3 w-3" /> Weaknesses
+                                                <XIcon className="h-3 w-3" /> {t('weaknesses')}
                                             </h4>
                                             <ul className="space-y-1">
                                                 {build.weaknesses.map((w, i) => (
@@ -609,7 +725,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                 {/* Description Section (Full Width) */}
                 <div className="bg-card/50 border border-border rounded-xl p-6 mb-8">
                     <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-6 pb-4 border-b border-border/50 flex items-center gap-2">
-                        Build Summary
+                        {t('summary')}
                     </h3>
                     <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{build.description}</p>
                 </div>
@@ -617,14 +733,14 @@ export function BuildView({ id, category }: BuildViewProps) {
                 {/* Full Width Detailed Guide */}
                 <div className="bg-card/50 border border-border rounded-xl p-6 mb-8">
                     <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-6 pb-4 border-b border-border/50 flex items-center gap-2">
-                        <BookOpen className="h-6 w-6 text-primary" /> Detailed Guide
+                        <BookOpen className="h-6 w-6 text-primary" /> {t('detailedGuide')}
                     </h3>
                     <div data-color-mode="dark" className="prose prose-invert max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground">
                         {build.longDescription ? (
                             <Markdown source={build.longDescription} style={{ background: 'transparent', color: 'inherit' }} />
                         ) : (
                             <div className="text-center py-12 text-muted-foreground italic">
-                                No detailed guide provided for this build.
+                                {t('noDetailedGuide')}
                             </div>
                         )}
                     </div>
@@ -634,7 +750,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                 {build.youtubeLink && (
                     <div className="bg-card/50 border border-border rounded-xl p-6 mb-8">
                         <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-6 pb-4 border-b border-border/50 flex items-center gap-2">
-                            <Zap className="h-5 w-5 text-primary" /> Video Guide
+                            <Zap className="h-5 w-5 text-primary" /> {t('videoGuide')}
                         </h3>
                         <div className="aspect-video w-full rounded-lg overflow-hidden bg-black">
                             <iframe
@@ -655,7 +771,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                     <div className="mt-12 pt-8 border-t border-border">
                         <h2 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
                             <Sparkles className="h-5 w-5 text-primary" />
-                            Similar Builds
+                            {t('similarBuilds')}
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {similarBuilds.map(similarBuild => (
@@ -671,7 +787,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                 <div className="mt-12 pt-8 border-t border-border">
                     <h2 className="text-xl font-black text-foreground mb-6 flex items-center gap-2 uppercase tracking-tight">
                         <MessageSquare className="h-5 w-5 text-primary" />
-                        Build Discussion
+                        {t('discussion')}
                     </h2>
 
                     <div className="max-w-3xl space-y-6">
@@ -692,7 +808,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                         <textarea
                                             value={newComment}
                                             onChange={(e) => setNewComment(e.target.value)}
-                                            placeholder={user ? "Ask a question or share feedback..." : "Sign in to join the discussion"}
+                                            placeholder={user ? t('askQuestion') : t('signInToComment')}
                                             disabled={!user || isSubmittingComment}
                                             rows={3}
                                             className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground focus:border-primary outline-none resize-none transition-all disabled:opacity-50"
@@ -706,7 +822,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                         className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-xl font-bold flex items-center gap-2 transition-all disabled:opacity-50"
                                     >
                                         {isSubmittingComment ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                                        Post Comment
+                                        {t('postComment')}
                                     </button>
                                 </div>
                             </form>
@@ -720,7 +836,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                 </div>
                             ) : comments.length === 0 ? (
                                 <div className="text-center py-10 text-muted-foreground italic bg-muted/10 rounded-2xl border border-dashed border-border">
-                                    No questions yet. Be the first to start the discussion!
+                                    {t('noQuestions')}
                                 </div>
                             ) : (
                                 comments.map(comment => (
@@ -744,7 +860,7 @@ export function BuildView({ id, category }: BuildViewProps) {
                                                 </div>
                                                 <div className="text-[10px] text-muted-foreground flex items-center gap-1">
                                                     <Clock className="h-3 w-3" />
-                                                    {formatDistanceToNow(new Date(comment.createdAt))} ago
+                                                    {formatDistanceToNow(new Date(comment.createdAt))} {t('ago')}
                                                 </div>
                                             </div>
                                             <div className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
@@ -759,6 +875,31 @@ export function BuildView({ id, category }: BuildViewProps) {
                 </div>
             </div>
             <InfoStrip currentPage="builds" />
+            
+            {/* Confirmation Dialogs */}
+            <ConfirmDialog
+                isOpen={showDeleteDialog}
+                onClose={() => setShowDeleteDialog(false)}
+                onConfirm={handleDeleteBuild}
+                title={t('delete')}
+                description={t('confirmDelete')}
+                confirmText={t('delete')}
+                cancelText={tCommon('cancel')}
+                variant="danger"
+                isLoading={isDeleting}
+            />
+
+            <ConfirmDialog
+                isOpen={showHideDialog}
+                onClose={() => setShowHideDialog(false)}
+                onConfirm={handleHideBuild}
+                title={isHidden ? t('unhide') : t('hide')}
+                description={isHidden ? t('confirmUnhide') : t('confirmHide')}
+                confirmText={isHidden ? t('unhide') : t('hide')}
+                cancelText={tCommon('cancel')}
+                variant="warning"
+                isLoading={isHiding}
+            />
         </PageShell>
     );
 }
@@ -771,37 +912,63 @@ function EquipmentSlot({ item, label, disabled = false, showAlternatives = true 
 
     return (
         <div className="flex flex-col items-center gap-1 w-full">
-            <Tooltip content={hasItem ? formatItemName(item.Type) : label}>
-                <div className={`
-                    w-full aspect-square rounded border border-border p-1 flex items-center justify-center relative group
-                    ${hasItem
-                        ? 'bg-muted'
-                        : 'bg-muted/50 opacity-50'
-                    }
-                    ${disabled
-                        ? 'opacity-50 grayscale cursor-not-allowed'
-                        : hasItem ? 'hover:border-primary/50 transition-colors' : ''
-                    }
-                `}>
-                    <ItemIcon item={item} size={217} className="w-full h-full object-contain" />
-                    {!disabled && hasItem && <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded" />}
-                </div>
-            </Tooltip>
+            <div className={`
+                w-full aspect-square rounded border border-border p-1 flex items-center justify-center relative group
+                ${hasItem
+                    ? 'bg-muted'
+                    : 'bg-muted/50 opacity-50'
+                }
+                ${disabled
+                    ? 'opacity-50 grayscale cursor-not-allowed'
+                    : hasItem ? 'hover:border-primary/50 transition-colors' : ''
+                }
+            `}>
+                <ItemIcon item={item} size={217} className="w-full h-full object-contain" alt={item.Type || label} />
+                {!disabled && hasItem && <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded" />}
+            </div>
 
             {/* Alternatives */}
             {!disabled && showAlternatives && alternatives.length > 0 && (
                 <div className="flex flex-wrap justify-center gap-1 w-full px-1">
                     {alternatives.map((alt: string) => (
-                        <Tooltip key={alt} content={formatItemName(alt)}>
-                            <div className="w-6 h-6 bg-muted border border-border rounded overflow-hidden">
-                                <ItemIcon item={{ Type: alt }} size={24} className="w-full h-full p-0.5" />
-                            </div>
-                        </Tooltip>
+                        <div key={alt} className="w-6 h-6 bg-muted border border-border rounded overflow-hidden">
+                            <ItemIcon item={{ Type: alt }} size={24} className="w-full h-full p-0.5" alt={alt} />
+                        </div>
                     ))}
                 </div>
             )}
         </div>
     );
+}
+
+// Component to display localized item name
+function LocalizedItemName({ itemId, className = "" }: { itemId: string, className?: string }) {
+    const locale = useLocale();
+    const [localizedName, setLocalizedName] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!itemId) return;
+
+        let id = itemId;
+        // Remove enchantment for name lookup
+        if (id.includes('@')) {
+            id = id.split('@')[0];
+        }
+
+        getItemNameService(id, locale).then(name => {
+            if (name) {
+                setLocalizedName(name);
+            }
+            setLoading(false);
+        });
+    }, [itemId, locale]);
+
+    if (loading || !localizedName) {
+        return <span className={className}>{formatItemName(itemId)}</span>;
+    }
+
+    return <span className={className}>{localizedName}</span>;
 }
 
 const formatItemName = (type: string) => {

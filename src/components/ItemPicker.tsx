@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 import { getItems, SimpleItem } from '@/lib/item-service';
 import { ItemIcon } from './ItemIcon';
+import { useTranslations } from 'next-intl';
 
 interface ItemPickerProps {
   label: string;
@@ -14,6 +15,7 @@ interface ItemPickerProps {
 }
 
 export function ItemPicker({ label, value, onChange, placeholder, filter }: ItemPickerProps) {
+  const t = useTranslations('Common');
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [items, setItems] = useState<SimpleItem[]>([]);
@@ -87,7 +89,7 @@ export function ItemPicker({ label, value, onChange, placeholder, filter }: Item
             <input
               type="text"
               className="bg-transparent border-none outline-none text-sm text-foreground w-full placeholder:text-muted-foreground"
-              placeholder={placeholder || "Search item..."}
+              placeholder={placeholder || t('search')}
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -111,7 +113,7 @@ export function ItemPicker({ label, value, onChange, placeholder, filter }: Item
                   </button>
                 ))
               ) : (
-                <div className="px-3 py-2 text-sm text-muted-foreground">No items found</div>
+                <div className="px-3 py-2 text-sm text-muted-foreground">{t('noItemsFound')}</div>
               )}
             </div>
           )}

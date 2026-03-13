@@ -1,7 +1,15 @@
 import { adminDb } from './firebase-admin';
 import { sendEmail } from './email-service';
 import { NotificationType } from './notification-service';
-import { getWelcomeEmailHtml, getPurchaseSuccessEmailHtml, getRankUpEmailHtml, getReminderEmailHtml, getWatchlistAlertEmailHtml, getGoldAlertEmailHtml } from './email-templates';
+import { getTranslations } from 'next-intl/server';
+import { 
+  getWelcomeEmailHtml, 
+  getPurchaseSuccessEmailHtml, 
+  getRankUpEmailHtml, 
+  getReminderEmailHtml, 
+  getWatchlistAlertEmailHtml, 
+  getGoldAlertEmailHtml 
+} from './email-templates';
 
 export async function notifyUserAdmin(userId: string, type: NotificationType, data?: any, explicitEmail?: string) {
   try {
@@ -27,25 +35,30 @@ export async function notifyUserAdmin(userId: string, type: NotificationType, da
 
 export async function createInAppNotificationAdmin(userId: string, type: NotificationType, data?: any) {
   try {
-    let title = 'Notification';
-    let message = 'You have a new notification.';
+    // Fetch user to get locale
+    const userDoc = await adminDb.collection('users').doc(userId).get();
+    const locale = userDoc.data()?.locale || 'en';
+    const t = await getTranslations({ locale, namespace: 'Notifications' });
+
+    let title = t('welcome.title');
+    let message = t('welcome.message');
 
     switch (type) {
       case 'welcome':
-        title = 'Welcome to AlbionKit!';
-        message = 'Thanks for joining! Explore our tools to get started.';
+        title = t('welcome.title');
+        message = t('welcome.message');
         break;
       case 'purchase_success':
-        title = 'Subscription Active';
-        message = 'Thank you for your support! You now have access to premium features.';
+        title = t('subscriptionActive.title');
+        message = t('subscriptionActive.message');
         break;
       case 'rank_up':
-        title = 'Rank Up!';
-        message = `Congratulations! You have reached ${data?.newRank || 'a new'} rank.`;
+        title = t('rankUp.title');
+        message = t('rankUp.message', { rank: data?.newRank || '' });
         break;
       case 'reminder':
-        title = 'Reminder';
-        message = data?.message || 'Here is your reminder.';
+        title = t('reminder.title');
+        message = data?.message || '';
         break;
     }
 
@@ -63,39 +76,45 @@ export async function createInAppNotificationAdmin(userId: string, type: Notific
 }
 
 async function sendEmailNotificationAdmin(profile: any, email: string, type: NotificationType, data?: any) {
+  const locale = profile.locale || 'en';
+  // Use Emails namespace for subject lines and templates
+  // Note: getTranslations works on server side
+  const t = await getTranslations({ locale, namespace: 'Emails' });
+
   let subject = '';
   let html = '';
   const name = profile.displayName || 'Traveler';
 
   switch (type) {
     case 'welcome':
-      subject = 'Welcome to AlbionKit!';
-      html = getWelcomeEmailHtml(name);
+      subject = t('welcome.subject');
+      html = getWelcomeEmailHtml(name, t);
       break;
     case 'purchase_success':
-      subject = 'Thank you for your support!';
-      html = getPurchaseSuccessEmailHtml(name);
+      subject = t('purchase.subject');
+      html = getPurchaseSuccessEmailHtml(name, t);
       break;
     case 'rank_up':
-      subject = `You've reached ${data.newRank} Rank!`;
-      html = getRankUpEmailHtml(data.newRank);
+      subject = t('rankUp.subject', { rank: data?.newRank || '' });
+      html = getRankUpEmailHtml(data?.newRank || '', t);
       break;
     case 'reminder':
-        subject = 'Reminder from AlbionKit';
-        html = getReminderEmailHtml(data.message);
+        subject = t('reminder.subject');
+        html = getReminderEmailHtml(data?.message || '', t);
         break;
       case 'market_opportunity':
-        if (data.isWatchlist) {
-          subject = `Watchlist Alert: ${data.items[0].name} is profitable!`;
-          html = getWatchlistAlertEmailHtml(name, data.items);
+        if (data?.isWatchlist) {
+          subject = t('watchlist.subject');
+          html = getWatchlistAlertEmailHtml(name, data.items, t);
         } else {
-          subject = 'Market Opportunity Detected!';
-          html = getReminderEmailHtml(data.message);
+          subject = t('reminder.subject');
+          html = getReminderEmailHtml(data?.message || '', t);
         }
         break;
       case 'gold_alert':
-        subject = `Gold Alert: Price is ${data.change > 0 ? 'Rising' : 'Dropping'}!`;
-        html = getGoldAlertEmailHtml(name, data.region, data.currentPrice, data.change);
+        const trendText = data.change > 0 ? t('gold.rising') : t('gold.dropping');
+        subject = t('gold.baseTitle', { trendText });
+        html = getGoldAlertEmailHtml(name, data.region, data.currentPrice, data.change, t);
         break;
       default:
       return;

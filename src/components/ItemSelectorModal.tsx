@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Search, X, Loader2 } from 'lucide-react';
-import { getItems, SimpleItem } from '@/lib/item-service';
+import { getItems, searchItemsMultilingual, SimpleItem } from '@/lib/item-service';
 import { ItemIcon } from './ItemIcon';
 import { createPortal } from 'react-dom';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface ItemSelectorModalProps {
   isOpen: boolean;
@@ -14,7 +15,9 @@ interface ItemSelectorModalProps {
   title?: string;
 }
 
-export function ItemSelectorModal({ isOpen, onClose, onSelect, filter, title = "Select Item" }: ItemSelectorModalProps) {
+export function ItemSelectorModal({ isOpen, onClose, onSelect, filter, title }: ItemSelectorModalProps) {
+  const t = useTranslations('Common');
+  const locale = useLocale();
   const [query, setQuery] = useState('');
   const [items, setItems] = useState<SimpleItem[]>([]);
   const [filteredItems, setFilteredItems] = useState<SimpleItem[]>([]);
@@ -24,7 +27,7 @@ export function ItemSelectorModal({ isOpen, onClose, onSelect, filter, title = "
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
-      getItems().then(data => {
+      getItems(locale).then(data => {
         setItems(data);
         setLoading(false);
         // Focus input after a short delay to allow render
@@ -34,7 +37,7 @@ export function ItemSelectorModal({ isOpen, onClose, onSelect, filter, title = "
         setLoading(false);
       });
     }
-  }, [isOpen]);
+  }, [isOpen, locale]);
 
   useEffect(() => {
     if (!items.length) return;
@@ -62,7 +65,7 @@ export function ItemSelectorModal({ isOpen, onClose, onSelect, filter, title = "
         
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-slate-800">
-          <h3 className="text-lg font-bold text-white">{title}</h3>
+          <h3 className="text-lg font-bold text-white">{title || t('selectItem')}</h3>
           <button onClick={onClose} className="p-1 hover:bg-slate-800 rounded-full text-slate-400 hover:text-white transition-colors">
             <X className="h-6 w-6" />
           </button>
@@ -76,7 +79,7 @@ export function ItemSelectorModal({ isOpen, onClose, onSelect, filter, title = "
               ref={inputRef}
               type="text"
               className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-3 text-slate-200 focus:border-amber-500 outline-none transition-colors"
-              placeholder="Search by name..."
+              placeholder={t('searchByName')}
               value={query}
               onChange={e => setQuery(e.target.value)}
             />
@@ -88,12 +91,12 @@ export function ItemSelectorModal({ isOpen, onClose, onSelect, filter, title = "
           {loading ? (
             <div className="flex items-center justify-center h-full text-slate-500">
               <Loader2 className="animate-spin h-8 w-8 mr-2" />
-              Loading items...
+              {t('loadingItems')}
             </div>
           ) : filteredItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-slate-500 py-12">
               <Search className="h-12 w-12 mb-4 opacity-20" />
-              <p>No items found</p>
+              <p>{t('noItemsFound')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">

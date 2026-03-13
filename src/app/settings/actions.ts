@@ -382,24 +382,66 @@ export async function getSubscriptionManagementData(userId: string) {
 }
 
 // Helper to search Albion Online characters (Added for build error fix)
+const REGION_URLS = {
+  Americas: 'https://gameinfo.albiononline.com',
+  Asia: 'https://gameinfo-sgp.albiononline.com',
+  Europe: 'https://gameinfo-ams.albiononline.com'
+};
+
 export async function searchAlbionCharacter(query: string) {
   if (!query || query.length < 2) return { players: [] };
   
+  const cleanQuery = query.trim();
+  console.log(`Searching for Albion character: "${cleanQuery}"`);
+
+  const regions = ['Americas', 'Asia', 'Europe'] as const;
+
   try {
-    const response = await fetch(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${encodeURIComponent(query)}`, {
-      headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-      }
+    const promises = regions.map(async (region) => {
+        try {
+            const baseUrl = REGION_URLS[region];
+            const response = await fetch(`${baseUrl}/api/gameinfo/search?q=${encodeURIComponent(cleanQuery)}`, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                }
+            });
+            
+            if (!response.ok) {
+                 console.warn(`[AlbionAPI] ${region} returned status: ${response.status}`);
+                 return [];
+            }
+
+            const data = await response.json();
+            const players = data.players || data.player || data.Player || [];
+            return players.map((p: any) => ({ ...p, Region: region }));
+        } catch (err) {
+            console.warn(`[AlbionAPI] Failed to search ${region}:`, err);
+            return [];
+        }
     });
+
+    const results = await Promise.all(promises);
+    const allPlayers = results.flat();
     
-    if (!response.ok) {
-      throw new Error(`API returned ${response.status}`);
+    // Exact match logic (case-insensitive) across all regions
+    const exactMatches = allPlayers.filter((p: any) => 
+        p.Name?.toLowerCase() === cleanQuery.toLowerCase() || 
+        p.name?.toLowerCase() === cleanQuery.toLowerCase()
+    );
+
+    if (exactMatches.length > 0) {
+        console.log(`[AlbionAPI] Found exact matches:`, exactMatches.map((p: any) => `${p.Name} (${p.Region})`));
+        return { players: exactMatches };
     }
     
-    const data = await response.json();
-    return { players: data.players || [] };
+    console.log(`[AlbionAPI] Found ${allPlayers.length} total players`);
+    return { players: allPlayers };
+
   } catch (error) {
-    console.error('Albion API Error:', error);
+    console.error('[AlbionAPI] Search error:', error);
+    if (error instanceof Error) {
+      return { error: `Search failed: ${error.message}` };
+    }
     return { error: 'Failed to search players' };
   }
 }

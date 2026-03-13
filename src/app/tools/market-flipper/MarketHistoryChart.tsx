@@ -5,6 +5,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { getMarketHistory, MarketHistory } from './actions';
 import { Loader2 } from 'lucide-react';
 
+import { useTranslations } from 'next-intl';
+
 interface MarketHistoryChartProps {
   itemId: string;
   buyCity: string;
@@ -12,6 +14,7 @@ interface MarketHistoryChartProps {
 }
 
 export default function MarketHistoryChart({ itemId, buyCity, region = 'west' }: MarketHistoryChartProps) {
+  const t = useTranslations('MarketFlipper');
   const [data, setData] = useState<{ chartData: any[], avgVolume: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,7 +65,7 @@ export default function MarketHistoryChart({ itemId, buyCity, region = 'west' }:
         setData({ chartData, avgVolume });
       } catch (err) {
         console.error(err);
-        setError('Failed to load history data');
+        setError(t('failedToLoadHistory'));
       } finally {
         if (mounted) setLoading(false);
       }
@@ -71,7 +74,7 @@ export default function MarketHistoryChart({ itemId, buyCity, region = 'west' }:
     fetchData();
 
     return () => { mounted = false; };
-  }, [itemId, buyCity, region]);
+  }, [itemId, buyCity, region, t]);
 
   if (loading) {
     return (
@@ -84,7 +87,7 @@ export default function MarketHistoryChart({ itemId, buyCity, region = 'west' }:
   if (error || !data || data.chartData.length === 0) {
     return (
       <div className="h-64 flex items-center justify-center bg-muted/50 rounded-lg text-muted-foreground">
-        No history data available for this period
+        {t('noHistoryData')}
       </div>
     );
   }
@@ -92,9 +95,9 @@ export default function MarketHistoryChart({ itemId, buyCity, region = 'west' }:
   return (
     <div className="bg-muted/50 p-4 rounded-lg border border-border">
       <div className="flex justify-between items-center mb-4">
-        <h4 className="text-sm font-medium text-foreground">Price History (Last 5 Days)</h4>
+        <h4 className="text-sm font-medium text-foreground">{t('priceHistory')}</h4>
         <div className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded border border-border">
-          Avg. Daily Volume (BM): <span className="text-foreground font-bold">{data.avgVolume}</span>
+          {t('avgDailyVolume')} <span className="text-foreground font-bold">{data.avgVolume}</span>
         </div>
       </div>
       <div className="h-[300px] w-full">
@@ -138,7 +141,7 @@ export default function MarketHistoryChart({ itemId, buyCity, region = 'west' }:
         </ResponsiveContainer>
       </div>
       <div className="mt-2 text-xs text-center text-muted-foreground">
-        * Comparison of Average Prices
+        {t('comparisonOfAvgPrices')}
       </div>
     </div>
   );

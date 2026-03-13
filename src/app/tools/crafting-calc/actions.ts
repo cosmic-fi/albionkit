@@ -58,12 +58,12 @@ export async function getResourcePrices(rawType: string, refinedType: string, re
 
 import { searchItemsService, getItemNameService } from '@/lib/item-service';
 
-export async function searchItems(query: string) {
-    return await searchItemsService(query);
+export async function searchItems(query: string, locale: string = 'en') {
+    return await searchItemsService(query, locale);
 }
 
-export async function resolveItemName(id: string) {
-    return await getItemNameService(id);
+export async function resolveItemName(id: string, locale: string = 'en') {
+    return await getItemNameService(id, locale);
 }
 
 export async function getRecipePrices(recipe: Recipe, region: 'west' | 'east' | 'europe' = 'west') {

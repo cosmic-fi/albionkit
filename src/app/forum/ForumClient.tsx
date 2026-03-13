@@ -33,23 +33,7 @@ import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useLoginModal } from '@/context/LoginModalContext';
-
-const CATEGORIES: { id: ThreadCategory; label: string; icon: any; color: string }[] = [
-  { id: 'General', label: 'General', icon: MessageCircle, color: 'text-blue-400' },
-  { id: 'Builds', label: 'Builds', icon: Shield, color: 'text-orange-400' },
-  { id: 'Market', label: 'Market', icon: Coins, color: 'text-yellow-400' },
-  { id: 'PvP', label: 'PvP', icon: Sword, color: 'text-red-400' },
-  { id: 'Guilds', label: 'Guilds', icon: Users, color: 'text-purple-400' },
-  { id: 'Recruitment', label: 'Recruitment', icon: Target, color: 'text-green-400' },
-  { id: 'LFG', label: 'LFG', icon: Trophy, color: 'text-pink-400' },
-  { id: 'Trading', label: 'Trading', icon: Coins, color: 'text-emerald-400' },
-  { id: 'Guides', label: 'Guides', icon: Target, color: 'text-indigo-400' },
-  { id: 'Announcements', label: 'Announcements', icon: AlertCircle, color: 'text-red-500' },
-  { id: 'Official', label: 'Official', icon: Shield, color: 'text-blue-500' },
-  { id: 'News', label: 'News', icon: AlertCircle, color: 'text-sky-400' },
-];
-
-const SERVERS: ServerRegion[] = ['All', 'Americas', 'Asia', 'Europe'];
+import { useTranslations } from 'next-intl';
 
 // Helper to strip markdown and HTML for plain text previews
 const stripMarkdown = (text: string) => {
@@ -71,6 +55,7 @@ const stripMarkdown = (text: string) => {
 };
 
 export default function CommunityClient({ initialThreads }: { initialThreads: Thread[] }) {
+  const t = useTranslations('Community');
   const { user } = useAuth();
   const { openLoginModal } = useLoginModal();
   const [threads, setThreads] = useState<Thread[]>(initialThreads);
@@ -82,6 +67,23 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
 
   const [isInitialMount, setIsInitialMount] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+
+  const CATEGORIES: { id: ThreadCategory; label: string; icon: any; color: string }[] = [
+    { id: 'General', label: t('categories.General'), icon: MessageCircle, color: 'text-blue-400' },
+    { id: 'Builds', label: t('categories.Builds'), icon: Shield, color: 'text-orange-400' },
+    { id: 'Market', label: t('categories.Market'), icon: Coins, color: 'text-yellow-400' },
+    { id: 'PvP', label: t('categories.PvP'), icon: Sword, color: 'text-red-400' },
+    { id: 'Guilds', label: t('categories.Guilds'), icon: Users, color: 'text-purple-400' },
+    { id: 'Recruitment', label: t('categories.Recruitment'), icon: Target, color: 'text-green-400' },
+    { id: 'LFG', label: t('categories.LFG'), icon: Trophy, color: 'text-pink-400' },
+    { id: 'Trading', label: t('categories.Trading'), icon: Coins, color: 'text-emerald-400' },
+    { id: 'Guides', label: t('categories.Guides'), icon: Target, color: 'text-indigo-400' },
+    { id: 'Announcements', label: t('categories.Announcements'), icon: AlertCircle, color: 'text-red-500' },
+    { id: 'Official', label: t('categories.Official'), icon: Shield, color: 'text-blue-500' },
+    { id: 'News', label: t('categories.News'), icon: AlertCircle, color: 'text-sky-400' },
+  ];
+
+  const SERVERS: ServerRegion[] = ['All', 'Americas', 'Asia', 'Europe'];
 
   useEffect(() => {
     setIsMounted(true);
@@ -112,7 +114,7 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
         setThreads(result.threads);
       } else {
         setThreads([]);
-        toast.error(result.error || 'Failed to fetch threads');
+        toast.error(result.error || t('failedToLoad'));
       }
     } catch (err) {
       setThreads([]);
@@ -124,7 +126,7 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
 
   const handleLike = async (threadId: string) => {
     if (!user) {
-      openLoginModal('Please sign in to like threads');
+      openLoginModal(t('signInToLike'));
       return;
     }
     const result = await likeThreadAction(threadId, user.uid);
@@ -140,16 +142,16 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
 
   return (
     <PageShell
-      title="Community Hub"
-      description="Join the discussion. Share intel, meta builds, and market tips."
+      title={t('title')}
+      description={t('description')}
       icon={<MessageCircle className="h-6 w-6" />}
       headerActions={
         <Link
-          href="/community/new"
+          href="/forum/new"
           className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition-all"
         >
           <Plus className="h-4 w-4" />
-          Start Thread
+          {t('startThread')}
         </Link>
       }
     >
@@ -159,7 +161,7 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <input
               type="text"
-              placeholder="Search discussions..."
+              placeholder={t('searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-card border border-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-foreground focus:border-primary outline-none transition-all"
@@ -169,7 +171,7 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
           <div className="bg-card border border-border rounded-xl p-4">
             <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
               <Globe className="h-4 w-4" />
-              Server Region
+              {t('serverRegion')}
             </h3>
             <div className="grid grid-cols-2 gap-2">
               {SERVERS.map(s => (
@@ -190,7 +192,7 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
           <div className="bg-card border border-border rounded-xl p-4">
             <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
               <Filter className="h-4 w-4" />
-              Discussion Type
+              {t('discussionType')}
             </h3>
             <div className="space-y-1">
               <button
@@ -200,7 +202,7 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
               >
                 <div className="flex items-center gap-3">
                   <Globe className="h-4 w-4" />
-                  All Discussions
+                  {t('allDiscussions')}
                 </div>
                 <ChevronRight className={`h-4 w-4 transition-transform ${category === 'All' ? 'rotate-90 opacity-100' : 'opacity-0'}`} />
               </button>
@@ -227,21 +229,21 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
             </div>
             <h3 className="text-xs font-black text-primary uppercase tracking-widest mb-5 relative z-10 flex items-center gap-2">
               <Activity className="h-4 w-4" />
-              Community Stats
+              {t('communityStats')}
             </h3>
             <div className="space-y-5 relative z-10">
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Total Threads</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('totalThreads')}</span>
                 <span className="text-lg font-black text-foreground leading-none">{threads.length}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Active Users</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('activeUsers')}</span>
                 <div className="flex items-center gap-2 bg-green-500/10 px-2.5 py-1 rounded-md border border-green-500/20">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                   </span>
-                  <span className="text-xs font-black text-green-500">{onlineUsers} Online</span>
+                  <span className="text-xs font-black text-green-500">{onlineUsers} {t('online')}</span>
                 </div>
               </div>
             </div>
@@ -254,7 +256,7 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
               <div className="absolute inset-0 z-10 bg-background/40 backdrop-blur-[1px] flex items-center justify-center rounded-2xl transition-all">
                 <div className="flex flex-col items-center gap-3 bg-card border border-border p-6 rounded-2xl">
                   <Loader2 className="h-8 w-8 text-primary animate-spin" />
-                  <p className="text-xs font-semibold text-muted-foreground animate-pulse">Searching threads...</p>
+                  <p className="text-xs font-semibold text-muted-foreground animate-pulse">{t('searching')}</p>
                 </div>
               </div>
             )}
@@ -264,8 +266,8 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
                 <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
                   <MessageSquare className="h-10 w-10 text-muted-foreground/30" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">No threads found</h3>
-                <p className="text-xs text-muted-foreground max-w-xs mx-auto font-medium">Try adjusting your filters or be the first to start a discussion!</p>
+                <h3 className="text-lg font-semibold text-foreground mb-2">{t('noThreads')}</h3>
+                <p className="text-xs text-muted-foreground max-w-xs mx-auto font-medium">{t('noThreadsDesc')}</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -293,14 +295,14 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
                           <div className="flex flex-wrap items-center gap-2 mb-2">
                             <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-border flex items-center gap-1.5 bg-muted/50 ${categoryInfo.color}`}>
                               <categoryInfo.icon className="h-3 w-3" />
-                              {thread.category}
+                              {t(`categories.${thread.category}`)}
                             </span>
                             <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-border bg-secondary text-secondary-foreground">
                               {thread.server}
                             </span>
                             {thread.isPinned && (
                               <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
-                                <Pin className="h-3 w-3 fill-current" /> PINNED
+                                <Pin className="h-3 w-3 fill-current" /> {t('pinned')}
                               </span>
                             )}
                             {thread.activityType && (
@@ -310,7 +312,7 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
                             )}
                           </div>
 
-                          <Link href={`/community/thread/${thread.id}`} className="block group/title">
+                          <Link href={`/forum/thread/${thread.id}`} className="block group/title">
                             <h2 className="text-lg font-semibold text-foreground group-hover/title:text-primary transition-colors line-clamp-1 mb-2">
                               {thread.title}
                             </h2>
@@ -334,7 +336,7 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
                                   {thread.authorName}
                                   {thread.authorIsAdmin && (
                                     <span className="bg-primary/20 text-primary text-[9px] font-black px-1.5 py-0.5 rounded flex items-center gap-1">
-                                      <Shield className="h-2.5 w-2.5" /> ADMIN
+                                      <Shield className="h-2.5 w-2.5" /> {t('admin')}
                                     </span>
                                   )}
                                 </span>
@@ -347,7 +349,7 @@ export default function CommunityClient({ initialThreads }: { initialThreads: Th
                             <div className="flex items-center gap-4 text-[11px] font-medium text-muted-foreground/80">
                               <div className="flex items-center gap-1.5">
                                 <Clock className="h-3.5 w-3.5" />
-                                {isMounted ? `${formatDistanceToNow(new Date(thread.createdAt))} ago` : '...'}
+                                {isMounted ? `${formatDistanceToNow(new Date(thread.createdAt))} ${t('ago')}` : '...'}
                               </div>
                               <div className="flex items-center gap-1.5 bg-muted px-2 py-1 rounded-lg">
                                 <MessageSquare className="h-3.5 w-3.5" />

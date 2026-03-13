@@ -20,6 +20,7 @@ import { notifyUser } from '../lib/notification-service';
 import { sendVerificationEmail, updateLoginStreakAction } from '@/app/actions/auth';
 import { toast } from 'sonner';
 import { Flame } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
 
 interface AuthContextType {
   user: User | null;
@@ -45,6 +46,8 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const locale = useLocale();
+  const t = useTranslations();
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -99,6 +102,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         photoURL: defaultPhotoURL,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        locale: locale,
         isPremium: false,
         preferences: {
           emailNotifications: true,
@@ -164,9 +168,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Update Login Streak - Only if it's a fresh login or a new day
         updateLoginStreakAction(firebaseUser.uid).then(result => {
           if (isMounted.current && result.success && result.isNewDay) {
-            toast(`Daily Login Streak: ${result.currentStreak} Days!`, {
+            toast(t('Common.Notifications.streakNotification.title', { count: result.currentStreak }), {
               icon: <Flame className="h-4 w-4 text-orange-500 fill-orange-500" />,
-              description: result.currentStreak > 1 ? "Keep it up, Traveler!" : "Welcome back to AlbionKit!",
+              description: result.currentStreak > 1 ? t('Common.Notifications.streakNotification.keepGoing') : t('Common.Notifications.streakNotification.welcome'),
             });
             // Re-fetch profile to get updated streak fields
             getUserProfile(firebaseUser.uid).then(updated => {

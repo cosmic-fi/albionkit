@@ -16,6 +16,8 @@ import { NumberInput } from '@/components/ui/NumberInput';
 import { Badge } from '@/components/ui/Badge';
 import { CategoryTabs } from '@/components/ui/CategoryTabs';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { useTranslations } from 'next-intl';
+import { ItemIcon } from '@/components/ItemIcon';
 
 // Helper to generate animal stats based on Tier and Type
 const getAnimalStats = (tier: number, id: string, type: 'pasture' | 'mount'): Partial<Animal> => {
@@ -167,6 +169,7 @@ const ALL_CITIES = LOCATIONS;
 type Tab = 'breeding' | 'products' | 'butchering';
 
 export default function AnimalClient() {
+  const t = useTranslations('Animal');
   const [activeTab, setActiveTab] = useState<Tab>('breeding');
   const { server: region, setServer: setRegion } = useServer();
   const [buyCity, setBuyCity] = useState<string>('Martlock');
@@ -196,7 +199,7 @@ export default function AnimalClient() {
           const adultId = `T${tier}_FARM_${def.id.toUpperCase()}_GROWN`;
           generated.push({
             id: `${def.id}_t${tier}`,
-            name: `${def.id.charAt(0).toUpperCase() + def.id.slice(1)} (T${tier})`,
+            name: `${t(`animalNames.${def.id}`)} (T${tier})`,
             tier,
             babyId,
             adultId,
@@ -210,7 +213,7 @@ export default function AnimalClient() {
         const adultId = `T${def.tier}_FARM_${def.id.toUpperCase()}_GROWN`;
         generated.push({
           id: def.id,
-          name: def.id.charAt(0).toUpperCase() + def.id.slice(1),
+          name: t(`animalNames.${def.id}`),
           tier: def.tier,
           babyId,
           adultId,
@@ -219,7 +222,7 @@ export default function AnimalClient() {
       }
     }
     setAnimals(generated);
-  }, []);
+  }, [t]);
 
   // Sorting State
   const [sortConfig, setSortConfig] = useState<{ key: keyof AnimalData; direction: 'asc' | 'desc' }>({
@@ -547,14 +550,20 @@ export default function AnimalClient() {
   }));
 
   const formatItemName = (id: string) => {
-    return id.replace(/^T\d+_/, '').replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    // Try to get translated food name from Animal namespace
+    try {
+      return t(`foodNames.${id}`);
+    } catch {
+      // Fallback to simple formatting
+      return id.replace(/^T\d+_/, '').replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    }
   };
 
   return (
     <PageShell
-      title="Animal Calculator"
+      title={t('title')}
       backgroundImage='/background/ao-crafting.jpg'
-      description="Calculate profits for Breeding, Products, and Butchering."
+      description={t('description')}
       icon={<PawPrint className="h-6 w-6" />}
       headerActions={
         <div className="flex flex-wrap items-center gap-4">
@@ -573,9 +582,9 @@ export default function AnimalClient() {
         {/* Category Tabs */}
         <CategoryTabs
           options={[
-            { value: 'breeding', label: 'Breeding' },
-            { value: 'products', label: 'Products' },
-            { value: 'butchering', label: 'Butchering' },
+            { value: 'breeding', label: t('breeding') },
+            { value: 'products', label: t('products') },
+            { value: 'butchering', label: t('butchering') },
           ]}
           value={activeTab}
           onChange={(val) => setActiveTab(val as Tab)}
@@ -587,7 +596,7 @@ export default function AnimalClient() {
           <div className="flex flex-col md:flex-row gap-6 items-center">
             <div className="flex-1 w-full">
               <Select
-                label={activeTab === 'butchering' ? "Buy Adult From" : "Buy Baby & Food From"}
+                label={activeTab === 'butchering' ? t('buyAdultFrom') : t('buyBabyFoodFrom')}
                 options={cityOptions}
                 value={buyCity}
                 onChange={setBuyCity}
@@ -600,7 +609,7 @@ export default function AnimalClient() {
 
             <div className="flex-1 w-full">
               <Select
-                label={activeTab === 'butchering' ? "Sell Meat To" : (activeTab === 'products' ? "Sell Products To" : "Sell Grown Animal To")}
+                label={activeTab === 'butchering' ? t('sellMeatTo') : (activeTab === 'products' ? t('sellProductsTo') : t('sellGrownTo'))}
                 options={allCityOptions}
                 value={sellCity}
                 onChange={setSellCity}
@@ -609,7 +618,7 @@ export default function AnimalClient() {
 
             {/* Quantity Input */}
             <div className="w-full md:w-32">
-              <div className="mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">Quantity</div>
+              <div className="mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">{t('quantity')}</div>
               <NumberInput
                 value={quantity}
                 onChange={setQuantity}
@@ -624,16 +633,16 @@ export default function AnimalClient() {
           {/* Bottom Row: Toggles */}
           <div className="flex flex-wrap gap-8">
             <Checkbox
-              label="Premium Status"
-              description={activeTab === 'products' ? "Doubles product yield" : "Halves growth time"}
+              label={t('premium')}
+              description={activeTab === 'products' ? t('premiumDescProduct') : t('premiumDescGrowth')}
               checked={usePremium}
               onChange={(e) => setUsePremium(e.target.checked)}
             />
 
             {(activeTab === 'breeding' || activeTab === 'products') && (
               <Checkbox
-                label="Use Favorite Food"
-                description="Halves food consumption"
+                label={t('favoriteFood')}
+                description={t('favoriteFoodDesc')}
                 checked={useFavoriteFood}
                 onChange={(e) => setUseFavoriteFood(e.target.checked)}
               />
@@ -641,8 +650,8 @@ export default function AnimalClient() {
 
             {activeTab === 'breeding' && (
               <Checkbox
-                label="Nurture (Focus)"
-                description="Increases offspring chance"
+                label={t('focus')}
+                description={t('focusDesc')}
                 checked={useFocus}
                 onChange={(e) => setUseFocus(e.target.checked)}
               />
@@ -658,14 +667,14 @@ export default function AnimalClient() {
                 <tr className="bg-muted border-b border-border text-muted-foreground text-xs uppercase tracking-wider">
                   <th className="p-4 font-medium pl-8 cursor-pointer hover:text-foreground transition-colors" onClick={() => handleSort('name')}>
                     <div className="flex items-center gap-1">
-                      Item
+                      {t('item')}
                       {sortConfig.key === 'name' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
                     </div>
                   </th>
                   <th className="p-4 font-medium text-right cursor-pointer hover:text-foreground transition-colors" onClick={() => handleSort('profit')}>
                     <div className="flex items-center justify-end gap-1">
-                      <Tooltip content="Profit per unit (Revenue - Cost)">
-                        <span>Profit / Unit</span>
+                      <Tooltip content={t('profitUnitTooltip')}>
+                        <span>{t('profitUnit')}</span>
                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                       </Tooltip>
                       {sortConfig.key === 'profit' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
@@ -673,8 +682,8 @@ export default function AnimalClient() {
                   </th>
                   <th className="p-4 font-medium text-right cursor-pointer hover:text-foreground transition-colors" onClick={() => handleSort('totalProfit')}>
                     <div className="flex items-center justify-end gap-1">
-                      <Tooltip content="Total Profit (Profit / Unit * Quantity)">
-                        <span>Total Profit</span>
+                      <Tooltip content={t('totalProfitTooltip')}>
+                        <span>{t('totalProfit')}</span>
                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                       </Tooltip>
                       {sortConfig.key === 'totalProfit' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
@@ -682,8 +691,8 @@ export default function AnimalClient() {
                   </th>
                   <th className="p-4 font-medium text-right cursor-pointer hover:text-foreground transition-colors" onClick={() => handleSort('roi')}>
                     <div className="flex items-center justify-end gap-1">
-                      <Tooltip content="Return on Investment %">
-                        <span>ROI</span>
+                      <Tooltip content={t('roiTooltip')}>
+                        <span>{t('roi')}</span>
                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                       </Tooltip>
                       {sortConfig.key === 'roi' && (sortConfig.direction === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />)}
@@ -698,13 +707,13 @@ export default function AnimalClient() {
                     <td colSpan={5} className="p-12 text-center text-muted-foreground">
                       <div className="flex flex-col items-center justify-center gap-3">
                         <Loader2 className="h-8 w-8 animate-spin text-success" />
-                        <p>Fetching market prices & volume...</p>
+                        <p>{t('fetchingData')}</p>
                       </div>
                     </td>
                   </tr>
                 ) : sortedData.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-8 text-center text-muted-foreground">No data available for this category</td>
+                    <td colSpan={5} className="p-8 text-center text-muted-foreground">{t('noDataCategory')}</td>
                   </tr>
                 ) : (
                   sortedData.map((row) => (
@@ -755,7 +764,7 @@ export default function AnimalClient() {
                             <div>
                               <div className="font-medium text-foreground">{row.name}</div>
                               <div className="text-xs text-muted-foreground">
-                                {activeTab === 'breeding' ? 'Breeding' : activeTab === 'products' ? 'Product' : 'Butchering'} • T{row.tier}
+                                {activeTab === 'breeding' ? t('breeding') : activeTab === 'products' ? t('products') : t('butchering')} • T{row.tier}
                               </div>
                             </div>
                           </div>
@@ -782,7 +791,7 @@ export default function AnimalClient() {
                               {/* Input Column */}
                               <div className="space-y-3">
                                 <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-                                  <CircleDollarSign className="h-4 w-4" /> Costs & Inputs
+                                  <CircleDollarSign className="h-4 w-4" /> {t('costsInputs')}
                                 </h4>
                                 <div className="bg-card/50 rounded-lg p-4 border border-border space-y-3">
 
@@ -792,7 +801,7 @@ export default function AnimalClient() {
                                       <img src={`https://render.albiononline.com/v1/item/${row.babyId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
                                       <div className="w-full">
                                         <NumberInput
-                                          label="Baby Price"
+                                          label={t('babyPrice')}
                                           value={row.babyPrice}
                                           onChange={(val) => handlePriceUpdate(row.id, 'babyPrice', val)}
                                           className="h-9 text-sm bg-background"
@@ -800,7 +809,7 @@ export default function AnimalClient() {
                                           onReset={() => handleResetPrice(row.id, 'babyPrice')}
                                         />
                                         <div className="flex justify-end mt-1">
-                                          <span className="text-xs text-muted-foreground">24h Vol: {row.babyVolume?.toLocaleString()}</span>
+                                          <span className="text-xs text-muted-foreground">{t('vol24h', { val: row.babyVolume?.toLocaleString() })}</span>
                                         </div>
                                       </div>
                                     </div>
@@ -812,7 +821,7 @@ export default function AnimalClient() {
                                       <img src={`https://render.albiononline.com/v1/item/${row.adultId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
                                       <div className="w-full">
                                         <NumberInput
-                                          label="Adult Price"
+                                          label={t('adultPrice')}
                                           value={row.adultPrice}
                                           onChange={(val) => handlePriceUpdate(row.id, 'adultPrice', val)}
                                           className="h-9 text-sm bg-background"
@@ -820,7 +829,7 @@ export default function AnimalClient() {
                                           onReset={() => handleResetPrice(row.id, 'adultPrice')}
                                         />
                                         <div className="flex justify-end mt-1">
-                                          <span className="text-xs text-muted-foreground">24h Vol: {row.adultVolume?.toLocaleString()}</span>
+                                          <span className="text-xs text-muted-foreground">{t('vol24h', { val: row.adultVolume?.toLocaleString() })}</span>
                                         </div>
                                       </div>
                                     </div>
@@ -829,15 +838,17 @@ export default function AnimalClient() {
                                   {/* Food Cost */}
                                   {(activeTab === 'breeding' || activeTab === 'products') && (
                                     <div className="flex items-start gap-3">
-                                      <img
-                                        src={`https://render.albiononline.com/v1/item/${useFavoriteFood && row.favoriteFoodId ? row.favoriteFoodId : 'T1_CARROT'}`}
-                                        className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border"
-                                      />
+                                      <div className="h-10 w-10 bg-muted rounded-md p-1 mt-5 border border-border flex items-center justify-center flex-shrink-0">
+                                        <ItemIcon 
+                                          itemId={useFavoriteFood && row.favoriteFoodId ? row.favoriteFoodId : 'T1_CARROT'}
+                                          className="h-full w-full object-contain"
+                                        />
+                                      </div>
                                       <div className="w-full">
                                         <NumberInput
                                           label={useFavoriteFood
-                                            ? `Fav. Food: ${row.favoriteFoodId ? formatItemName(row.favoriteFoodId) : 'None'}`
-                                            : 'Generic Food'}
+                                            ? t('favFoodLabel', { name: row.favoriteFoodId ? formatItemName(row.favoriteFoodId) : t('none') })
+                                            : t('genericFood')}
                                           value={useFavoriteFood ? row.favoriteFoodPrice : row.foodPrice}
                                           onChange={(val) => handlePriceUpdate(row.id, useFavoriteFood ? 'favoriteFoodPrice' : 'foodPrice', val)}
                                           className="h-9 text-sm bg-background"
@@ -846,16 +857,16 @@ export default function AnimalClient() {
                                         />
                                         <div className="flex flex-col items-end mt-1 gap-1">
                                           <span className="text-xs text-muted-foreground">
-                                            24h Vol: {useFavoriteFood ? row.favoriteFoodVolume?.toLocaleString() : row.foodVolume?.toLocaleString()}
+                                            {t('vol24h', { val: useFavoriteFood ? row.favoriteFoodVolume?.toLocaleString() : row.foodVolume?.toLocaleString() })}
                                           </span>
                                           <div className="text-xs text-muted-foreground text-right">
                                             {activeTab === 'breeding' ? (
                                               <>
-                                                <div>x {useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption} / cycle</div>
-                                                <div>Total: {(useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption) * Math.max(1, Math.round(row.growthTime / 22))} units</div>
+                                                <div>{t('cycleUnits', { val: useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption })}</div>
+                                                <div>{t('totalUnits', { val: (useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption) * Math.max(1, Math.round(row.growthTime / 22)) })}</div>
                                               </>
                                             ) : (
-                                              <>x {useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption} units / cycle</>
+                                              <>{t('cycleUnits', { val: useFavoriteFood ? row.foodConsumption / 2 : row.foodConsumption })}</>
                                             )}
                                           </div>
                                         </div>
@@ -868,7 +879,7 @@ export default function AnimalClient() {
                               {/* Output Column */}
                               <div className="space-y-3">
                                 <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-                                  <Leaf className="h-4 w-4" /> Output & Revenue
+                                  <Leaf className="h-4 w-4" /> {t('outputRevenue')}
                                 </h4>
                                 <div className="bg-card/50 rounded-lg p-4 border border-border space-y-3">
 
@@ -878,7 +889,7 @@ export default function AnimalClient() {
                                       <img src={`https://render.albiononline.com/v1/item/${row.adultId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
                                       <div className="w-full">
                                         <NumberInput
-                                          label="Grown Animal"
+                                          label={t('grownAnimal')}
                                           value={row.adultPrice}
                                           onChange={(val) => handlePriceUpdate(row.id, 'adultPrice', val)}
                                           className="h-9 text-sm bg-background"
@@ -886,7 +897,7 @@ export default function AnimalClient() {
                                           onReset={() => handleResetPrice(row.id, 'adultPrice')}
                                         />
                                         <div className="flex justify-end mt-1">
-                                          <span className="text-xs text-muted-foreground">24h Vol: {row.adultVolume?.toLocaleString()}</span>
+                                          <span className="text-xs text-muted-foreground">{t('vol24h', { val: row.adultVolume?.toLocaleString() })}</span>
                                         </div>
                                       </div>
                                     </div>
@@ -898,7 +909,8 @@ export default function AnimalClient() {
                                       <img src={`https://render.albiononline.com/v1/item/${row.produceId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
                                       <div className="w-full">
                                         <NumberInput
-                                          label="Product (e.g. Eggs/Milk)"
+                                          label={t('productPlaceholder')}
+                                          tooltip={t('tooltips.productPrice', { city: sellCity })}
                                           value={row.productPrice}
                                           onChange={(val) => handlePriceUpdate(row.id, 'productPrice', val)}
                                           className="h-9 text-sm bg-background"
@@ -906,9 +918,9 @@ export default function AnimalClient() {
                                           onReset={() => handleResetPrice(row.id, 'productPrice')}
                                         />
                                         <div className="flex flex-col items-end mt-1 gap-1">
-                                          <span className="text-xs text-muted-foreground">24h Vol: {row.productVolume?.toLocaleString()}</span>
+                                          <span className="text-xs text-muted-foreground">{t('vol24h', { val: row.productVolume?.toLocaleString() })}</span>
                                           <div className="text-xs text-muted-foreground text-right">
-                                            Yield: {((row.produceYield || 0) * (usePremium ? 1 : 0.5)).toFixed(1)}
+                                            {t('yieldLabel', { val: ((row.produceYield || 0) * (usePremium ? 1 : 0.5)).toFixed(1) })}
                                           </div>
                                         </div>
                                       </div>
@@ -921,7 +933,7 @@ export default function AnimalClient() {
                                       <img src={`https://render.albiononline.com/v1/item/${row.meatId}`} className="h-10 w-10 object-contain bg-muted rounded-md p-1 mt-5 border border-border" />
                                       <div className="w-full">
                                         <NumberInput
-                                          label="Meat"
+                                          label={t('meatPrice')}
                                           value={row.meatPrice}
                                           onChange={(val) => handlePriceUpdate(row.id, 'meatPrice', val)}
                                           className="h-9 text-sm bg-background"
@@ -929,9 +941,9 @@ export default function AnimalClient() {
                                           onReset={() => handleResetPrice(row.id, 'meatPrice')}
                                         />
                                         <div className="flex flex-col items-end mt-1 gap-1">
-                                          <span className="text-xs text-muted-foreground">24h Vol: {row.meatVolume?.toLocaleString()}</span>
+                                          <span className="text-xs text-muted-foreground">{t('vol24h', { val: row.meatVolume?.toLocaleString() ?? '0' })}</span>
                                           <div className="text-xs text-muted-foreground text-right">
-                                            Yield: {row.meatYield}
+                                            {t('yieldLabel', { val: row.meatYield ?? 0 })}
                                           </div>
                                         </div>
                                       </div>
@@ -943,23 +955,23 @@ export default function AnimalClient() {
                               {/* Stats Column */}
                               <div className="space-y-4 bg-muted/30 p-4 rounded-lg border border-border/50">
                                 <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
-                                  <Info className="h-4 w-4" /> Statistics
+                                  <Info className="h-4 w-4" /> {t('statistics')}
                                 </h4>
 
                                 <div className="space-y-3 text-sm">
                                   <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Est. Cost</span>
+                                    <span className="text-muted-foreground">{t('estCost')}</span>
                                     <span className="text-foreground">{row.cost?.toLocaleString()}</span>
                                   </div>
                                   <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Growth Time</span>
-                                    <span className="text-foreground">{row.growthTime}h ({Math.max(1, Math.round(row.growthTime / 22))} cycles)</span>
+                                    <span className="text-muted-foreground">{t('growth')}</span>
+                                    <span className="text-foreground">{t('growthValue', { hours: row.growthTime, cycles: Math.max(1, Math.round(row.growthTime / 22)) })}</span>
                                   </div>
 
                                   {activeTab === 'breeding' && (
                                     <>
                                       <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Offspring Chance</span>
+                                        <span className="text-muted-foreground">{t('offspringChance')}</span>
                                         <span className="text-foreground">{useFocus ? row.offspringRateFocus : row.offspringRate}%</span>
                                       </div>
                                     </>
@@ -968,13 +980,13 @@ export default function AnimalClient() {
                                   <div className="h-px bg-border my-2" />
 
                                   <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Total Profit</span>
+                                    <span className="text-muted-foreground">{t('totalProfit')}</span>
                                     <span className={`font-medium ${row.totalProfit > 0 ? 'text-success' : 'text-destructive'}`}>
                                       {row.totalProfit?.toLocaleString()}
                                     </span>
                                   </div>
                                   <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Profit / Plot (9x)</span>
+                                    <span className="text-muted-foreground">{t('profitPlot')}</span>
                                     <span className={`font-medium ${row.profitPerPlot > 0 ? 'text-success' : 'text-destructive'}`}>
                                       {row.profitPerPlot?.toLocaleString()}
                                     </span>

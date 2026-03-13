@@ -1,5 +1,6 @@
 import React, { useState, KeyboardEvent, useRef, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface TagInputProps {
   label?: string;
@@ -10,6 +11,7 @@ interface TagInputProps {
 }
 
 export function TagInput({ label, value = [], onChange, placeholder, className = '' }: TagInputProps) {
+  const t = useTranslations('Common');
   const [inputValue, setInputValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -87,7 +89,7 @@ export function TagInput({ label, value = [], onChange, placeholder, className =
           placeholder={value.length === 0 ? placeholder : ''}
         />
       </div>
-      <p className="text-xs text-muted-foreground mt-1">Press Enter or Comma to add</p>
+      <p className="text-xs text-muted-foreground mt-1">{t('tagInputHint')}</p>
     </div>
   );
 }

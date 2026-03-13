@@ -39,8 +39,11 @@ interface CommandMenuProps {
 }
 
 import { useCommandMenu } from '@/context/CommandMenuContext';
+import { useTranslations } from 'next-intl';
 
 export function CommandMenu() {
+  const t = useTranslations('CommandMenu');
+  const tNavbar = useTranslations('Navbar');
   const { isOpen, setIsOpen } = useCommandMenu();
   const router = useRouter()
   const [query, setQuery] = React.useState("")
@@ -131,7 +134,7 @@ export function CommandMenu() {
           <div className="flex items-center border-b border-border px-3" cmdk-input-wrapper="">
             <Search className="mr-2 h-4 w-4 shrink-0 opacity-50 text-muted-foreground" />
             <Command.Input 
-              placeholder="Type a command or search..."
+              placeholder={t('placeholder')}
               className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 text-foreground"
               value={query}
               onValueChange={setQuery}
@@ -148,7 +151,7 @@ export function CommandMenu() {
           <Command.List className="max-h-[300px] overflow-y-auto overflow-x-hidden p-2">
             {!loading && query.length > 0 && results.length === 0 && (
               <div className="py-6 text-center text-sm text-muted-foreground">
-                No results found.
+                {t('noResults')}
               </div>
             )}
 
@@ -156,7 +159,7 @@ export function CommandMenu() {
               <>
                 {/* Pages & Tools Group */}
                 {results.some(r => r.type === 'page' || r.type === 'tool') && (
-                  <Command.Group heading="Pages & Tools" className="text-xs font-medium text-muted-foreground px-2 py-1.5">
+                  <Command.Group heading={t('pagesTools')} className="text-xs font-medium text-muted-foreground px-2 py-1.5">
                     {results.filter(r => r.type === 'page' || r.type === 'tool').map((result) => (
                       <Command.Item
                         key={result.id}
@@ -175,7 +178,7 @@ export function CommandMenu() {
 
                 {/* Builds Group */}
                 {results.some(r => r.type === 'build') && (
-                  <Command.Group heading="Builds" className="text-xs font-medium text-muted-foreground px-2 py-1.5">
+                  <Command.Group heading={t('builds')} className="text-xs font-medium text-muted-foreground px-2 py-1.5">
                     {results.filter(r => r.type === 'build').map((result) => (
                       <Command.Item
                         key={result.id}
@@ -194,7 +197,7 @@ export function CommandMenu() {
                 
                 {/* Items Group */}
                 {results.some(r => r.type === 'item') && (
-                  <Command.Group heading="Items" className="text-xs font-medium text-muted-foreground px-2 py-1.5">
+                  <Command.Group heading={t('items')} className="text-xs font-medium text-muted-foreground px-2 py-1.5">
                     {results.filter(r => r.type === 'item').map((result) => (
                       <Command.Item
                         key={result.id}
@@ -213,27 +216,27 @@ export function CommandMenu() {
               </>
             ) : (
               query.length === 0 && (
-                <Command.Group heading="Quick Access" className="text-xs font-medium text-muted-foreground px-2 py-1.5">
+                <Command.Group heading={t('quickAccess')} className="text-xs font-medium text-muted-foreground px-2 py-1.5">
                   <Command.Item
                     onSelect={() => runCommand(() => router.push('/tools/market-flipper'))}
                     className="flex items-center gap-2 px-2 py-2 text-sm text-foreground rounded-lg aria-selected:bg-accent aria-selected:text-accent-foreground cursor-pointer"
                   >
                     <Coins className="mr-2 h-4 w-4" />
-                    <span>Market Flipper</span>
+                    <span>{tNavbar('marketFlipper')}</span>
                   </Command.Item>
                   <Command.Item
                     onSelect={() => runCommand(() => router.push('/tools/pvp-intel'))}
                     className="flex items-center gap-2 px-2 py-2 text-sm text-foreground rounded-lg aria-selected:bg-accent aria-selected:text-accent-foreground cursor-pointer"
                   >
                     <Sword className="mr-2 h-4 w-4" />
-                    <span>PvP Intel</span>
+                    <span>{tNavbar('pvpIntel')}</span>
                   </Command.Item>
                   <Command.Item
                     onSelect={() => runCommand(() => router.push('/tools/zvz-tracker'))}
                     className="flex items-center gap-2 px-2 py-2 text-sm text-foreground rounded-lg aria-selected:bg-accent aria-selected:text-accent-foreground cursor-pointer"
                   >
                     <Shield className="mr-2 h-4 w-4" />
-                    <span>ZvZ Tracker</span>
+                    <span>{tNavbar('zvzTracker')}</span>
                   </Command.Item>
                 </Command.Group>
               )

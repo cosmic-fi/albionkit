@@ -10,12 +10,14 @@ import {
   ArrowUpRight
 } from "lucide-react";
 import { TickerData } from "@/lib/ticker-service";
+import { useTranslations } from 'next-intl';
 
 interface MarketTickerProps {
   data: TickerData;
 }
 
 export function MarketTicker({ data }: MarketTickerProps) {
+  const t = useTranslations('MarketTicker');
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat('en-US').format(num);
   };
@@ -49,7 +51,7 @@ export function MarketTicker({ data }: MarketTickerProps) {
       <div className="grid grid-cols-2 gap-4 px-4 md:hidden">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Coins className="h-3 w-3 text-warning" /> Gold Price
+            <Coins className="h-3 w-3 text-warning" /> {t('goldPrice')}
           </div>
           <div className="flex items-center gap-2">
             <span className="font-bold text-foreground">{formatNumber(data.goldPrice)}</span>
@@ -58,7 +60,7 @@ export function MarketTicker({ data }: MarketTickerProps) {
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Crown className="h-3 w-3 text-warning" /> Premium
+            <Crown className="h-3 w-3 text-warning" /> {t('premium')}
           </div>
           <div className="flex items-center gap-2">
             <span className="font-bold text-foreground">{formatLargeNumber(data.premiumPrice)}</span>
@@ -73,34 +75,34 @@ export function MarketTicker({ data }: MarketTickerProps) {
           <div key={i} className="flex gap-16 items-center mr-16">
             <div className="flex items-center gap-2">
               <Coins className="h-4 w-4 text-warning" />
-              <span>Gold: <span className="text-foreground font-bold">{formatNumber(data.goldPrice)}</span></span>
+              <span>{t('gold')}: <span className="text-foreground font-bold">{formatNumber(data.goldPrice)}</span></span>
               {renderTrend(data.goldTrend)}
             </div>
             <div className="flex items-center gap-2">
               <Crown className="h-4 w-4 text-warning" />
-              <span>Premium: <span className="text-foreground font-bold">{formatLargeNumber(data.premiumPrice)}</span></span>
+              <span>{t('premium')}: <span className="text-foreground font-bold">{formatLargeNumber(data.premiumPrice)}</span></span>
               {renderTrend(data.premiumTrend)}
             </div>
             <div className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4 text-info" />
-              <span>Black Market: <span className="text-foreground font-bold">{data.blackMarketVolume}</span></span>
+              <span>{t('blackMarket')}: <span className="text-foreground font-bold">{data.blackMarketVolume}</span></span>
               {renderTrend(data.blackMarketTrend)}
             </div>
             <div className="flex items-center gap-2">
               <Swords className="h-4 w-4 text-destructive" />
-              <span>Top Guild: <span className="text-foreground font-bold">{data.topGuild}</span></span>
+              <span>{t('topGuild')}: <span className="text-foreground font-bold">{data.topGuild}</span></span>
             </div>
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4 text-info" />
-              <span>Active Battles: <span className="text-foreground font-bold">{data.activeBattles}</span></span>
+              <span>{t('activeBattles')}: <span className="text-foreground font-bold">{data.activeBattles}</span></span>
             </div>
             <div className="flex items-center gap-2">
               <Sword className="h-4 w-4 text-muted-foreground" />
-              <span>Meta: <span className="text-foreground font-bold">{data.metaItem}</span></span>
+              <span>{t('meta')}: <span className="text-foreground font-bold">{data.metaItem}</span></span>
             </div>
             <div className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-success" />
-              <span>Most Traded: <span className="text-foreground font-bold">{data.mostTradedItem}</span></span>
+              <span>{t('mostTraded')}: <span className="text-foreground font-bold">{data.mostTradedItem}</span></span>
             </div>
 
             {/* Hot Flips Section */}

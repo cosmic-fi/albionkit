@@ -17,10 +17,13 @@ import { PageShell } from '@/components/PageShell';
 import { ItemIcon } from '@/components/ItemIcon';
 import { useAuth } from '@/context/AuthContext';
 import { InfoStrip } from '@/components/InfoStrip';
+import { useTranslations, useLocale } from 'next-intl';
 
 const CITIES = ['Martlock', 'Bridgewatch', 'Lymhurst', 'Fort Sterling', 'Thetford', 'Caerleon', 'Brecilien', 'Black Market'];
 
 export default function CraftingCalcPage() {
+    const t = useTranslations('CraftingCalc');
+    const locale = useLocale();
     const { profile } = useAuth();
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
     const [prices, setPrices] = useState<any[]>([]);
@@ -84,33 +87,65 @@ export default function CraftingCalcPage() {
             loadPrices();
             resolveNames();
         }
-    }, [selectedRecipe, region]);
+    }, [selectedRecipe, region, locale]);
 
     const resolveNames = async () => {
         if (!selectedRecipe) return;
 
         const ids = new Set<string>();
+        const tiers = [4, 5, 6, 7, 8];
 
-        // Collect IDs from all relevant tiers to pre-fetch names
-        [4, 5, 6, 7, 8].forEach(tier => {
+        // helper to compute a full id with suffix for enchant
+        const computeId = (base: string, tier: number, ench: number, isEnchantable?: boolean, tierOffset?: number) => {
+            const suffix = ench > 0 ? `_LEVEL${ench}` : '';
+            const enchantable = !!isEnchantable;
+            if (/^T\d+_/.test(base)) {
+                return enchantable ? `${base}${suffix}` : base;
+            } else {
+                const ingTier = tier + (tierOffset || 0);
+                if (ingTier < 1) return '';
+                return enchantable ? `T${ingTier}_${base}${suffix}` : `T${ingTier}_${base}`;
+            }
+        };
+
+        tiers.forEach(tier => {
             const ings = selectedRecipe.ingredientsByTier?.[tier] || selectedRecipe.ingredients;
             ings.forEach(ing => {
-                if (/^T\d+_/.test(ing.itemId)) {
-                    ids.add(ing.itemId);
-                } else {
-                    // Resolve generic types for this tier
-                    const ingTier = tier + (ing.tierOffset || 0);
-                    ids.add(`T${ingTier}_${ing.itemId}`);
-                }
+                ENCHANTMENTS.forEach(ench => {
+                    const ingId = computeId(ing.itemId, tier, ench, ing.isEnchantable, ing.tierOffset);
+                    if (ingId) ids.add(ingId);
+
+                    // also include any sub-recipe ingredients
+                    const subRecipe = generateRecipe(ingId);
+                    if (subRecipe) {
+                        const match = ingId.match(/^T(\d+)_([A-Z0-9_]+)(?:_LEVEL(\d+))?$/);
+                        if (match) {
+                            const ingTier = parseInt(match[1]);
+                            const ingEnch = match[3] ? parseInt(match[3]) : 0;
+                            const subIngs = subRecipe.ingredientsByTier?.[ingTier] || subRecipe.ingredients;
+                            subIngs.forEach(subIng => {
+                                const subId = computeId(subIng.itemId, ingTier, ingEnch, subIng.isEnchantable, subIng.tierOffset);
+                                if (subId) ids.add(subId);
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        // include product ids for all tiers/enchantments as well
+        tiers.forEach(tier => {
+            ENCHANTMENTS.forEach(ench => {
+                const id = `T${tier}_${selectedRecipe.productId}${ench > 0 ? `_LEVEL${ench}` : ''}`;
+                ids.add(id);
             });
         });
 
         const newNames: Record<string, string> = {};
         await Promise.all(Array.from(ids).map(async (id) => {
-            // If we already have a name (and it's not the ID itself), skip
+            if (!id) return;
             if (ingredientNames[id] && ingredientNames[id] !== id) return;
-
-            const name = await resolveItemName(id);
+            const name = await resolveItemName(id, locale);
             if (name) newNames[id] = name;
         }));
 
@@ -144,10 +179,10 @@ export default function CraftingCalcPage() {
             if (data) {
                 recipe = createRecipeFromApi(item.id, data);
                 if (!recipe) {
-                    errorMsg = `No crafting recipe found for ${item.name}. This item may not be craftable.`;
+                    errorMsg = t('noRecipeFound', { name: item.name });
                 }
             } else {
-                errorMsg = `Failed to fetch data for ${item.name}. Please try again.`;
+                errorMsg = t('failedToFetch', { name: item.name });
             }
         }
 
@@ -158,7 +193,7 @@ export default function CraftingCalcPage() {
             setSearchSelectValue('');
             setSearchOptions([]);
         } else {
-            setSearchError(errorMsg || `Could not load recipe for ${item.name}.`);
+            setSearchError(errorMsg || t('couldNotLoad', { name: item.name }));
         }
     };
 
@@ -347,9 +382,9 @@ export default function CraftingCalcPage() {
 
     return (
         <PageShell
-            title="Crafting Planner"
+            title={t('title')}
             backgroundImage='/background/ao-crafting.jpg'
-            description="Calculate profits, taxes, and material costs optimized for each city."
+            description={t('description')}
             icon={<Hammer className="h-6 w-6" />}
             headerActions={
                 <div className="flex items-center gap-4">
@@ -366,7 +401,7 @@ export default function CraftingCalcPage() {
                 <div className="flex flex-col md:flex-row gap-4 md:items-end">
                     <div className="flex-1">
                         <label className="text-xs text-muted-foreground block mb-2 font-medium flex items-center gap-1 uppercase tracking-wider">
-                            <Search className="h-3 w-3" /> Search Item
+                            <Search className="h-3 w-3" /> {t('searchItem')}
                         </label>
                         <Select
                             value={searchSelectValue}
@@ -379,7 +414,7 @@ export default function CraftingCalcPage() {
                             }}
                             options={searchOptions}
                             searchable={true}
-                            placeholder={isSearching ? 'Searching...' : 'Search for item to craft (e.g. Broadsword)...'}
+                            placeholder={isSearching ? t('searching') : t('searchPlaceholder')}
                             onSearchTermChange={async (term) => {
                                 if (term.length < 2) {
                                     setSearchOptions([]);
@@ -387,7 +422,7 @@ export default function CraftingCalcPage() {
                                 }
                                 setIsSearching(true);
                                 try {
-                                    const results = await searchItems(term);
+                                    const results = await searchItems(term, locale);
                                     setSearchOptions(results.map((it: any) => ({
                                         value: it.id,
                                         label: it.name,
@@ -409,7 +444,7 @@ export default function CraftingCalcPage() {
                             className="w-full md:w-auto px-4 py-2 bg-destructive hover:bg-destructive/90 border border-destructive rounded-xl text-destructive-foreground transition-colors font-regular flex items-center justify-center gap-2 whitespace-nowrap mb-[2px]"
                         >
                             <X className="h-5 w-5" />
-                            Clear
+                            {t('clear')}
                         </button>
                     )}
                 </div>
@@ -418,7 +453,7 @@ export default function CraftingCalcPage() {
                 {isImporting && (
                     <div className="absolute top-full left-0 right-0 mt-2 p-4 bg-popover border border-border rounded-lg z-50 text-center text-muted-foreground">
                         <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2 text-primary" />
-                        Fetching recipe data...
+                        {t('fetchingRecipe')}
                     </div>
                 )}
 
@@ -433,8 +468,8 @@ export default function CraftingCalcPage() {
                 <div className="text-center py-20 bg-card/30 rounded-xl border border-border border-dashed">
                     <div className="max-w-md mx-auto">
                         <Hammer className="h-16 w-16 text-muted-foreground/50 mx-auto mb-6" />
-                        <h2 className="text-2xl font-bold text-muted-foreground mb-2">Ready to Craft?</h2>
-                        <p className="text-muted-foreground/80">Search for an item above to calculate profits, taxes, and material costs across different cities.</p>
+                        <h2 className="text-2xl font-bold text-muted-foreground mb-2">{t('readyToCraft')}</h2>
+                        <p className="text-muted-foreground/80">{t('readyToCraftDesc')}</p>
                     </div>
                 </div>
             ) : (
@@ -453,10 +488,10 @@ export default function CraftingCalcPage() {
                                         />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <div className="text-xs text-primary uppercase font-bold tracking-wider mb-1">{selectedRecipe?.category}</div>
-                                        <h2 className="text-3xl font-black text-foreground mb-2 leading-tight break-words">{selectedRecipe?.productName}</h2>
+                                        <div className="text-xs text-primary uppercase font-bold tracking-wider mb-1">{t(`categories.${selectedRecipe?.category}`)}</div>
+                                        <h2 className="text-3xl font-black text-foreground mb-2 leading-tight break-words">{selectedRecipe && (ingredientNames[`T4_${selectedRecipe.productId}`] || selectedRecipe.productName)}</h2>
                                         <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 py-1 px-3 rounded-full border border-border w-fit">
-                                            <Hammer className="h-4 w-4 text-muted-foreground" /> {selectedRecipe?.station}
+                                            <Hammer className="h-4 w-4 text-muted-foreground" /> {t(`stations.${selectedRecipe?.station}`)}
                                         </div>
                                     </div>
                                 </div>
@@ -469,37 +504,37 @@ export default function CraftingCalcPage() {
                                     {/* Location Settings */}
                                     <div>
                                         <div className="text-xs font-bold text-muted-foreground uppercase flex items-center gap-2 mb-3">
-                                            <MapPin className="h-3 w-3" /> Location Strategy
+                                            <MapPin className="h-3 w-3" /> {t('locationStrategy')}
                                         </div>
                                         <div className="space-y-3">
                                             <div>
                                                 <Select
                                                     label={
                                                         <>
-                                                            Buy Materials From
-                                                            <Tooltip content="City where you will buy the raw materials (usually with Buy Orders)">
+                                                            {t('buyMaterialsFrom')}
+                                                            <Tooltip content={t('buyMaterialsTooltip')}>
                                                                 <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                             </Tooltip>
                                                         </>
                                                     }
                                                     value={sourceCity}
                                                     onChange={(value) => setSourceCity(value)}
-                                                    options={CITIES.map(c => ({ label: c, value: c }))}
+                                                    options={CITIES.map(c => ({ label: t(`cities.${c}`), value: c }))}
                                                 />
                                             </div>
                                             <div>
                                                 <Select
                                                     label={
                                                         <>
-                                                            Sell Product To
-                                                            <Tooltip content="City where you will sell the crafted items">
+                                                            {t('sellProductTo')}
+                                                            <Tooltip content={t('sellProductTooltip')}>
                                                                 <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                             </Tooltip>
                                                         </>
                                                     }
                                                     value={targetCity}
                                                     onChange={(value) => setTargetCity(value)}
-                                                    options={CITIES.map(c => ({ label: c, value: c }))}
+                                                    options={CITIES.map(c => ({ label: t(`cities.${c}`), value: c }))}
                                                 />
                                             </div>
                                         </div>
@@ -508,15 +543,15 @@ export default function CraftingCalcPage() {
                                     {/* Craft Quantity */}
                                     <div>
                                         <div className="text-xs font-bold text-muted-foreground uppercase flex items-center gap-2 mb-3">
-                                            <Coins className="h-3 w-3" /> Market Settings
+                                            <Coins className="h-3 w-3" /> {t('marketSettings')}
                                         </div>
                                         <div className="space-y-3">
                                             <div>
                                                 <NumberInput
                                                     label={
                                                         <>
-                                                            Craft Quantity
-                                                            <Tooltip content="Number of items you plan to craft">
+                                                            {t('craftQuantity')}
+                                                            <Tooltip content={t('quantityTooltip')}>
                                                                 <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                             </Tooltip>
                                                         </>
@@ -531,13 +566,13 @@ export default function CraftingCalcPage() {
                                                 <Checkbox
                                                     label={
                                                         <>
-                                                            Sell Order
-                                                            <Tooltip className="ml-2" content={sellOrder ? 'Using Min Sell Price (2.5% Setup Fee)' : 'Using Max Buy Price (Instant Sell)'}>
+                                                            {t('sellOrder')}
+                                                            <Tooltip className="ml-2" content={t('sellOrderTooltip')}>
                                                                 <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                             </Tooltip>
                                                         </>
                                                     }
-                                                    description={sellOrder ? 'Using Min Sell Price' : 'Using Max Buy Price'}
+                                                    description={sellOrder ? t('breakdown.minSell') : t('breakdown.maxBuy')}
                                                     checked={sellOrder}
                                                     onChange={(e) => setSellOrder(e.target.checked)}
                                                 />
@@ -549,14 +584,14 @@ export default function CraftingCalcPage() {
                                 {/* Market & Settings */}
                                 <div className="space-y-6">
                                     <div className="text-xs font-bold text-muted-foreground uppercase flex items-center gap-2 mb-3">
-                                        <Percent className="h-3 w-3" /> Bonuses & Taxes
+                                        <Percent className="h-3 w-3" /> {t('bonusesTaxes')}
                                     </div>
                                     <div className="space-y-3">
                                         <Checkbox
                                             label={
                                                 <>
-                                                    Premium Status
-                                                    <Tooltip className="ml-2" content="Premium reduces market taxes from 8% to 4%">
+                                                    {t('premiumStatus')}
+                                                    <Tooltip className="ml-2" content={t('premiumTooltip')}>
                                                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                     </Tooltip>
                                                 </>
@@ -569,8 +604,8 @@ export default function CraftingCalcPage() {
                                         {/* Return Rate - Reworked */}
                                         <div>
                                             <label className="block text-xs text-muted-foreground mb-2 flex items-center gap-1">
-                                                Return Rate
-                                                <Tooltip content="Resource Return Rate (RRR) depends on city bonuses and focus">
+                                                {t('returnRate')}
+                                                <Tooltip content={t('returnRateTooltip')}>
                                                     <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                 </Tooltip>
                                             </label>
@@ -580,19 +615,19 @@ export default function CraftingCalcPage() {
                                                         onClick={() => { setReturnRate(15.2); setCustomReturnRate(''); }}
                                                         className={`py-2 px-3 rounded-lg text-xs font-medium transition-all ${returnRate === 15.2 ? 'bg-secondary text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                                                     >
-                                                        City (15.2%)
+                                                        {t('city152')}
                                                     </button>
                                                     <button
                                                         onClick={() => { setReturnRate(47.9); setCustomReturnRate(''); }}
                                                         className={`py-2 px-3 rounded-lg text-xs font-medium transition-all ${returnRate === 47.9 ? 'bg-success/10 text-success border border-success/20' : 'text-muted-foreground hover:text-foreground'}`}
                                                     >
-                                                        Focus (47.9%)
+                                                        {t('focus479')}
                                                     </button>
                                                 </div>
                                                 <div className="relative px-1 pb-1">
                                                     <input
                                                         type="number"
-                                                        placeholder="Custom Rate..."
+                                                        placeholder={t('customRate')}
                                                         value={customReturnRate}
                                                         onChange={(e) => {
                                                             const val = e.target.value;
@@ -609,15 +644,15 @@ export default function CraftingCalcPage() {
                                         {/* Advanced Costs */}
                                         <div>
                                             <div className="text-xs font-bold text-muted-foreground uppercase flex items-center gap-2 mb-3 mt-6">
-                                                <Settings className="h-3 w-3" /> Advanced
+                                                <Settings className="h-3 w-3" /> {t('advanced')}
                                             </div>
                                             <div className="space-y-3">
                                                 <div>
                                                     <NumberInput
                                                         label={
                                                             <>
-                                                                Station Fee
-                                                                <Tooltip content="Fee per 100 nutrition (usually 400-1000)">
+                                                                {t('stationFee')}
+                                                                <Tooltip content={t('stationFeeTooltip')}>
                                                                     <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                                 </Tooltip>
                                                             </>
@@ -631,8 +666,8 @@ export default function CraftingCalcPage() {
                                                     <NumberInput
                                                         label={
                                                             <>
-                                                                Journal Profit
-                                                                <Tooltip content="Estimated profit from filling laborer journals (per item)">
+                                                                {t('journalProfit')}
+                                                                <Tooltip content={t('journalProfitTooltip')}>
                                                                     <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                                 </Tooltip>
                                                             </>
@@ -646,8 +681,8 @@ export default function CraftingCalcPage() {
                                                     <NumberInput
                                                         label={
                                                             <>
-                                                                Focus Cost
-                                                                <Tooltip content="Focus points required per item (check in-game)">
+                                                                {t('focusCost')}
+                                                                <Tooltip content={t('focusCostTooltip')}>
                                                                     <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                                 </Tooltip>
                                                             </>
@@ -670,41 +705,41 @@ export default function CraftingCalcPage() {
                     {loading ? (
                         <div className="flex flex-col items-center justify-center py-24 text-muted-foreground">
                             <RefreshCw className="h-8 w-8 animate-spin mb-4 text-success" />
-                            <p>Fetching market data for {CITIES.length} cities...</p>
+                            <p>{t('fetchingMarketData', { count: CITIES.length })}</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {/* Header */}
                             <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3 text-xs font-bold uppercase tracking-wider text-muted-foreground border-b border-border">
-                                <div className="col-span-4 md:col-span-3 flex items-center gap-1">Item</div>
+                                <div className="col-span-4 md:col-span-3 flex items-center gap-1">{t('results.item')}</div>
                                 <div className="col-span-2 text-right hidden md:block">
                                     <div className="flex items-center justify-end gap-1">
-                                        Unit Price
-                                        <Tooltip content="Estimated market price per unit">
+                                        {t('results.unitPrice')}
+                                        <Tooltip content={t('results.unitPriceTooltip')}>
                                             <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                         </Tooltip>
                                     </div>
                                 </div>
                                 <div className="col-span-3 md:col-span-2 text-right">
                                     <div className="flex items-center justify-end gap-1">
-                                        Total Cost
-                                        <Tooltip content="Material costs + Fees">
+                                        {t('results.totalCost')}
+                                        <Tooltip content={t('results.totalCostTooltip')}>
                                             <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                         </Tooltip>
                                     </div>
                                 </div>
                                 <div className="col-span-3 md:col-span-2 text-right">
                                     <div className="flex items-center justify-end gap-1">
-                                        Total Profit
-                                        <Tooltip content="Revenue - Costs - Taxes">
+                                        {t('results.totalProfit')}
+                                        <Tooltip content={t('results.totalProfitTooltip')}>
                                             <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                         </Tooltip>
                                     </div>
                                 </div>
                                 <div className="col-span-2 md:col-span-1 text-right">
                                     <div className="flex items-center justify-end gap-1">
-                                        ROI
-                                        <Tooltip content="Return on Investment (Profit / Cost)">
+                                        {t('results.roi')}
+                                        <Tooltip content={t('results.roiTooltip')}>
                                             <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                         </Tooltip>
                                     </div>
@@ -712,8 +747,8 @@ export default function CraftingCalcPage() {
                                 {focusCost > 0 && (
                                     <div className="col-span-2 md:col-span-1 text-right text-success">
                                         <div className="flex items-center justify-end gap-1">
-                                            / Focus
-                                            <Tooltip content="Profit per Focus Point">
+                                            {t('results.perFocus')}
+                                            <Tooltip content={t('results.perFocusTooltip')}>
                                                 <CircleHelp className="h-3 w-3 text-success/50" />
                                             </Tooltip>
                                         </div>
@@ -721,8 +756,8 @@ export default function CraftingCalcPage() {
                                 )}
                                 <div className="col-span-2 hidden md:block text-right">
                                     <div className="flex items-center justify-end gap-1">
-                                        Yield
-                                        <Tooltip content="Amount crafted per operation">
+                                        {t('results.yield')}
+                                        <Tooltip content={t('results.yieldTooltip')}>
                                             <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                         </Tooltip>
                                     </div>
@@ -790,11 +825,11 @@ export default function CraftingCalcPage() {
                                                     </div>
                                                     <div>
                                                         <div className="text-sm font-bold text-foreground group-hover:text-success transition-colors flex items-center gap-2">
-                                                            Tier {tier}.{ench}
+                                                            {t('results.tier')} {tier}.{ench}
                                                             <ChevronDown className={`h-3 w-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                                                         </div>
                                                         <div className="text-xs text-muted-foreground hidden md:block">
-                                                            {selectedRecipe.productName}
+                                                            {ingredientNames[`T4_${selectedRecipe.productId}`] || selectedRecipe.productName}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -804,13 +839,13 @@ export default function CraftingCalcPage() {
                                                 <div className="col-span-3 md:col-span-2 text-right">
                                                     <div className="text-muted-foreground font-mono">{Math.round(stats.effectiveCost).toLocaleString()}</div>
                                                     <div className="text-[10px] text-muted-foreground hidden md:block">
-                                                        Mat: {Math.round(stats.materialCost).toLocaleString()}
+                                                        {t('results.mat')}: {Math.round(stats.materialCost).toLocaleString()}
                                                     </div>
                                                 </div>
                                                 <div className={`col-span-3 md:col-span-2 text-right font-mono font-bold ${stats.profit > 0 ? 'text-success' : 'text-destructive'}`}>
                                                     {Math.round(stats.profit).toLocaleString()}
                                                     <div className="text-[10px] text-muted-foreground font-normal hidden md:block">
-                                                        Tax: {Math.round(stats.taxes + stats.stationFee).toLocaleString()}
+                                                        {t('results.tax')}: {Math.round(stats.taxes + stats.stationFee).toLocaleString()}
                                                     </div>
                                                 </div>
                                                 <div className={`col-span-2 md:col-span-1 text-right text-sm font-bold ${stats.margin > 0 ? 'text-success' : 'text-destructive'}`}>
@@ -833,7 +868,7 @@ export default function CraftingCalcPage() {
                                                     {/* Ingredients List */}
                                                     <div>
                                                         <h4 className="text-xs font-bold text-muted-foreground uppercase mb-4 flex items-center gap-2">
-                                                            <Settings className="h-3 w-3" /> Ingredients Breakdown
+                                                            <Settings className="h-3 w-3" /> {t('breakdown.title')}
                                                         </h4>
                                                         <div className="space-y-3">
                                                             {stats.ingredients.map((ing: any, idx: number) => (
@@ -896,7 +931,7 @@ export default function CraftingCalcPage() {
                                                                                     <>
                                                                                         <div className={`text-[10px] ${customPrices[ing.resolvedId] !== undefined ? 'text-warning font-bold' : (ing.unitPrice === 0 ? 'text-destructive font-bold' : 'text-muted-foreground')}`}>
                                                                                             {ing.unitPrice > 0 ? Math.round(ing.unitPrice).toLocaleString() : 'N/A'}
-                                                                                            {ing.unitPrice > 0 && <span className="text-muted-foreground font-normal ml-1 hidden sm:inline">each</span>}
+                                                                                            {ing.unitPrice > 0 && <span className="text-muted-foreground font-normal ml-1 hidden sm:inline">{t('results.perFocusTooltip')}</span>}
                                                                                         </div>
                                                                                         <button
                                                                                             onClick={(e) => {
@@ -920,7 +955,7 @@ export default function CraftingCalcPage() {
                                                                         <div className="mt-3 pl-12 border-t border-border pt-2">
                                                                             <div className="text-[10px] text-muted-foreground uppercase font-bold mb-2 flex items-center gap-1">
                                                                                 <div className="w-1.5 h-1.5 rounded-full bg-border"></div>
-                                                                                Crafted From (Per Unit)
+                                                                                {t('breakdown.craftedFrom')}
                                                                             </div>
                                                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                                                                 {ing.subRecipeIngredients.map((sub: any, subIdx: number) => (
@@ -942,15 +977,15 @@ export default function CraftingCalcPage() {
                                                         </div>
                                                         <div className="mt-4 p-3 bg-muted/50 rounded border border-border text-xs text-muted-foreground">
                                                             <div className="flex justify-between mb-1">
-                                                                <span>Raw Material Cost:</span>
+                                                                <span>{t('breakdown.rawMatCost')}</span>
                                                                 <span className="font-mono">{Math.round(stats.materialCost).toLocaleString()}</span>
                                                             </div>
                                                             <div className="flex justify-between mb-1 text-success">
-                                                                <span>Return Rate Savings ({returnRate}%):</span>
+                                                                <span>{t('breakdown.rrrSavings', { rate: returnRate })}</span>
                                                                 <span className="font-mono">+{Math.round(stats.materialCost - stats.effectiveCost).toLocaleString()}</span>
                                                             </div>
                                                             <div className="flex justify-between pt-2 border-t border-border font-bold text-foreground">
-                                                                <span>Effective Cost:</span>
+                                                                <span>{t('breakdown.effectiveCost')}</span>
                                                                 <span className="font-mono">{Math.round(stats.effectiveCost).toLocaleString()}</span>
                                                             </div>
                                                         </div>
@@ -959,15 +994,15 @@ export default function CraftingCalcPage() {
                                                     {/* City Prices Table */}
                                                     <div>
                                                         <h4 className="text-xs font-bold text-muted-foreground uppercase mb-4 flex items-center gap-2">
-                                                            <Coins className="h-3 w-3" /> Market Analysis (Product)
+                                                            <Coins className="h-3 w-3" /> {t('breakdown.marketAnalysis')}
                                                         </h4>
                                                         <div className="bg-card rounded border border-border overflow-hidden">
                                                             <table className="w-full text-sm text-left">
                                                                 <thead className="bg-muted text-muted-foreground font-medium text-xs uppercase">
                                                                     <tr>
-                                                                        <th className="px-4 py-3">City</th>
-                                                                        <th className="px-4 py-3 text-right">Min Sell Price</th>
-                                                                        <th className="px-4 py-3 text-right">Max Buy Price</th>
+                                                                        <th className="px-4 py-3">{t('breakdown.city')}</th>
+                                                                        <th className="px-4 py-3 text-right">{t('breakdown.minSell')}</th>
+                                                                        <th className="px-4 py-3 text-right">{t('breakdown.maxBuy')}</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody className="divide-y divide-border text-sm">
@@ -979,7 +1014,7 @@ export default function CraftingCalcPage() {
                                                                         return (
                                                                             <tr key={city} className={`hover:bg-muted/50 transition-colors ${isTarget ? 'bg-success/10' : ''}`}>
                                                                                 <td className={`px-4 py-2 font-medium ${isTarget ? 'text-success' : 'text-muted-foreground'}`}>
-                                                                                    {city} {isTarget && <span className="text-[10px] ml-1 bg-success/20 text-success px-1 rounded">TARGET</span>}
+                                                                                    {t(`cities.${city}`)} {isTarget && <span className="text-[10px] ml-1 bg-success/20 text-success px-1 rounded">{t('breakdown.target')}</span>}
                                                                                 </td>
                                                                                 <td className="px-4 py-2 text-right font-mono text-foreground">
                                                                                     {sell > 0 ? sell.toLocaleString() : <span className="text-muted-foreground/50">-</span>}
@@ -994,7 +1029,7 @@ export default function CraftingCalcPage() {
                                                             </table>
                                                         </div>
                                                         <div className="mt-2 text-[10px] text-muted-foreground text-center">
-                                                            * Prices are based on recent market data. Actual in-game prices may vary.
+                                                            {t('breakdown.disclaimer')}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1006,7 +1041,7 @@ export default function CraftingCalcPage() {
 
                             {prices.length === 0 && !loading && (
                                 <div className="text-center py-12 text-muted-foreground">
-                                    No price data available. Check selected cities and region.
+                                    {t('noPriceData')}
                                 </div>
                             )}
                         </div>

@@ -5,6 +5,7 @@ import { Build } from '@/lib/builds-service';
 import { ItemIcon } from '@/components/ItemIcon';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 interface BuildCardProps {
   build: Build;
@@ -12,12 +13,13 @@ interface BuildCardProps {
 }
 
 export function BuildCard({ build, compactMode = false }: BuildCardProps) {
+  const t = useTranslations('Builds');
   const router = useRouter();
 
   // Guard clause for undefined build
   if (!build) return null;
 
-  const categoryStr = build.category ? build.category.replace('-', ' ') : 'Unknown';
+  const categoryKey = build.category ? build.category.replace(/-([a-z])/g, (g) => g[1].toUpperCase()) : 'solo';
   const buildLink = `/builds/${build.category || 'solo'}/${build.id}`;
   const authorLink = `/user/${build.authorId}`;
 
@@ -37,10 +39,10 @@ export function BuildCard({ build, compactMode = false }: BuildCardProps) {
       <div className={`flex items-start justify-between ${compactMode ? 'mb-2' : 'mb-4'}`}>
         <div className="flex items-center gap-3">
           <div className="relative">
-            <ItemIcon item={build.items.MainHand} size={compactMode ? 48 : 64} className={`${compactMode ? 'w-10 h-10' : 'w-14 h-14'} object-contain bg-muted/50 rounded-lg border border-border/50`} />
+            <ItemIcon item={build.items.MainHand} size={compactMode ? 48 : 64} className={`${compactMode ? 'w-10 h-10' : 'w-14 h-14'} object-contain bg-muted/50 rounded-lg border border-border/50`} alt={build.items.MainHand?.Type || 'Main Hand'} />
             {build.items.OffHand && (
               <div className={`absolute -bottom-0.5 -right-2 ${compactMode ? 'w-6 h-6' : 'w-8 h-8'} rounded-md bg-card border border-border z-10 overflow-hidden`}>
-                <ItemIcon item={build.items.OffHand} size={32} className="w-full h-full object-contain" />
+                <ItemIcon item={build.items.OffHand} size={32} className="w-full h-full object-contain" alt={build.items.OffHand.Type || 'Off Hand'} />
               </div>
             )}
           </div>
@@ -67,17 +69,17 @@ export function BuildCard({ build, compactMode = false }: BuildCardProps) {
       {/* Equipment Preview (Small icons) */}
       <div className="flex gap-1 mb-4 opacity-50 group-hover:opacity-100 transition-opacity">
         {[build.items.Head, build.items.Armor, build.items.Shoes, build.items.Cape].map((item, i) => (
-          item && <ItemIcon key={i} item={item} size={32} className="w-6 h-6 object-contain bg-muted rounded border border-border" />
+          item && <ItemIcon key={i} item={item} size={32} className="w-6 h-6 object-contain bg-muted rounded border border-border" alt={item.Type || 'Item'} />
         ))}
       </div>
 
       <div className="flex flex-wrap flex-row justify-start gap-2 mb-2 mt-auto">
         <span className="px-2 py-0.5 bg-muted/50 text-muted-foreground text-[10px] uppercase tracking-wider rounded border border-border">
-          {categoryStr}
+          {t(categoryKey)}
         </span>
         {build.tags?.slice(0, 2).map(tag => (
           <span key={tag} className="px-2 py-0.5 bg-muted/50 text-muted-foreground text-[10px] rounded border border-border">
-            {tag}
+            {t(`tagOptions.${tag === 'Escape/Gathering' ? 'EscapeGathering' : tag}`)}
           </span>
         ))}
         {(build.tags?.length || 0) > 2 && (
@@ -87,7 +89,7 @@ export function BuildCard({ build, compactMode = false }: BuildCardProps) {
               <div className="bg-popover border border-border rounded p-2 text-xs text-popover-foreground flex flex-wrap gap-1 justify-end">
                 {build.tags!.slice(2).map(tag => (
                   <span key={tag} className="px-1.5 py-0.5 bg-muted rounded border border-border whitespace-nowrap">
-                    {tag}
+                    {t(`tagOptions.${tag === 'Escape/Gathering' ? 'EscapeGathering' : tag}`)}
                   </span>
                 ))}
               </div>

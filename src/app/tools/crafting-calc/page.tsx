@@ -1,24 +1,34 @@
 import { Metadata } from 'next';
 import CraftingCalcClient from './CraftingCalcClient';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = {
-  title: 'Albion Online Crafting Calculator - Profit & Focus Tool | AlbionKit',
-  description: 'Calculate crafting profits, focus efficiency, and resource return rates (R.R.R) for any item in Albion Online. Optimize your economy.',
-  keywords: ['Albion Online Crafting', 'Crafting Calculator', 'Focus Efficiency', 'Albion Profit Calculator', 'Crafting Tool', 'Resource Return Rate'],
-  openGraph: {
-    title: 'Albion Online Crafting Calculator - Profit & Focus Tool',
-    description: 'Maximize your crafting profits. Calculate costs, focus efficiency, and return rates for weapons, armor, and consumables.',
-    type: 'website',
-    images: ['https://albionkit.com/og-image.jpg'],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Albion Online Crafting Calculator - Profit & Focus Tool',
-    description: 'Maximize your crafting profits. Calculate costs, focus efficiency, and return rates for weapons, armor, and consumables.',
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Pages.crafting');
+  const title = t('title');
+  const description = t('description');
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      images: ['https://albionkit.com/og-image.jpg'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+    alternates: {
+      canonical: 'https://albionkit.com/tools/crafting-calc'
+    }
+  };
+}
 
-export default function CraftingCalcPage() {
+export default async function CraftingCalcPage() {
+  const tNav = await getTranslations('Navbar');
+  const tPage = await getTranslations('Pages.crafting');
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -26,19 +36,19 @@ export default function CraftingCalcPage() {
       {
         '@type': 'ListItem',
         position: 1,
-        name: 'Home',
+        name: tNav('home'),
         item: 'https://albionkit.com',
       },
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'Tools',
+        name: tNav('tools'),
         item: 'https://albionkit.com/tools',
       },
       {
         '@type': 'ListItem',
         position: 3,
-        name: 'Crafting Calculator',
+        name: tPage('title'),
         item: 'https://albionkit.com/tools/crafting-calc',
       },
     ],

@@ -1,10 +1,12 @@
 import { Metadata } from 'next';
 import GoldPriceClient from './GoldPriceClient';
 import { getGoldHistory } from '@/lib/gold-service';
+import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata(): Promise<Metadata> {
-  let title = 'Gold Price Tracker | AlbionKit';
-  let description = 'Track the gold-to-silver exchange rate history and trends in Albion Online.';
+  const t = await getTranslations('Pages.goldPrice');
+  let title = t('title');
+  let description = t('description');
 
   try {
     // Default to Americas for metadata snapshot
@@ -12,8 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     
     if (history && history.length > 0) {
       const currentPrice = history[history.length - 1].price;
-      title = `Gold Price: ${currentPrice.toLocaleString()} Silver | AlbionKit`;
-      description = `Current Gold Price is ${currentPrice.toLocaleString()} Silver. Track history, calculate premium costs, and analyze market trends.`;
+      description = t('descriptionDynamic', { price: currentPrice.toLocaleString() });
     }
   } catch (e) {
     console.error('Failed to fetch Gold Price metadata', e);
@@ -32,6 +33,9 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title,
       description,
+    },
+    alternates: {
+      canonical: 'https://albionkit.com/tools/gold-price'
     }
   };
 }

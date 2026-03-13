@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import { useServer } from '@/hooks/useServer';
 import { fetchRecentEvents, fetchEventDetails, searchPlayerAction, getPlayerStatsAction, resolveItemNameAction, getEventMetadataAction } from './actions';
 import { PageShell } from '@/components/PageShell';
@@ -11,19 +12,19 @@ import { ItemIcon } from '@/components/ItemIcon';
 import { Search, RefreshCw, Skull, Sword, Swords, Users, Clock, ChevronRight, X, Trophy, ChevronLeft, BarChart2, Filter, Activity, Globe, Zap, Coins, TrendingUp, History, Info, BookOpen, Archive } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
-function formatTimeAgo(dateString: string) {
+function formatTimeAgo(dateString: string, t: any) {
   const date = new Date(dateString);
   const now = new Date();
   const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-  if (seconds < 30) return 'just now';
-  if (seconds < 60) return `${seconds} seconds ago`;
+  if (seconds < 30) return t('justNow');
+  if (seconds < 60) return t('secondsAgo', { n: seconds });
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+  if (minutes < 60) return minutes === 1 ? t('minuteAgo') : t('minutesAgo', { n: minutes });
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+  if (hours < 24) return hours === 1 ? t('hourAgo') : t('hoursAgo', { n: hours });
   const days = Math.floor(hours / 24);
-  return `${days} day${days !== 1 ? 's' : ''} ago`;
+  return days === 1 ? t('dayAgo') : t('daysAgo', { n: days });
 }
 
 function formatCompactNumber(num: number) {
@@ -83,6 +84,7 @@ interface Participant {
 }
 
 export default function KillFeedPage() {
+  const t = useTranslations('KillFeed');
   const { server, setServer } = useServer();
   const [events, setEvents] = useState<Event[]>([]);
   const [graphEvents, setGraphEvents] = useState<Event[]>([]);
@@ -211,9 +213,9 @@ export default function KillFeedPage() {
 
   return (
     <PageShell
-      title="Live Kill Feed"
+      title={t('title')}
       backgroundImage='/background/ao-pvp.jpg'
-      description="Real-time combat analysis and player tracking"
+      description={t('description')}
       icon={<Skull className="h-8 w-8 text-red-500" />}
     >
       <div className="space-y-6">
@@ -236,7 +238,7 @@ export default function KillFeedPage() {
                     className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${server === s ? 'bg-background text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     <Globe className={`h-3 w-3 ${server === s ? 'text-primary' : ''}`} />
-                    <span className="capitalize hidden sm:inline">{s === 'west' ? 'Americas' : s === 'east' ? 'Asia' : 'Europe'}</span>
+                    <span className="capitalize hidden sm:inline">{s === 'west' ? t('regions.americas') : s === 'east' ? t('regions.asia') : t('regions.europe')}</span>
                     <span className="capitalize sm:hidden">{s === 'west' ? 'NA' : s === 'east' ? 'AS' : 'EU'}</span>
                   </button>
                 ))}
@@ -247,7 +249,7 @@ export default function KillFeedPage() {
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search player..."
+                  placeholder={t('searchPlaceholder')}
                   className="pl-9 h-9 w-full"
                 />
               </form>
@@ -260,19 +262,19 @@ export default function KillFeedPage() {
                   <span className={`relative inline-flex rounded-full h-3 w-3 ${autoRefresh && !selectedPlayer && page === 1 ? 'bg-green-500' : 'bg-gray-500'}`}></span>
                 </span>
                 {selectedPlayer
-                  ? 'Live Paused (Player View)'
+                  ? t('livePausedPlayer')
                   : page > 1
-                    ? 'Live Paused (History View)'
+                    ? t('livePausedHistory')
                     : autoRefresh
-                      ? 'Live Feed Active'
-                      : 'Feed Paused'}
+                      ? t('liveFeedActive')
+                      : t('feedPaused')}
               </div>
 
               {!selectedPlayer && page === 1 && (
                 <button
                   onClick={() => setAutoRefresh(!autoRefresh)}
                   className={`p-2 rounded-lg transition-colors ${autoRefresh ? 'bg-accent text-foreground' : 'text-muted-foreground hover:bg-accent'}`}
-                  title={autoRefresh ? "Pause Updates" : "Resume Updates"}
+                  title={autoRefresh ? t('pauseUpdates') : t('resumeUpdates')}
                 >
                   <RefreshCw className={`h-5 w-5 ${autoRefresh ? 'animate-spin-slow' : ''}`} />
                 </button>
@@ -288,14 +290,14 @@ export default function KillFeedPage() {
                 className={`px-6 py-3 text-sm font-bold flex items-center gap-2 border-b-2 transition-colors ${view === 'live' ? 'border-red-500 text-red-500' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
               >
                 <Activity className="h-4 w-4" />
-                Live Feed
+                {t('liveFeed')}
               </button>
               <button
                 onClick={() => setView('history')}
                 className={`px-6 py-3 text-sm font-bold flex items-center gap-2 border-b-2 transition-colors ${view === 'history' ? 'border-yellow-500 text-yellow-500' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
               >
                 <History className="h-4 w-4" />
-                Historical Trends
+                {t('historicalTrends')}
               </button>
             </div>
           )}
@@ -316,7 +318,7 @@ export default function KillFeedPage() {
                   </div>
                   <div>
                     <div className="font-bold text-foreground">{player.Name}</div>
-                    <div className="text-xs text-muted-foreground">{player.GuildName || "No Guild"}</div>
+                    <div className="text-xs text-muted-foreground">{player.GuildName || t('noGuild')}</div>
                   </div>
                 </div>
                 <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
@@ -337,13 +339,13 @@ export default function KillFeedPage() {
         {/* History View Content */}
         {!selectedPlayer && view === 'history' && (
           <FeatureLock
-            title="Historical Trends"
-            description="Access long-term PvP trends and server-wide statistics."
-            lockedContent={<div className="h-[400px] w-full bg-muted/20 rounded-xl flex items-center justify-center border border-border">
-              <div className="text-center p-6">
-                <TrendingUp className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-bold text-muted-foreground">Historical Data Locked</h3>
-                <p className="text-sm text-muted-foreground mt-2 max-w-md">Upgrade to Supporter to view detailed historical analysis and trends.</p>
+            title={t('historicalTrends')}
+            description={t('historicalTrendsDesc')}
+            lockedContent={<div className="h-[250px] sm:h-[300px] md:h-[400px] w-full bg-muted/20 rounded-xl flex items-center justify-center border border-border">
+              <div className="text-center p-4 sm:p-6">
+                <TrendingUp className="h-8 w-8 sm:h-10 md:h-12 sm:w-8 md:w-10 lg:h-12 lg:w-12 text-muted-foreground mx-auto mb-2 sm:mb-4" />
+                <h3 className="text-sm sm:text-base md:text-lg font-bold text-muted-foreground">{t('historicalDataLocked')}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2 max-w-xs sm:max-w-md">{t('upgradeSupporter')}</p>
               </div>
             </div>}
           >
@@ -380,23 +382,23 @@ export default function KillFeedPage() {
                 </div>
 
                 {/* Pagination Controls */}
-                <div className="flex items-center justify-center gap-4 py-4">
+                <div className="flex items-center justify-center gap-2 sm:gap-4 py-4">
                   <button
                     onClick={handlePrevPage}
                     disabled={page === 1 || loading}
-                    className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg disabled:opacity-50 hover:bg-accent transition-colors"
+                    className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-card border border-border rounded-lg disabled:opacity-50 hover:bg-accent transition-colors text-sm"
                   >
-                    <ChevronLeft className="h-4 w-4" /> Previous
+                    <ChevronLeft className="h-4 w-4" /> <span className="hidden sm:inline">{t('previous')}</span>
                   </button>
                   <span className="text-sm font-medium text-muted-foreground">
-                    Page {page}
+                    {t('page', { n: page })}
                   </span>
                   <button
                     onClick={handleNextPage}
                     disabled={loading || events.length < ITEMS_PER_PAGE}
-                    className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg disabled:opacity-50 hover:bg-accent transition-colors"
+                    className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-card border border-border rounded-lg disabled:opacity-50 hover:bg-accent transition-colors text-sm"
                   >
-                    Next <ChevronRight className="h-4 w-4" />
+                    <span className="hidden sm:inline">{t('next')}</span> <ChevronRight className="h-4 w-4" />
                   </button>
                 </div>
               </>
@@ -414,7 +416,7 @@ export default function KillFeedPage() {
             <div className="p-4 border-b border-border flex items-center justify-between bg-accent/20">
               <h3 className="font-bold text-lg flex items-center gap-2">
                 <Skull className="h-5 w-5 text-red-500" />
-                Kill Details
+                {t('killDetails')}
               </h3>
               <button onClick={() => setSelectedEvent(null)} className="text-muted-foreground hover:text-foreground">
                 <X className="h-6 w-6" />
@@ -443,6 +445,7 @@ function HistoryContent({
   range: '7d' | '3w' | '1M',
   setRange: (r: '7d' | '3w' | '1M') => void
 }) {
+  const t = useTranslations('KillFeed');
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
       {/* Header & Controls */}
@@ -450,9 +453,9 @@ function HistoryContent({
         <div>
           <h2 className="text-xl font-bold flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-yellow-500" />
-            PvP Activity Trends
+            {t('pvpActivityTrends')}
           </h2>
-          <p className="text-sm text-muted-foreground">Server-wide combat statistics and fame velocity</p>
+          <p className="text-sm text-muted-foreground">{t('pvpActivityTrendsDesc')}</p>
         </div>
 
         <div className="flex bg-accent/50 p-1 rounded-lg border border-border">
@@ -462,7 +465,7 @@ function HistoryContent({
               onClick={() => setRange(r)}
               className={`px-4 py-1.5 rounded-md text-sm font-bold transition-all ${range === r ? 'bg-background  text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
             >
-              {r === '7d' ? '7 Days' : r === '3w' ? '3 Weeks' : '1 Month'}
+              {r === '7d' ? t('ranges.7d') : r === '3w' ? t('ranges.3w') : t('ranges.1m')}
             </button>
           ))}
         </div>
@@ -474,10 +477,10 @@ function HistoryContent({
           <div className="absolute top-0 right-0 p-4 opacity-10">
             <Swords className="h-24 w-24" />
           </div>
-          <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1">Total Kills</div>
+          <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1">{t('totalKills')}</div>
           <div className="text-3xl font-bold text-foreground">{formatCompactNumber(stats.totalKills)}</div>
           <div className="text-xs text-green-500 font-medium mt-1 flex items-center gap-1">
-            <TrendingUp className="h-3 w-3" /> +12% vs previous period
+            <TrendingUp className="h-3 w-3" /> {t('vsPreviousPeriod', { val: '+12%' })}
           </div>
         </div>
 
@@ -485,10 +488,10 @@ function HistoryContent({
           <div className="absolute top-0 right-0 p-4 opacity-10">
             <Coins className="h-24 w-24" />
           </div>
-          <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1">Total Fame</div>
+          <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1">{t('totalFame')}</div>
           <div className="text-3xl font-bold text-amber-500">{formatCompactNumber(stats.totalFame)}</div>
           <div className="text-xs text-muted-foreground mt-1">
-            Estimated value destroyed
+            {t('estimatedValue')}
           </div>
         </div>
 
@@ -496,10 +499,10 @@ function HistoryContent({
           <div className="absolute top-0 right-0 p-4 opacity-10">
             <Activity className="h-24 w-24" />
           </div>
-          <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1">Daily Average</div>
+          <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1">{t('dailyAverage')}</div>
           <div className="text-3xl font-bold text-foreground">{formatCompactNumber(stats.avgKills)}</div>
           <div className="text-xs text-muted-foreground mt-1">
-            Kills per day
+            {t('killsPerDay')}
           </div>
         </div>
       </div>
@@ -508,7 +511,7 @@ function HistoryContent({
       <div className="bg-card border border-border p-6 rounded-xl h-[400px]">
         <h3 className="font-bold text-lg mb-6 flex items-center gap-2">
           <BarChart2 className="h-5 w-5 text-primary" />
-          Activity Volume
+          {t('activityVolume')}
         </h3>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -555,7 +558,7 @@ function HistoryContent({
             <Bar
               yAxisId="left"
               dataKey="kills"
-              name="Total Kills"
+              name={t('totalKills')}
               fill="url(#colorKills)"
               radius={[4, 4, 0, 0]}
               barSize={range === '1M' ? 12 : 30}
@@ -563,7 +566,7 @@ function HistoryContent({
             <Bar
               yAxisId="right"
               dataKey="fame"
-              name="Total Fame"
+              name={t('totalFame')}
               fill="#eab308"
               radius={[4, 4, 0, 0]}
               barSize={range === '1M' ? 12 : 30}
@@ -581,6 +584,7 @@ function HistoryContent({
 }
 
 function HistoryView({ server }: { server: string }) {
+  const t = useTranslations('KillFeed');
   const [range, setRange] = useState<'7d' | '3w' | '1M'>('1M');
 
   const generateData = (isFake: boolean) => {
@@ -657,8 +661,8 @@ function HistoryView({ server }: { server: string }) {
 
   return (
     <FeatureLock
-      title="Supporter-Only History"
-      description="Join our lovely supporters to unlock server-wide PvP history and help keep the project alive!"
+      title={t('supporterOnlyHistory')}
+      description={t('joinSupporters')}
       lockedContent={<HistoryContent data={fakeData} stats={fakeStats} range={range} setRange={setRange} />}
     >
       <HistoryContent data={realData} stats={realStats} range={range} setRange={setRange} />
@@ -667,52 +671,50 @@ function HistoryView({ server }: { server: string }) {
 }
 
 function KillFeedInfo() {
+  const t = useTranslations('KillFeed');
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-border pt-8 mt-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div>
         <h3 className="font-bold text-lg mb-3 flex items-center gap-2 text-foreground">
           <Info className="h-5 w-5 text-blue-500" />
-          About the Kill Feed
+          {t('about.title')}
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-          The AlbionKit Live Kill Feed provides real-time tracking of PvP events across Albion Online servers.
-          Data is sourced directly from the game's event API, allowing you to monitor battles, analyze guild performance,
-          and track high-value kills as they happen.
+          {t('about.description')}
         </p>
         <div className="text-xs text-muted-foreground bg-accent/30 p-3 rounded-lg border border-border/50">
-          <span className="font-bold text-yellow-500">Note:</span> There is typically a slight delay (seconds to minutes)
-          between the actual in-game event and its appearance on the feed due to API processing times.
+          <span className="font-bold text-yellow-500">{t('about.note')}</span> {t('about.noteDesc')}
         </div>
       </div>
 
       <div>
         <h3 className="font-bold text-lg mb-3 flex items-center gap-2 text-foreground">
           <BookOpen className="h-5 w-5 text-green-500" />
-          Understanding Metrics
+          {t('metrics.title')}
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="bg-card p-3 rounded-lg border border-border  hover:border-primary/30 transition-colors">
             <div className="font-bold text-sm mb-1 flex items-center gap-2">
-              <Coins className="h-3 w-3 text-amber-500" /> Kill Fame
+              <Coins className="h-3 w-3 text-amber-500" /> {t('metrics.killFame')}
             </div>
             <p className="text-xs text-muted-foreground">
-              Total estimated market value of items equipped by the victim at the time of death. Higher fame means more expensive gear destroyed.
+              {t('metrics.killFameDesc')}
             </p>
           </div>
           <div className="bg-card p-3 rounded-lg border border-border  hover:border-primary/30 transition-colors">
             <div className="font-bold text-sm mb-1 flex items-center gap-2">
-              <Zap className="h-3 w-3 text-yellow-500" /> Item Power (IP)
+              <Zap className="h-3 w-3 text-yellow-500" /> {t('metrics.ip')}
             </div>
             <p className="text-xs text-muted-foreground">
-              A weighted average measuring the strength of a player's equipment and mastery levels.
+              {t('metrics.ipDesc')}
             </p>
           </div>
           <div className="bg-card p-3 rounded-lg border border-border  hover:border-primary/30 transition-colors sm:col-span-2">
             <div className="font-bold text-sm mb-1 flex items-center gap-2">
-              <Search className="h-3 w-3 text-blue-500" /> Pro Tip
+              <Search className="h-3 w-3 text-blue-500" /> {t('metrics.proTip')}
             </div>
             <p className="text-xs text-muted-foreground">
-              Click on any kill event to see a detailed breakdown of the equipment, participants, and damage dealers involved in the fight.
+              {t('metrics.proTipDesc')}
             </p>
           </div>
         </div>
@@ -724,6 +726,7 @@ function KillFeedInfo() {
 // Sub-components
 
 function KillRow({ event, onClick }: { event: Event; onClick: () => void }) {
+  const t = useTranslations('KillFeed');
   return (
     <div
       onClick={onClick}
@@ -735,10 +738,10 @@ function KillRow({ event, onClick }: { event: Event; onClick: () => void }) {
         <div className="flex justify-between items-center text-xs text-muted-foreground border-b border-border/50 pb-2">
           <div className="flex items-center gap-1">
             <Clock className="h-3 w-3" />
-            {formatTimeAgo(event.TimeStamp)}
+            {formatTimeAgo(event.TimeStamp, t)}
           </div>
           <div className="font-mono text-amber-500 font-medium">
-            {formatCompactNumber(event.TotalVictimKillFame)} Fame
+            {formatCompactNumber(event.TotalVictimKillFame)} {t('fame')}
           </div>
         </div>
 
@@ -748,8 +751,8 @@ function KillRow({ event, onClick }: { event: Event; onClick: () => void }) {
           <div className="flex items-center justify-end gap-2 text-right overflow-hidden">
             <div className="flex flex-col items-end min-w-0">
               <div className="font-bold text-sm text-green-500 truncate w-full">{event.Killer.Name}</div>
-              <div className="text-[10px] text-muted-foreground truncate w-full">{event.Killer.GuildName}</div>
-              <div className="text-[10px] text-muted-foreground font-mono">IP: {Math.round(event.Killer.AverageItemPower)}</div>
+              <div className="text-[10px] text-muted-foreground truncate w-full">{event.Killer.GuildName || t('noGuild')}</div>
+              <div className="text-[10px] text-muted-foreground font-mono">{t('ip')}: {Math.round(event.Killer.AverageItemPower)}</div>
             </div>
             <div className="relative h-9 w-9 bg-black/20 rounded-md border border-border shrink-0">
               <ItemTooltip item={event.Killer.Equipment.MainHand}>
@@ -780,8 +783,8 @@ function KillRow({ event, onClick }: { event: Event; onClick: () => void }) {
             </div>
             <div className="flex flex-col min-w-0">
               <div className="font-bold text-sm text-red-500 truncate w-full">{event.Victim.Name}</div>
-              <div className="text-[10px] text-muted-foreground truncate w-full">{event.Victim.GuildName}</div>
-              <div className="text-[10px] text-muted-foreground font-mono">IP: {Math.round(event.Victim.AverageItemPower)}</div>
+              <div className="text-[10px] text-muted-foreground truncate w-full">{event.Victim.GuildName || t('noGuild')}</div>
+              <div className="text-[10px] text-muted-foreground font-mono">{t('ip')}: {Math.round(event.Victim.AverageItemPower)}</div>
             </div>
           </div>
         </div>
@@ -793,10 +796,10 @@ function KillRow({ event, onClick }: { event: Event; onClick: () => void }) {
         <div className="flex flex-col items-start w-24 text-xs text-muted-foreground shrink-0">
           <div className="flex items-center gap-1">
             <Clock className="h-3 w-3" />
-            {formatTimeAgo(event.TimeStamp)}
+            {formatTimeAgo(event.TimeStamp, t)}
           </div>
           <div className="font-mono text-amber-500 font-medium">
-            {formatCompactNumber(event.TotalVictimKillFame)} Fame
+            {formatCompactNumber(event.TotalVictimKillFame)} {t('fame')}
           </div>
         </div>
 
@@ -804,8 +807,8 @@ function KillRow({ event, onClick }: { event: Event; onClick: () => void }) {
         <div className="flex-1 flex items-center justify-end gap-3 text-right w-full">
           <div className="flex flex-col items-end">
             <div className="font-bold text-green-500">{event.Killer.Name}</div>
-            <div className="text-xs text-muted-foreground">{event.Killer.GuildName}</div>
-            <div className="text-xs text-muted-foreground font-mono">IP: {Math.round(event.Killer.AverageItemPower)}</div>
+            <div className="text-xs text-muted-foreground">{event.Killer.GuildName || t('noGuild')}</div>
+            <div className="text-xs text-muted-foreground font-mono">{t('ip')}: {Math.round(event.Killer.AverageItemPower)}</div>
           </div>
           <div className="relative h-12 w-12 bg-black/20 rounded-md border border-border shrink-0">
             <ItemTooltip item={event.Killer.Equipment.MainHand}>
@@ -836,8 +839,8 @@ function KillRow({ event, onClick }: { event: Event; onClick: () => void }) {
           </div>
           <div className="flex flex-col">
             <div className="font-bold text-red-500">{event.Victim.Name}</div>
-            <div className="text-xs text-muted-foreground">{event.Victim.GuildName}</div>
-            <div className="text-xs text-muted-foreground font-mono">IP: {Math.round(event.Victim.AverageItemPower)}</div>
+            <div className="text-xs text-muted-foreground">{event.Victim.GuildName || t('noGuild')}</div>
+            <div className="text-xs text-muted-foreground font-mono">{t('ip')}: {Math.round(event.Victim.AverageItemPower)}</div>
           </div>
         </div>
       </div>
@@ -846,6 +849,7 @@ function KillRow({ event, onClick }: { event: Event; onClick: () => void }) {
 }
 
 function GlobalActivityChart({ events }: { events: Event[] }) {
+  const t = useTranslations('KillFeed');
   const [mode, setMode] = useState<'count' | 'fame'>('count');
   const [timeWindow, setTimeWindow] = useState<'5m' | '10m' | '30m' | '1h'>('1h');
   const [now, setNow] = useState(Date.now());
@@ -926,7 +930,7 @@ function GlobalActivityChart({ events }: { events: Event[] }) {
       <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-4">
         <div className="flex items-center gap-2">
           <div className={`h-2 w-2 rounded-full ${mode === 'count' ? 'bg-red-500' : 'bg-yellow-500'} animate-pulse`} />
-          <h3 className="font-bold text-lg">Live Kill Velocity</h3>
+          <h3 className="font-bold text-lg">{t('liveKillVelocity')}</h3>
         </div>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:gap-2">
@@ -949,13 +953,13 @@ function GlobalActivityChart({ events }: { events: Event[] }) {
               onClick={() => setMode('count')}
               className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${mode === 'count' ? 'bg-background  text-red-500' : 'text-muted-foreground hover:text-foreground'}`}
             >
-              Kills
+              {t('kills')}
             </button>
             <button
               onClick={() => setMode('fame')}
               className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${mode === 'fame' ? 'bg-background  text-yellow-500' : 'text-muted-foreground hover:text-foreground'}`}
             >
-              Fame
+              {t('fame')}
             </button>
           </div>
         </div>
@@ -1005,8 +1009,8 @@ function GlobalActivityChart({ events }: { events: Event[] }) {
               }}
               labelStyle={{ color: 'var(--muted-foreground)' }}
               formatter={(value: any) => [
-                mode === 'fame' ? `${((value || 0) / 1000000).toFixed(2)}m Fame` : `${value || 0} Kills`,
-                mode === 'fame' ? 'Volume' : 'Activity'
+                mode === 'fame' ? `${((value || 0) / 1000000).toFixed(2)}m ${t('fame')}` : `${value || 0} ${t('kills')}`,
+                mode === 'fame' ? t('volume') : t('activity')
               ]}
             />
             <Area
@@ -1027,6 +1031,7 @@ function GlobalActivityChart({ events }: { events: Event[] }) {
 }
 
 function SessionStats({ events }: { events: Event[] }) {
+  const t = useTranslations('KillFeed');
   const stats = useMemo(() => {
     if (!events.length) return null;
     const totalFame = events.reduce((acc, e) => acc + e.TotalVictimKillFame, 0);
@@ -1052,7 +1057,7 @@ function SessionStats({ events }: { events: Event[] }) {
           <Coins className="h-5 w-5 text-yellow-500" />
         </div>
         <div>
-          <div className="text-xs text-muted-foreground uppercase font-bold">Total Fame</div>
+          <div className="text-xs text-muted-foreground uppercase font-bold">{t('totalFame')}</div>
           <div className="font-mono font-bold text-foreground">
             {(stats.totalFame / 1000000).toFixed(2)}m
           </div>
@@ -1063,7 +1068,7 @@ function SessionStats({ events }: { events: Event[] }) {
           <Zap className="h-5 w-5 text-blue-500" />
         </div>
         <div>
-          <div className="text-xs text-muted-foreground uppercase font-bold">Avg IP</div>
+          <div className="text-xs text-muted-foreground uppercase font-bold">{t('avgIp')}</div>
           <div className="font-mono font-bold text-foreground">
             {Math.round(stats.avgIp)}
           </div>
@@ -1074,7 +1079,7 @@ function SessionStats({ events }: { events: Event[] }) {
           <Sword className="h-5 w-5 text-red-500" />
         </div>
         <div className="min-w-0">
-          <div className="text-xs text-muted-foreground uppercase font-bold">Meta Weapon</div>
+          <div className="text-xs text-muted-foreground uppercase font-bold">{t('metaWeapon')}</div>
           <div className="font-bold text-foreground truncate flex items-center gap-2">
             {stats.topWeapon ? (
               <>
@@ -1090,6 +1095,7 @@ function SessionStats({ events }: { events: Event[] }) {
 }
 
 function HighValueKills({ events, onEventClick }: { events: Event[], onEventClick: (id: number) => void }) {
+  const t = useTranslations('KillFeed');
   const highValue = useMemo(() => {
     return [...events]
       .sort((a, b) => b.TotalVictimKillFame - a.TotalVictimKillFame)
@@ -1102,14 +1108,14 @@ function HighValueKills({ events, onEventClick }: { events: Event[], onEventClic
     <div className="space-y-3">
       <div className="flex items-center gap-2 text-sm font-bold text-muted-foreground uppercase tracking-wider">
         <TrendingUp className="h-4 w-4 text-amber-500" />
-        High Value Kills
+        {t('highValueKills')}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {highValue.map(event => (
           <button
             key={event.EventId}
             onClick={() => onEventClick(event.EventId)}
-            className="flex items-center gap-3 p-3 bg-card border overflow-hidden border-border/50 hover:border-amber-500/50 rounded-lg text-left transition-all group relative"
+            className="flex items-center gap-3 p-3 bg-card border overflow-visiblethe border-border/50 hover:border-amber-500/50 rounded-lg text-left transition-all group relative"
           >
             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500/50" />
             <div className="relative h-10 w-10 shrink-0 bg-black/20 rounded-md">
@@ -1133,20 +1139,22 @@ function HighValueKills({ events, onEventClick }: { events: Event[], onEventClic
 }
 
 function ItemNameDisplay({ itemId }: { itemId: string }) {
+  const locale = useLocale();
   const [name, setName] = useState<string>(itemId);
 
   useEffect(() => {
     let mounted = true;
-    resolveItemNameAction(itemId).then(resolved => {
+    resolveItemNameAction(itemId, locale as any).then(resolved => {
       if (mounted && resolved) setName(resolved);
     });
     return () => { mounted = false; };
-  }, [itemId]);
+  }, [itemId, locale]);
 
   return <span title={itemId}>{name}</span>;
 }
 
 function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, onEventClick }: any) {
+  const t = useTranslations('KillFeed');
   const [timeFilter, setTimeFilter] = useState<'all' | '12h' | '24h' | '7d' | '30d'>('all');
   const [activeTab, setActiveTab] = useState<'overview' | 'history'>('overview');
 
@@ -1224,17 +1232,17 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
-          <ChevronLeft className="h-4 w-4" /> Back to Live Feed
+          <ChevronLeft className="h-4 w-4" /> {t('backToFeed')}
         </button>
 
         <div className="flex bg-card border border-border rounded-lg p-1 overflow-x-auto">
-          {(['all', '12h', '24h', '7d', '30d'] as const).map((t) => (
+          {(['all', '12h', '24h', '7d', '30d'] as const).map((filter) => (
             <button
-              key={t}
-              onClick={() => setTimeFilter(t)}
-              className={`px-3 py-1 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${timeFilter === t ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}
+              key={filter}
+              onClick={() => setTimeFilter(filter)}
+              className={`px-3 py-1 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${timeFilter === filter ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}
             >
-              {t === 'all' ? 'All Time' : t === '12h' ? '12H' : t === '24h' ? '24H' : t === '7d' ? '7 Days' : '30 Days'}
+              {t(`timeFilters.${filter}`)}
             </button>
           ))}
         </div>
@@ -1248,7 +1256,7 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
         <div className="text-center md:text-left space-y-1">
           <h2 className="text-3xl font-black uppercase tracking-tight">{player.Name}</h2>
           <div className="flex items-center justify-center md:justify-start gap-2 text-muted-foreground">
-            <span>{player.GuildName || "No Guild"}</span>
+            <span>{player.GuildName || t('noGuild')}</span>
             {player.AllianceName && (
               <>
                 <span>•</span>
@@ -1261,15 +1269,15 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
         {stats && (
           <div className="ml-auto grid grid-cols-3 gap-4 text-center">
             <div className="bg-background/50 p-3 rounded-lg border border-border">
-              <div className="text-xs text-muted-foreground uppercase font-bold">Kills</div>
+              <div className="text-xs text-muted-foreground uppercase font-bold">{t('kills')}</div>
               <div className="text-xl font-mono text-green-500">{stats.KillFame > 0 ? (stats.KillFame / 1000000).toFixed(2) + 'm' : '0'}</div>
             </div>
             <div className="bg-background/50 p-3 rounded-lg border border-border">
-              <div className="text-xs text-muted-foreground uppercase font-bold">Deaths</div>
+              <div className="text-xs text-muted-foreground uppercase font-bold">{t('deaths')}</div>
               <div className="text-xl font-mono text-red-500">{stats.DeathFame > 0 ? (stats.DeathFame / 1000000).toFixed(2) + 'm' : '0'}</div>
             </div>
             <div className="bg-background/50 p-3 rounded-lg border border-border">
-              <div className="text-xs text-muted-foreground uppercase font-bold">Ratio</div>
+              <div className="text-xs text-muted-foreground uppercase font-bold">{t('ratio')}</div>
               <div className="text-xl font-mono text-amber-500">
                 {stats.DeathFame > 0 ? (stats.KillFame / stats.DeathFame).toFixed(2) : '∞'}
               </div>
@@ -1287,7 +1295,7 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
               <div className="bg-card border border-border p-4 rounded-xl">
                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                   <Trophy className="h-4 w-4 text-yellow-500" />
-                  <span className="text-xs font-bold uppercase">Win Rate</span>
+                  <span className="text-xs font-bold uppercase">{t('winRate')}</span>
                 </div>
                 <div className="text-2xl font-black">{metrics.winRate}%</div>
                 <div className="text-xs text-muted-foreground">in selected period</div>
@@ -1295,19 +1303,19 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
               <div className="bg-card border border-border p-4 rounded-xl">
                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                   <Swords className="h-4 w-4 text-blue-500" />
-                  <span className="text-xs font-bold uppercase">Avg IP Diff</span>
+                  <span className="text-xs font-bold uppercase">{t('avgIpDiff')}</span>
                 </div>
                 <div className={`text-2xl font-black ${metrics.avgIpDiff > 0 ? 'text-green-500' : 'text-red-500'}`}>
                   {metrics.avgIpDiff > 0 ? '+' : ''}{metrics.avgIpDiff}
                 </div>
-                <div className="text-xs text-muted-foreground">vs victims</div>
+                <div className="text-xs text-muted-foreground">{t('vsVictims')}</div>
               </div>
             </div>
 
             {/* Top Weapon */}
             <div className="bg-card border border-border p-4 rounded-xl flex items-center justify-between">
               <div>
-                <div className="text-xs font-bold uppercase text-muted-foreground mb-1">Most Used Weapon</div>
+                <div className="text-xs font-bold uppercase text-muted-foreground mb-1">{t('mostUsedWeapon')}</div>
                 <div className="font-bold text-sm truncate w-32">
                   {metrics.topWeapon ? <ItemNameDisplay itemId={metrics.topWeapon} /> : 'N/A'}
                 </div>
@@ -1323,7 +1331,7 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-sm flex items-center gap-2">
                 <BarChart2 className="h-4 w-4 text-primary" />
-                Combat Activity
+                {t('combatActivity')}
               </h3>
             </div>
             <div className="flex-1 w-full min-h-0">
@@ -1339,8 +1347,8 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
                     cursor={{ fill: '#ffffff10' }}
                   />
                   <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                  <Bar dataKey="kills" name="Kills" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={40} />
-                  <Bar dataKey="deaths" name="Deaths" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                  <Bar dataKey="kills" name={t('kills')} fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                  <Bar dataKey="deaths" name={t('deaths')} fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={40} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -1352,7 +1360,7 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-4">
           <h3 className="font-bold text-lg flex items-center gap-2">
-            <Sword className="h-5 w-5 text-green-500" /> Recent Kills
+            <Sword className="h-5 w-5 text-green-500" /> {t('recentKills')}
           </h3>
           <div className="space-y-2">
             {filteredKills.length > 0 ? (
@@ -1360,14 +1368,14 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
                 <KillRow key={event.EventId} event={event} onClick={() => onEventClick(event.EventId)} />
               ))
             ) : (
-              <div className="text-muted-foreground text-sm italic">No kills in this period.</div>
+              <div className="text-muted-foreground text-sm italic">{t('noKills')}</div>
             )}
           </div>
         </div>
 
         <div className="space-y-4">
           <h3 className="font-bold text-lg flex items-center gap-2">
-            <Skull className="h-5 w-5 text-red-500" /> Recent Deaths
+            <Skull className="h-5 w-5 text-red-500" /> {t('recentDeaths')}
           </h3>
           <div className="space-y-2">
             {filteredDeaths.length > 0 ? (
@@ -1375,7 +1383,7 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
                 <KillRow key={event.EventId} event={event} onClick={() => onEventClick(event.EventId)} />
               ))
             ) : (
-              <div className="text-muted-foreground text-sm italic">No deaths in this period.</div>
+              <div className="text-muted-foreground text-sm italic">{t('noDeaths')}</div>
             )}
           </div>
         </div>
@@ -1385,6 +1393,7 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
 }
 
 function EventDetailContent({ event }: { event: Event }) {
+  const t = useTranslations('KillFeed');
   const { server } = useServer();
   const [metadata, setMetadata] = useState<any>(null);
   const participants = event.Participants.filter(p => p.Id !== event.Killer.Id);
@@ -1398,11 +1407,11 @@ function EventDetailContent({ event }: { event: Event }) {
     const killerIp = event.Killer.AverageItemPower;
     const victimIp = event.Victim.AverageItemPower;
 
-    let style = { label: 'Solo Kill', color: 'text-blue-500', icon: Sword };
-    if (pCount > 10) style = { label: 'ZvZ / Large Scale', color: 'text-red-500', icon: Users };
-    else if (pCount > 1) style = { label: `Group Gank`, color: 'text-orange-500', icon: Users };
-    else if (killerIp > victimIp + 300) style = { label: 'Stomp', color: 'text-yellow-500', icon: Zap };
-    else if (Math.abs(killerIp - victimIp) < 50) style = { label: 'Fair Fight', color: 'text-green-500', icon: Swords };
+    let style = { label: t('soloKill'), color: 'text-blue-500', icon: Sword };
+    if (pCount > 10) style = { label: t('zvzLargeScale'), color: 'text-red-500', icon: Users };
+    else if (pCount > 1) style = { label: t('groupGank'), color: 'text-orange-500', icon: Users };
+    else if (killerIp > victimIp + 300) style = { label: t('stomp'), color: 'text-yellow-500', icon: Zap };
+    else if (Math.abs(killerIp - victimIp) < 50) style = { label: t('fairFight'), color: 'text-green-500', icon: Swords };
 
     let invVal = 0;
     let equipVal = 0;
@@ -1430,25 +1439,25 @@ function EventDetailContent({ event }: { event: Event }) {
     }
 
     return { totalLoss: invVal + equipVal, inventoryValue: invVal, killerInventoryValue: killerInvVal, killStyle: style };
-  }, [metadata, event]);
+  }, [metadata, event, t]);
 
   return (
     <div className="space-y-6">
       {/* Analysis Header */}
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-card border border-border p-3 rounded-lg flex flex-col items-center justify-center text-center">
-          <div className="text-xs text-muted-foreground uppercase font-bold mb-1">Kill Style</div>
+          <div className="text-xs text-muted-foreground uppercase font-bold mb-1">{t('killStyle')}</div>
           <div className={`font-black flex items-center gap-2 ${killStyle.color}`}>
             <killStyle.icon className="h-4 w-4" />
             {killStyle.label}
           </div>
         </div>
         <div className="bg-card border border-border p-3 rounded-lg flex flex-col items-center justify-center text-center">
-          <div className="text-xs text-muted-foreground uppercase font-bold mb-1">Total Loss</div>
+          <div className="text-xs text-muted-foreground uppercase font-bold mb-1">{t('totalLoss')}</div>
           <div className="font-mono font-black text-red-500 text-lg">
             {metadata ? formatCompactNumber(totalLoss) : <span className="animate-pulse">...</span>}
           </div>
-          <div className="text-[10px] text-muted-foreground">Est. Market Value</div>
+          <div className="text-[10px] text-muted-foreground">{t('estMarketValue')}</div>
         </div>
       </div>
 
@@ -1458,12 +1467,12 @@ function EventDetailContent({ event }: { event: Event }) {
         <div className="flex-1 bg-green-500/5 border border-green-500/20 rounded-xl p-4 flex flex-col gap-4">
           <div className="flex items-center justify-between border-b border-green-500/20 pb-2">
             <div>
-              <div className="text-xs font-bold text-green-600 uppercase tracking-wider">Killer</div>
+              <div className="text-xs font-bold text-green-600 uppercase tracking-wider">{t('killer')}</div>
               <div className="text-xl font-bold">{event.Killer.Name}</div>
               <div className="text-sm text-muted-foreground">{event.Killer.GuildName}</div>
             </div>
             <div className="text-right">
-              <div className="text-xs text-muted-foreground uppercase">IP</div>
+              <div className="text-xs text-muted-foreground uppercase">{t('ip')}</div>
               <div className="text-xl font-mono">{Math.round(event.Killer.AverageItemPower)}</div>
             </div>
           </div>
@@ -1474,7 +1483,7 @@ function EventDetailContent({ event }: { event: Event }) {
             <div className="mt-4 pt-4 border-t border-green-500/20">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-xs font-bold text-green-600 uppercase tracking-wider flex items-center gap-2">
-                  <Archive className="h-3 w-3" /> Inventory
+                  <Archive className="h-3 w-3" /> {t('inventory')}
                 </h4>
                 {killerInventoryValue > 0 && (
                   <span className="text-xs font-mono text-green-400">{formatCompactNumber(killerInventoryValue)}</span>
@@ -1496,12 +1505,12 @@ function EventDetailContent({ event }: { event: Event }) {
         <div className="flex-1 bg-red-500/5 border border-red-500/20 rounded-xl p-4 flex flex-col gap-4">
           <div className="flex items-center justify-between border-b border-red-500/20 pb-2">
             <div>
-              <div className="text-xs font-bold text-red-600 uppercase tracking-wider">Victim</div>
+              <div className="text-xs font-bold text-red-600 uppercase tracking-wider">{t('victim')}</div>
               <div className="text-xl font-bold">{event.Victim.Name}</div>
               <div className="text-sm text-muted-foreground">{event.Victim.GuildName}</div>
             </div>
             <div className="text-right">
-              <div className="text-xs text-muted-foreground uppercase">IP</div>
+              <div className="text-xs text-muted-foreground uppercase">{t('ip')}</div>
               <div className="text-xl font-mono">{Math.round(event.Victim.AverageItemPower)}</div>
             </div>
           </div>
@@ -1512,7 +1521,7 @@ function EventDetailContent({ event }: { event: Event }) {
             <div className="mt-4 pt-4 border-t border-red-500/20">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-xs font-bold text-red-600 uppercase tracking-wider flex items-center gap-2">
-                  <Archive className="h-3 w-3" /> Inventory
+                  <Archive className="h-3 w-3" /> {t('inventory')}
                 </h4>
                 {inventoryValue > 0 && (
                   <span className="text-xs font-mono text-red-400">{formatCompactNumber(inventoryValue)}</span>
@@ -1528,7 +1537,7 @@ function EventDetailContent({ event }: { event: Event }) {
       {participants.length > 0 && (
         <div className="space-y-4 py-5 border-t border-border">
           <h4 className="font-bold text-lg flex items-center gap-2">
-            <Users className="h-5 w-5" /> Assists ({participants.length})
+            <Users className="h-5 w-5" /> {t('assists', { n: participants.length })}
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {participants.map((p) => (
@@ -1554,22 +1563,49 @@ function EventDetailContent({ event }: { event: Event }) {
 }
 
 function ItemTooltip({ item, metadata, children }: { item: Item | null, metadata?: any, children: React.ReactNode }) {
+  const t = useTranslations('KillFeed');
+  const locale = useLocale();
   const [resolvedName, setResolvedName] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const tipRef = useRef<HTMLDivElement | null>(null);
 
-  // Reset state when item changes
+  // Reset state when item or locale changes
   useEffect(() => {
     setResolvedName(null);
     setIsHovered(false);
-  }, [item?.Type]);
+  }, [item?.Type, locale]);
 
   useEffect(() => {
+    // Resolve localized item name on hover if not already present in metadata
     if (isHovered && item && !metadata?.names?.[item.Type] && !resolvedName) {
-      resolveItemNameAction(item.Type).then(name => {
+      resolveItemNameAction(item.Type, locale as any).then(name => {
         if (name) setResolvedName(name);
       });
     }
-  }, [isHovered, item, metadata, resolvedName]);
+  }, [isHovered, item, metadata, resolvedName, locale]);
+
+  // Viewport-aware positioning
+  useEffect(() => {
+    let cleanup = () => {};
+    (async () => {
+      if (!isHovered || !ref.current || !tipRef.current) return;
+      const { computePosition, offset, flip, shift } = await import('@floating-ui/dom');
+      const tooltipEl = tipRef.current!;
+      tooltipEl.style.display = 'block';
+      const { x, y } = await computePosition(ref.current, tooltipEl, {
+        placement: 'top',
+        middleware: [offset(8), flip(), shift({ padding: 8 })],
+        strategy: 'fixed'
+      });
+      tooltipEl.style.left = `${x}px`;
+      tooltipEl.style.top = `${y}px`;
+      cleanup = () => {
+        if (tooltipEl) tooltipEl.style.display = 'none';
+      };
+    })();
+    return () => cleanup();
+  }, [isHovered]);
 
   if (!item) return <>{children}</>;
 
@@ -1579,20 +1615,25 @@ function ItemTooltip({ item, metadata, children }: { item: Item | null, metadata
 
   return (
     <div
-      className="relative group/tooltip"
+      ref={ref}
+      className="relative inline-block"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {children}
-      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-popover border border-border rounded-lg p-2 z-50 hidden group-hover/tooltip:block pointer-events-none">
+      <div
+        ref={tipRef}
+        style={{ display: 'none', position: 'fixed' }}
+        className="w-56 max-w-[min(280px,calc(100vw-16px))] bg-popover border border-border rounded-lg p-2 z-[1000] pointer-events-none shadow-md"
+      >
         <div className="text-xs font-bold text-popover-foreground text-center mb-1 break-words">{name}</div>
         <div className="flex border-t border-border justify-between text-[10px] text-muted-foreground">
-          <span>Count: {item.Count}</span>
-          <span>Quality: {item.Quality}</span>
+          <span>{t('count')}: {item.Count}</span>
+          <span>{t('quality')}: {item.Quality}</span>
         </div>
         {price && (
           <div className="mt-1 pt-1 border-t border-border flex justify-between text-xs font-mono">
-            <span className="text-muted-foreground">Est. Value:</span>
+            <span className="text-muted-foreground">{t('estValue')}:</span>
             <span className="text-amber-500">{formatCompactNumber(totalPrice)}</span>
           </div>
         )}
@@ -1602,8 +1643,9 @@ function ItemTooltip({ item, metadata, children }: { item: Item | null, metadata
 }
 
 function EquipmentGrid({ equipment, metadata }: { equipment: Equipment, metadata?: any }) {
+  const t = useTranslations('KillFeed');
   // Helper to render a slot
-  const Slot = ({ item, label }: { item: Item | null, label: string }) => (
+  const Slot = ({ item, slotKey }: { item: Item | null, slotKey: string }) => (
     <div className="aspect-square bg-black/20 rounded-md border border-border/50 relative group">
       {item ? (
         <ItemTooltip item={item} metadata={metadata}>
@@ -1613,7 +1655,7 @@ function EquipmentGrid({ equipment, metadata }: { equipment: Equipment, metadata
         </ItemTooltip>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center text-[9px] text-muted-foreground/30 font-bold uppercase select-none">
-          {label}
+          {t(`slots.${slotKey}`)}
         </div>
       )}
     </div>
@@ -1623,23 +1665,23 @@ function EquipmentGrid({ equipment, metadata }: { equipment: Equipment, metadata
     <div className="flex justify-center">
       <div className="grid grid-cols-3 gap-2 w-full max-w-[240px]">
         {/* Row 1 */}
-        <Slot item={equipment.Bag} label="Bag" />
-        <Slot item={equipment.Head} label="Head" />
-        <Slot item={equipment.Cape} label="Cape" />
+        <Slot item={equipment.Bag} slotKey="bag" />
+        <Slot item={equipment.Head} slotKey="head" />
+        <Slot item={equipment.Cape} slotKey="cape" />
 
         {/* Row 2 */}
-        <Slot item={equipment.MainHand} label="Main" />
-        <Slot item={equipment.Armor} label="Armor" />
-        <Slot item={equipment.OffHand} label="Off" />
+        <Slot item={equipment.MainHand} slotKey="main" />
+        <Slot item={equipment.Armor} slotKey="armor" />
+        <Slot item={equipment.OffHand} slotKey="off" />
 
         {/* Row 3 */}
-        <Slot item={equipment.Potion} label="Pot" />
-        <Slot item={equipment.Shoes} label="Shoes" />
-        <Slot item={equipment.Food} label="Food" />
+        <Slot item={equipment.Potion} slotKey="pot" />
+        <Slot item={equipment.Shoes} slotKey="shoes" />
+        <Slot item={equipment.Food} slotKey="food" />
 
         {/* Row 4 - Mount */}
         <div className="col-start-2">
-          <Slot item={equipment.Mount} label="Mount" />
+          <Slot item={equipment.Mount} slotKey="mount" />
         </div>
       </div>
     </div>
@@ -1647,10 +1689,11 @@ function EquipmentGrid({ equipment, metadata }: { equipment: Equipment, metadata
 }
 
 function InventoryGrid({ inventory, metadata }: { inventory: (Item | null)[], metadata?: any }) {
+  const t = useTranslations('KillFeed');
   // Filter out null items to save space
   const items = inventory.filter(i => i !== null);
 
-  if (items.length === 0) return <div className="text-xs text-muted-foreground italic">Empty Inventory</div>;
+  if (items.length === 0) return <div className="text-xs text-muted-foreground italic">{t('emptyInventory')}</div>;
 
   return (
     <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2">

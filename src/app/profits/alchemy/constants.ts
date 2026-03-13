@@ -21,46 +21,46 @@ export interface AlchemyRecipe {
 export const WEIGHT_POTION = 0.5;
 
 export const RECIPES: AlchemyRecipe[] = [
-  // --- POISON POTIONS ---
+  // --- POISON POTIONS (using correct Albion item IDs) ---
   {
-    id: 'T4_POTION_POISON',
+    id: 'T4_POTION_COOLDOWN',
     name: 'Poison Potion',
     tier: 4,
-    productId: 'T4_POTION_POISON',
+    productId: 'T4_POTION_COOLDOWN',
     yield: 5,
     nutrition: 0,
     itemWeight: WEIGHT_POTION,
     ingredients: [
-      { itemId: 'T4_BURDOCK', name: 'Crenellated Burdock', count: 12, enchantable: true },
-      { itemId: 'T4_MILK', name: 'Goat\'s Milk', count: 12 } // 12 herbs, 12 milk -> yield 5? (Values approx)
+      { itemId: 'T4_BURDOCK', name: '', count: 12, enchantable: true },
+      { itemId: 'T4_MILK', name: '', count: 12 }
     ]
   },
   {
-    id: 'T6_POTION_POISON',
-    name: 'Major Poison Potion', // Often referred to as Major in legacy or just T6
+    id: 'T6_POTION_COOLDOWN',
+    name: 'Major Poison Potion',
     tier: 6,
-    productId: 'T6_POTION_POISON',
+    productId: 'T6_POTION_COOLDOWN',
     yield: 5,
     nutrition: 0,
     itemWeight: WEIGHT_POTION,
     ingredients: [
-      { itemId: 'T6_FOXGLOVE', name: 'Elusive Foxglove', count: 24, enchantable: true },
-      { itemId: 'T6_MILK', name: 'Sheep\'s Milk', count: 12 },
-      { itemId: 'T6_ALCOHOL', name: 'Potato Schnapps', count: 6 } // Alcohol added in higher tiers?
+      { itemId: 'T6_FOXGLOVE', name: '', count: 24, enchantable: true },
+      { itemId: 'T6_MILK', name: '', count: 12 },
+      { itemId: 'T6_ALCOHOL', name: '', count: 6 }
     ]
   },
   {
-    id: 'T8_POTION_POISON',
+    id: 'T8_POTION_COOLDOWN',
     name: 'Grandmaster Poison Potion',
     tier: 8,
-    productId: 'T8_POTION_POISON',
+    productId: 'T8_POTION_COOLDOWN',
     yield: 5,
     nutrition: 0,
     itemWeight: WEIGHT_POTION,
     ingredients: [
-      { itemId: 'T8_YARROW', name: 'Ghoul Yarrow', count: 72, enchantable: true },
-      { itemId: 'T8_MILK', name: 'Cow\'s Milk', count: 36 },
-      { itemId: 'T8_ALCOHOL', name: 'Pumpkin Moonshine', count: 18 }
+      { itemId: 'T8_YARROW', name: '', count: 72, enchantable: true },
+      { itemId: 'T8_MILK', name: '', count: 36 },
+      { itemId: 'T8_ALCOHOL', name: '', count: 18 }
     ]
   },
 
@@ -74,8 +74,8 @@ export const RECIPES: AlchemyRecipe[] = [
     nutrition: 0,
     itemWeight: WEIGHT_POTION,
     ingredients: [
-      { itemId: 'T4_BURDOCK', name: 'Crenellated Burdock', count: 24, enchantable: true },
-      { itemId: 'T3_EGG', name: 'Hen Eggs', count: 6 }
+      { itemId: 'T4_BURDOCK', name: '', count: 24, enchantable: true },
+      { itemId: 'T3_EGG', name: '', count: 6 }
     ]
   },
   {
@@ -87,9 +87,9 @@ export const RECIPES: AlchemyRecipe[] = [
     nutrition: 0,
     itemWeight: WEIGHT_POTION,
     ingredients: [
-      { itemId: 'T6_FOXGLOVE', name: 'Elusive Foxglove', count: 72, enchantable: true },
-      { itemId: 'T5_EGG', name: 'Goose Eggs', count: 18 },
-      { itemId: 'T6_ALCOHOL', name: 'Potato Schnapps', count: 18 }
+      { itemId: 'T6_FOXGLOVE', name: '', count: 72, enchantable: true },
+      { itemId: 'T5_EGG', name: '', count: 18 },
+      { itemId: 'T6_ALCOHOL', name: '', count: 18 }
     ]
   },
 
@@ -103,23 +103,38 @@ export const RECIPES: AlchemyRecipe[] = [
     nutrition: 0,
     itemWeight: WEIGHT_POTION,
     ingredients: [
-      { itemId: 'T4_BURDOCK', name: 'Crenellated Burdock', count: 24, enchantable: true },
-      { itemId: 'T4_MILK', name: 'Goat\'s Milk', count: 6 }
+      { itemId: 'T4_BURDOCK', name: '', count: 24, enchantable: true },
+      { itemId: 'T4_MILK', name: '', count: 6 }
     ]
   },
-  
-  // --- INVISIBILITY POTIONS ---
+
+  // --- FOCUS POTIONS (RESTORATION) ---
   {
-    id: 'T8_POTION_INVIS',
-    name: 'Invisibility Potion',
+    id: 'UNIQUE_FOCUSPOTION_ADC_GENERAL_01',
+    name: 'Focus Restoration Potion',
     tier: 8,
-    productId: 'T8_POTION_INVIS',
+    productId: 'UNIQUE_FOCUSPOTION_ADC_GENERAL_01',
     yield: 5,
     nutrition: 0,
     itemWeight: WEIGHT_POTION,
     ingredients: [
-      { itemId: 'T8_YARROW', name: 'Ghoul Yarrow', count: 72, enchantable: true },
-      { itemId: 'T8_ALCOHOL', name: 'Pumpkin Moonshine', count: 36 }
+      { itemId: 'T8_YARROW', name: '', count: 72, enchantable: true },
+      { itemId: 'T8_ALCOHOL', name: '', count: 36 }
+    ]
+  },
+
+  // --- INVISIBILITY POTIONS ---
+  {
+    id: 'T8_POTION_CLEANSE',
+    name: 'Invisibility Potion',
+    tier: 8,
+    productId: 'T8_POTION_CLEANSE',
+    yield: 5,
+    nutrition: 0,
+    itemWeight: WEIGHT_POTION,
+    ingredients: [
+      { itemId: 'T8_YARROW', name: '', count: 72, enchantable: true },
+      { itemId: 'T8_ALCOHOL', name: '', count: 36 }
     ]
   }
 ];

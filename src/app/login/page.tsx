@@ -4,26 +4,24 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLoginModal } from '@/context/LoginModalContext';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function LoginPage() {
+  const t = useTranslations('Login');
   const router = useRouter();
   const { openLoginModal } = useLoginModal();
 
   useEffect(() => {
-    // Redirect to home and open login modal
+    // Open the login modal and then redirect back home if they close it
+    openLoginModal();
     router.replace('/');
-    // Use a small timeout to ensure the navigation happens before the modal opens
-    // and to let the home page mount
-    setTimeout(() => {
-        openLoginModal();
-    }, 100);
-  }, [router, openLoginModal]);
+  }, [openLoginModal, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-4">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground">Redirecting to login...</p>
+        <p className="text-muted-foreground">{t('redirecting')}</p>
       </div>
     </div>
   );

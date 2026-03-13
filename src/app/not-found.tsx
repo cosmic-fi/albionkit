@@ -5,7 +5,11 @@ import { Button } from '@/components/ui/Button';
 import { Home, Search, AlertTriangle, Compass, Map, Shield, Hammer, Ghost, Coins, Sword } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 export default function NotFound() {
+  const t = useTranslations('NotFound');
+  
   const openSearch = () => {
     // Dispatch Ctrl+K to open global command menu
     document.dispatchEvent(
@@ -41,24 +45,16 @@ export default function NotFound() {
 
       <div className="relative z-10 flex flex-col items-center max-w-2xl px-4 text-center space-y-8 animate-in fade-in zoom-in duration-500 slide-in-from-bottom-4">
 
-        {/* Icon */}
-        {/* <div className="relative group cursor-default">
-          <div className="absolute -inset-6 bg-gradient-to-br from-amber-500/20 to-orange-600/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700" />
-          <div className="relative bg-background/80 backdrop-blur-sm p-8 rounded-full border border-amber-500/20 transition-all">
-            <Ghost className="w-16 h-16 text-amber-500/80 group-hover:text-amber-500 transition-colors duration-500" />
-          </div>
-        </div> */}
-
         {/* Text */}
         <div className="space-y-4 pt-20 sm:pt-20">
           <h1 className="text-6xl font-black tracking-tighter lg:text-8xl text-transparent bg-clip-text bg-gradient-to-br from-foreground via-foreground to-muted-foreground">
             404
           </h1>
           <h2 className="text-2xl font-bold text-foreground">
-            Lost in the Mists?
+            {t('title')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-lg mx-auto leading-relaxed">
-            The zone you are looking for has either been conquered, moved, or never existed in the Royal Continent.
+            {t('description')}
           </p>
         </div>
 
@@ -67,7 +63,7 @@ export default function NotFound() {
           <Link href="/">
             <Button size="lg" className="min-w-[160px] gap-2 transition-all">
               <Home className="w-4 h-4" />
-              Return Home
+              {t('returnHome')}
             </Button>
           </Link>
 
@@ -78,7 +74,7 @@ export default function NotFound() {
             onClick={openSearch}
           >
             <Search className="w-4 h-4" />
-            Search Global
+            {t('searchGlobal')}
             <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted/50 px-1.5 font-mono text-[10px] font-medium text-muted-foreground ml-2">
               <span className="text-xs">⌘</span>K
             </kbd>
@@ -88,14 +84,14 @@ export default function NotFound() {
         {/* Suggested Links */}
         <div className="pt-12 w-full">
           <p className="text-xs font-bold text-muted-foreground/50 uppercase tracking-[0.2em] mb-6">
-            Safe Zones
+            {t('safeZones')}
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: 'Market', href: '/tools/market-flipper', icon: Coins, color: 'group-hover:text-green-500' },
-              { label: 'PvP Intel', href: '/tools/pvp-intel', icon: Sword, color: 'group-hover:text-red-500' },
-              { label: 'Builds', href: '/builds', icon: Shield, color: 'group-hover:text-blue-500' },
-              { label: 'Crafting', href: '/tools/crafting-calc', icon: Hammer, color: 'group-hover:text-amber-500' },
+              { label: t('links.market'), href: '/tools/market-flipper', icon: Coins, color: 'group-hover:text-green-500' },
+              { label: t('links.pvp'), href: '/tools/pvp-intel', icon: Sword, color: 'group-hover:text-red-500' },
+              { label: t('links.builds'), href: '/builds', icon: Shield, color: 'group-hover:text-blue-500' },
+              { label: t('links.crafting'), href: '/tools/crafting-calc', icon: Hammer, color: 'group-hover:text-amber-500' },
             ].map((item) => (
               <Link
                 key={item.label}

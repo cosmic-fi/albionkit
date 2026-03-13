@@ -8,8 +8,10 @@ import { collection, query, orderBy, limit, onSnapshot, doc, updateDoc, writeBat
 import { AppNotification, NotificationType } from '@/lib/notification-service';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export function NotificationDropdown() {
+  const t = useTranslations('Common');
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -132,13 +134,13 @@ export function NotificationDropdown() {
       {isOpen && (
         <div className="fixed left-4 right-4 top-[4.5rem] sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96 bg-card border border-border rounded-xl z-50 animate-in fade-in slide-in-from-top-2 overflow-hidden">
           <div className="p-3 border-b border-border flex items-center justify-between bg-muted/30">
-            <h3 className="font-semibold text-sm">Notifications</h3>
+            <h3 className="font-semibold text-sm">{t('notifications')}</h3>
             {unreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
                 className="text-xs text-primary hover:underline flex items-center gap-1"
               >
-                <Check className="h-3 w-3" /> Mark all read
+                <Check className="h-3 w-3" /> {t('markAllAsRead')}
               </button>
             )}
           </div>
@@ -147,7 +149,7 @@ export function NotificationDropdown() {
             {notifications.length === 0 ? (
               <div className="p-8 text-center text-muted-foreground text-sm">
                 <Bell className="h-8 w-8 mx-auto mb-3 opacity-20" />
-                <p>No notifications yet</p>
+                <p>{t('noNotifications')}</p>
               </div>
             ) : (
               <div className="divide-y divide-border/50">
@@ -199,7 +201,7 @@ export function NotificationDropdown() {
               onClick={() => setIsOpen(false)}
               className="text-xs text-muted-foreground hover:text-primary transition-colors"
             >
-              Manage notification preferences
+              {t('manageNotifications')}
             </Link>
           </div>
         </div>

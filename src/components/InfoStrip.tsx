@@ -1,9 +1,9 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MessageSquare, Crown, TrendingUp, Shield, Zap, Heart, Coins, Hammer, Lightbulb, Github, Bug, Sword, ScrollText, Utensils } from 'lucide-react';
+import { MessageSquare, Crown, TrendingUp, Shield, Zap, Heart, Coins, Hammer, Lightbulb, Bug, Sword, ScrollText, Utensils } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export type PageId = 'home' | 'pvp-intel' | 'zvz-tracker' | 'market-flipper' | 'crafting-calc' | 'kill-feed' | 'gold-price' | 'builds' | 'profits' | 'profits-alchemy' | 'profits-cooking' | 'profits-animal' | 'profits-farming' | 'profits-labour' | 'profits-enchanting' | 'profits-chopped-fish';
 
@@ -12,8 +12,7 @@ interface InfoItem {
   relatedPages?: PageId[];
   excludePages?: PageId[];
   icon: any;
-  text: string;
-  actionLabel: string;
+  translationKey: string;
   actionLink: string;
   color: string;
   isExternal?: boolean;
@@ -24,8 +23,7 @@ const INFO_ITEMS: InfoItem[] = [
   {
     id: 'twitter',
     icon: MessageSquare,
-    text: "Follow us on Twitter for the latest updates, feature announcements, and community highlights!",
-    actionLabel: "Follow on Twitter",
+    translationKey: 'twitter',
     actionLink: "https://twitter.com/Albion_Kit",
     color: "text-blue-400",
     isExternal: true
@@ -33,19 +31,9 @@ const INFO_ITEMS: InfoItem[] = [
   {
     id: 'share',
     icon: Heart,
-    text: "Enjoying the app? Consider sharing it with your guildmates!",
-    actionLabel: "Share App",
+    translationKey: 'share',
     actionLink: "#share",
     color: "text-pink-400"
-  },
-  {
-    id: 'github',
-    icon: Github,
-    text: "Follow our organization on GitHub for updates and future open source projects.",
-    actionLabel: "View GitHub",
-    actionLink: "https://github.com/albionkit",
-    color: "text-slate-200",
-    isExternal: true
   },
 
   // Tool Promos (Cross-linking)
@@ -53,8 +41,7 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'market-flipper',
     excludePages: ['market-flipper'],
     icon: TrendingUp,
-    text: "Track real-time market trends and find profitable flips with our Market Flipper tool.",
-    actionLabel: "Check Market",
+    translationKey: 'marketFlipper',
     actionLink: "/tools/market-flipper",
     color: "text-green-400"
   },
@@ -62,8 +49,7 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'zvz-tracker',
     excludePages: ['zvz-tracker'],
     icon: Shield,
-    text: "Analyze guild performance and battle history with our advanced ZvZ Tracker.",
-    actionLabel: "Analyze ZvZ",
+    translationKey: 'zvzTracker',
     actionLink: "/tools/zvz-tracker",
     color: "text-purple-400"
   },
@@ -71,8 +57,7 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'pvp-intel',
     excludePages: ['pvp-intel', 'kill-feed'],
     icon: Zap,
-    text: "Get real-time PvP intel and player statistics to stay ahead of the competition.",
-    actionLabel: "PvP Intel",
+    translationKey: 'pvpIntel',
     actionLink: "/tools/pvp-intel",
     color: "text-red-400"
   },
@@ -80,8 +65,7 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'gold-price',
     excludePages: ['gold-price'],
     icon: Coins,
-    text: "Monitor Gold/Silver exchange rates and calculate Premium costs efficiently.",
-    actionLabel: "Check Gold",
+    translationKey: 'goldPrice',
     actionLink: "/tools/gold-price",
     color: "text-yellow-400"
   },
@@ -89,8 +73,7 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'crafting-calc',
     excludePages: ['crafting-calc'],
     icon: Hammer,
-    text: "Maximize your crafting profits with our advanced Crafting Calculator.",
-    actionLabel: "Calculate Profits",
+    translationKey: 'craftingCalc',
     actionLink: "/tools/crafting-calc",
     color: "text-orange-400"
   },
@@ -98,8 +81,7 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'builds',
     excludePages: ['builds'],
     icon: Sword,
-    text: "Discover the current meta and share your own builds in our Builds Database.",
-    actionLabel: "View Builds",
+    translationKey: 'builds',
     actionLink: "/builds",
     color: "text-cyan-400"
   },
@@ -107,8 +89,7 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'profits-alchemy',
     excludePages: ['profits-alchemy'],
     icon: ScrollText,
-    text: "Calculate profits for Alchemy, Cooking, and more with our Profit Calculators.",
-    actionLabel: "Calculate Alchemy",
+    translationKey: 'profitsAlchemy',
     actionLink: "/profits/alchemy",
     color: "text-emerald-400"
   },
@@ -116,8 +97,7 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'profits-cooking',
     excludePages: ['profits-cooking'],
     icon: Utensils,
-    text: "Maximize your food crafting profits with our advanced Cooking Calculator.",
-    actionLabel: "Calculate Cooking",
+    translationKey: 'profitsCooking',
     actionLink: "/profits/cooking",
     color: "text-orange-400"
   },
@@ -126,16 +106,14 @@ const INFO_ITEMS: InfoItem[] = [
   {
     id: 'tip-1',
     icon: Lightbulb,
-    text: "Did you know? You can search for any item or player using the global command menu (Ctrl+K).",
-    actionLabel: "Try Search",
+    translationKey: 'tip1',
     actionLink: "#search",
     color: "text-cyan-400"
   },
   {
     id: 'feedback',
     icon: Bug,
-    text: "Found a bug or have a suggestion? Let us know directly via GitHub.",
-    actionLabel: "Report Bug",
+    translationKey: 'feedback',
     actionLink: "https://github.com/albionkit",
     color: "text-rose-400",
     isExternal: true
@@ -196,6 +174,7 @@ export function InfoStrip({ currentPage, children }: InfoStripProps) {
 }
 
 function RandomInfoCard({ item }: { item: InfoItem }) {
+  const t = useTranslations('InfoStrip');
   const Icon = item.icon;
 
   const handleAction = () => {
@@ -226,7 +205,7 @@ function RandomInfoCard({ item }: { item: InfoItem }) {
             <Icon className="w-5 h-5" />
           </div>
           <p className="text-sm text-muted-foreground font-medium max-w-xl">
-            {item.text}
+            {t(`${item.translationKey}.text`)}
           </p>
         </div>
 
@@ -236,7 +215,7 @@ function RandomInfoCard({ item }: { item: InfoItem }) {
               onClick={handleAction}
               className="whitespace-nowrap px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider rounded-md transition-all hover:scale-105 active:scale-95"
             >
-              {item.actionLabel}
+              {t(`${item.translationKey}.action`)}
             </button>
           ) : (
             <Link
@@ -244,7 +223,7 @@ function RandomInfoCard({ item }: { item: InfoItem }) {
               target={item.isExternal ? "_blank" : undefined}
               className="whitespace-nowrap px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider rounded-md transition-all hover:scale-105 active:scale-95 inline-block text-center"
             >
-              {item.actionLabel}
+              {t(`${item.translationKey}.action`)}
             </Link>
           )}
         </div>

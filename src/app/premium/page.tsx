@@ -9,8 +9,11 @@ import Link from 'next/link';
 
 import { PageShell } from '@/components/PageShell';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 export default function PremiumPage() {
+  const t = useTranslations('Premium');
+  const ts = useTranslations('Subscription');
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
@@ -63,7 +66,7 @@ export default function PremiumPage() {
         
         if (result.error) {
             console.error(result.error);
-            toast.error('Payment initialization failed. Please check your network or try again later.');
+            toast.error(ts('paymentFailed'));
         } else if (result.url) {
             // Redirect to Lemon Squeezy
             window.location.href = result.url;
@@ -71,7 +74,7 @@ export default function PremiumPage() {
         }
     } catch (err) {
         console.error(err);
-        toast.error('An unexpected error occurred.');
+        toast.error(ts('unexpectedError'));
     }
 
     setProcessing(null);
@@ -80,8 +83,8 @@ export default function PremiumPage() {
   if (loading) {
     return (
       <PageShell
-        title="Become a Supporter"
-        description="Unlock the full power of AlbionKit. Choose the tier that fits your playstyle."
+        title={t('title')}
+        description={t('description')}
         icon={<Crown className="h-6 w-6" />}
       >
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -108,8 +111,8 @@ export default function PremiumPage() {
 
   return (
     <PageShell
-        title="Become a Supporter"
-        description="Unlock the full power of AlbionKit. Choose the tier that fits your playstyle."
+        title={t('title')}
+        description={t('description')}
         icon={<Crown className="h-6 w-6" />}
     >
       {/* Billing Interval Toggle */}
@@ -123,7 +126,7 @@ export default function PremiumPage() {
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            Monthly
+            {ts('monthly')}
           </button>
           <button
             onClick={() => setBillingInterval('year')}
@@ -133,7 +136,7 @@ export default function PremiumPage() {
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            Yearly <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 rounded-full border border-green-500/30 font-bold">2 MONTHS FREE</span>
+            {ts('yearly')} <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 rounded-full border border-green-500/30 font-bold">{ts('monthsFree')}</span>
           </button>
         </div>
       </div>
@@ -144,7 +147,7 @@ export default function PremiumPage() {
           {access.reason === 'premium' && (
             <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
               <span className="bg-amber-500 text-slate-900 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                <Check className="h-3 w-3" /> ACTIVE
+                <Check className="h-3 w-3" /> {t('active')}
               </span>
             </div>
           )}
@@ -154,21 +157,21 @@ export default function PremiumPage() {
               <Zap className="h-6 w-6 text-amber-500" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-foreground">Adept Tier</h3>
+              <h3 className="text-xl font-bold text-foreground">{t('adeptTier')}</h3>
               <p className="text-slate-400">
                 {billingInterval === 'year' 
-                  ? 'Get 2 months FREE with yearly billing!' 
-                  : 'For the solo conqueror'}
+                  ? t('yearlyBillingBonus') 
+                  : t('soloConqueror')}
               </p>
             </div>
           </div>
 
           <div className="mb-8 space-y-4">
-            <FeatureItem text="Alliance Radar Dashboard" />
-            <FeatureItem text="Advanced ZvZ Heatmaps" />
-            <FeatureItem text="Market History Analytics" />
-            <FeatureItem text="Unlimited Watchlist" />
-            <FeatureItem text="Support Development" />
+            <FeatureItem text={t('features.radar')} />
+            <FeatureItem text={t('features.heatmaps')} />
+            <FeatureItem text={t('features.history')} />
+            <FeatureItem text={t('features.watchlist')} />
+            <FeatureItem text={t('features.support')} />
           </div>
 
           <div className="mt-auto">
@@ -182,12 +185,12 @@ export default function PremiumPage() {
             </div>
             
             <p className="text-xs text-slate-500 mb-4 italic">
-              * This is a donation to support server costs. Access is a thank-you perk.
+              {t('donationNote')}
             </p>
 
             {access.reason === 'premium' ? (
                <button disabled className="w-full py-3 bg-slate-800 text-slate-400 rounded-xl font-bold cursor-not-allowed border border-slate-700">
-                 Plan Active
+                 {t('planActive')}
                </button>
             ) : (
               <button 
@@ -196,11 +199,11 @@ export default function PremiumPage() {
                 className="w-full py-3 bg-amber-600 hover:bg-amber-700 text-foreground rounded-xl font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {processing === 'personal' 
-                  ? 'Processing...' 
-                  : (!hasUsedTrial && billingInterval === 'month' ? 'Try it out for Free' : 'Unlock Adept Features')}
+                  ? ts('processing') 
+                  : (!hasUsedTrial && billingInterval === 'month' ? ts('tryFree') : ts('unlockAdept'))}
               </button>
             )}
-            {!user && <p className="text-center text-sm text-slate-500 mt-2">Login required</p>}
+            {!user && <p className="text-center text-sm text-slate-500 mt-2">{t('loginRequired')}</p>}
           </div>
         </div>
 
@@ -209,7 +212,7 @@ export default function PremiumPage() {
            {access.reason === 'guild' && (
             <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
               <span className="bg-indigo-500 text-foreground text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                <Check className="h-3 w-3" /> ACTIVE
+                <Check className="h-3 w-3" /> {t('active')}
               </span>
             </div>
           )}
@@ -219,21 +222,21 @@ export default function PremiumPage() {
               <Users className="h-6 w-6 text-indigo-500" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-foreground">Guild Master</h3>
+              <h3 className="text-xl font-bold text-foreground">{t('guildMaster')}</h3>
               <p className="text-slate-400">
                 {billingInterval === 'year' 
-                  ? 'Get 2 months FREE! Power up your entire army.' 
-                  : 'Power up your entire army'}
+                  ? t('guildBonusDesc') 
+                  : t('powerArmy')}
               </p>
             </div>
           </div>
 
           <div className="mb-8 space-y-4">
-            <FeatureItem text="Adept Status for ALL Guild Members" />
-            <FeatureItem text="Guild Activity Dashboard" />
-            <FeatureItem text="Death/Kill Feed Integration" />
-            <FeatureItem text="Priority API Updates" />
-            <FeatureItem text="Guild Leaderboard Badge" />
+            <FeatureItem text={t('features.guildAdept')} />
+            <FeatureItem text={t('features.guildDashboard')} />
+            <FeatureItem text={t('features.integration')} />
+            <FeatureItem text={t('features.priority')} />
+            <FeatureItem text={t('features.badge')} />
           </div>
 
           <div className="mt-auto">
@@ -247,30 +250,30 @@ export default function PremiumPage() {
             </div>
 
             <p className="text-xs text-slate-500 mb-4 italic">
-              * Supports development of advanced guild tools.
+              {t('guildDonationNote')}
             </p>
 
             {profile?.guildName ? (
                <div className="mb-4 p-3 bg-slate-800 rounded-lg flex items-center justify-between">
-                 <span className="text-sm text-slate-300">Target Guild:</span>
+                 <span className="text-sm text-slate-300">{t('targetGuild')}</span>
                  <span className="font-bold text-indigo-400">{profile.guildName}</span>
                </div>
             ) : (
                 <div className="mb-4 p-3 bg-amber-900/20 border border-amber-900/50 rounded-lg">
                   <p className="text-xs text-amber-400 flex items-center gap-2">
                     <AlertCircle className="h-3 w-3" />
-                    No guild linked. Join now to reserve license.
+                    {t('noGuildLinked')}
                   </p>
                 </div>
             )}
 
             {access.reason === 'guild' ? (
               <button disabled className="w-full py-3 bg-slate-800 text-slate-400 rounded-xl font-bold cursor-not-allowed border border-slate-700">
-                Plan Active
+                {t('planActive')}
               </button>
             ) : access.reason === 'pending_guild' ? (
                 <button disabled className="w-full py-3 bg-amber-900/50 text-amber-400 rounded-xl font-bold cursor-not-allowed border border-amber-900/50 flex items-center justify-center gap-2">
-                   <AlertCircle className="h-4 w-4" /> Pending Activation
+                   <AlertCircle className="h-4 w-4" /> {t('pendingActivation')}
                 </button>
             ) : (
                 <button 
@@ -279,8 +282,8 @@ export default function PremiumPage() {
                   className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-foreground rounded-xl font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {processing === 'guild' 
-                    ? 'Processing...' 
-                    : (!hasUsedTrial && billingInterval === 'month' ? 'Try it out for Free' : 'Get Guild Master')}
+                    ? ts('processing') 
+                    : (!hasUsedTrial && billingInterval === 'month' ? ts('tryFree') : ts('getGuildMaster'))}
                 </button>
             )}
           </div>

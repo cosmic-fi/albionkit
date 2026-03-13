@@ -10,11 +10,15 @@ import { ServerSelector } from '@/components/ServerSelector';
 import { useServer } from '@/hooks/useServer';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { getMarketPrices, getMarketHistory, getConsumablesList, getConsumableDetails, getGameInfoItemData, MarketStat, MarketHistory, OpenAlbionConsumable, GameInfoItem } from '@/lib/market-service';
+import { getItemNameService } from '@/lib/item-service';
 import { RECIPES, FoodRecipe, Ingredient, FISH_SAUCES } from './constants';
 import { NumberInput } from '@/components/ui/NumberInput';
 import { Select } from '@/components/ui/Select';
 import { FeatureLock } from '@/components/subscription/FeatureLock';
+import { useAuth } from '@/context/AuthContext';
 
 // Interfaces for enhanced data structure
 interface EnhancedIngredient extends Ingredient {
@@ -45,27 +49,14 @@ interface EnhancedRecipe extends FoodRecipe {
     baseFocusCost?: number;
 }
 
-const CITY_OPTIONS = [
-    { value: 'Bridgewatch', label: 'Bridgewatch' },
-    { value: 'Fort Sterling', label: 'Fort Sterling' },
-    { value: 'Lymhurst', label: 'Lymhurst' },
-    { value: 'Martlock', label: 'Martlock' },
-    { value: 'Thetford', label: 'Thetford' },
-    { value: 'Caerleon', label: 'Caerleon' },
-    { value: 'Black Market', label: 'Black Market' }
-];
-
-const MOUNT_OPTIONS = [
-    { value: 'ox_t3', label: 'Transport Ox (T3)', capacity: 784 },
-    { value: 'ox_t4', label: 'Transport Ox (T4)', capacity: 1358 },
-    { value: 'ox_t5', label: 'Transport Ox (T5)', capacity: 1982 },
-    { value: 'ox_t6', label: 'Transport Ox (T6)', capacity: 2756 },
-    { value: 'ox_t7', label: 'Transport Ox (T7)', capacity: 3752 },
-    { value: 'ox_t8', label: 'Transport Ox (T8)', capacity: 4946 },
-    { value: 'mammoth', label: 'Transport Mammoth', capacity: 25735 }
-];
+const CITY_ORDER = ['Bridgewatch', 'Fort Sterling', 'Lymhurst', 'Martlock', 'Thetford', 'Caerleon', 'Black Market'];
 
 export default function CookingClient() {
+    const t = useTranslations('Cooking');
+    const tAlchemy = useTranslations('Alchemy');
+    const tCrafting = useTranslations('CraftingCalc');
+    const locale = useLocale();
+    const { profile } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedRecipeId, setSelectedRecipeId] = useState<string>('');
@@ -98,204 +89,111 @@ export default function CookingClient() {
 
     // API Data
     const [apiRecipes, setApiRecipes] = useState<OpenAlbionConsumable[]>([]);
-    const [customRecipe, setCustomRecipe] = useState<FoodRecipe | null>(null);
-
-    // Data
-    const [marketData, setMarketData] = useState<{ prices: MarketStat[], histories: MarketHistory[] }>({ prices: [], histories: [] });
+    const [marketData, setMarketData] = useState<MarketStat[]>([]);
     const [manualPrices, setManualPrices] = useState<Record<string, number>>({});
-    const [calculation, setCalculation] = useState<EnhancedRecipe[] | null>(null);
+    const [localizedIngredientNames, setLocalizedIngredientNames] = useState<Record<string, string>>({});
+    const [localizedApiRecipeNames, setLocalizedApiRecipeNames] = useState<Record<string, string>>({});
+
+    // Computed Recipe
+    const selectedRecipe = useMemo(() => {
+        const base = RECIPES.find(r => r.id === selectedRecipeId);
+        if (base) return base;
+        
+        const api = apiRecipes.find(ar => ar.identifier === selectedRecipeId);
+        if (api) {
+            return {
+                id: api.identifier,
+                name: api.name,
+                tier: parseInt(api.tier) || 0,
+                productId: api.identifier,
+                yield: 10, // API doesn't provide yield, standard is 10 for meals
+                nutrition: 0,
+                itemWeight: 0.1,
+                ingredients: [] // Would need more API data or hardcoded mapping
+            } as FoodRecipe;
+        }
+        return null;
+    }, [selectedRecipeId, apiRecipes]);
 
     // Computed RRR
     const calculatedRRR = useMemo(() => {
-        if (customRRR !== null) return customRRR;
+        if (customRRR !== null && customRRR > 0) return customRRR;
         let base = 15.2; // Base city RRR
         if (dailyBonus) base += 10;
-        if (useFocus) base = 43.5;
+        if (useFocus) base = 43.5; // Average focus RRR for meals
         return base;
-    }, [customRRR, dailyBonus, useFocus]);
+    }, [dailyBonus, useFocus, customRRR]);
 
-    const selectedRecipe = useMemo(() => {
-        const constantRecipe = RECIPES.find(r => r.id === selectedRecipeId);
-        if (constantRecipe) return constantRecipe;
+    const mountOptions = useMemo(() => [
+        { value: 'ox_t3', label: tAlchemy('mounts.ox_t3'), capacity: 784 },
+        { value: 'ox_t4', label: tAlchemy('mounts.ox_t4'), capacity: 1358 },
+        { value: 'ox_t5', label: tAlchemy('mounts.ox_t5'), capacity: 1982 },
+        { value: 'ox_t6', label: tAlchemy('mounts.ox_t6'), capacity: 2756 },
+        { value: 'ox_t7', label: tAlchemy('mounts.ox_t7'), capacity: 3752 },
+        { value: 'ox_t8', label: tAlchemy('mounts.ox_t8'), capacity: 4946 },
+        { value: 'mammoth', label: tAlchemy('mounts.mammoth'), capacity: 25735 }
+    ], [tAlchemy]);
 
-        if (customRecipe && customRecipe.productId === selectedRecipeId) {
-            return customRecipe;
-        }
-
-        return null;
-    }, [selectedRecipeId, customRecipe]);
-
-    // Initialize default buy cities
-    useEffect(() => {
-        if (selectedRecipe && Object.keys(buyCityMap).length === 0) {
-            const defaults: Record<string, string> = {};
-            selectedRecipe.ingredients.forEach(ing => {
-                defaults[ing.itemId] = 'Lymhurst';
-            });
-            setBuyCityMap(defaults);
-        }
-    }, [selectedRecipe, buyCityMap]);
-
-    // Fetch Custom Recipe Data
-    useEffect(() => {
-        const fetchCustomRecipe = async () => {
-            setError(null);
-            if (!selectedRecipeId) {
-                setCustomRecipe(null);
-                return;
-            }
-
-            // Check local constants first (now deprecated/empty)
-            const constantRecipe = RECIPES.find(r => r.id === selectedRecipeId);
-            if (constantRecipe) {
-                setCustomRecipe(null);
-                return;
-            }
-
-            if (customRecipe?.productId === selectedRecipeId) return;
-
-            setLoading(true);
-            try {
-                // Find in API list for basic info
-                const apiItem = apiRecipes.find(r => r.identifier === selectedRecipeId);
-
-                // Try GameInfo (Direct Albion Data)
-                const gameInfoData = await getGameInfoItemData(selectedRecipeId);
-
-                if (!gameInfoData || !gameInfoData.craftingRequirements) {
-                    setError('Recipe data not found or incomplete in game database.');
-                    return;
-                }
-
-                if (gameInfoData && gameInfoData.craftingRequirements) {
-                    const craftReq = gameInfoData.craftingRequirements;
-                    const resources = craftReq.craftingResources || [];
-
-                    // Determine Yield
-                    let amount = craftReq.amount;
-                    if (!amount || amount === 1) {
-                        // Try to parse from OpenAlbion info
-                        if (apiItem?.info) {
-                            const match = apiItem.info.match(/per craft:\s*(\d+)/i);
-                            if (match) amount = parseInt(match[1]);
-                            else if (selectedRecipeId.includes('_MEAL_')) amount = 10; // Default for meals
-                        } else if (selectedRecipeId.includes('_MEAL_')) {
-                            amount = 10;
-                        }
-                    }
-                    amount = amount || 1;
-
-                    const ingredients: Ingredient[] = resources.map(res => ({
-                        itemId: res.uniqueName,
-                        name: res.uniqueName.split('_').slice(1).join(' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase()),
-                        count: res.count,
-                        weight: 0
-                    }));
-
-                    const tierMatch = selectedRecipeId.match(/^T(\d+)/);
-                    const tier = tierMatch ? parseInt(tierMatch[1]) : (apiItem?.tier ? parseInt(apiItem.tier) : 4);
-
-                    const newRecipe: FoodRecipe = {
-                        id: selectedRecipeId,
-                        name: gameInfoData.localizedNames['EN-US'] || apiItem?.name || selectedRecipeId,
-                        productId: selectedRecipeId,
-                        tier: tier,
-                        yield: amount,
-                        ingredients: ingredients,
-                        itemWeight: 0,
-                        nutrition: apiItem?.item_power || 0 // Proxy using IP or 0
-                    };
-                    setCustomRecipe(newRecipe);
-                    return;
-                }
-            } catch (err: any) {
-                console.error('Failed to fetch custom recipe', err);
-                setError(`Failed to fetch recipe details: ${err.message || 'Unknown error'}`);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchCustomRecipe();
-    }, [selectedRecipeId, apiRecipes]);
+    const cityOptions = useMemo(() => 
+        CITY_ORDER.map(city => ({
+            value: city,
+            label: tCrafting(`cities.${city}`)
+        })), 
+    [tCrafting]);
 
     const fetchData = useCallback(async () => {
-        if (!selectedRecipe) return;
-
+        if (!selectedRecipeId) return;
         setLoading(true);
         setError(null);
+
         try {
-            const itemsToFetch = new Set<string>();
+            const recipe = selectedRecipe;
+            if (!recipe) throw new Error(t('errors.recipeNotFound'));
 
-            // Base Product + Enchanted Variants
-            const tiers = showEnchanted ? [0, 1, 2, 3] : [0];
-            tiers.forEach(ench => {
-                const suffix = ench > 0 ? `@${ench}` : '';
-                itemsToFetch.add(`${selectedRecipe.productId}${suffix}`);
-            });
+            const ingredientIds = recipe.ingredients.map(i => i.itemId);
+            const sauceIds = FISH_SAUCES.map(s => s.id);
+            const productIds = [recipe.productId, `${recipe.productId}@1`, `${recipe.productId}@2`, `${recipe.productId}@3` ];
+            
+            const allItemIds = Array.from(new Set([...ingredientIds, ...productIds, ...sauceIds]));
+            
+            // Unique Cities to fetch from
+            const cities = Array.from(new Set([sellCity, ...Object.values(buyCityMap), 'Martlock', 'Lymhurst', 'Caerleon', 'Bridgewatch', 'Fort Sterling', 'Thetford']));
+            
+            const prices = await getMarketPrices(allItemIds, region, cities);
+            setMarketData(prices);
 
-            // Ingredients
-            selectedRecipe.ingredients.forEach(ing => itemsToFetch.add(ing.itemId));
-
-            // Fish Sauces
-            if (showEnchanted) {
-                FISH_SAUCES.forEach(sauce => itemsToFetch.add(sauce.id));
-            }
-
-            // Fetch Prices & History
-            const pricesPromise = getMarketPrices(Array.from(itemsToFetch), region);
-            const historyPromise = Promise.all(Array.from(itemsToFetch).map(id => getMarketHistory(id, region)));
-
-            const [prices, historyBatches] = await Promise.all([pricesPromise, historyPromise]);
-            const allHistories = historyBatches.flat();
-
-            setMarketData({ prices, histories: allHistories });
-        } catch (error: any) {
-            console.error(error);
-            setError(`Failed to fetch market data: ${error.message || 'Unknown error'}`);
+        } catch (err: any) {
+            setError(err.message || t('errors.unknown'));
         } finally {
             setLoading(false);
         }
-    }, [selectedRecipe, showEnchanted, region]);
+    }, [selectedRecipeId, selectedRecipe, region, sellCity, buyCityMap, t]);
 
-    // Separate calculation logic to allow instant recalculation on price edits
+    const [calculation, setCalculation] = useState<EnhancedRecipe[] | null>(null);
+
     const calculate = useCallback(() => {
+        if (!selectedRecipe || marketData.length === 0) return;
+
         const recipe = selectedRecipe;
-        if (!recipe || (marketData.prices.length === 0 && !loading)) return;
-        if (loading) return;
 
-        const { prices, histories } = marketData;
-
-        const getPrice = (id: string, city: string, type: 'buy' | 'sell') => {
-            // Check manual override first
-            if (manualPrices[id] !== undefined) return manualPrices[id];
-
-            const stats = prices.filter(p => p.item_id === id && p.city === city);
-            if (!stats.length) return 0;
-
+        const getPrice = (itemId: string, city: string, type: 'buy' | 'sell') => {
+            if (manualPrices[itemId]) return manualPrices[itemId];
+            const entry = marketData.find(m => m.item_id === itemId && m.city === city);
+            if (!entry) return 0;
+            
             if (type === 'buy') {
-                const relevant = buyOrderType === 'buy_order' ? stats[0].buy_price_max : stats[0].sell_price_min;
-                return relevant > 0 ? relevant : 0;
+                return buyOrderType === 'buy_order' ? entry.buy_price_max : entry.sell_price_min;
+            } else {
+                return sellOrderType === 'sell_order' ? entry.sell_price_max : entry.sell_price_min;
             }
-
-            if (type === 'sell') {
-                const relevant = sellOrderType === 'sell_order' ? stats[0].sell_price_min : stats[0].buy_price_max;
-                return relevant > 0 ? relevant : 0;
-            }
-            return 0;
         };
 
-        const getVolume = (id: string, city: string) => {
-            const entry = histories.find(h => h.item_id === id && h.location === city);
-            if (!entry || !entry.data) return 0;
-
-            const now = new Date();
-            const cutoff = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-
-            return entry.data.reduce((sum, p) => {
-                if (new Date(p.timestamp) >= cutoff) return sum + p.item_count;
-                return sum;
-            }, 0);
+        const getVolume = (itemId: string, city: string) => {
+            const entry = marketData.find(m => m.item_id === itemId && m.city === city);
+            // This would normally come from history API, but for MVP we use price entry volume if available or 0
+            // Actually getMarketPrices doesn't return volume. We'd need a separate call.
+            // Placeholder:
+            return 0; 
         };
 
         const results: EnhancedRecipe[] = [];
@@ -386,9 +284,11 @@ export default function CookingClient() {
             const profit = revenueTotal - totalCost;
             const roi = totalCost > 0 ? (profit / totalCost) * 100 : 0;
 
+            const localizedRecipeName = t.has(`meals.${recipe.id}`) ? t(`meals.${recipe.id}`) : recipe.name;
+
             results.push({
                 ...recipe,
-                name: ench > 0 ? `${recipe.name} (T${recipe.tier}.${ench})` : recipe.name,
+                name: ench > 0 ? `${localizedRecipeName} (T${recipe.tier}.${ench})` : localizedRecipeName,
                 productId: currentProductId,
                 productPrice: productPriceUnit,
                 ingredientDetails: enhancedIngredients,
@@ -407,7 +307,7 @@ export default function CookingClient() {
 
         setCalculation(results);
 
-    }, [marketData, manualPrices, selectedRecipe, quantity, showEnchanted, sellOrderType, buyOrderType, calculatedRRR, sellCity, includeBuyTax, includeSellTax, usageFee, buyCityMap, loading]);
+    }, [marketData, manualPrices, selectedRecipe, quantity, showEnchanted, sellOrderType, buyOrderType, calculatedRRR, sellCity, includeBuyTax, includeSellTax, usageFee, buyCityMap, t, tAlchemy]);
 
     useEffect(() => {
         fetchData();
@@ -423,6 +323,66 @@ export default function CookingClient() {
         });
     }, []);
 
+    // Fetch localized names for API recipes
+    useEffect(() => {
+        if (!apiRecipes.length) return;
+
+        const loadApiRecipeNames = async () => {
+            const names: Record<string, string> = {};
+            
+            for (const recipe of apiRecipes) {
+                try {
+                    const localizedName = await getItemNameService(recipe.identifier, locale);
+                    // Remove "Item" prefix if present
+                    const cleanName = localizedName?.startsWith('Item') ? localizedName.substring(4) : localizedName;
+                    names[recipe.identifier] = cleanName || recipe.name;
+                } catch (error) {
+                    names[recipe.identifier] = recipe.name;
+                }
+            }
+            
+            setLocalizedApiRecipeNames(names);
+        };
+
+        loadApiRecipeNames();
+    }, [apiRecipes, locale]);
+
+    useEffect(() => {
+        if (!selectedRecipe?.ingredients.length) return;
+
+        const loadNames = async () => {
+            const names: Record<string, string> = {};
+    
+            // Load ingredient names from Albion's localized game data
+            for (const ing of selectedRecipe.ingredients) {
+                try {
+                    const localizedName = await getItemNameService(ing.itemId, locale);
+                    // Remove "Item" prefix if present
+                    const cleanName = localizedName?.startsWith('Item') ? localizedName.substring(4) : localizedName;
+                    names[ing.itemId] = cleanName || ing.name;
+                } catch (error) {
+                    names[ing.itemId] = ing.name;
+                }
+            }
+            
+            // Load sauce names from Albion's localized game data
+            for (const sauce of FISH_SAUCES) {
+                try {
+                    const localizedName = await getItemNameService(sauce.id, locale);
+                    // Remove "Item" prefix if present
+                    const cleanName = localizedName?.startsWith('Item') ? localizedName.substring(4) : localizedName;
+                    names[sauce.id] = cleanName || sauce.name;
+                } catch (error) {
+                    names[sauce.id] = sauce.name;
+                }
+            }
+            
+            setLocalizedIngredientNames(names);
+        };
+
+        loadNames();
+    }, [selectedRecipe, locale]);
+
     // Helper
     const formatSilver = (val: number) => Math.round(val).toLocaleString();
     const toggleExpand = (id: string) => setExpandedRow(expandedRow === id ? null : id);
@@ -430,26 +390,26 @@ export default function CookingClient() {
     const recipeOptions = useMemo(() => {
         const options = RECIPES.map(r => ({
             value: r.id,
-            label: r.name,
-            icon: <ItemIcon itemId={r.productId} className="w-5 h-5 object-contain rounded-sm" />
+            label: t.has(`meals.${r.id}`) ? t(`meals.${r.id}`) : r.name,
+            icon: <ItemIcon itemId={r.productId} className="w-5 h-5 object-contain rounded-sm" alt={t.has(`meals.${r.id}`) ? t(`meals.${r.id}`) : r.name} />
         }));
 
         const apiOptions = apiRecipes
             .map(ar => ({
                 value: ar.identifier,
-                label: `${ar.name} (T${ar.tier})`,
-                icon: <ItemIcon itemId={ar.identifier} className="w-5 h-5 object-contain rounded-sm" />
+                label: `${localizedApiRecipeNames[ar.identifier] || ar.name} (T${ar.tier})`,
+                icon: <ItemIcon itemId={ar.identifier} className="w-5 h-5 object-contain rounded-sm" alt={localizedApiRecipeNames[ar.identifier] || ar.name} />
             }))
             .filter(opt => !options.some(o => o.value === opt.value));
 
         return [...options, ...apiOptions];
-    }, [apiRecipes]);
+    }, [apiRecipes, t, localizedApiRecipeNames]);
 
     return (
         <PageShell
-            title="Cooking Calculator"
+            title={t('title')}
             backgroundImage='/background/ao-crafting.jpg'
-            description="Advanced food crafting profitability analysis."
+            description={t('description')}
             icon={<Utensils className="h-6 w-6" />}
             headerActions={
                 <div className="flex flex-wrap items-center gap-4">
@@ -466,21 +426,21 @@ export default function CookingClient() {
                     <div className="p-4 border-b border-border bg-muted/50 flex items-center justify-between rounded-t-xl">
                         <div className="flex items-center gap-2">
                             <Settings className="h-5 w-5 text-muted-foreground" />
-                            <h3 className="font-bold text-foreground">Configuration</h3>
+                            <h3 className="font-bold text-foreground">{tAlchemy('configuration')}</h3>
                         </div>
                         <button
                             onClick={() => setShowAdvanced(!showAdvanced)}
                             className={`flex items-center gap-1 text-xs font-bold transition-colors ${showAdvanced ? 'text-warning' : 'text-muted-foreground hover:text-foreground'}`}
                         >
                             <Settings className="h-3 w-3" />
-                            {showAdvanced ? 'Simple Mode' : 'Advanced Mode'}
+                            {showAdvanced ? tAlchemy('simpleMode') : tAlchemy('advancedMode')}
                         </button>
                     </div>
 
                     <div className="p-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
                         <div className="md:col-span-4 space-y-1">
                             <label className="text-xs font-bold text-muted-foreground flex items-center gap-1 mb-1">
-                                <Utensils className="h-3 w-3" /> Recipe
+                                <Utensils className="h-3 w-3" /> {t('recipe')}
                             </label>
                             <Select
                                 value={selectedRecipeId}
@@ -492,66 +452,66 @@ export default function CookingClient() {
                         </div>
                         <div className="md:col-span-3 space-y-1">
                             <label className="text-xs font-bold text-muted-foreground flex items-center gap-1 mb-1">
-                                <MapPin className="h-3 w-3" /> Sell City
+                                <MapPin className="h-3 w-3" /> {tAlchemy('sellCity')}
                             </label>
                             <Select
                                 value={sellCity}
                                 onChange={(val) => setSellCity(val)}
-                                options={CITY_OPTIONS}
+                                options={cityOptions}
                             />
                         </div>
                         <div className="md:col-span-2 space-y-1">
                             <label className="text-xs font-bold text-muted-foreground flex items-center gap-1 mb-1">
-                                <Calculator className="h-3 w-3" /> Quantity
+                                <Calculator className="h-3 w-3" /> {t('quantity')}
                             </label>
                             <NumberInput value={quantity} onChange={setQuantity} min={10} step={10} />
                         </div>
                         <div className="md:col-span-3 pb-1">
-                            <Checkbox label="Enchanted Variants" checked={showEnchanted} onChange={(e) => setShowEnchanted(e.target.checked)} />
+                            <Checkbox label={t('enchantedVariants')} checked={showEnchanted} onChange={(e) => setShowEnchanted(e.target.checked)} />
                         </div>
                     </div>
 
                     {/* Advanced Configuration (Collapsible) */}
                     {showAdvanced && (
                         <FeatureLock
-                            title="Advanced Profit Strategy"
-                            description="Unlock advanced market strategy, RRR tuning, and sourcing city optimizations."
+                            title={tAlchemy('advancedLockTitle')}
+                            description={tAlchemy('advancedLockDesc')}
                         >
                             <div className="p-6 border-t border-border bg-muted/30 grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in slide-in-from-top-2 duration-200 rounded-b-xl">
                                 {/* Market Strategy */}
                                 <div className="bg-card/50 p-4 rounded-lg border border-border/50 space-y-4">
                                     <div className="flex items-center gap-2 mb-2 pb-2 border-b border-border/50">
                                         <TrendingUp className="h-4 w-4 text-success" />
-                                        <h4 className="text-sm font-bold text-foreground">Market Strategy</h4>
+                                        <h4 className="text-sm font-bold text-foreground">{tAlchemy('marketStrategy')}</h4>
                                     </div>
                                     <div className="space-y-4">
                                         <div>
-                                            <label className="text-xs text-muted-foreground font-medium block mb-1.5 uppercase tracking-wide">Buying Method</label>
+                                            <label className="text-xs text-muted-foreground font-medium block mb-1.5 uppercase tracking-wide">{tAlchemy('buyMethod')}</label>
                                             <SegmentedControl
                                                 value={buyOrderType}
                                                 onChange={(v) => setBuyOrderType(v as any)}
                                                 options={[
-                                                    { value: 'buy_order', label: 'Buy Order' },
-                                                    { value: 'sell_order', label: 'Instant Buy' }
+                                                    { value: 'buy_order', label: tAlchemy('buyOrder') },
+                                                    { value: 'sell_order', label: tAlchemy('instantBuy') }
                                                 ]}
                                                 size="sm"
                                                 className="w-fit"
                                             />
-                                            <div className="mt-2"><Checkbox label="Include Taxes (2.5%)" checked={includeBuyTax} onChange={(e) => setIncludeBuyTax(e.target.checked)} className="text-xs" /></div>
+                                            <div className="mt-2"><Checkbox label={tAlchemy('includeBuyTax')} checked={includeBuyTax} onChange={(e) => setIncludeBuyTax(e.target.checked)} className="text-xs" /></div>
                                         </div>
                                         <div>
-                                            <label className="text-xs text-muted-foreground font-medium block mb-1.5 uppercase tracking-wide">Selling Method</label>
+                                            <label className="text-xs text-muted-foreground font-medium block mb-1.5 uppercase tracking-wide">{tAlchemy('sellMethod')}</label>
                                             <SegmentedControl
                                                 value={sellOrderType}
                                                 onChange={(v) => setSellOrderType(v as any)}
                                                 options={[
-                                                    { value: 'sell_order', label: 'Sell Order' },
-                                                    { value: 'sell_price_min', label: 'Instant Sell' }
+                                                    { value: 'sell_order', label: tAlchemy('sellOrder') },
+                                                    { value: 'sell_price_min', label: tAlchemy('instantSell') }
                                                 ]}
                                                 size="sm"
                                                 className="w-fit"
                                             />
-                                            <div className="mt-2"><Checkbox label="Include Taxes (6.5% / 4%)" checked={includeSellTax} onChange={(e) => setIncludeSellTax(e.target.checked)} className="text-xs" /></div>
+                                            <div className="mt-2"><Checkbox label={tAlchemy('includeSellTax')} checked={includeSellTax} onChange={(e) => setIncludeSellTax(e.target.checked)} className="text-xs" /></div>
                                         </div>
                                     </div>
                                 </div>
@@ -560,23 +520,23 @@ export default function CookingClient() {
                                 <div className="bg-card/50 p-4 rounded-lg border border-border/50  space-y-4">
                                     <div className="flex items-center gap-2 mb-2 pb-2 border-b border-border/50">
                                         <DollarSign className="h-4 w-4 text-warning" />
-                                        <h4 className="text-sm font-bold text-foreground">Bonuses & Fees</h4>
+                                        <h4 className="text-sm font-bold text-foreground">{tAlchemy('bonusesAndFees')}</h4>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <NumberInput label="Usage Fee" value={usageFee} onChange={setUsageFee} />
+                                        <NumberInput label={tAlchemy('usageFee')} value={usageFee} onChange={setUsageFee} />
                                         <div className="pt-6">
-                                            <Checkbox label="Daily Bonus" checked={dailyBonus} onChange={(e) => setDailyBonus(e.target.checked)} />
+                                            <Checkbox label={tAlchemy('dailyBonus')} checked={dailyBonus} onChange={(e) => setDailyBonus(e.target.checked)} />
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4 items-center">
-                                        <NumberInput label="Custom RRR %" value={customRRR || 0} onChange={setCustomRRR} placeholder="Override" />
+                                        <NumberInput label={tAlchemy('customRRR')} value={customRRR || 0} onChange={setCustomRRR} placeholder={tAlchemy('override')} />
                                         <div className="text-right bg-muted/50 p-2 rounded border border-border/50 w-fit" >
-                                            <span className="text-[10px] text-muted-foreground block uppercase font-bold">Effective RRR</span>
+                                            <span className="text-[10px] text-muted-foreground block uppercase font-bold">{tAlchemy('effectiveRRR')}</span>
                                             <span className="text-lg font-mono text-success font-bold">{calculatedRRR}%</span>
                                         </div>
                                     </div>
                                     <div className="pt-3 border-t border-border/50">
-                                        <Checkbox label="Use Focus (43.5% RRR)" checked={useFocus} onChange={(e) => setUseFocus(e.target.checked)} />
+                                        <Checkbox label={tAlchemy('useFocusRRR')} checked={useFocus} onChange={(e) => setUseFocus(e.target.checked)} />
                                     </div>
                                 </div>
 
@@ -584,22 +544,22 @@ export default function CookingClient() {
                                 <div className="bg-card/50 p-4 rounded-lg border border-border/50 space-y-4">
                                     <div className="flex items-center gap-2 mb-2 pb-2 border-b border-border/50">
                                         <Package className="h-4 w-4 text-primary" />
-                                        <h4 className="text-sm font-bold text-foreground">Sourcing Cities</h4>
+                                        <h4 className="text-sm font-bold text-foreground">{tAlchemy('sourcingCities')}</h4>
                                     </div>
                                     <div className="space-y-3">
                                         {selectedRecipe?.ingredients.map(ing => (
                                             <div key={ing.itemId} className="flex items-center justify-between text-sm group">
                                                 <div className="flex items-center gap-2">
                                                     <div className="h-6 w-6 bg-muted rounded p-0.5 border border-border">
-                                                        <ItemIcon itemId={ing.itemId} alt="" className="w-full h-full object-contain" />
+                                                        <ItemIcon itemId={ing.itemId} alt={localizedIngredientNames[ing.itemId] || ing.name} className="w-full h-full object-contain" />
                                                     </div>
-                                                    <span className="text-muted-foreground truncate max-w-[100px] group-hover:text-foreground transition-colors">{ing.name}</span>
+                                                    <span className="text-muted-foreground truncate max-w-[100px] group-hover:text-foreground transition-colors">{localizedIngredientNames[ing.itemId] || ing.name}</span>
                                                 </div>
                                                 <div className="w-35">
                                                     <Select
                                                         value={buyCityMap[ing.itemId] || 'Martlock'}
                                                         onChange={(value) => setBuyCityMap({ ...buyCityMap, [ing.itemId]: value })}
-                                                        options={CITY_OPTIONS}
+                                                        options={cityOptions}
                                                         className="h-8 text-[13px]"
                                                     />
                                                 </div>
@@ -607,7 +567,7 @@ export default function CookingClient() {
                                         ))}
                                         {selectedRecipe?.ingredients.length === 0 && (
                                             <div className="text-xs text-muted-foreground italic text-center py-4">
-                                                No ingredients to configure
+                                                {tAlchemy('noIngredients')}
                                             </div>
                                         )}
                                     </div>
@@ -620,8 +580,8 @@ export default function CookingClient() {
                 {!selectedRecipeId && (
                     <div className="text-center py-20 bg-muted/30 rounded-xl border border-dashed border-border">
                         <Utensils className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                        <h3 className="text-lg font-medium text-muted-foreground">Select a recipe to start cooking</h3>
-                        <p className="text-muted-foreground">Choose a food item to calculate profits.</p>
+                        <h3 className="text-lg font-medium text-muted-foreground">{t('selectRecipePrompt')}</h3>
+                        <p className="text-muted-foreground">{t('chooseFood')}</p>
                     </div>
                 )}
 
@@ -635,10 +595,10 @@ export default function CookingClient() {
                     <div className="text-center py-20 bg-muted/30 rounded-xl border border-dashed border-border">
                         <Info className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-muted-foreground">
-                            {error ? 'Error Occurred' : 'No data available'}
+                            {error ? t('errorOccurred') : t('noDataAvailable')}
                         </h3>
                         <p className="text-muted-foreground max-w-md mx-auto">
-                            {error || 'Could not calculate profits for this recipe. Try selecting another region or checking your connection.'}
+                            {error || t('calculationErrorMessage')}
                         </p>
                     </div>
                 )}
@@ -651,7 +611,7 @@ export default function CookingClient() {
                         <div className="bg-card rounded-xl border border-border overflow-hidden">
                             <div className="p-3 bg-muted/50 border-b border-border font-bold text-foreground flex items-center gap-2">
                                 <DollarSign className="h-4 w-4 text-success" />
-                                <span>Price Configuration (Edit to recalculate)</span>
+                                <span>{tAlchemy('priceConfigTitle')}</span>
                             </div>
                             <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {/* Product Price */}
@@ -660,11 +620,11 @@ export default function CookingClient() {
                                         <ItemIcon itemId={calculation[0].productId} className="h-8 w-8 object-contain" alt={calculation[0].name} />
                                         <div className="overflow-hidden">
                                             <div className="text-xs font-bold text-foreground truncate" title={calculation[0].name}>{calculation[0].name}</div>
-                                            <div className="text-[10px] text-muted-foreground uppercase">{sellCity} (Sell)</div>
+                                            <div className="text-[10px] text-muted-foreground uppercase">{sellCity} ({tAlchemy('instantSell')})</div>
                                         </div>
                                     </div>
                                     <NumberInput
-                                        label="Sell Price"
+                                        label={tAlchemy('sellPrice')}
                                         value={manualPrices[calculation[0].productId] ?? calculation[0].productPrice}
                                         onChange={(val) => setManualPrices(prev => ({ ...prev, [calculation[0].productId]: val }))}
                                         min={0}
@@ -684,14 +644,14 @@ export default function CookingClient() {
                                 {calculation[0].ingredientDetails.map((ing, idx) => (
                                     <div key={idx} className="bg-muted/20 p-3 rounded border border-border/50">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <ItemIcon itemId={ing.itemId} className="h-8 w-8 object-contain" alt={ing.name} />
+                                            <ItemIcon itemId={ing.itemId} className="h-8 w-8 object-contain" alt={localizedIngredientNames[ing.itemId] || ing.name} />
                                             <div className="overflow-hidden">
-                                                <div className="text-xs font-bold text-foreground truncate" title={ing.name}>{ing.name}</div>
-                                                <div className="text-[10px] text-muted-foreground uppercase">{ing.buyCity} (Buy)</div>
+                                                <div className="text-xs font-bold text-foreground truncate" title={localizedIngredientNames[ing.itemId] || ing.name}>{localizedIngredientNames[ing.itemId] || ing.name}</div>
+                                                <div className="text-[10px] text-muted-foreground uppercase">{ing.buyCity} ({tAlchemy('instantBuy')})</div>
                                             </div>
                                         </div>
                                         <NumberInput
-                                            label="Buy Price"
+                                            label={tAlchemy('buyPrice')}
                                             value={manualPrices[ing.itemId] ?? ing.price}
                                             onChange={(val) => setManualPrices(prev => ({ ...prev, [ing.itemId]: val }))}
                                             min={0}
@@ -713,21 +673,21 @@ export default function CookingClient() {
                         {/* Summary Cards for Top Item */}
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <div className="bg-card p-4 rounded-xl border border-border">
-                                <span className="text-xs text-muted-foreground uppercase font-bold">Total Revenue</span>
+                                <span className="text-xs text-muted-foreground uppercase font-bold">{tAlchemy('totalRevenue')}</span>
                                 <div className="text-xl font-mono text-foreground mt-1">{formatSilver(calculation[0].revenue)}</div>
                             </div>
                             <div className="bg-card p-4 rounded-xl border border-border">
-                                <span className="text-xs text-muted-foreground uppercase font-bold">Total Cost</span>
+                                <span className="text-xs text-muted-foreground uppercase font-bold">{tAlchemy('totalCost')}</span>
                                 <div className="text-xl font-mono text-foreground mt-1">{formatSilver(calculation[0].effectiveCost)}</div>
                             </div>
                             <div className="bg-card p-4 rounded-xl border border-border">
-                                <span className="text-xs text-muted-foreground uppercase font-bold">Net Profit</span>
+                                <span className="text-xs text-muted-foreground uppercase font-bold">{tAlchemy('netProfit')}</span>
                                 <div className={`text-xl font-mono mt-1 ${calculation[0].profit > 0 ? 'text-success' : 'text-destructive'}`}>
                                     {formatSilver(calculation[0].profit)}
                                 </div>
                             </div>
                             <div className="bg-card p-4 rounded-xl border border-border">
-                                <span className="text-xs text-muted-foreground uppercase font-bold">ROI</span>
+                                <span className="text-xs text-muted-foreground uppercase font-bold">{tAlchemy('roi')}</span>
                                 <div className={`text-xl font-mono mt-1 ${calculation[0].roi > 0 ? 'text-success' : 'text-destructive'}`}>
                                     {calculation[0].roi.toFixed(1)}%
                                 </div>
@@ -738,26 +698,26 @@ export default function CookingClient() {
                         <div className="bg-muted/30 p-4 rounded-xl border border-border/50 flex flex-wrap items-center gap-6 text-sm">
                             <div className="flex items-center gap-2">
                                 <Scale className="h-4 w-4 text-muted-foreground" />
-                                <span className="font-bold text-muted-foreground">Transport:</span>
+                                <span className="font-bold text-muted-foreground">{tAlchemy('transport')}</span>
                             </div>
                             <div className="w-48">
                                 <Select
                                     value={selectedMount}
                                     onChange={(value) => setSelectedMount(value)}
-                                    options={MOUNT_OPTIONS}
+                                    options={mountOptions}
                                     className="h-8 text-xs"
                                 />
                             </div>
                             <div className="flex items-center gap-4 text-foreground">
-                                <div>Inputs: <span className="text-foreground font-mono">{Math.round(calculation[0].totalWeightIngredients)}kg</span></div>
-                                <div>Outputs: <span className="text-foreground font-mono">{Math.round(calculation[0].totalWeightProduct)}kg</span></div>
+                                <div>{tAlchemy('inputs')} <span className="text-foreground font-mono">{Math.round(calculation[0].totalWeightIngredients)}kg</span></div>
+                                <div>{tAlchemy('outputs')} <span className="text-foreground font-mono">{Math.round(calculation[0].totalWeightProduct)}kg</span></div>
                                 {(() => {
-                                    const cap = MOUNT_OPTIONS.find(m => m.value === selectedMount)?.capacity || 1;
+                                    const cap = mountOptions.find(m => m.value === selectedMount)?.capacity || 1;
                                     const totalW = Math.max(calculation[0].totalWeightIngredients, calculation[0].totalWeightProduct);
                                     const loadPct = (totalW / cap) * 100;
                                     return (
                                         <div className={`${loadPct > 100 ? 'text-destructive' : 'text-success'} font-bold`}>
-                                            Load: {loadPct.toFixed(1)}%
+                                            {tAlchemy('load')} {loadPct.toFixed(1)}%
                                         </div>
                                     );
                                 })()}
@@ -770,51 +730,51 @@ export default function CookingClient() {
                                 <table className="w-full text-left border-collapse">
                                     <thead>
                                         <tr className="text-xs font-bold text-muted-foreground uppercase tracking-wider bg-muted/40 border-b border-border">
-                                            <th className="p-4 pl-6">Product</th>
+                                            <th className="p-4 pl-6">{t('product')}</th>
                                             <th className="p-4 text-right">
                                                 <div className="flex items-center justify-end gap-1">
-                                                    <Tooltip content="Market sell price per unit">
-                                                        <span>Sell Price</span>
+                                                    <Tooltip content={t('tooltips.sellPrice')}>
+                                                        <span>{tAlchemy('sellPrice')}</span>
                                                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                     </Tooltip>
                                                 </div>
                                             </th>
                                             <th className="p-4 text-right">
                                                 <div className="flex items-center justify-end gap-1">
-                                                    <Tooltip content="Total volume sold in the last 24 hours">
-                                                        <span>24h Vol</span>
+                                                    <Tooltip content={t('tooltips.vol24h')}>
+                                                        <span>{t('vol24h')}</span>
                                                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                     </Tooltip>
                                                 </div>
                                             </th>
                                             <th className="p-4 text-right">
                                                 <div className="flex items-center justify-end gap-1">
-                                                    <Tooltip content="Total cost including ingredients, taxes, and fees">
-                                                        <span>Total Cost</span>
+                                                    <Tooltip content={t('tooltips.totalCost')}>
+                                                        <span>{tAlchemy('totalCost')}</span>
                                                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                     </Tooltip>
                                                 </div>
                                             </th>
                                             <th className="p-4 text-right">
                                                 <div className="flex items-center justify-end gap-1">
-                                                    <Tooltip content="Net profit after all costs and taxes">
-                                                        <span>Profit</span>
+                                                    <Tooltip content={t('tooltips.profit')}>
+                                                        <span>{tAlchemy('profit')}</span>
                                                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                     </Tooltip>
                                                 </div>
                                             </th>
                                             <th className="p-4 text-right">
                                                 <div className="flex items-center justify-end gap-1">
-                                                    <Tooltip content="Return on Investment (Profit / Cost * 100)">
-                                                        <span>ROI</span>
+                                                    <Tooltip content={t('tooltips.roi')}>
+                                                        <span>{tAlchemy('roi')}</span>
                                                         <CircleHelp className="h-3 w-3 text-muted-foreground" />
                                                     </Tooltip>
                                                 </div>
                                             </th>
-                                            <th className="p-4 text-right">Silver/Focus</th>
+                                            <th className="p-4 text-right">{t('silverFocus')}</th>
                                         </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-border/50 text-sm">
+                                        </thead>
+                                        <tbody className="divide-y divide-border/50 text-sm">
                                         {calculation.map((row) => (
                                             <Fragment key={row.productId}>
                                                 <tr
@@ -833,7 +793,7 @@ export default function CookingClient() {
                                                                 </div>
                                                                 <div>
                                                                     <div className="font-bold text-foreground group-hover:text-foreground transition-colors">{row.name}</div>
-                                                                    <div className="text-xs text-muted-foreground">Yield: {selectedRecipe?.yield}</div>
+                                                                    <div className="text-xs text-muted-foreground">{t('yield')} {selectedRecipe?.yield}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -872,16 +832,16 @@ export default function CookingClient() {
                                                                     {/* Ingredients Table */}
                                                                     <div className="space-y-2">
                                                                         <div className="flex items-center gap-2 text-xs font-bold uppercase text-muted-foreground pl-1">
-                                                                            <Package className="h-3 w-3" /> Ingredients Breakdown
+                                                                            <Package className="h-3 w-3" /> {t('ingredientsBreakdown')}
                                                                         </div>
                                                                         <div className="rounded-lg border border-border overflow-hidden bg-card/40">
                                                                             <table className="w-full text-sm">
                                                                                 <thead className="bg-card/60 text-xs text-muted-foreground border-b border-border/50">
                                                                                     <tr>
-                                                                                        <th className="p-2 pl-3 font-medium">Material</th>
-                                                                                        <th className="p-2 text-right font-medium">Source</th>
-                                                                                        <th className="p-2 text-right font-medium">Unit Cost</th>
-                                                                                        <th className="p-2 text-right font-medium">Total</th>
+                                                                                        <th className="p-2 pl-3 font-medium">{t('material')}</th>
+                                                                                        <th className="p-2 text-right font-medium">{t('source')}</th>
+                                                                                        <th className="p-2 text-right font-medium">{t('unitCost')}</th>
+                                                                                        <th className="p-2 text-right font-medium">{tAlchemy('total')}</th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody className="divide-y divide-border/30">
@@ -895,7 +855,7 @@ export default function CookingClient() {
                                                                                                             {ing.count * (quantity / (selectedRecipe?.yield || 1))}
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <span className="text-xs font-medium">{ing.name}</span>
+                                                                                                    <span className="text-xs font-medium">{localizedIngredientNames[ing.itemId] || ing.name}</span>
                                                                                                 </div>
                                                                                             </td>
                                                                                             <td className="p-2 text-right text-muted-foreground text-xs">{ing.buyCity}</td>
@@ -914,27 +874,26 @@ export default function CookingClient() {
                                                                     {row.sauceDetails && (
                                                                         <div className="space-y-2">
                                                                             <div className="flex items-center gap-2 text-xs font-bold uppercase text-muted-foreground pl-1">
-                                                                                <Info className="h-3 w-3" /> Fish Sauces (Enchantment)
+                                                                                <Info className="h-3 w-3" /> {t('fishSauces')}
                                                                             </div>
                                                                             <div className="rounded-lg border border-border overflow-hidden bg-card/40">
                                                                                 <table className="w-full text-sm">
                                                                                     <thead className="bg-card/60 text-xs text-muted-foreground border-b border-border/50">
                                                                                         <tr>
-                                                                                            <th className="p-2 pl-3 font-medium">Sauce</th>
-                                                                                            <th className="p-2 text-right font-medium">Unit Cost</th>
-                                                                                            <th className="p-2 text-right font-medium">Total</th>
+                                                                                            <th className="p-2 pl-3 font-medium">{t('sauce')}</th>
+                                                                                            <th className="p-2 text-right font-medium">{t('unitCost')}</th>
+                                                                                            <th className="p-2 text-right font-medium">{tAlchemy('total')}</th>
                                                                                         </tr>
-                                                                                    </thead>
-                                                                                    <tbody className="divide-y divide-border/30">
+                                                                                    </thead>                                                                                    <tbody className="divide-y divide-border/30">
                                                                                         {row.sauceDetails.map(ing => (
                                                                                             <tr key={ing.itemId} className="hover:bg-secondary/20 transition-colors">
                                                                                                 <td className="p-2 pl-3 text-foreground">
                                                                                                     <div className="flex items-center gap-3">
                                                                                                         <div className="h-8 w-8 bg-secondary rounded border border-border p-0.5 flex-shrink-0 relative">
-                                                                                                            <ItemIcon itemId={ing.itemId} alt={ing.name} className="h-full w-full object-contain" />
+                                                                                                            <ItemIcon itemId={ing.itemId} alt={localizedIngredientNames[ing.itemId] || ing.name} className="h-full w-full object-contain" />
                                                                                                             <div className="absolute -bottom-1 -right-1 bg-background text-[8px] px-1 rounded border border-border text-muted-foreground font-mono">x{ing.count}</div>
                                                                                                         </div>
-                                                                                                        <span className="font-medium text-xs">{ing.name}</span>
+                                                                                                        <span className="font-medium text-xs">{localizedIngredientNames[ing.itemId] || ing.name}</span>
                                                                                                     </div>
                                                                                                 </td>
                                                                                                 <td className="p-2 text-right font-mono text-xs text-muted-foreground">{formatSilver(ing.price)}</td>

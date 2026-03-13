@@ -1,20 +1,23 @@
 import { Metadata } from 'next';
 import UserProfileClient from './UserProfileClient';
 import { getUserProfile } from '@/lib/user-profile';
+import { getTranslations, getLocale } from 'next-intl/server';
 
 export async function generateMetadata({ params }: { params: Promise<{ userId: string }> }): Promise<Metadata> {
   const { userId } = await params;
   const profile = await getUserProfile(userId);
+  const t = await getTranslations('UserProfile');
+  const locale = await getLocale();
 
   if (!profile) {
     return {
-      title: 'User Not Found | AlbionKit',
-      description: 'The requested user profile could not be found.',
+      title: t('userNotFound'),
+      description: t('userNotFoundDesc'),
     };
   }
 
-  const title = `${profile.displayName || 'User'} | AlbionKit Profile`;
-  const description = profile.signature || `${profile.displayName || 'User'}'s profile on AlbionKit. Check out their builds and stats.`;
+  const title = `${profile.displayName || t('user')} | AlbionKit Profile`;
+  const description = profile.signature || t('userProfileDesc', { displayName: profile.displayName || t('user') });
   
   const images = [];
   if (profile.photoURL) images.push(profile.photoURL);

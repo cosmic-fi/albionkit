@@ -5,7 +5,10 @@ import { getAlbionServerStatus, ServerStatus } from '@/app/actions/server-status
 import { Wifi, WifiOff, AlertTriangle, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+import { useTranslations } from 'next-intl';
+
 export function ServerStatusBanner() {
+  const t = useTranslations('Common');
   const [statuses, setStatuses] = useState<ServerStatus[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -48,12 +51,12 @@ export function ServerStatusBanner() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                <span className="font-semibold">Online</span>
+                <span className="font-semibold">{t('online')}</span>
               </div>
             ) : server.status === 'offline' ? (
               <div className="flex items-center gap-1 text-destructive">
                 <WifiOff className="h-3 w-3" />
-                <span className="font-semibold">Offline</span>
+                <span className="font-semibold">{t('offline')}</span>
               </div>
             ) : (
               <div className="flex items-center gap-1 text-warning">

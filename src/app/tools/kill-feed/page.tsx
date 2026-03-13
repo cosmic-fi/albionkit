@@ -1,10 +1,12 @@
 import { Metadata } from 'next';
 import KillFeedClient from './KillFeedClient';
 import { fetchRecentEvents } from './actions';
+import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata(): Promise<Metadata> {
-  let title = 'Live Kill Feed - Real-time Albion Online PvP | AlbionKit';
-  let description = 'Watch the action unfold with the Albion Online Live Kill Feed. Track high-value kills, guild battles, and zone activity in real-time.';
+  const t = await getTranslations('Pages.killFeed');
+  let title = t('title');
+  let description = t('description');
   
   try {
     const result = await fetchRecentEvents('west', 1);
@@ -14,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       const killer = latest.Killer.Name;
       const victim = latest.Victim.Name;
       const fame = latest.TotalVictimKillFame.toLocaleString();
-      description = `Live: ${killer} just killed ${victim} for ${fame} Fame! Track real-time PvP kills, battles, and loot in Albion Online.`;
+      description = t('descriptionDynamic', { killer, victim, fame });
     }
   } catch (e) {
     console.error('Failed to fetch Kill Feed metadata', e);
@@ -28,17 +30,22 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: 'website',
-      images: ['https://albionkit.com/og-image.jpg'], // Fallback or dynamic if we had event images
+      images: ['https://albionkit.com/og-image.jpg'],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+    },
+    alternates: {
+      canonical: 'https://albionkit.com/tools/kill-feed'
     }
   };
 }
 
-export default function KillFeedPage() {
+export default async function KillFeedPage() {
+  const tNav = await getTranslations('Navbar');
+  const tPage = await getTranslations('Pages.killFeed');
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -46,19 +53,19 @@ export default function KillFeedPage() {
       {
         '@type': 'ListItem',
         position: 1,
-        name: 'Home',
+        name: tNav('home'),
         item: 'https://albionkit.com',
       },
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'Tools',
+        name: tNav('tools'),
         item: 'https://albionkit.com/tools',
       },
       {
         '@type': 'ListItem',
         position: 3,
-        name: 'Kill Feed',
+        name: tPage('title'),
         item: 'https://albionkit.com/tools/kill-feed',
       },
     ],

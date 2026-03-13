@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { ImageOff } from 'lucide-react';
+import { getItemNameService } from '@/lib/item-service';
+import { useLocale } from 'next-intl';
 
 interface ItemIconProps {
   item?: {
@@ -17,20 +19,24 @@ interface ItemIconProps {
   size?: number;
   className?: string;
   alt?: string;
+  showTooltip?: boolean; // Show localized name on hover
 }
 
-export function ItemIcon({ 
-  item, 
+export function ItemIcon({
+  item,
   itemId,
-  count = 1, 
+  count = 1,
   quality = 1,
   enchantment,
-  size = 64, 
+  size = 64,
   className = "",
-  alt = "Item"
+  alt = "Item",
+  showTooltip = true
 }: ItemIconProps) {
+  const locale = useLocale();
   const [error, setError] = useState(false);
   const [currentId, setCurrentId] = useState<string | undefined>(undefined);
+  const [localizedName, setLocalizedName] = useState<string | null>(null);
 
   // Reset error when item changes
   useEffect(() => {
@@ -40,25 +46,41 @@ export function ItemIcon({
     } else if (!newId && item && typeof item === 'object') {
       newId = item.Type || item.id;
     }
-    
+
     if (newId !== currentId) {
       setCurrentId(newId);
       setError(false);
+      setLocalizedName(null);
     }
   }, [item, itemId, currentId]);
+
+  // Fetch localized name
+  useEffect(() => {
+    if (!currentId || !showTooltip) return;
+    
+    let id = currentId;
+    // Remove enchantment for name lookup
+    if (id.includes('@')) {
+      id = id.split('@')[0];
+    }
+    
+    getItemNameService(id, locale).then(name => {
+      if (name) setLocalizedName(name);
+    });
+  }, [currentId, locale, showTooltip]);
 
   // Resolve values for rendering
   let id = currentId;
   let itemCount = count;
   let itemQuality = quality;
 
-  // Re-calculate derived values if needed (though useEffect handles ID, count/quality might vary)
+  // Re-calculate values if needed
   if (!id) {
     let tempId = itemId;
     if (!tempId && typeof item === 'string') {
-        tempId = item;
+      tempId = item;
     } else if (!tempId && item && typeof item === 'object') {
-        tempId = item.Type || item.id;
+      tempId = item.Type || item.id;
     }
     id = tempId;
   }
@@ -84,6 +106,9 @@ export function ItemIcon({
   }
 
   const src = `https://render.albiononline.com/v1/item/${id}.png?count=${itemCount}&quality=${itemQuality}&size=${size}`;
+  
+  // Use localized name for tooltip if available, otherwise use alt
+  const tooltip = localizedName || alt;
 
   return (
     <img
@@ -92,6 +117,7 @@ export function ItemIcon({
       className={className}
       onError={() => setError(true)}
       loading="lazy"
+      title={showTooltip ? tooltip : undefined}
     />
   );
 }

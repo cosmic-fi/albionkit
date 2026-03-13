@@ -61,7 +61,8 @@ export interface Build {
   updatedAt: Timestamp | any;
   tags?: string[];
   youtubeLink?: string;
-  
+  hidden?: boolean; // Whether the build is hidden from public view
+
   // Advanced Details
   strengths?: string[];
   weaknesses?: string[];
@@ -134,8 +135,8 @@ export const searchBuildsService = async (queryText: string, itemIds: string[] =
 };
 
 export const getBuilds = async (
-  category: BuildCategory, 
-  sort: 'recent' | 'popular' | 'rating' | 'likes' = 'recent', 
+  category: BuildCategory,
+  sort: 'recent' | 'popular' | 'rating' | 'likes' = 'recent',
   limitCount: number = 50,
   lastDoc?: QueryDocumentSnapshot | null
 ): Promise<{ builds: Build[], lastDoc: QueryDocumentSnapshot | null }> => {
@@ -152,7 +153,7 @@ export const getBuilds = async (
     } else {
       q = query(q, orderBy('createdAt', 'desc'));
     }
-    
+
     if (lastDoc) {
       q = query(q, startAfter(lastDoc));
     }
@@ -160,9 +161,12 @@ export const getBuilds = async (
     q = query(q, limit(limitCount));
 
     const snapshot = await getDocs(q);
-    const builds = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Build));
+    // Filter out hidden builds (only visible to author/admin)
+    const builds = snapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() } as Build))
+      .filter(build => !build.hidden);
     const newLastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
-    
+
     return { builds, lastDoc: newLastDoc };
   } catch (error) {
     console.error('Error fetching builds:', error);
@@ -196,7 +200,10 @@ export const getBuildsAll = async (
     q = query(q, limit(limitCount));
 
     const snapshot = await getDocs(q);
-    const builds = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Build));
+    // Filter out hidden builds (only visible to author/admin)
+    const builds = snapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() } as Build))
+      .filter(build => !build.hidden);
     const newLastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
 
     return { builds, lastDoc: newLastDoc };
@@ -206,13 +213,31 @@ export const getBuildsAll = async (
   }
 };
 
-export const getBuild = async (id: string): Promise<Build | null> => {
+export const getBuild = async (id: string, userId?: string): Promise<Build | null> => {
   try {
     const docRef = doc(db, COLLECTION, id);
     const docSnap = await getDoc(docRef);
-    
+
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as Build;
+      const build = { id: docSnap.id, ...docSnap.data() } as Build;
+      
+      // If build is hidden, only show to author or admin
+      if (build.hidden && userId) {
+        const isAuthor = build.authorId === userId;
+        if (isAuthor) return build;
+        
+        // Check if user is admin
+        const userRef = doc(db, 'users', userId);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+        if (userData?.isAdmin) return build;
+        
+        // Hidden build, user is not author or admin
+        return null;
+      }
+      
+      // Build is not hidden, return it
+      return build;
     }
     return null;
   } catch (error) {
@@ -380,5 +405,105 @@ export const getBuildUserRating = async (buildId: string, userId: string): Promi
   } catch (error) {
     console.error('Error getting user rating:', error);
     return null;
+  }
+};
+
+export const updateBuild = async (buildId: string, updates: Partial<Build>, authorId: string) => {
+  try {
+    const buildRef = doc(db, COLLECTION, buildId);
+    const buildSnap = await getDoc(buildRef);
+
+    if (!buildSnap.exists()) {
+      throw new Error('Build not found');
+    }
+
+    const buildData = buildSnap.data() as Build;
+    
+    // Check if user is authorized (author or admin)
+    if (buildData.authorId !== authorId) {
+      // Check if user is admin
+      const userRef = doc(db, 'users', authorId);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.data();
+      if (!userData?.isAdmin) {
+        throw new Error('Unauthorized: Only the author or admin can update this build');
+      }
+    }
+
+    await updateDoc(buildRef, {
+      ...updates,
+      updatedAt: serverTimestamp(),
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error updating build:', error);
+    throw error;
+  }
+};
+
+export const deleteBuild = async (buildId: string, authorId: string) => {
+  try {
+    const buildRef = doc(db, COLLECTION, buildId);
+    const buildSnap = await getDoc(buildRef);
+
+    if (!buildSnap.exists()) {
+      throw new Error('Build not found');
+    }
+
+    const buildData = buildSnap.data() as Build;
+    
+    // Check if user is authorized (author or admin)
+    if (buildData.authorId !== authorId) {
+      // Check if user is admin
+      const userRef = doc(db, 'users', authorId);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.data();
+      if (!userData?.isAdmin) {
+        throw new Error('Unauthorized: Only the author or admin can delete this build');
+      }
+    }
+
+    // Delete the build document (subcollections will be automatically deleted)
+    await deleteDoc(buildRef);
+
+    return true;
+  } catch (error) {
+    console.error('Error deleting build:', error);
+    throw error;
+  }
+};
+
+export const hideBuild = async (buildId: string, authorId: string, hidden: boolean = true) => {
+  try {
+    const buildRef = doc(db, COLLECTION, buildId);
+    const buildSnap = await getDoc(buildRef);
+
+    if (!buildSnap.exists()) {
+      throw new Error('Build not found');
+    }
+
+    const buildData = buildSnap.data() as Build;
+    
+    // Check if user is authorized (author or admin)
+    if (buildData.authorId !== authorId) {
+      // Check if user is admin
+      const userRef = doc(db, 'users', authorId);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.data();
+      if (!userData?.isAdmin) {
+        throw new Error('Unauthorized: Only the author or admin can hide this build');
+      }
+    }
+
+    await updateDoc(buildRef, {
+      hidden,
+      updatedAt: serverTimestamp(),
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error hiding build:', error);
+    throw error;
   }
 };

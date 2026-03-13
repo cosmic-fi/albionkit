@@ -1,5 +1,8 @@
+ 'use client'
+
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Check, Search } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface Option<T extends string | number> {
   value: T;
@@ -26,10 +29,12 @@ export function Select<T extends string | number>({
   onChange,
   containerClassName = '',
   className = '',
-  placeholder = 'Select an option',
+  placeholder,
   searchable = false,
   onSearchTermChange
 }: SelectProps<T>) {
+  const t = useTranslations('Common');
+  const defaultPlaceholder = placeholder ?? t('selectAnOption');
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -87,7 +92,7 @@ export function Select<T extends string | number>({
         >
           <span className={`flex items-center gap-2 ${selectedOption ? 'text-foreground' : 'text-muted-foreground'}`}>
             {selectedOption?.icon}
-            {selectedOption ? selectedOption.label : placeholder}
+            {selectedOption ? selectedOption.label : defaultPlaceholder}
           </span>
           <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
@@ -103,7 +108,7 @@ export function Select<T extends string | number>({
                     type="text"
                     value={searchTerm}
                     onChange={handleSearch}
-                    placeholder="Search..."
+                    placeholder={t('search')}
                     className="w-full bg-background border border-input rounded-md py-1.5 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary outline-none"
                     onClick={(e) => e.stopPropagation()}
                   />
@@ -114,7 +119,7 @@ export function Select<T extends string | number>({
             <div className="overflow-auto flex-1 p-1">
               {filteredOptions.length === 0 ? (
                 <div className="px-3 py-2 text-sm text-muted-foreground text-center">
-                  No options found
+                  {t('noItemsFound')}
                 </div>
               ) : (
                 filteredOptions.map((option) => (

@@ -1,8 +1,11 @@
 
 import Link from 'next/link';
 import { Github, Twitter, MessageCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export function Footer() {
+  const t = useTranslations('Footer');
+
   return (
     <footer className="relative mt-20 border-t border-border bg-background overflow-hidden">
       {/* Background Image with Parallax */}
@@ -23,7 +26,7 @@ export function Footer() {
               <img src="/logo-light.svg" alt="AlbionKit Logo" className="w-30 h-12 hidden dark:block" />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              The essential companion for Albion Online players. Market flipper, PvP intel, crafting calculators, and more.
+              {t('description')}
             </p>
             <div className="flex gap-4">
               <a href="https://twitter.com/Albion_Kit" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -37,34 +40,34 @@ export function Footer() {
 
           {/* Tools Links */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Tools</h3>
+            <h3 className="font-semibold text-foreground mb-4">{t('tools')}</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/tools/market-flipper" className="hover:text-primary transition-colors">Market Flipper</Link></li>
-              <li><Link href="/tools/pvp-intel" className="hover:text-primary transition-colors">PvP Intel</Link></li>
-              <li><Link href="/tools/zvz-tracker" className="hover:text-primary transition-colors">ZvZ Tracker</Link></li>
-              <li><Link href="/tools/crafting-calc" className="hover:text-primary transition-colors">Crafting Planner</Link></li>
+              <li><Link href="/tools/market-flipper" className="hover:text-primary transition-colors">{t('marketFlipper')}</Link></li>
+              <li><Link href="/tools/pvp-intel" className="hover:text-primary transition-colors">{t('pvpIntel')}</Link></li>
+              <li><Link href="/tools/zvz-tracker" className="hover:text-primary transition-colors">{t('zvzTracker')}</Link></li>
+              <li><Link href="/tools/crafting-calc" className="hover:text-primary transition-colors">{t('craftingPlanner')}</Link></li>
             </ul>
           </div>
 
           {/* Resources Links */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Resources</h3>
+            <h3 className="font-semibold text-foreground mb-4">{t('resources')}</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/builds/solo" className="hover:text-primary transition-colors">Solo Builds</Link></li>
-              <li><Link href="/builds/zvz" className="hover:text-primary transition-colors">ZvZ Builds</Link></li>
-              <li><Link href="/profits/farming" className="hover:text-primary transition-colors">Farming Profit Calculator</Link></li>
-              <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
+              <li><Link href="/builds/solo" className="hover:text-primary transition-colors">{t('soloBuilds')}</Link></li>
+              <li><Link href="/builds/zvz" className="hover:text-primary transition-colors">{t('zvzBuilds')}</Link></li>
+              <li><Link href="/profits/farming" className="hover:text-primary transition-colors">{t('farmingProfit')}</Link></li>
+              <li><Link href="/about" className="hover:text-primary transition-colors">{t('aboutUs')}</Link></li>
             </ul>
           </div>
 
           {/* Legal Links */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Legal</h3>
+            <h3 className="font-semibold text-foreground mb-4">{t('legal')}</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
-              <li><Link href="/cookies" className="hover:text-primary transition-colors">Cookie Policy</Link></li>
-              <li><Link href="/refund" className="hover:text-primary transition-colors">Refund Policy</Link></li>
+              <li><Link href="/privacy" className="hover:text-primary transition-colors">{t('privacyPolicy')}</Link></li>
+              <li><Link href="/terms" className="hover:text-primary transition-colors">{t('termsOfService')}</Link></li>
+              <li><Link href="/cookies" className="hover:text-primary transition-colors">{t('cookiePolicy')}</Link></li>
+              <li><Link href="/refund" className="hover:text-primary transition-colors">{t('refundPolicy')}</Link></li>
             </ul>
           </div>
 
@@ -72,12 +75,10 @@ export function Footer() {
         
         <div className="pt-8 border-t border-border text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground/80 max-w-2xl leading-relaxed">
-            AlbionKit is a community-created tool and is not affiliated with, endorsed by, or sponsored by Sandbox Interactive GmbH. 
-            Albion Online and the Albion Online logo are trademarks of Sandbox Interactive GmbH. 
-            All game content and assets are property of their respective owners.
+            {t('disclaimer')}
           </p>
           <span className="text-xs text-muted-foreground/60">
-            &copy; {new Date().getFullYear()} AlbionKit. All rights reserved.
+            {t('rightsReserved', { year: new Date().getFullYear() })}
           </span>
         </div>
       </div>

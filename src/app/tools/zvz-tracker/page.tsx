@@ -3,10 +3,12 @@ import { Suspense } from 'react';
 import ZvzTrackerClient from './ZvzTrackerClient';
 import { getBattles } from './actions';
 import { Loader2 } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata(): Promise<Metadata> {
-  let title = 'ZvZ Tracker | AlbionKit';
-  let description = 'Track massive open-world battles and guild warfare in Albion Online.';
+  const t = await getTranslations('Pages.zvzTracker');
+  let title = t('title');
+  let description = t('description');
   
   try {
     // Default to Americas for metadata snapshot
@@ -17,10 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
       const liveBattles = battles.filter((b: any) => new Date(b.startTime).getTime() > Date.now() - 20 * 60 * 1000);
       
       if (liveBattles.length > 0) {
-        title = `${liveBattles.length} Live Battles - ZvZ Tracker | AlbionKit`;
-        description = `Currently tracking ${liveBattles.length} active battles in Americas. Top battle: ${liveBattles[0].totalKills} kills.`;
+        title = t('liveTitle', { count: liveBattles.length });
+        description = t('liveDescription', { count: liveBattles.length, region: 'Americas', kills: liveBattles[0].totalKills });
       } else {
-         description = `Track recent massive battles. Latest: ${battles[0].totalKills} kills in ${battles[0].clusterName || 'Open World'}.`;
+         description = t('latestDescription', { kills: battles[0].totalKills, location: battles[0].clusterName || 'Open World' });
       }
     }
   } catch (e) {
@@ -41,6 +43,9 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title,
       description,
+    },
+    alternates: {
+      canonical: 'https://albionkit.com/tools/zvz-tracker'
     }
   };
 }

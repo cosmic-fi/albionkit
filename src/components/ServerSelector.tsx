@@ -3,6 +3,7 @@
 import React from 'react';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { ServerRegion } from '@/hooks/useServer';
+import { useTranslations } from 'next-intl';
 
 export type { ServerRegion };
 
@@ -14,12 +15,14 @@ interface ServerSelectorProps {
 }
 
 export function ServerSelector({ selectedServer, onServerChange, className, size = 'sm' }: ServerSelectorProps) {
+  const t = useTranslations('ServerSelector');
+
   return (
     <SegmentedControl
       options={[
-        { value: 'west', label: 'Americas' },
-        { value: 'europe', label: 'Europe' },
-        { value: 'east', label: 'Asia' },
+        { value: 'west', label: t('west') },
+        { value: 'europe', label: t('europe') },
+        { value: 'east', label: t('east') },
       ]}
       value={selectedServer}
       onChange={(val) => onServerChange(val as ServerRegion)}

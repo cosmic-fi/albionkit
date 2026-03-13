@@ -12,6 +12,7 @@ import { Tooltip } from '@/components/ui/Tooltip';
 import { ServerSelector } from '@/components/ServerSelector';
 import { useServer } from '@/hooks/useServer';
 import { InfoStrip } from '@/components/InfoStrip';
+import { useTranslations } from 'next-intl';
 
 import { useAuth } from '@/context/AuthContext';
 
@@ -125,6 +126,9 @@ const BattleRowSkeleton = () => (
 );
 
 export default function ZvzTrackerClient() {
+    const t = useTranslations('ZvzTracker');
+    const tKill = useTranslations('KillFeed');
+    const tk = useTranslations('KillFeed');
     const { profile } = useAuth();
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -349,7 +353,7 @@ export default function ZvzTrackerClient() {
         // Simple feedback since we don't have a toast component
         const btn = e.currentTarget as HTMLButtonElement;
         const originalContent = btn.innerHTML;
-        btn.innerHTML = '<span class="text-success">Copied!</span>';
+        btn.innerHTML = `<span class="text-success">${t('copied')}</span>`;
         setTimeout(() => {
             btn.innerHTML = originalContent;
         }, 2000);
@@ -360,10 +364,17 @@ export default function ZvzTrackerClient() {
         const now = new Date();
         const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-        if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
-        if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-        if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-        return `${Math.floor(diffInSeconds / 86400)}d ago`;
+        if (diffInSeconds < 60) return tKill('secondsAgo', { n: diffInSeconds });
+        if (diffInSeconds < 3600) {
+            const m = Math.floor(diffInSeconds / 60);
+            return m === 1 ? tKill('minuteAgo') : tKill('minutesAgo', { n: m });
+        }
+        if (diffInSeconds < 86400) {
+            const h = Math.floor(diffInSeconds / 3600);
+            return h === 1 ? tKill('hourAgo') : tKill('hoursAgo', { n: h });
+        }
+        const d = Math.floor(diffInSeconds / 86400);
+        return d === 1 ? tKill('dayAgo') : tKill('daysAgo', { n: d });
     };
 
     const getBattleSides = (details: any) => {
@@ -463,18 +474,23 @@ export default function ZvzTrackerClient() {
     const liveBattles = filteredBattles.filter(b => isLiveBattle(b.startTime));
     const pastBattles = filteredBattles.filter(b => !isLiveBattle(b.startTime));
 
+    const topKills = useMemo(() => {
+        if (liveBattles.length === 0) return 0;
+        return Math.max(...liveBattles.map(b => b.totalKills));
+    }, [liveBattles]);
+
     return (
         <PageShell
-            title="ZvZ Tracker"
+            title={t('title')}
             backgroundImage='/background/ao-zvz.jpg'
-            description="Track massive open-world battles and guild warfare"
+            description={liveBattles.length > 0 ? t('liveDescription', { count: liveBattles.length, region: region, kills: topKills }) : t('description')}
             icon={<Swords className="h-6 w-6" />}
             headerActions={
                 <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
                     <div className="relative group">
                         <Input
                             type="text"
-                            placeholder="Search guild, alliance, or ID..."
+                            placeholder={t('searchPlaceholder')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full md:w-64"
@@ -503,7 +519,7 @@ export default function ZvzTrackerClient() {
                 {!searchQuery && leaderboard.length > 0 && (
                     <div className="mb-8 animate-in fade-in slide-in-from-top-2">
                         <h2 className="text-lg font-bold text-muted-foreground mb-4 uppercase tracking-wider flex items-center gap-2">
-                            <Trophy className="h-4 w-4 text-warning" /> Recent Top Performers
+                            <Trophy className="h-4 w-4 text-warning" /> {t('recentTopPerformers')}
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                             {leaderboard.map((entry, idx) => (
@@ -517,13 +533,13 @@ export default function ZvzTrackerClient() {
                                     </div>
                                     <div className="z-10 space-y-1">
                                          <div className="flex justify-between text-xs">
-                                    <span className="text-muted-foreground">Fame</span>
+                                    <span className="text-muted-foreground">{t('fame')}</span>
                                     <Tooltip content={`${entry.fame.toLocaleString()} Fame`}>
                                         <span className="text-warning font-mono cursor-help">{formatNumber(entry.fame)}</span>
                                     </Tooltip>
                                 </div>
                                         <div className="flex justify-between text-xs">
-                                            <span className="text-muted-foreground">K/D</span>
+                                            <span className="text-muted-foreground">{t('kd')}</span>
                                             <span className="text-foreground font-mono">{entry.deaths > 0 ? (entry.kills / entry.deaths).toFixed(1) : '∞'}</span>
                                         </div>
                                     </div>
@@ -555,34 +571,34 @@ export default function ZvzTrackerClient() {
                                             {selectedEntity.Tag && <span className="text-muted-foreground text-xl">[{selectedEntity.Tag}]</span>}
                                         </h2>
                                         <div className="text-muted-foreground capitalize flex items-center gap-2">
-                                            {selectedEntity.type === 'guilds' ? 'Guild' : selectedEntity.type === 'alliances' ? 'Alliance' : 'Player'} Profile
-                                            {selectedEntity.AllianceId && <span className="text-muted-foreground/80">• Alliance: {selectedEntity.AllianceTag}</span>}
-                                            {selectedEntity.GuildName && <span className="text-muted-foreground/80">• Guild: {selectedEntity.GuildName}</span>}
+                                            {selectedEntity.type === 'guilds' ? t('guildProfile') : selectedEntity.type === 'alliances' ? t('allianceProfile') : t('playerProfile')}
+                                            {selectedEntity.AllianceId && <span className="text-muted-foreground/80">• {t('alliance')}: {selectedEntity.AllianceTag}</span>}
+                                            {selectedEntity.GuildName && <span className="text-muted-foreground/80">• {t('guild')}: {selectedEntity.GuildName}</span>}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                                     <div className="bg-muted/50 p-4 rounded-xl border border-border/50">
-                                        <div className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-1">Total Fame</div>
+                                        <div className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-1">{t('totalFame')}</div>
                                         <Tooltip content={`${selectedEntity.KillFame?.toLocaleString() || 0} Fame`}>
                                             <div className="text-lg font-mono font-bold text-warning">{formatNumber(selectedEntity.KillFame)}</div>
                                         </Tooltip>
                                     </div>
                                      <div className="bg-muted/50 p-4 rounded-xl border border-border/50">
-                                        <div className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-1">K/D Ratio</div>
+                                        <div className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-1">{t('kdRatio')}</div>
                                         <div className="text-lg font-mono font-bold text-foreground">
                                             {selectedEntity.DeathFame > 0 ? (selectedEntity.KillFame / selectedEntity.DeathFame).toFixed(2) : '∞'}
                                         </div>
                                     </div>
                                      <div className="bg-muted/50 p-4 rounded-xl border border-border/50">
-                                        <div className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-1">Members</div>
+                                        <div className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-1">{t('members')}</div>
                                         <div className="text-lg font-mono font-bold text-foreground">
                                             {selectedEntity.MemberCount || 'N/A'}
                                         </div>
                                     </div>
                                      <div className="bg-muted/50 p-4 rounded-xl border border-border/50">
-                                        <div className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-1">Region</div>
+                                        <div className="text-muted-foreground text-xs font-bold uppercase tracking-wider mb-1">{t('region')}</div>
                                         <div className="text-lg font-mono font-bold text-foreground uppercase">
                                             {region}
                                         </div>
@@ -616,7 +632,7 @@ export default function ZvzTrackerClient() {
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-3 w-3 bg-destructive"></span>
                             </span>
-                            <h2 className="text-lg font-bold text-destructive uppercase tracking-wider">Live Battles</h2>
+                            <h2 className="text-lg font-bold text-destructive uppercase tracking-wider">{t('liveBattles')}</h2>
                         </div>
                         {liveBattles.map(battle => (
                              <div key={battle.id} id={`battle-${battle.id}`} className={`bg-card/80 border ${expandedBattleId === battle.id ? 'border-destructive ring-1 ring-destructive' : 'border-destructive/30'} rounded-xl overflow-hidden transition-all duration-300 hover:border-destructive/50`}>
@@ -632,26 +648,26 @@ export default function ZvzTrackerClient() {
                                             </div>
                                             <div>
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <span className="font-bold text-foreground text-lg">Battle #{battle.id}</span>
-                                                    <span className="px-2 py-0.5 bg-destructive text-destructive-foreground text-xs font-bold rounded-full animate-pulse">LIVE</span>
+                                                    <span className="font-bold text-foreground text-lg">{t('battle')} #{battle.id}</span>
+                                                    <span className="px-2 py-0.5 bg-destructive text-destructive-foreground text-xs font-bold rounded-full animate-pulse">{t('live')}</span>
                                                 </div>
                                                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                                                     <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {formatTimeAgo(battle.startTime)}</span>
-                                                    <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {Object.keys(battle.players || {}).length} Players</span>
-                                                    <span className="flex items-center gap-1"><Skull className="h-3 w-3" /> {battle.totalKills} Kills</span>
+                                                    <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {Object.keys(battle.players || {}).length} {t('players')}</span>
+                                                    <span className="flex items-center gap-1"><Skull className="h-3 w-3" /> {battle.totalKills} {tKill('kills')}</span>
                                                 </div>
                                             </div>
                                         </div>
                                         
                                         <div className="flex items-center gap-2 w-full md:w-auto">
                                             <div className="flex-1 md:flex-initial text-right pr-4 border-r border-border">
-                                                 <div className="text-xs text-muted-foreground uppercase">Total Fame</div>
+                                                 <div className="text-xs text-muted-foreground uppercase">{t('totalFame')}</div>
                                                  <div className="font-mono font-bold text-warning">{formatNumber(battle.totalFame)}</div>
                                             </div>
                                             <button 
                                                 onClick={(e) => copyBattleLink(e, battle.id)}
                                                 className="p-2 hover:bg-background rounded-full text-muted-foreground hover:text-foreground transition-colors"
-                                                title="Share Battle"
+                                                title={t('shareBattle')}
                                             >
                                                 <Share2 className="h-4 w-4" />
                                             </button>
@@ -675,7 +691,7 @@ export default function ZvzTrackerClient() {
                                                             <div key={side.id} className={`p-4 rounded-xl border ${idx === 0 ? 'bg-success/5 border-success/20' : 'bg-destructive/5 border-destructive/20'}`}>
                                                                 <div className="flex justify-between items-start mb-4">
                                                                     <div>
-                                                                        <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{side.type}</div>
+                                                                        <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{side.type === 'guild' ? t('guild') : t('alliance')}</div>
                                                                         <div className="text-lg font-bold flex items-center gap-2 truncate max-w-[200px]" title={side.name}>
                                                                             {side.name}
                                                                             {side.tag && <span className="text-sm font-normal text-muted-foreground">[{side.tag}]</span>}
@@ -689,25 +705,25 @@ export default function ZvzTrackerClient() {
                                                                          <div className={`text-2xl font-mono font-bold ${idx === 0 ? 'text-success' : 'text-destructive'}`}>
                                                                             {((side.killFame / (battleDetails.totalFame || 1)) * 100).toFixed(0)}%
                                                                         </div>
-                                                                        <div className="text-xs text-muted-foreground">dominance</div>
+                                                                        <div className="text-xs text-muted-foreground">{t('dominance')}</div>
                                                                     </div>
                                                                 </div>
                                                                 
                                                                 <div className="grid grid-cols-2 gap-2 text-sm">
                                                                     <div className="bg-background/50 p-2 rounded">
-                                                                        <div className="text-muted-foreground text-xs">Kills</div>
+                                                                        <div className="text-muted-foreground text-xs">{tKill('kills')}</div>
                                                                         <div className="font-mono font-bold text-success">{side.kills}</div>
                                                                     </div>
                                                                      <div className="bg-background/50 p-2 rounded">
-                                                                        <div className="text-muted-foreground text-xs">Deaths</div>
+                                                                        <div className="text-muted-foreground text-xs">{tKill('deaths')}</div>
                                                                         <div className="font-mono font-bold text-destructive">{side.deaths}</div>
                                                                     </div>
                                                                      <div className="bg-background/50 p-2 rounded">
-                                                                        <div className="text-muted-foreground text-xs">Players</div>
+                                                                        <div className="text-muted-foreground text-xs">{t('players')}</div>
                                                                         <div className="font-mono font-bold">{side.playerCount}</div>
                                                                     </div>
                                                                      <div className="bg-background/50 p-2 rounded">
-                                                                        <div className="text-muted-foreground text-xs">Avg IP</div>
+                                                                        <div className="text-muted-foreground text-xs">{t('avgIp')}</div>
                                                                         <div className="font-mono font-bold text-warning">{side.averageIp || 'N/A'}</div>
                                                                     </div>
                                                                 </div>
@@ -733,8 +749,8 @@ export default function ZvzTrackerClient() {
                                                     <div className="p-6 text-center text-muted-foreground bg-muted/20 rounded-xl mb-6 border border-border/50">
                                                         <div className="flex flex-col items-center gap-2">
                                                             <Info className="h-6 w-6 text-muted-foreground/50" />
-                                                            <p>Detailed participant stats are not available for this battle yet.</p>
-                                                            <p className="text-xs opacity-70">This usually happens for very recent battles. Try refreshing in a moment.</p>
+                                                            <p>{t('noDetails')}</p>
+                                                            <p className="text-xs opacity-70">{t('recentBattleNote')}</p>
                                                         </div>
                                                     </div>
 
@@ -746,31 +762,31 @@ export default function ZvzTrackerClient() {
                                                         onClick={() => setDetailTab('analysis')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'analysis' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
                                                     >
-                                                        Analysis
+                                                        {t('analysis')}
                                                     </button>
                                                     <button 
                                                         onClick={() => setDetailTab('guilds')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'guilds' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
                                                     >
-                                                        Guilds ({Object.keys(battleDetails.guilds || {}).length})
+                                                        {t('guilds')} ({Object.keys(battleDetails.guilds || {}).length})
                                                     </button>
                                                     <button 
                                                         onClick={() => setDetailTab('alliances')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'alliances' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
                                                     >
-                                                        Alliances ({Object.keys(battleDetails.alliances || {}).length})
+                                                        {t('alliances')} ({Object.keys(battleDetails.alliances || {}).length})
                                                     </button>
                                                     <button 
                                                         onClick={() => setDetailTab('players')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'players' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
                                                     >
-                                                        Players ({Object.keys(battleDetails.players || {}).length})
+                                                        {t('players')} ({Object.keys(battleDetails.players || {}).length})
                                                     </button>
                                                      <button 
                                                         onClick={() => setDetailTab('feed')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'feed' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
                                                     >
-                                                        Kill Feed
+                                                        {tKill('killFeed')}
                                                     </button>
                                                 </div>
 
@@ -806,17 +822,17 @@ export default function ZvzTrackerClient() {
                                                                                     <Trophy className="h-16 w-16" />
                                                                                 </div>
                                                                                 <div className="relative z-10">
-                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">MVP (Most Fame)</div>
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">{t('mvpFame')}</div>
                                                                                     {topFame ? (
                                                                                         <>
                                                                                             <div className="text-xl font-bold text-primary truncate">{topFame.name}</div>
                                                                                             <div className="text-sm text-muted-foreground mb-2">{topFame.guildName}</div>
                                                                                             <div className="flex justify-between items-end">
                                                                                                 <div className="text-3xl font-mono font-bold text-warning">{formatNumber(topFame.killFame)}</div>
-                                                                                                <div className="text-xs text-muted-foreground">Fame</div>
+                                                                                                <div className="text-xs text-muted-foreground">{tKill('fame')}</div>
                                                                                             </div>
                                                                                         </>
-                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                    ) : <div className="text-muted-foreground">{tKill('noData')}</div>}
                                                                                 </div>
                                                                             </div>
 
@@ -826,17 +842,17 @@ export default function ZvzTrackerClient() {
                                                                                     <Swords className="h-16 w-16" />
                                                                                 </div>
                                                                                 <div className="relative z-10">
-                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">Top Killer</div>
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">{t('topKiller')}</div>
                                                                                     {topKiller ? (
                                                                                         <>
                                                                                             <div className="text-xl font-bold text-destructive truncate">{topKiller.name}</div>
                                                                                             <div className="text-sm text-muted-foreground mb-2">{topKiller.guildName}</div>
                                                                                             <div className="flex justify-between items-end">
                                                                                                 <div className="text-3xl font-mono font-bold text-destructive">{topKiller.kills}</div>
-                                                                                                <div className="text-xs text-muted-foreground">Kills</div>
+                                                                                                <div className="text-xs text-muted-foreground">{tKill('kills')}</div>
                                                                                             </div>
                                                                                         </>
-                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                    ) : <div className="text-muted-foreground">{tKill('noData')}</div>}
                                                                                 </div>
                                                                             </div>
 
@@ -846,23 +862,23 @@ export default function ZvzTrackerClient() {
                                                                                     <Shield className="h-16 w-16" />
                                                                                 </div>
                                                                                 <div className="relative z-10">
-                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">Highest IP</div>
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">{t('highestIp')}</div>
                                                                                     {topIp ? (
                                                                                         <>
                                                                                             <div className="text-xl font-bold text-foreground truncate">{topIp.name}</div>
                                                                                             <div className="text-sm text-muted-foreground mb-2">{topIp.guildName}</div>
                                                                                             <div className="flex justify-between items-end">
                                                                                                 <div className="text-3xl font-mono font-bold text-foreground">{Math.round(Number(topIp.averageItemPower) || 0)}</div>
-                                                                                                <div className="text-xs text-muted-foreground">IP</div>
+                                                                                                <div className="text-xs text-muted-foreground">{tk('ip')}</div>
                                                                                             </div>
                                                                                         </>
-                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                    ) : <div className="text-muted-foreground">{tk('noData')}</div>}
                                                                                 </div>
                                                                             </div>
                                                                             
                                                                             {/* Efficiency Table */}
                                                                             <div className="col-span-1 md:col-span-3 mt-4">
-                                                                                <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">Deadliest Guilds (K/D Ratio)</h3>
+                                                                                <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">{t('deadliestGuilds')}</h3>
                                                                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                                                                     {efficientGuilds.map((guild: any, idx: number) => (
                                                                                         <div key={guild.id} className="bg-muted/30 border border-border/50 p-3 rounded-lg flex justify-between items-center">
@@ -872,16 +888,16 @@ export default function ZvzTrackerClient() {
                                                                                             </div>
                                                                                             <div className="flex items-center gap-3">
                                                                                                 <div className="text-right">
-                                                                                                    <div className="text-xs text-muted-foreground">K/D</div>
+                                                                                                    <div className="text-xs text-muted-foreground">{tKill('kdRatio')}</div>
                                                                                                     <div className={`font-mono font-bold ${guild.deaths === 0 ? 'text-warning' : 'text-success'}`}>
-                                                                                                        {guild.deaths > 0 ? (guild.kills / guild.deaths).toFixed(1) : 'PERFECT'}
+                                                                                                        {guild.deaths > 0 ? (guild.kills / guild.deaths).toFixed(1) : t('perfect')}
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     ))}
                                                                                     {efficientGuilds.length === 0 && (
-                                                                                        <div className="text-muted-foreground italic col-span-3">Not enough data for efficiency rating (Min 5 Kills).</div>
+                                                                                        <div className="text-muted-foreground italic col-span-3">{t('notEnoughData')}</div>
                                                                                     )}
                                                                                 </div>
                                                                             </div>
@@ -896,12 +912,12 @@ export default function ZvzTrackerClient() {
                                                             <table className="w-full text-sm">
                                                                 <thead>
                                                                     <tr className="text-left text-muted-foreground border-b border-border">
-                                                                        <th className="pb-2 pl-2">Guild</th>
-                                                                        <th className="pb-2">Alliance</th>
-                                                                        <th className="pb-2 text-right">Kills</th>
-                                                                        <th className="pb-2 text-right">Deaths</th>
-                                                                        <th className="pb-2 text-right">K/D</th>
-                                                                        <th className="pb-2 text-right pr-2">Fame</th>
+                                                                        <th className="pb-2 pl-2">{t('guild')}</th>
+                                                                        <th className="pb-2">{t('alliance')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('kills')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('deaths')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('kdRatio')}</th>
+                                                                        <th className="pb-2 text-right pr-2">{tKill('fame')}</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -925,12 +941,12 @@ export default function ZvzTrackerClient() {
                                                             <table className="w-full text-sm">
                                                                 <thead>
                                                                     <tr className="text-left text-muted-foreground border-b border-border">
-                                                                        <th className="pb-2 pl-2">Alliance</th>
-                                                                        <th className="pb-2">Tag</th>
-                                                                        <th className="pb-2 text-right">Kills</th>
-                                                                        <th className="pb-2 text-right">Deaths</th>
-                                                                        <th className="pb-2 text-right">K/D</th>
-                                                                        <th className="pb-2 text-right pr-2">Fame</th>
+                                                                        <th className="pb-2 pl-2">{t('alliance')}</th>
+                                                                        <th className="pb-2">{t('tag')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('kills')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('deaths')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('kdRatio')}</th>
+                                                                        <th className="pb-2 text-right pr-2">{tKill('fame')}</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -954,12 +970,12 @@ export default function ZvzTrackerClient() {
                                                             <table className="w-full text-sm">
                                                                 <thead>
                                                                     <tr className="text-left text-muted-foreground border-b border-border">
-                                                                        <th className="pb-2 pl-2">Player</th>
-                                                                        <th className="pb-2">Guild</th>
-                                                                        <th className="pb-2 text-right">Kills</th>
-                                                                        <th className="pb-2 text-right">Deaths</th>
-                                                                        <th className="pb-2 text-right">IP</th>
-                                                                        <th className="pb-2 text-right pr-2">Fame</th>
+                                                                        <th className="pb-2 pl-2">{t('player')}</th>
+                                                                        <th className="pb-2">{t('guild')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('kills')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('deaths')}</th>
+                                                                        <th className="pb-2 text-right">{tk('ip')}</th>
+                                                                        <th className="pb-2 text-right pr-2">{tKill('fame')}</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -977,7 +993,7 @@ export default function ZvzTrackerClient() {
                                                             </table>
                                                             {Object.keys(battleDetails.players || {}).length > 50 && (
                                                                 <div className="text-center text-xs text-muted-foreground mt-4 italic">
-                                                                    Showing top 50 players by Fame
+                                                                    {t('showingTop50')}
                                                                 </div>
                                                             )}
                                                         </div>
@@ -991,7 +1007,7 @@ export default function ZvzTrackerClient() {
                                                                     <div className="flex-1 flex items-center justify-between gap-4">
                                                                         <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
                                                                             <span className={`font-bold truncate ${event.Killer.AllianceName ? 'text-primary' : 'text-foreground'}`}>{event.Killer.Name}</span>
-                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Killer.AverageItemPower) || 0)} IP)</span>
+                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Killer.AverageItemPower) || 0)} {tk('ip')})</span>
                                                                         </div>
                                                                         
                                                                         <div className="flex flex-col items-center px-2">
@@ -1001,11 +1017,10 @@ export default function ZvzTrackerClient() {
 
                                                                         <div className="flex items-center gap-2 flex-1 min-w-0">
                                                                             <span className={`font-bold truncate ${event.Victim.AllianceName ? 'text-destructive' : 'text-foreground'}`}>{event.Victim.Name}</span>
-                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Victim.AverageItemPower) || 0)} IP)</span>
+                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Victim.AverageItemPower) || 0)} {tk('ip')})</span>
                                                                         </div>
                                                                     </div>
                                                                     <div className="w-8 h-8 relative shrink-0">
-                                                                        {/* Weapon Icon would go here */}
                                                                          <div className="bg-muted w-full h-full rounded flex items-center justify-center text-[10px]">
                                                                              W
                                                                          </div>
@@ -1022,7 +1037,7 @@ export default function ZvzTrackerClient() {
                                                                 >
                                                                     <ChevronLeft className="h-4 w-4" />
                                                                 </button>
-                                                                <span className="text-sm text-muted-foreground flex items-center">Page {currentPage}</span>
+                                                                <span className="text-sm text-muted-foreground flex items-center">{tKill('page', { n: currentPage })}</span>
                                                                 <button 
                                                                     onClick={() => setCurrentPage(p => p + 1)}
                                                                     disabled={feedLoading}
@@ -1037,7 +1052,7 @@ export default function ZvzTrackerClient() {
                                             </div>
                                         ) : (
                                             <div className="p-8 text-center text-muted-foreground">
-                                                Failed to load details.
+                                                {t('failedToLoad')}
                                             </div>
                                         )}
                                     </div>
@@ -1050,7 +1065,7 @@ export default function ZvzTrackerClient() {
                 {/* Past Battles */}
                 <div className="space-y-4">
                      <h2 className="text-lg font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-                         <Clock className="h-4 w-4" /> Recent History
+                         <Clock className="h-4 w-4" /> {t('recentHistory')}
                      </h2>
                     {pastBattles.map(battle => (
                          <div key={battle.id} id={`battle-${battle.id}`} className={`bg-card/50 border ${expandedBattleId === battle.id ? 'border-primary ring-1 ring-primary' : 'border-border'} rounded-xl overflow-hidden transition-all duration-300 hover:border-border/80`}>
@@ -1066,26 +1081,26 @@ export default function ZvzTrackerClient() {
                                             </div>
                                             <div>
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <span className="font-bold text-foreground text-lg">Battle #{battle.id}</span>
-                                                    <span className="px-2 py-0.5 bg-muted text-muted-foreground text-xs font-bold rounded-full">ENDED</span>
+                                                    <span className="font-bold text-foreground text-lg">{t('battle')} #{battle.id}</span>
+                                                    <span className="px-2 py-0.5 bg-muted text-muted-foreground text-xs font-bold rounded-full">{t('ended')}</span>
                                                 </div>
                                                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                                                     <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {formatTimeAgo(battle.startTime)}</span>
-                                                    <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {Object.keys(battle.players || {}).length} Players</span>
-                                                    <span className="flex items-center gap-1"><Skull className="h-3 w-3" /> {battle.totalKills} Kills</span>
+                                                    <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {Object.keys(battle.players || {}).length} {t('players')}</span>
+                                                    <span className="flex items-center gap-1"><Skull className="h-3 w-3" /> {battle.totalKills} {t('kills')}</span>
                                                 </div>
                                             </div>
                                         </div>
                                         
                                         <div className="flex items-center gap-2 w-full md:w-auto">
                                             <div className="flex-1 md:flex-initial text-right pr-4 border-r border-border">
-                                                 <div className="text-xs text-muted-foreground uppercase">Total Fame</div>
+                                                 <div className="text-xs text-muted-foreground uppercase">{t('totalFame')}</div>
                                                  <div className="font-mono font-bold text-warning">{formatNumber(battle.totalFame)}</div>
                                             </div>
                                              <button 
                                                 onClick={(e) => copyBattleLink(e, battle.id)}
                                                 className="p-2 hover:bg-background rounded-full text-muted-foreground hover:text-foreground transition-colors"
-                                                title="Share Battle"
+                                                title={t('shareBattle')}
                                             >
                                                 <Share2 className="h-4 w-4" />
                                             </button>
@@ -1109,7 +1124,7 @@ export default function ZvzTrackerClient() {
                                                             <div key={side.id} className={`p-4 rounded-xl border ${idx === 0 ? 'bg-success/5 border-success/20' : 'bg-destructive/5 border-destructive/20'}`}>
                                                                 <div className="flex justify-between items-start mb-4">
                                                                     <div>
-                                                                        <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{side.type}</div>
+                                                                        <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{side.type === 'guild' ? t('guild') : t('alliance')}</div>
                                                                         <div className="text-lg font-bold flex items-center gap-2 truncate max-w-[200px]" title={side.name}>
                                                                             {side.name}
                                                                             {side.tag && <span className="text-sm font-normal text-muted-foreground">[{side.tag}]</span>}
@@ -1123,25 +1138,25 @@ export default function ZvzTrackerClient() {
                                                                          <div className={`text-2xl font-mono font-bold ${idx === 0 ? 'text-success' : 'text-destructive'}`}>
                                                                             {((side.killFame / (battleDetails.totalFame || 1)) * 100).toFixed(0)}%
                                                                         </div>
-                                                                        <div className="text-xs text-muted-foreground">dominance</div>
+                                                                        <div className="text-xs text-muted-foreground">{t('dominance')}</div>
                                                                     </div>
                                                                 </div>
                                                                 
                                                                 <div className="grid grid-cols-2 gap-2 text-sm">
                                                                     <div className="bg-background/50 p-2 rounded">
-                                                                        <div className="text-muted-foreground text-xs">Kills</div>
+                                                                        <div className="text-muted-foreground text-xs">{tKill('kills')}</div>
                                                                         <div className="font-mono font-bold text-success">{side.kills}</div>
                                                                     </div>
                                                                      <div className="bg-background/50 p-2 rounded">
-                                                                        <div className="text-muted-foreground text-xs">Deaths</div>
+                                                                        <div className="text-muted-foreground text-xs">{tKill('deaths')}</div>
                                                                         <div className="font-mono font-bold text-destructive">{side.deaths}</div>
                                                                     </div>
                                                                      <div className="bg-background/50 p-2 rounded">
-                                                                        <div className="text-muted-foreground text-xs">Players</div>
+                                                                        <div className="text-muted-foreground text-xs">{t('players')}</div>
                                                                         <div className="font-mono font-bold">{side.playerCount}</div>
                                                                     </div>
                                                                      <div className="bg-background/50 p-2 rounded">
-                                                                        <div className="text-muted-foreground text-xs">Avg IP</div>
+                                                                        <div className="text-muted-foreground text-xs">{t('avgIp')}</div>
                                                                         <div className="font-mono font-bold text-warning">{side.averageIp || 'N/A'}</div>
                                                                     </div>
                                                                 </div>
@@ -1167,7 +1182,8 @@ export default function ZvzTrackerClient() {
                                                     <div className="p-6 text-center text-muted-foreground bg-muted/20 rounded-xl mb-6 border border-border/50">
                                                         <div className="flex flex-col items-center gap-2">
                                                             <Info className="h-6 w-6 text-muted-foreground/50" />
-                                                            <p>Detailed participant stats are not available for this battle yet.</p>
+                                                            <p>{t('noDetails')}</p>
+                                                            <p className="text-xs opacity-70">{t('recentBattleNote')}</p>
                                                         </div>
                                                     </div>
                                                 )}
@@ -1178,35 +1194,35 @@ export default function ZvzTrackerClient() {
                                                         onClick={() => setDetailTab('analysis')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'analysis' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
                                                     >
-                                                        Analysis
+                                                        {t('analysis')}
                                                     </button>
                                                     <button 
                                                         onClick={() => setDetailTab('guilds')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'guilds' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
                                                     >
-                                                        Guilds ({Object.keys(battleDetails.guilds || {}).length})
+                                                        {t('guilds')} ({Object.keys(battleDetails.guilds || {}).length})
                                                     </button>
                                                     <button 
                                                         onClick={() => setDetailTab('alliances')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'alliances' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
                                                     >
-                                                        Alliances ({Object.keys(battleDetails.alliances || {}).length})
+                                                        {t('alliances')} ({Object.keys(battleDetails.alliances || {}).length})
                                                     </button>
                                                     <button 
                                                         onClick={() => setDetailTab('players')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'players' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
                                                     >
-                                                        Players ({Object.keys(battleDetails.players || {}).length})
+                                                        {t('players')} ({Object.keys(battleDetails.players || {}).length})
                                                     </button>
                                                      <button 
                                                         onClick={() => setDetailTab('feed')}
                                                         className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors whitespace-nowrap ${detailTab === 'feed' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
                                                     >
-                                                        Kill Feed
+                                                        {tKill('killFeed')}
                                                     </button>
                                                 </div>
 
-                                                {/* Tab Content - Reused */}
+                                                {/* Tab Content */}
                                                 <div className="space-y-4">
                                                     {detailTab === 'analysis' && (
                                                         <div className="space-y-6 animate-in fade-in">
@@ -1238,17 +1254,17 @@ export default function ZvzTrackerClient() {
                                                                                     <Trophy className="h-16 w-16" />
                                                                                 </div>
                                                                                 <div className="relative z-10">
-                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">MVP (Most Fame)</div>
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">{t('mvpFame')}</div>
                                                                                     {topFame ? (
                                                                                         <>
                                                                                             <div className="text-xl font-bold text-primary truncate">{topFame.name}</div>
                                                                                             <div className="text-sm text-muted-foreground mb-2">{topFame.guildName}</div>
                                                                                             <div className="flex justify-between items-end">
                                                                                                 <div className="text-3xl font-mono font-bold text-warning">{formatNumber(topFame.killFame)}</div>
-                                                                                                <div className="text-xs text-muted-foreground">Fame</div>
+                                                                                                <div className="text-xs text-muted-foreground">{tKill('fame')}</div>
                                                                                             </div>
                                                                                         </>
-                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                    ) : <div className="text-muted-foreground">{tKill('noData')}</div>}
                                                                                 </div>
                                                                             </div>
 
@@ -1258,17 +1274,17 @@ export default function ZvzTrackerClient() {
                                                                                     <Swords className="h-16 w-16" />
                                                                                 </div>
                                                                                 <div className="relative z-10">
-                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">Top Killer</div>
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">{t('topKiller')}</div>
                                                                                     {topKiller ? (
                                                                                         <>
                                                                                             <div className="text-xl font-bold text-destructive truncate">{topKiller.name}</div>
                                                                                             <div className="text-sm text-muted-foreground mb-2">{topKiller.guildName}</div>
                                                                                             <div className="flex justify-between items-end">
                                                                                                 <div className="text-3xl font-mono font-bold text-destructive">{topKiller.kills}</div>
-                                                                                                <div className="text-xs text-muted-foreground">Kills</div>
+                                                                                                <div className="text-xs text-muted-foreground">{tKill('kills')}</div>
                                                                                             </div>
                                                                                         </>
-                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                    ) : <div className="text-muted-foreground">{tKill('noData')}</div>}
                                                                                 </div>
                                                                             </div>
 
@@ -1278,23 +1294,23 @@ export default function ZvzTrackerClient() {
                                                                                     <Shield className="h-16 w-16" />
                                                                                 </div>
                                                                                 <div className="relative z-10">
-                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">Highest IP</div>
+                                                                                    <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">{t('highestIp')}</div>
                                                                                     {topIp ? (
                                                                                         <>
                                                                                             <div className="text-xl font-bold text-foreground truncate">{topIp.name}</div>
                                                                                             <div className="text-sm text-muted-foreground mb-2">{topIp.guildName}</div>
                                                                                             <div className="flex justify-between items-end">
                                                                                                 <div className="text-3xl font-mono font-bold text-foreground">{Math.round(Number(topIp.averageItemPower) || 0)}</div>
-                                                                                                <div className="text-xs text-muted-foreground">IP</div>
+                                                                                                <div className="text-xs text-muted-foreground">{tk('ip')}</div>
                                                                                             </div>
                                                                                         </>
-                                                                                    ) : <div className="text-muted-foreground">No data</div>}
+                                                                                    ) : <div className="text-muted-foreground">{tk('noData')}</div>}
                                                                                 </div>
                                                                             </div>
                                                                             
                                                                             {/* Efficiency Table */}
                                                                             <div className="col-span-1 md:col-span-3 mt-4">
-                                                                                <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">Deadliest Guilds (K/D Ratio)</h3>
+                                                                                <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">{t('deadliestGuilds')}</h3>
                                                                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                                                                     {efficientGuilds.map((guild: any, idx: number) => (
                                                                                         <div key={guild.id} className="bg-muted/30 border border-border/50 p-3 rounded-lg flex justify-between items-center">
@@ -1304,16 +1320,16 @@ export default function ZvzTrackerClient() {
                                                                                             </div>
                                                                                             <div className="flex items-center gap-3">
                                                                                                 <div className="text-right">
-                                                                                                    <div className="text-xs text-muted-foreground">K/D</div>
+                                                                                                    <div className="text-xs text-muted-foreground">{tKill('kdRatio')}</div>
                                                                                                     <div className={`font-mono font-bold ${guild.deaths === 0 ? 'text-warning' : 'text-success'}`}>
-                                                                                                        {guild.deaths > 0 ? (guild.kills / guild.deaths).toFixed(1) : 'PERFECT'}
+                                                                                                        {guild.deaths > 0 ? (guild.kills / guild.deaths).toFixed(1) : t('perfect')}
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     ))}
                                                                                     {efficientGuilds.length === 0 && (
-                                                                                        <div className="text-muted-foreground italic col-span-3">Not enough data for efficiency rating (Min 5 Kills).</div>
+                                                                                        <div className="text-muted-foreground italic col-span-3">{t('notEnoughData')}</div>
                                                                                     )}
                                                                                 </div>
                                                                             </div>
@@ -1328,12 +1344,12 @@ export default function ZvzTrackerClient() {
                                                             <table className="w-full text-sm">
                                                                 <thead>
                                                                     <tr className="text-left text-muted-foreground border-b border-border">
-                                                                        <th className="pb-2 pl-2">Guild</th>
-                                                                        <th className="pb-2">Alliance</th>
-                                                                        <th className="pb-2 text-right">Kills</th>
-                                                                        <th className="pb-2 text-right">Deaths</th>
-                                                                        <th className="pb-2 text-right">K/D</th>
-                                                                        <th className="pb-2 text-right pr-2">Fame</th>
+                                                                        <th className="pb-2 pl-2">{t('guild')}</th>
+                                                                        <th className="pb-2">{t('alliance')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('kills')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('deaths')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('kdRatio')}</th>
+                                                                        <th className="pb-2 text-right pr-2">{tKill('fame')}</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -1351,18 +1367,18 @@ export default function ZvzTrackerClient() {
                                                             </table>
                                                         </div>
                                                     )}
-                                                     {/* ... other tabs ... */}
+
                                                      {detailTab === 'alliances' && (
                                                         <div className="overflow-x-auto">
                                                             <table className="w-full text-sm">
                                                                 <thead>
                                                                     <tr className="text-left text-muted-foreground border-b border-border">
-                                                                        <th className="pb-2 pl-2">Alliance</th>
-                                                                        <th className="pb-2">Tag</th>
-                                                                        <th className="pb-2 text-right">Kills</th>
-                                                                        <th className="pb-2 text-right">Deaths</th>
-                                                                        <th className="pb-2 text-right">K/D</th>
-                                                                        <th className="pb-2 text-right pr-2">Fame</th>
+                                                                        <th className="pb-2 pl-2">{t('alliance')}</th>
+                                                                        <th className="pb-2">{t('tag')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('kills')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('deaths')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('kdRatio')}</th>
+                                                                        <th className="pb-2 text-right pr-2">{tKill('fame')}</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -1380,17 +1396,18 @@ export default function ZvzTrackerClient() {
                                                             </table>
                                                         </div>
                                                     )}
-                                                    {detailTab === 'players' && (
+
+                                                     {detailTab === 'players' && (
                                                         <div className="overflow-x-auto">
                                                             <table className="w-full text-sm">
                                                                 <thead>
                                                                     <tr className="text-left text-muted-foreground border-b border-border">
-                                                                        <th className="pb-2 pl-2">Player</th>
-                                                                        <th className="pb-2">Guild</th>
-                                                                        <th className="pb-2 text-right">Kills</th>
-                                                                        <th className="pb-2 text-right">Deaths</th>
-                                                                        <th className="pb-2 text-right">IP</th>
-                                                                        <th className="pb-2 text-right pr-2">Fame</th>
+                                                                        <th className="pb-2 pl-2">{t('player')}</th>
+                                                                        <th className="pb-2">{t('guild')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('kills')}</th>
+                                                                        <th className="pb-2 text-right">{tKill('deaths')}</th>
+                                                                        <th className="pb-2 text-right">{tk('ip')}</th>
+                                                                        <th className="pb-2 text-right pr-2">{tKill('fame')}</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -1408,12 +1425,13 @@ export default function ZvzTrackerClient() {
                                                             </table>
                                                             {Object.keys(battleDetails.players || {}).length > 50 && (
                                                                 <div className="text-center text-xs text-muted-foreground mt-4 italic">
-                                                                    Showing top 50 players by Fame
+                                                                    {t('showingTop50')}
                                                                 </div>
                                                             )}
                                                         </div>
                                                     )}
-                                                     {detailTab === 'feed' && (
+
+                                                    {detailTab === 'feed' && (
                                                         <div className="space-y-2">
                                                             {battleEvents.map((event: any) => (
                                                                 <div key={event.EventId} className="flex items-center gap-3 p-2 rounded bg-muted/20 hover:bg-muted/40 transition-colors text-sm">
@@ -1421,7 +1439,7 @@ export default function ZvzTrackerClient() {
                                                                     <div className="flex-1 flex items-center justify-between gap-4">
                                                                         <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
                                                                             <span className={`font-bold truncate ${event.Killer.AllianceName ? 'text-primary' : 'text-foreground'}`}>{event.Killer.Name}</span>
-                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Killer.AverageItemPower) || 0)} IP)</span>
+                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Killer.AverageItemPower) || 0)} {tk('ip')})</span>
                                                                         </div>
                                                                         
                                                                         <div className="flex flex-col items-center px-2">
@@ -1431,7 +1449,7 @@ export default function ZvzTrackerClient() {
 
                                                                         <div className="flex items-center gap-2 flex-1 min-w-0">
                                                                             <span className={`font-bold truncate ${event.Victim.AllianceName ? 'text-destructive' : 'text-foreground'}`}>{event.Victim.Name}</span>
-                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Victim.AverageItemPower) || 0)} IP)</span>
+                                                                            <span className="text-xs text-muted-foreground hidden sm:inline">({Math.round(Number(event.Victim.AverageItemPower) || 0)} {tk('ip')})</span>
                                                                         </div>
                                                                     </div>
                                                                     <div className="w-8 h-8 relative shrink-0">
@@ -1451,7 +1469,7 @@ export default function ZvzTrackerClient() {
                                                                 >
                                                                     <ChevronLeft className="h-4 w-4" />
                                                                 </button>
-                                                                <span className="text-sm text-muted-foreground flex items-center">Page {currentPage}</span>
+                                                                <span className="text-sm text-muted-foreground flex items-center">{tKill('page', { n: currentPage })}</span>
                                                                 <button 
                                                                     onClick={() => setCurrentPage(p => p + 1)}
                                                                     disabled={feedLoading}
@@ -1466,7 +1484,7 @@ export default function ZvzTrackerClient() {
                                             </div>
                                         ) : (
                                             <div className="p-8 text-center text-muted-foreground">
-                                                Failed to load details.
+                                                {t('failedToLoad')}
                                             </div>
                                         )}
                                     </div>

@@ -40,6 +40,8 @@ import { useLoginModal } from '@/context/LoginModalContext';
 import { SubscriptionModal } from '@/components/subscription/SubscriptionModal';
 import { NotificationDropdown } from '@/components/notifications/NotificationDropdown';
 import { useCommandMenu } from '@/context/CommandMenuContext';
+import { useTranslations } from 'next-intl';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 interface NavItem {
   id: string;
@@ -47,6 +49,8 @@ interface NavItem {
   href?: string;
   icon: React.ReactNode;
   submenu?: NavItem[];
+  category?: string;
+  group?: string;
 }
 
 interface NavbarProps {
@@ -64,40 +68,43 @@ const NAV_ITEMS: NavItem[] = [
     title: 'Tools',
     icon: <Hammer className="h-4 w-4" />,
     submenu: [
-      { id: 'gold-price', title: 'Gold Price', href: '/tools/gold-price', icon: <Coins className="h-4 w-4 text-warning" /> },
-      { id: 'kill-feed', title: 'Live Kill Feed', href: '/tools/kill-feed', icon: <Skull className="h-4 w-4 text-red-500" /> },
+      { id: 'market-flipper', title: 'Market Flipper', href: '/tools/market-flipper', icon: <Coins className="h-4 w-4" /> },
       { id: 'pvp-intel', title: 'PvP Intel', href: '/tools/pvp-intel', icon: <Sword className="h-4 w-4" /> },
       { id: 'zvz-tracker', title: 'ZvZ Tracker', href: '/tools/zvz-tracker', icon: <Swords className="h-4 w-4" /> },
-      { id: 'market-flipper', title: 'Market Flipper', href: '/tools/market-flipper', icon: <Coins className="h-4 w-4" /> },
       { id: 'craft-planner', title: 'Craft Planner', href: '/tools/crafting-calc', icon: <Hammer className="h-4 w-4" /> },
+      { id: 'gold-price', title: 'Gold Price', href: '/tools/gold-price', icon: <Coins className="h-4 w-4 text-warning" /> },
     ],
   },
   {
-    id: 'profits',
-    title: 'Profits',
-    icon: <TrendingUp className="h-4 w-4" />,
+    id: 'calculators',
+    title: 'Calculators',
+    icon: <Sparkles className="h-4 w-4" />,
     submenu: [
       { id: 'farming', title: 'Farming', href: '/profits/farming', icon: <Sprout className="h-4 w-4" /> },
-      { id: 'animal', title: 'Animal', href: '/profits/animal', icon: <PawPrint className="h-4 w-4" /> },
-      { id: 'labour', title: 'Labour', href: '/profits/labour', icon: <Users className="h-4 w-4" /> },
-      { id: 'enchanting', title: 'Enchanting', href: '/profits/enchanting', icon: <Sparkles className="h-4 w-4" /> },
       { id: 'cooking', title: 'Cooking', href: '/profits/cooking', icon: <Utensils className="h-4 w-4" /> },
       { id: 'alchemy', title: 'Alchemy', href: '/profits/alchemy', icon: <FlaskConical className="h-4 w-4" /> },
+      { id: 'enchanting', title: 'Enchanting', href: '/profits/enchanting', icon: <Sparkles className="h-4 w-4" /> },
+      { id: 'labour', title: 'Labour', href: '/profits/labour', icon: <Users className="h-4 w-4" /> },
+      { id: 'animal', title: 'Animal', href: '/profits/animal', icon: <PawPrint className="h-4 w-4" /> },
       { id: 'chopped-fish', title: 'Chopped Fish', href: '/profits/chopped-fish', icon: <Fish className="h-4 w-4" /> },
     ],
   },
-  {
-    id: 'community',
-    title: 'Community',
-    icon: <MessageCircle className="h-4 w-4" />,
-    submenu: [
-      { id: 'community-hub', title: 'Community Hub', href: '/community', icon: <MessageSquare className="h-4 w-4" /> },
-      { id: 'builds-db', title: 'Builds', href: '/builds', icon: <Shield className="h-4 w-4" /> },
-    ],
-  },
-];
+    {
+      id: 'forum',
+      title: 'Forum',
+      // href: '/forum',  // Temporarily hidden
+      icon: <MessageCircle className="h-4 w-4" />,
+    },
+    {
+      id: 'builds',
+      title: 'Builds',
+      href: '/builds',
+      icon: <Shield className="h-4 w-4" />,
+    },
+  ];
 
 export function Navbar() {
+  const t = useTranslations('Navbar');
   const { user, profile, logout } = useAuth();
   const { setIsOpen } = useCommandMenu();
   const { setTheme, resolvedTheme } = useTheme();
@@ -105,9 +112,57 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [expandedMobileGroups, setExpandedMobileGroups] = useState<string[]>(['Profits', 'Tools']);
+  const [expandedMobileGroups, setExpandedMobileGroups] = useState<string[]>([t('calculators'), t('tools')]);
   const { openLoginModal } = useLoginModal();
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+
+  const navItems: NavItem[] = [
+    {
+      id: 'home',
+      title: t('home'),
+      href: '/',
+      icon: <Home className="h-4 w-4" />,
+    },
+    {
+      id: 'tools',
+      title: t('tools'),
+      icon: <Hammer className="h-4 w-4" />,
+      submenu: [
+        { id: 'gold-price', title: t('goldPrice'), href: '/tools/gold-price', icon: <Coins className="h-4 w-4 text-warning" />, group: 'market' },
+        { id: 'market-flipper', title: t('marketFlipper'), href: '/tools/market-flipper', icon: <Coins className="h-4 w-4" />, group: 'market' },
+        { id: 'craft-planner', title: t('craftPlanner'), href: '/tools/crafting-calc', icon: <Hammer className="h-4 w-4" />, group: 'market' },
+        { id: 'pvp-intel', title: t('pvpIntel'), href: '/tools/pvp-intel', icon: <Sword className="h-4 w-4" />, group: 'pvp' },
+        { id: 'kill-feed', title: t('killFeed'), href: '/tools/kill-feed', icon: <Skull className="h-4 w-4" />, group: 'pvp' },
+        { id: 'zvz-tracker', title: t('zvzTracker'), href: '/tools/zvz-tracker', icon: <Swords className="h-4 w-4" />, group: 'pvp' },
+      ],
+    },
+    {
+      id: 'calculators',
+      title: t('calculators'),
+      icon: <Sparkles className="h-4 w-4" />,
+      submenu: [
+        { id: 'farming', title: t('farming'), href: '/profits/farming', icon: <Sprout className="h-4 w-4" />, category: 'profits' },
+        { id: 'cooking', title: t('cooking'), href: '/profits/cooking', icon: <Utensils className="h-4 w-4" />, category: 'profits' },
+        { id: 'alchemy', title: t('alchemy'), href: '/profits/alchemy', icon: <FlaskConical className="h-4 w-4" />, category: 'profits' },
+        { id: 'enchanting', title: t('enchanting'), href: '/profits/enchanting', icon: <Sparkles className="h-4 w-4" />, category: 'profits' },
+        { id: 'labour', title: t('labour'), href: '/profits/labour', icon: <Users className="h-4 w-4" />, category: 'profits' },
+        { id: 'animal', title: t('animal'), href: '/profits/animal', icon: <PawPrint className="h-4 w-4" />, category: 'profits' },
+        { id: 'chopped-fish', title: t('choppedFish'), href: '/profits/chopped-fish', icon: <Fish className="h-4 w-4" />, category: 'profits' },
+      ],
+    },
+    // {
+    //   id: 'forum',
+    //   title: t('forum'),
+    //   href: '/forum',
+    //   icon: <MessageCircle className="h-4 w-4" />,
+    // },
+    {
+      id: 'builds',
+      title: t('builds'),
+      href: '/builds',
+      icon: <Shield className="h-4 w-4" />,
+    },
+  ];
 
   const profileDropdownRef = useRef<HTMLDivElement>(null);
   const navDropdownRef = useRef<HTMLDivElement>(null);
@@ -208,7 +263,7 @@ export function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1" ref={navDropdownRef}>
-              {mounted && NAV_ITEMS.map((item) => {
+              {mounted && navItems.map((item) => {
                 if (item.submenu) {
                   const isActive = activeDropdown === item.title;
                   return (
@@ -224,19 +279,84 @@ export function Navbar() {
                       </button>
 
                       {isActive && (
-                        <div className="absolute top-full left-0 mt-2 w-56 bg-popover border border-border rounded-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
-                          <div className="p-1">
-                            {item.submenu.map((sub) => (
-                              <Link
-                                key={sub.id}
-                                href={sub.href!}
-                                onClick={() => setActiveDropdown(null)}
-                                className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
-                              >
-                                {sub.icon}
-                                {sub.title}
-                              </Link>
-                            ))}
+                        <div className="absolute top-full left-0 mt-2 w-72 bg-popover border border-border rounded-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+                          <div className="p-3">
+                            {(() => {
+                              // Group items by category
+                              const itemsWithCategory = item.submenu?.filter(s => s.category);
+                              const itemsWithoutCategory = item.submenu?.filter(s => !s.category);
+                              
+                              if (itemsWithCategory && itemsWithCategory.length > 0) {
+                                const categories = [...new Set(itemsWithCategory.map(s => s.category))];
+                                return (
+                                  <div className="flex gap-4">
+                                    {categories.map(cat => (
+                                      <div key={cat} className="flex-1">
+                                        <div className="text-xs font-semibold text-muted-foreground mb-2 px-2 uppercase tracking-wider">
+                                          {t(`profits`)}
+                                        </div>
+                                        <div className="space-y-1">
+                                          {itemsWithCategory
+                                            .filter(s => s.category === cat)
+                                            .map(sub => (
+                                              <Link
+                                                key={sub.id}
+                                                href={sub.href!}
+                                                onClick={() => setActiveDropdown(null)}
+                                                className="flex items-center gap-3 px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
+                                              >
+                                                {sub.icon}
+                                                {sub.title}
+                                              </Link>
+                                            ))}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                );
+                              }
+                              
+                              return (
+                                <div className="space-y-1">
+                                  {(() => {
+                                    // Group submenu items
+                                    const submenu = item.submenu || [];
+                                    const groups: Record<string, NavItem[]> = {};
+                                    
+                                    submenu.forEach((sub) => {
+                                      const group = sub.group || 'default';
+                                      if (!groups[group]) {
+                                        groups[group] = [];
+                                      }
+                                      groups[group]!.push(sub);
+                                    });
+
+                                    const groupOrder = Object.keys(groups);
+                                    
+                                    return groupOrder.map((group, groupIndex) => (
+                                      <div key={group}>
+                                        {groups[group]?.map((sub) => (
+                                          sub.group === group && (
+                                            <Link
+                                              key={sub.id}
+                                              href={sub.href!}
+                                              onClick={() => setActiveDropdown(null)}
+                                              className="flex items-center gap-3 px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
+                                            >
+                                              {sub.icon}
+                                              {sub.title}
+                                            </Link>
+                                          )
+                                        ))}
+                                        {groupIndex < groupOrder.length - 1 && (
+                                          <div className="my-2 border-t border-border" />
+                                        )}
+                                      </div>
+                                    ));
+                                  })()}
+                                </div>
+                              );
+                            })()}
                           </div>
                         </div>
                       )}
@@ -263,17 +383,20 @@ export function Navbar() {
               <button
                 onClick={() => setIsOpen(true)}
                 className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors hidden sm:flex items-center gap-2"
-                title="Search (Ctrl+K)"
+                title={`${t('search')} (Ctrl+K)`}
               >
                 <Search className="h-5 w-5" />
                 <span className="hidden lg:inline text-xs text-muted-foreground border border-border rounded px-1.5 py-0.5">⌘K</span>
               </button>
 
+              {/* Language Switcher */}
+              <LanguageSwitcher />
+
               {/* Theme Toggle */}
               <button
                 onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
                 className="p-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
-                title="Toggle Theme"
+                title={t('toggleTheme')}
               >
                 {mounted && resolvedTheme === 'light' ? (
                   <Sun className="h-5 w-5" />
@@ -294,7 +417,7 @@ export function Navbar() {
                 >
                   <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/40 to-transparent z-10 skew-x-12" />
                   <Crown className="h-3 w-3 relative z-20" />
-                  <span className="hidden lg:inline relative z-20">SUPPORT US</span>
+                  <span className="hidden lg:inline relative z-20">{t('supportUs')}</span>
                 </button>
               )}
 
@@ -302,29 +425,17 @@ export function Navbar() {
                 <div className="relative" ref={profileDropdownRef}>
                   <button
                     onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                    className="flex items-center gap-2 group p-1.5 pr-2 hover:bg-accent rounded-full border border-transparent hover:border-border transition-all"
+                    className="flex items-center group p-1 hover:bg-accent rounded-full border border-transparent hover:border-border transition-all relative"
                   >
                     {photoURL ? (
-                      <img src={photoURL} alt={displayName} className="h-8 w-8 rounded-full border border-border group-hover:border-amber-500 transition-colors" />
+                      <div className="h-10 w-10" >
+                        <img src={photoURL} alt={displayName} className="w-12 rounded-full border border-border group-hover:border-amber-500 transition-colors" />
+                      </div>
                     ) : (
-                      <div className="h-8 w-8 rounded-full bg-accent flex items-center justify-center border border-border group-hover:border-amber-500 transition-colors">
-                        <UserIcon className="h-4 w-4 text-muted-foreground" />
+                      <div className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 rounded-full bg-accent flex items-center justify-center border border-border group-hover:border-amber-500 transition-colors">
+                        <UserIcon className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-muted-foreground" />
                       </div>
                     )}
-                    <span className="text-sm font-medium hidden md:block group-hover:text-amber-400 transition-colors max-w-[150px] truncate">
-                      {displayName}
-                    </span>
-
-                    {/* Badge Icon */}
-                    {(profile?.isPremium || profile?.subscription?.status === 'active') && (
-                      profile?.subscription?.planType === 'guild' ? (
-                        <Shield className="h-3 w-3 text-blue-500 fill-blue-500/20" aria-label="Guild Master" />
-                      ) : (
-                        <Crown className="h-3 w-3 text-amber-500 fill-amber-500/20" aria-label="Adept" />
-                      )
-                    )}
-
-                    <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${isProfileDropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {/* Profile Dropdown Menu */}
@@ -342,7 +453,7 @@ export function Navbar() {
                           onClick={() => setIsProfileDropdownOpen(false)}
                         >
                           <User className="h-4 w-4" />
-                          View Profile
+                          {t('viewProfile')}
                         </Link>
                         <Link
                           href="/settings"
@@ -350,7 +461,7 @@ export function Navbar() {
                           onClick={() => setIsProfileDropdownOpen(false)}
                         >
                           <Settings className="h-4 w-4" />
-                          Settings
+                          {t('settings')}
                         </Link>
                       </div>
 
@@ -363,7 +474,7 @@ export function Navbar() {
                           className="w-full flex items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                         >
                           <LogOut className="h-4 w-4" />
-                          Logout
+                          {t('logout')}
                         </button>
                       </div>
                     </div>
@@ -375,7 +486,7 @@ export function Navbar() {
                   className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm font-medium transition-colors"
                 >
                   <UserIcon className="h-4 w-4" />
-                  <span className="hidden sm:inline">Login</span>
+                  <span className="hidden sm:inline">{t('login')}</span>
                 </button>
               )}
             </div>
@@ -413,7 +524,7 @@ export function Navbar() {
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-2">
-              {NAV_ITEMS.map((item) => {
+              {navItems.map((item) => {
                 const isActive = item.href === pathname;
                 const isExpanded = expandedMobileGroups.includes(item.title);
                 const hasSubmenu = item.submenu && item.submenu.length > 0;
@@ -434,21 +545,44 @@ export function Navbar() {
 
                       {isExpanded && (
                         <div className="mt-1 ml-4 space-y-1 border-l-2 border-border pl-2">
-                          {item.submenu!.map((sub) => (
-                            <Link
-                              key={sub.id}
-                              href={sub.href!}
-                              className={`
-                                flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors
-                                ${pathname === sub.href
-                                  ? 'bg-primary/10 text-primary'
-                                  : 'text-muted-foreground hover:text-foreground hover:bg-accent'}
-                              `}
-                            >
-                              {sub.icon}
-                              {sub.title}
-                            </Link>
-                          ))}
+                          {(() => {
+                            // Group submenu items for mobile
+                            const submenu = item.submenu || [];
+                            const groups: Record<string, NavItem[]> = {};
+                            
+                            submenu.forEach((sub) => {
+                              const group = sub.group || 'default';
+                              if (!groups[group]) {
+                                groups[group] = [];
+                              }
+                              groups[group]!.push(sub);
+                            });
+
+                            const groupOrder = Object.keys(groups);
+                            
+                            return groupOrder.map((group, groupIndex) => (
+                              <div key={group}>
+                                {groups[group]?.map((sub) => (
+                                  <Link
+                                    key={sub.id}
+                                    href={sub.href!}
+                                    className={`
+                                      flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors
+                                      ${pathname === sub.href
+                                        ? 'bg-primary/10 text-primary'
+                                        : 'text-muted-foreground hover:text-foreground hover:bg-accent'}
+                                    `}
+                                  >
+                                    {sub.icon}
+                                    {sub.title}
+                                  </Link>
+                                ))}
+                                {groupIndex < groupOrder.length - 1 && (
+                                  <div className="my-2 border-t border-border" />
+                                )}
+                              </div>
+                            ));
+                          })()}
                         </div>
                       )}
                     </div>
@@ -483,7 +617,7 @@ export function Navbar() {
                 className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
               >
                 <Search className="h-4 w-4" />
-                Search
+                {t('search')}
               </button>
 
               {/* Mobile Support Us */}
@@ -496,9 +630,59 @@ export function Navbar() {
                   className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-amber-500 hover:bg-amber-500/10 rounded-lg transition-colors mt-1"
                 >
                   <Crown className="h-4 w-4" />
-                  Support Us
+                  {t('supportUs')}
                 </button>
               )}
+
+              <div className="h-px bg-border my-2"></div>
+
+              {/* Mobile Theme Toggle */}
+              <button
+                onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+                className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
+              >
+                {mounted && resolvedTheme === 'light' ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+                <span>{t('toggleTheme')}</span>
+              </button>
+
+              {/* Mobile Language Switcher */}
+              <div className="px-3 py-2">
+                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 px-1">Language</div>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { code: 'en', label: 'English' },
+                    { code: 'de', label: 'Deutsch' },
+                    { code: 'fr', label: 'Français' },
+                    { code: 'ru', label: 'Русский' },
+                    { code: 'pl', label: 'Polski' },
+                    { code: 'pt', label: 'Português' },
+                    { code: 'es', label: 'Español' },
+                    { code: 'tr', label: 'Türkçe' },
+                    { code: 'zh', label: '中文' },
+                    { code: 'ko', label: '한국어' },
+                  ].map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={async () => {
+                        const { setLocale } = await import('@/app/actions/locale');
+                        await setLocale(lang.code);
+                        window.location.reload();
+                      }}
+                      className={`px-3 py-1.5 text-xs rounded-md border transition-all text-left ${
+                        (typeof window !== 'undefined' && document.cookie.includes(`NEXT_LOCALE=${lang.code}`)) || lang.code === 'en' && !document.cookie.includes('NEXT_LOCALE=')
+                          ? 'bg-primary/10 border-primary/30 text-primary font-bold'
+                          : 'bg-muted/50 border-border text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      {lang.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

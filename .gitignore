@@ -48,3 +48,6 @@ public/workbox-*.js.map
 
 # BLEH
 *.rules
+# *_*js
+# *_*.txt
+NUL

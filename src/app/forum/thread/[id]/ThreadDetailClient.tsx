@@ -48,6 +48,7 @@ import { useLoginModal } from '@/context/LoginModalContext';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { useTheme } from 'next-themes';
+import { useTranslations } from 'next-intl';
 
 const MarkdownViewer = dynamic<{ source: string | undefined }>(
   () => import('@uiw/react-md-editor').then((mod) => {
@@ -66,6 +67,8 @@ export default function ThreadDetailClient({
   initialThread: Thread | null | undefined;
   initialComments: Comment[];
 }) {
+  const t = useTranslations('ThreadDetail');
+  const tc = useTranslations('Community');
   const { user, profile } = useAuth();
   const { openLoginModal } = useLoginModal();
   const router = useRouter();
@@ -98,10 +101,10 @@ export default function ThreadDetailClient({
     setIsDeleting(true);
     const result = await deleteThreadAction(thread.id, user.uid);
     if (result.success) {
-      toast.success('Thread deleted successfully');
-      router.push('/community');
+      toast.success(t('deleteSuccess'));
+      router.push('/forum');
     } else {
-      toast.error(result.error || 'Failed to delete thread');
+      toast.error(result.error || t('deleteError'));
       setIsDeleting(false);
       setShowDeleteConfirm(false);
     }
@@ -111,10 +114,10 @@ export default function ThreadDetailClient({
     if (!user || !profile?.isAdmin || !thread) return;
     const result = await togglePinThreadAction(thread.id, user.uid);
     if (result.success) {
-      toast.success(result.isPinned ? 'Thread pinned' : 'Thread unpinned');
+      toast.success(result.isPinned ? t('pinned') : t('unpinned'));
       fetchThreadData();
     } else {
-      toast.error(result.error || 'Failed to toggle pin');
+      toast.error(result.error || t('pinError'));
     }
   };
 
@@ -135,10 +138,10 @@ export default function ThreadDetailClient({
     setIsDeletingComment(commentId);
     const result = await deleteCommentAction(thread.id, commentId, user.uid);
     if (result.success) {
-      toast.success('Comment deleted');
+      toast.success(t('commentDeleted'));
       fetchThreadData();
     } else {
-      toast.error(result.error || 'Failed to delete comment');
+      toast.error(result.error || t('deleteCommentError'));
     }
     setIsDeletingComment(null);
   };
@@ -158,12 +161,12 @@ export default function ThreadDetailClient({
     });
 
     if (result.success) {
-      toast.success('Report submitted');
+      toast.success(t('reportSubmitted'));
       setReportingItem(null);
       setReportReason('Spam');
       setReportDetails('');
     } else {
-      toast.error(result.error || 'Failed to submit report');
+      toast.error(result.error || t('reportError'));
     }
     setIsSubmittingReport(false);
   };
@@ -240,7 +243,7 @@ export default function ThreadDetailClient({
                     {comment.authorName}
                     {comment.authorIsAdmin && (
                       <span className="bg-primary/20 text-primary text-[9px] font-black px-1.5 py-0.5 rounded flex items-center gap-1">
-                        <Shield className="h-2.5 w-2.5" /> ADMIN
+                        <Shield className="h-2.5 w-2.5" /> {tc('admin')}
                       </span>
                     )}
                   </span>
@@ -250,12 +253,12 @@ export default function ThreadDetailClient({
                     </span>
                   )}
                   {comment.authorId === thread?.authorId && (
-                    <span className="text-[8px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-black uppercase tracking-tighter">OP</span>
+                    <span className="text-[8px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-black uppercase tracking-tighter">{t('op')}</span>
                   )}
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider opacity-60">
-                    {isMounted ? `${formatDistanceToNow(new Date(comment.createdAt))} ago` : '...'}
+                    {isMounted ? `${formatDistanceToNow(new Date(comment.createdAt))} ${tc('ago')}` : '...'}
                   </span>
                   <div className="flex items-center gap-1.5 ml-1">
                     {user && user.uid === comment.authorId && comment.content !== '[Comment Purged]' && (
@@ -263,7 +266,7 @@ export default function ThreadDetailClient({
                         onClick={() => handleDeleteComment(comment.id)}
                         disabled={isDeletingComment === comment.id}
                         className="text-muted-foreground hover:text-destructive transition-colors disabled:opacity-50"
-                        title="Delete Comment"
+                        title={t('deleteComment')}
                       >
                         {isDeletingComment === comment.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Trash2 className="h-3 w-3" />}
                       </button>
@@ -272,7 +275,7 @@ export default function ThreadDetailClient({
                       <button
                         onClick={() => setReportingItem({ type: 'comment', id: comment.id })}
                         className="text-muted-foreground hover:text-primary transition-colors"
-                        title="Report Comment"
+                        title={t('reportComment')}
                       >
                         <Flag className="h-3 w-3" />
                       </button>
@@ -292,7 +295,7 @@ export default function ThreadDetailClient({
                     className="flex items-center gap-1.5 text-[9px] font-black text-primary uppercase tracking-widest hover:opacity-80 transition-opacity"
                   >
                     <MessageSquare className="h-2.5 w-2.5" />
-                    Reply
+                    {t('reply')}
                   </button>
                 </div>
               )}
@@ -311,7 +314,7 @@ export default function ThreadDetailClient({
 
   const handleLike = async () => {
     if (!user) {
-      openLoginModal('Please sign in to like threads');
+      openLoginModal(t('likePrompt'));
       return;
     }
     const result = await likeThreadAction(threadId, user.uid);
@@ -321,7 +324,7 @@ export default function ThreadDetailClient({
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !profile) {
-      openLoginModal('Please sign in to comment');
+      openLoginModal(t('commentPrompt'));
       return;
     }
 
@@ -343,9 +346,9 @@ export default function ThreadDetailClient({
       setReplyToId(null);
       setReplyToName(null);
       fetchThreadData();
-      toast.success('Reply broadcast successful');
+      toast.success(t('replyBroadcast'));
     } else {
-      toast.error(result.error || 'Failed to post comment');
+      toast.error(result.error || t('postCommentError'));
     }
     setIsSubmittingComment(false);
   };
@@ -354,19 +357,19 @@ export default function ThreadDetailClient({
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <Loader2 className="h-8 w-8 text-primary animate-spin" />
-        <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Decoding Transmission</p>
+        <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{t('decoding')}</p>
       </div>
     );
   }
 
   if (!thread) {
     return (
-      <PageShell title="Thread Not Found" description="The requested data is unavailable.">
+      <PageShell title={t('threadNotFound')} description={t('threadNotFoundDesc')}>
         <div className="text-center py-20 flex flex-col items-center gap-4">
           <AlertTriangle className="h-10 w-10 text-destructive/50" />
-          <p className="text-muted-foreground">The thread you are looking for has been purged or moved.</p>
-          <Link href="/community" className="text-primary font-bold hover:underline flex items-center gap-2">
-            <ArrowLeft className="h-4 w-4" /> Return to Hub
+          <p className="text-muted-foreground">{t('threadNotFoundDesc')}</p>
+          <Link href="/forum" className="text-primary font-bold hover:underline flex items-center gap-2">
+            <ArrowLeft className="h-4 w-4" /> {t('returnToHub')}
           </Link>
         </div>
       </PageShell>
@@ -384,16 +387,16 @@ export default function ThreadDetailClient({
             onClick={() => {
               if (typeof window !== 'undefined') {
                 navigator.clipboard.writeText(window.location.href);
-                toast.success("Link copied");
+                toast.success(t('linkCopied'));
               }
             }}
             className="p-2 bg-muted hover:bg-muted/80 rounded-lg text-muted-foreground transition-colors"
           >
             <Share2 className="h-4 w-4" />
           </button>
-          <Link href="/community" className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-muted hover:bg-secondary rounded-lg text-sm font-bold text-muted-foreground transition-colors">
+          <Link href="/forum" className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-muted hover:bg-secondary rounded-lg text-sm font-bold text-muted-foreground transition-colors">
             <ArrowLeft className="h-4 w-4" />
-            Back
+            {t('back')}
           </Link>
         </div>
       }
@@ -420,7 +423,7 @@ export default function ThreadDetailClient({
                   </div>
                   <div className="text-[10px] text-muted-foreground flex items-center gap-1 uppercase font-bold tracking-wider">
                     <Clock className="h-3 w-3" />
-                    {isMounted ? `${formatDistanceToNow(new Date(thread.createdAt))} ago` : '...'}
+                    {isMounted ? `${formatDistanceToNow(new Date(thread.createdAt))} ${tc('ago')}` : '...'}
                   </div>
                 </div>
               </div>
@@ -429,7 +432,7 @@ export default function ThreadDetailClient({
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider rounded border border-primary/20">
-                    {thread.category}
+                    {tc(`categories.${thread.category}` as any) || thread.category}
                   </span>
                   <span className="px-2 py-0.5 bg-muted text-muted-foreground text-[10px] font-bold uppercase tracking-wider rounded border border-border">
                     {thread.server}
@@ -528,16 +531,16 @@ export default function ThreadDetailClient({
                                 className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors border-b border-border"
                               >
                                 {thread.isPinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
-                                {thread.isPinned ? 'Unpin' : 'Pin Thread'}
+                                {thread.isPinned ? t('unpin') : t('pinThread')}
                               </button>
                             )}
                             {isAuthor && (
                               <Link
-                                href={`/community/edit/${thread.id}`}
+                                href={`/forum/edit/${thread.id}`}
                                 className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                               >
                                 <Edit2 className="h-3.5 w-3.5" />
-                                Edit Thread
+                                {t('editThread')}
                               </Link>
                             )}
                             {isAuthor && (
@@ -549,7 +552,7 @@ export default function ThreadDetailClient({
                                 className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-destructive hover:bg-destructive/10 transition-colors border-t border-border"
                               >
                                 <Trash2 className="h-3.5 w-3.5" />
-                                Delete
+                                {t('delete')}
                               </button>
                             )}
                           </div>
@@ -564,7 +567,7 @@ export default function ThreadDetailClient({
 
           {/* Comment Head */}
           <div className="flex items-center gap-2 px-1">
-            <h3 className="text-sm font-bold text-foreground uppercase tracking-widest">Comments</h3>
+            <h3 className="text-sm font-bold text-foreground uppercase tracking-widest">{t('comments')}</h3>
             <div className="h-px flex-1 bg-border" />
           </div>
 
@@ -572,7 +575,7 @@ export default function ThreadDetailClient({
           <div className="space-y-4">
             {comments.length === 0 ? (
               <div className="text-center py-12 bg-muted/20 rounded-xl border border-dashed border-border">
-                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">No active comments yet</p>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t('noComments')}</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -588,14 +591,14 @@ export default function ThreadDetailClient({
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                   <p className="text-[10px] font-bold text-primary uppercase tracking-wider">
-                    Replying to {replyToName}
+                    {t('replyingTo', { name: replyToName || '' })}
                   </p>
                 </div>
                 <button
                   onClick={() => { setReplyToId(null); setReplyToName(null); if (newComment.startsWith(`@${replyToName}`)) setNewComment(''); }}
                   className="text-[10px] font-bold text-muted-foreground hover:text-foreground uppercase tracking-widest"
                 >
-                  Cancel
+                  {t('cancel')}
                 </button>
               </div>
             )}
@@ -614,7 +617,7 @@ export default function ThreadDetailClient({
                   <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
-                    placeholder={user ? "Write a comment..." : "Authentication required..."}
+                    placeholder={user ? t('writeComment') : t('authRequired')}
                     disabled={!user || isSubmittingComment}
                     rows={3}
                     className="w-full bg-muted/30 border border-border rounded-lg px-4 py-3 text-foreground focus:border-primary/50 outline-none resize-none transition-all disabled:opacity-50 text-sm font-medium"
@@ -632,7 +635,7 @@ export default function ThreadDetailClient({
                   ) : (
                     <Send className="h-4 w-4" />
                   )}
-                  <span className="ml-2">Submit</span>
+                  <span className="ml-2">{t('submit')}</span>
                 </button>
               </div>
             </form>
@@ -655,7 +658,7 @@ export default function ThreadDetailClient({
                   {thread.authorName}
                   {thread.authorIsAdmin && (
                     <span className="bg-primary/20 text-primary text-[9px] font-black px-1.5 py-0.5 rounded flex items-center gap-1 ml-1.5">
-                      <Shield className="h-2.5 w-2.5" /> ADMIN
+                      <Shield className="h-2.5 w-2.5" /> {tc('admin')}
                     </span>
                   )}
                 </h3>
@@ -665,8 +668,8 @@ export default function ThreadDetailClient({
 
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-muted/50 p-2.5 rounded-lg text-center">
-                <p className="text-[9px] uppercase font-bold tracking-wider text-muted-foreground mb-1">Status</p>
-                <p className="text-[10px] font-bold text-emerald-500">Active</p>
+                <p className="text-[9px] uppercase font-bold tracking-wider text-muted-foreground mb-1">{t('status')}</p>
+                <p className="text-[10px] font-bold text-emerald-500">{t('active')}</p>
               </div>
               <div className="bg-muted/50 p-2.5 rounded-lg text-center">
                 <p className="text-[9px] uppercase font-bold tracking-wider text-muted-foreground mb-1">Rank</p>
@@ -675,20 +678,20 @@ export default function ThreadDetailClient({
             </div>
 
             <Link href={`/user/${thread.authorId}`} className="block w-full py-2 bg-muted hover:bg-muted/80 text-[10px] font-bold text-center uppercase tracking-widest rounded-lg transition-colors border border-border">
-              View Profile
+              {tc('viewProfile')}
             </Link>
           </div>
 
           <div className="bg-card border border-border rounded-xl p-6 space-y-4">
             <h4 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
               <Flame className="h-3.5 w-3.5" />
-              Thread Data
+              {t('threadData')}
             </h4>
             <div className="space-y-3">
               {[
-                { label: "Server", value: thread.server, icon: <Globe className="h-3.5 w-3.5" /> },
-                { label: "Channel", value: thread.category, icon: <Activity className="h-3.5 w-3.5" /> },
-                { label: "Guild", value: thread.guildName || "None", icon: <Shield className="h-3.5 w-3.5" /> },
+                { label: t('server'), value: thread.server, icon: <Globe className="h-3.5 w-3.5" /> },
+                { label: t('channel'), value: tc(`categories.${thread.category}` as any) || thread.category, icon: <Activity className="h-3.5 w-3.5" /> },
+                { label: t('guild'), value: thread.guildName || t('none'), icon: <Shield className="h-3.5 w-3.5" /> },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
                   <div className="flex items-center gap-2 text-muted-foreground">
@@ -708,21 +711,21 @@ export default function ThreadDetailClient({
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/60 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-card border border-border w-full max-w-sm rounded-xl p-6 text-center space-y-6">
             <div className="space-y-2">
-              <h2 className="text-lg font-bold text-foreground uppercase tracking-tight">Confirm Deletion</h2>
+              <h2 className="text-lg font-bold text-foreground uppercase tracking-tight">{t('confirmDelete')}</h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                This will permanently delete this thread from the community database.
+                {t('deleteWarning')}
               </p>
             </div>
             <div className="flex gap-2">
               <button onClick={() => setShowDeleteConfirm(false)} className="flex-1 py-2 rounded-lg text-xs font-bold text-muted-foreground hover:bg-muted transition-colors border border-border">
-                Cancel
+                {t('cancel')}
               </button>
               <button
                 onClick={handleDelete}
                 disabled={isDeleting}
                 className="flex-1 bg-destructive hover:bg-destructive/90 text-destructive-foreground py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
               >
-                {isDeleting ? <Loader2 className="h-3 w-3 animate-spin" /> : "Delete"}
+                {isDeleting ? <Loader2 className="h-3 w-3 animate-spin" /> : t('delete')}
               </button>
             </div>
           </div>
@@ -738,7 +741,7 @@ export default function ThreadDetailClient({
                   <div className="p-2 bg-primary/10 rounded-lg">
                     <AlertTriangle className="h-5 w-5 text-primary" />
                   </div>
-                  <h3 className="text-lg font-bold text-foreground">Report Content</h3>
+                  <h3 className="text-lg font-bold text-foreground">{t('reportContent')}</h3>
                 </div>
                 <button
                   onClick={() => setReportingItem(null)}
@@ -750,7 +753,7 @@ export default function ThreadDetailClient({
 
               <form onSubmit={handleReportSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Reason for Report</label>
+                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t('reportReason')}</label>
                   <div className="grid grid-cols-2 gap-2">
                     {['Spam', 'Harassment', 'Inappropriate', 'Other'].map((reason) => (
                       <button
@@ -762,18 +765,18 @@ export default function ThreadDetailClient({
                           : 'bg-muted border-border text-muted-foreground hover:border-primary/50'
                           }`}
                       >
-                        {reason}
+                        {t(`reasons.${reason}` as any)}
                       </button>
                     ))}
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Additional Details</label>
+                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t('additionalDetails')}</label>
                   <textarea
                     value={reportDetails}
                     onChange={(e) => setReportDetails(e.target.value)}
-                    placeholder="Provide specific details about the issue..."
+                    placeholder={t('reportPlaceholder')}
                     className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 text-sm font-medium focus:border-primary/50 outline-none resize-none h-32 transition-all"
                   />
                 </div>
@@ -784,7 +787,7 @@ export default function ThreadDetailClient({
                     onClick={() => setReportingItem(null)}
                     className="flex-1 px-4 py-2.5 bg-muted hover:bg-muted/80 text-muted-foreground font-bold text-xs uppercase tracking-widest rounded-xl transition-all"
                   >
-                    Cancel
+                    {t('cancel')}
                   </button>
                   <button
                     type="submit"
@@ -794,10 +797,10 @@ export default function ThreadDetailClient({
                     {isSubmittingReport ? (
                       <div className="flex items-center justify-center gap-2">
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>Submitting...</span>
+                        <span>{t('submitting')}</span>
                       </div>
                     ) : (
-                      'Submit Report'
+                      t('submitReport')
                     )}
                   </button>
                 </div>
