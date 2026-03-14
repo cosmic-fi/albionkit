@@ -34,6 +34,7 @@ const withPWA = withPWAInit({
 
 const nextConfig: NextConfig = {
   /* config options here */
+  poweredByHeader: false,
   reactCompiler: true,
   images: {
     qualities: [75, 100],

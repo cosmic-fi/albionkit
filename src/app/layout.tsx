@@ -52,6 +52,17 @@ export async function generateMetadata(): Promise<Metadata> {
       statusBarStyle: "default",
       title: "AlbionKit",
     },
+    manifest: '/manifest.webmanifest',
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/logo.png', sizes: '192x192', type: 'image/png' },
+        { url: '/logo.png', sizes: '512x512', type: 'image/png' },
+      ],
+      apple: [
+        { url: '/logo.png', sizes: '180x180', type: 'image/png' },
+      ],
+    },
     robots: {
       index: true,
       follow: true,

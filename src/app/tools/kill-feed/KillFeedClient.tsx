@@ -9,6 +9,7 @@ import { FeatureLock } from '@/components/subscription/FeatureLock';
 import { InfoStrip } from '@/components/InfoStrip';
 import { Input } from '@/components/ui/Input';
 import { ItemIcon } from '@/components/ItemIcon';
+import { SocialShare } from '@/components/SocialShare';
 import { Search, RefreshCw, Skull, Sword, Swords, Users, Clock, ChevronRight, X, Trophy, ChevronLeft, BarChart2, Filter, Activity, Globe, Zap, Coins, TrendingUp, History, Info, BookOpen, Archive } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
@@ -430,6 +431,14 @@ export default function KillFeedPage() {
         </div>
       )}
       <InfoStrip currentPage="kill-feed" />
+      
+      {/* Social Share */}
+      <div className="flex justify-center py-6">
+        <SocialShare 
+          title="AlbionKit Live Kill Feed - Real-Time PvP Tracker"
+          description="Monitor real-time PvP activity across all Albion Online servers. Track kills, analyze combat logs, and stay informed about battles."
+        />
+      </div>
     </PageShell>
   );
 }

@@ -171,6 +171,7 @@
     "cooking": "Yemek Pişirme",
     "alchemy": "Simya",
     "choppedFish": "Balık Ayıklama",
+    "crafting": "Zanaat",
     "community": "Topluluk",
     "communityHub": "Topluluk Merkezi",
     "builds": "Buildler",
@@ -792,74 +793,81 @@
   "Metadata": {
     "title": "AlbionKit — En İyi Albion Online Yardımcısı",
     "template": "%s | AlbionKit",
-    "description": "AlbionKit ile Albion'u fethet. Build veritabanı, piyasa al-sat, PvP bilgileri, zanaat hesaplayıcıları ve canlı kill feed.",
+    "description": "AlbionKit ile Albion Online'da hüküm sür. Build veritabanı, piyasa al-sat araçları, PvP istihbaratı, zanaat hesaplayıcıları ve canlı kill feed. Rekabet avantajın burada başlar.",
     "keywords": "Albion Online, Albion Buildleri, Albion Market, Albion PvP, MMORPG"
   },
   "Pages": {
     "home": {
       "title": "AlbionKit — Piyasa Araçları, PvP ve Meta Buildler",
-      "description": "Gerçek zamanlı veriler ve en iyi topluluk buildleri ile Albion deneyimini geliştir."
+      "description": "Gerçek zamanlı piyasa verileri, PvP istihbaratı ve en iyi topluluk buildleri ile Albion Online deneyimini zirveye taşı. İhtiyacın olan tüm araçlar tek bir yerde."
     },
     "about": {
       "title": "AlbionKit Hakkında",
-      "description": "Misyonumuz ve Albion Online topluluğu için araçlarımız hakkında daha fazlasını öğrenin."
+      "description": "AlbionKit'in misyonunu ve Albion Online topluluğu için oluşturulan araçları keşfet. Oyuncular tarafından, oyuncular için geliştirildi."
     },
     "marketFlipper": {
       "title": "Piyasa Al-Sat",
-      "description": "Kraliyet Şehirleri ve Kara Borsa arasındaki karlı fırsatları bulun."
+      "description": "Albion Online'da Kraliyet Şehirleri ile Kara Borsa arasında karlı ticaret fırsatları bul. Vergi hesaplamaları ve kar marjı analizleri ile gerçek zamanlı fiyat verileri."
     },
     "killFeed": {
       "title": "Kill Feed",
-      "description": "PvP olaylarını gerçek zamanlı izle, savaş loglarını analiz et ve en iyi oyuncuları takip et.",
+      "description": "Albion Online'da gerçek zamanlı PvP etkinliklerini izle, savaş loglarını analiz et ve en iyi oyuncuları takip et. Ekipman detayları ve istatistiklerle canlı akış.",
       "descriptionDynamic": "Canlı: {killer}, {victim} oyuncusunu {fame} Şöhret karşılığında öldürdü! Albion Online'daki gerçek zamanlı PvP ölümlerini, savaşları ve ganimetleri takip edin."
     },
     "goldPrice": {
-      "title": "Altın Fiyat Takipçisi",
-      "description": "Albion Online'daki Altın - Gümüş değişim oranı geçmişini ve trendlerini takip edin.",
+      "title": "Altın Fiyatı",
+      "description": "Albion Online'da Altın ve Gümüş arasındaki değişim oranının tam geçmişini ve trendlerini takip et. Premium maliyetlerini hesapla ve altın piyasasını analiz et.",
       "descriptionDynamic": "Mevcut Altın Fiyatı {price} Gümüş. Geçmişi takip edin, premium maliyetlerini hesaplayın ve piyasa trendlerini analiz edin."
     },
     "farming": {
-      "title": "Çiftçilik Kar Hesaplayıcı",
-      "description": "Özel adanızdaki çiftçiliği optimize edin. Gerçek zamanlı fiyatlarla tüm ekinler ve bitkiler için karı hesaplayın."
+      "title": "Çiftçilik Karları",
+      "description": "Özel adandaki çiftçiliği optimize et. Gerçek zamanlı piyasa fiyatlarıyla tüm ekinler ve bitkiler için kar hesapla. Premium ve odak ile karını maksimize et."
     },
     "animal": {
-      "title": "Hayvancılık Kar Hesaplayıcı",
-      "description": "Adanız için en karlı hayvancılık, binek ve kasaplık seçeneklerini hesaplayın."
+      "title": "Hayvancılık Karları",
+      "description": "Albion Online adan için en karlı hayvancılık, binek ve kasaplık seçeneklerini hesapla. Döngü başına maliyet ve getiri analizi."
     },
     "alchemy": {
-      "title": "Simya Kar Hesaplayıcı",
-      "description": "Üretilecek en iyi iksirleri hesaplayın. Albion Online için gerçek zamanlı simya kar analizi."
+      "title": "Simya Karları",
+      "description": "Albion Online'da üretilecek en karlı iksirleri keşfet. RRR hesaplamaları ve gelişmiş piyasa stratejileri ile gerçek zamanlı simya kar analizi."
     },
     "cooking": {
-      "title": "Aşçılık Kar Hesaplayıcı",
-      "description": "Yemekler ve içecekler için karı hesaplayın. Adanızın mutfak verimliliğini optimize edin."
+      "title": "Aşçılık Karları",
+      "description": "Albion Online'da tüm yemekler ve içecekler için kar hesapla. Gerçek zamanlı piyasa verileri ile adanın mutfak üretimini optimize et."
     },
     "enchanting": {
-      "title": "Eser Büyüleme Hesaplayıcı",
-      "description": "Ekipmanı büyüleme maliyetini doğrudan marketten satın alma maliyetiyle karşılaştırın."
+      "title": "Eser Büyüleme",
+      "description": "Ekipmana rün, ruh ve kalıntılarla büyü yapma maliyetini doğrudan marketten satın alma ile karşılaştır. En ekonomik büyü yolunu hesapla."
     },
     "labour": {
-      "title": "İşçi Kar Hesaplayıcı",
-      "description": "Ada işçilerinizin verimini ve ROI'sini takip edin. Tüm seviyelerdeki günlükleri karşılaştırın."
+      "title": "İşçi Karları",
+      "description": "Albion Online ada işçilerinin verimliliğini ve ROI'sini takip et. Tüm seviyelerdeki günlükleri karşılaştır ve kaynak üretimini optimize et."
     },
-     "choppedFish": {
-       "title": "Doğranmış Balık Hesaplayıcı",
-       "description": "Nadir balıkları satmanın mı yoksa balık sosu yapmak için doğramanın mı daha karlı olduğunu belirleyin."
-     },
-     "settings": {
-       "title": "Ayarlar",
-       "description": "Uygulama tercihlerinizi ve hesap ayarlarınızı yapılandırın."
-     },
-     "zvzTracker": {
-      "title": "ZvZ Takipçisi",
-      "description": "Albion Online'daki devasa açık dünya savaşlarını ve lonca savaşlarını takip edin.",
-      "liveTitle": "{count} Canlı Savaş - ZvZ Takipçisi",
-      "liveDescription": "Şu anda {region} bölgesindeki {count} aktif savaş takip ediliyor. En iyi savaş: {kills} öldürme.",
-      "latestDescription": "Son devasa savaşları takip edin. En son: {location} bölgesinde {kills} öldürme."
+    "choppedFish": {
+      "title": "Doğranmış Balık",
+      "description": "Nadir balıkları doğrudan satmanın mı yoksa balık sosu yapmak için işlemenin mi daha karlı olduğunu belirle. Kapsamlı piyasa değeri analizi."
+    },
+    "zvzTracker": {
+      "title": "ZvZ Takip",
+      "description": "Albion Online'da büyük ölçekli açık dünya savaşlarını ve lonca savaşlarını takip et. Tüm sunuculardan gerçek zamanlı ZvZ savaş istatistikleri.",
+      "liveTitle": "{count} Canlı Savaş - ZvZ Takip",
+      "liveDescription": "Şu anda {region} bölgesinde {count} aktif savaş takip ediliyor. En büyük savaş: {kills} kill.",
+      "latestDescription": "Son büyük ölçekli savaşları takip edin. Son: {location} konumunda {kills} kill."
     },
     "crafting": {
-      "title": "Zanaat Kâr Hesaplayıcı",
-      "description": "Albion Online'da herhangi bir eşya için zanaat kârını, odak verimliliğini ve kaynak iade oranlarını hesaplayın."
+      "title": "Zanaat",
+      "description": "Albion Online'da herhangi bir eşya için üretim karı, odak verimliliği ve kaynak iade oranlarını hesapla. Kapsamlı üretim optimizasyonu."
+    },
+    "settings": {
+      "title": "Ayarlar",
+      "description": "AlbionKit tercihlerinizi, bildirim ayarlarınızı, dil seçeneklerinizi ve hesap yönetiminizi yapılandırın. Deneyiminizi özelleştirin."
+    },
+    "zvzTracker": {
+      "title": "ZvZ Takipçisi",
+      "description": "Albion Online'daki devasa açık dünya savaşlarını ve lonca savaşlarını takip edin. Gerçek zamanlı ZvZ savaş izleme ile kill sayıları ve lonca sıralamaları.",
+      "liveTitle": "{count} Canlı Savaş",
+      "liveDescription": "Şu anda {region} bölgesinde {count} aktif savaş takip ediliyor. En büyük savaş: {kills} kill.",
+      "latestDescription": "Son büyük savaşları takip edin. En son: {location} konumunda {kills} kill."
     }
   },
   "Alchemy": {

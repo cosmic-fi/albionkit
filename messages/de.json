@@ -171,6 +171,7 @@
     "cooking": "Kochen",
     "alchemy": "Alchemie",
     "choppedFish": "Gehackter Fisch",
+    "crafting": "Handwerk",
     "community": "Gemeinschaft",
     "communityHub": "Community-Hub",
     "builds": "Builds",
@@ -786,70 +787,72 @@
   "Metadata": {
     "title": "AlbionKit - Der ultimative Albion Online Begleiter",
     "template": "%s | AlbionKit",
-    "description": "Meistere Albion Online mit AlbionKit. Features umfassen eine leistungsstarke Build-Datenbank, Markt-Flipper, PvP-Informationen, Handwerksrechner und Echtzeit-Kill-Feeds.",
+    "description": "Meistere Albion Online mit AlbionKit - dem ultimativen Begleiter für ernsthafte Spieler. Zugriff auf leistungsstarke Tools wie Market Flipper für profitable Trades, PvP Intel mit Live-Kill-Feeds, Crafting Calculator mit Fokus-Optimierung, Farming-Profit-Tracker und ZvZ-Kampfanalyse. Schließe dich Tausenden von Spielern an, die AlbionKit für Echtzeit-Marktdaten, Build-Guides und Wettbewerbsvorteile auf allen Albion Online Servern vertrauen.",
     "keywords": "Albion Online, Albion Builds, Markt-Flipper, PvP-Informationen, Handwerksrechner, MMORPG"
   },
   "Pages": {
     "home": {
       "title": "AlbionKit - Markt-Tools, PvP-Informationen & Meta-Builds",
-      "description": "Verbessere dein Albion Online-Erlebnis mit Echtzeit-Marktdaten, PvP-Tracking und den besten Community-Builds."
+      "description": "Verbessere dein Albion Online-Erlebnis mit AlbionKit's leistungsstarker Tool-Suite. Zugriff auf Echtzeit-Marktdaten für profitables Trading, verfolge PvP-Kills mit Live-Feeds, entdecke Meta-Builds von Top-Spielern, berechne Crafting-Profite und optimiere deine Farm. Vertraut von Tausenden Albion-Spielern weltweit."
     },
     "about": {
       "title": "Über AlbionKit",
-      "description": "Erfahre mehr über AlbionKit und unsere mission, der Albion Online-Community die besten Tools zur Verfügung zu stellen."
+      "description": "Erfahre mehr über AlbionKit und unsere Mission, die besten kostenlosen Tools für die Albion Online-Community bereitzustellen. Von Spielern für Spieler gebaut - entdecke unsere Geschichte, Features und unser Engagement, dir zu helfen, in Albion zu dominieren."
     },
     "marketFlipper": {
       "title": "Markt-Flipper",
-      "description": "Finde profitable Handelsrouten und Flipping-Möglichkeiten in den königlichen Städten von Albion Online und auf dem Schwarzmarkt."
+      "description": "Finde profitable Handelsrouten und Item-Flipping-Möglichkeiten in Albion Online's königlichen Städten und Schwarzmarkt. Echtzeit-Preisdaten, Steuerberechnungen und Gewinnmargen zur Maximierung deiner Silbereinnahmen."
     },
     "killFeed": {
       "title": "Live-Kill-Feed",
-      "description": "Überwache PvP-Aktivitäten in Echtzeit, analysiere Kampfprotokolle und verfolge Top-Spieler auf allen Albion-Servern.",
-      "descriptionDynamic": "Live: {killer} hat gerade {victim} für {fame} Ruhm getötet! Verfolge Echtzeit-PvP-Kills, Schlachten und Beute in Albion Online."
+      "description": "Überwache Echtzeit-PvP-Aktivitäten auf allen Albion Online Servern. Analysiere Kampfprotokolle, verfolge Top-Spieler und Gilden, überprüfe detaillierte Kill-Statistiken und bleibe über Schlachten informiert, während sie geschehen. Unverzichtbar für PvP-Spieler."
     },
     "goldPrice": {
       "title": "Goldpreis-Tracker",
-      "description": "Verfolge den Verlauf und die Trends des Gold-zu-Silber-Wechselkurses in Albion Online.",
-      "descriptionDynamic": "Der aktuelle Goldpreis beträgt {price} Silber. Verfolge den Verlauf, berechnen Sie die Premiumkosten und analysieren Sie Markttrends."
+      "description": "Verfolge die Historie und Trends der Gold-zu-Silber-Wechselkurse in Albion Online. Triff fundierte Entscheidungen über Goldkäufe, überwache Premium-Kosten und analysiere Markttrends mit Echtzeit-Daten."
+    },
+    "crafting": {
+      "title": "Crafting-Profit-Rechner",
+      "description": "Berechne Crafting-Profite, Fokus-Effizienz und Ressourcen-Rücklaufraten für jeden Gegenstand in Albion Online. Optimiere deine Crafting-Strategie mit Echtzeit-Materialkosten und Marktpreisen."
     },
     "farming": {
-      "title": "Farm-Gewinnrechner",
-      "description": "Optimiere deine Landwirtschaft auf deiner privaten Insel. Berechne Gewinne für alle Feldfrüchte und Kräuter mit Echtzeitpreisen."
+      "title": "Farm-Profit-Rechner",
+      "description": "Optimiere deine Privatinsel-Landwirtschaft mit AlbionKit's Profit-Rechner. Berechne Profite für alle Pflanzen und Kräuter mit Echtzeit-Marktpreisen, Fokus-Kosten und Ertragsraten."
     },
     "animal": {
-      "title": "Tierzucht-Gewinnrechner",
-      "description": "Berechne die profitabelsten Nutztiere, Reittiere und Schlachtungsoptionen für deine Insel."
+      "title": "Tierzucht-Profit-Rechner",
+      "description": "Berechne die profitabelsten Nutztiere, Reittiere und Schlachtoptionen für deine Insel. Echtzeit-Tierzucht-Profitanalyse für Albion Online-Spieler."
     },
     "alchemy": {
-      "title": "Alchemie-Gewinnrechner",
-      "description": "Berechne die besten Tränke zum Herstellen. Echtzeit-Alchemie-Gewinnanalyse für Albion Online."
+      "title": "Alchemie-Profit-Rechner",
+      "description": "Berechne die besten Tränke zum Craften für maximalen Profit. Echtzeit-Alchemie-Profitanalyse mit Materialkosten, Fokus-Anforderungen und Marktpreisen für Albion Online."
     },
     "cooking": {
-      "title": "Koch-Gewinnrechner",
-      "description": "Berechne Gewinne für Mahlzeiten und Getränke. Optimiere den kulinarischen Output deiner Insel."
+      "title": "Koch-Profit-Rechner",
+      "description": "Berechne Profite für Mahlzeiten und Getränke. Optimiere deine Insel-Kochleistung mit Echtzeit-Zutatenkosten und Marktdaten für Albion Online-Kochen."
     },
     "enchanting": {
-      "title": "Artefakt-Verzauberungsrechner",
-      "description": "Vergleiche die Kosten für das Verzauberung von Ausrüstung mit dem direkten Kauf auf dem Markt."
+      "title": "Artefakt-Verzauberungs-Rechner",
+      "description": "Vergleiche die Kosten für das Verzaubern von Ausrüstung mit dem Kauf von fertig verzauberten Gegenständen vom Markt. Triff kluge Entscheidungen über Artefakt-Nutzung und Verzauberungserfolgsraten."
     },
     "labour": {
-      "title": "Arbeiter-Gewinnrechner",
-      "description": "Verfolge den Ertrag und ROI deiner Inselarbeiter. Vergleiche Journale über alle Stufen hinweg."
+      "title": "Arbeiter",
+      "description": "Verfolge den Ertrag und ROI deiner Insel-Arbeiter. Vergleiche Journale über alle Stufen hinweg und optimiere deine Arbeiter-Zuweisungen für maximale Ressourcen-Erträge."
     },
     "choppedFish": {
-      "title": "Gehackter Fisch-Rechner",
-      "description": "Bestimme, ob es profitabler ist, seltene Fische zu verkaufen oder sie in Fischsauce zu hacken."
+      "title": "Gehackter Fisch",
+      "description": "Bestimme, ob es profitabler ist, seltene Fische zu verkaufen oder sie zu Fischsauce zu verarbeiten. Echtzeit-Profitvergleich für Albion Online-Angeln."
+    },
+    "settings": {
+      "title": "Einstellungen",
+      "description": "Konfiguriere deine AlbionKit-Präferenzen, Benachrichtigungseinstellungen, Sprachoptionen und Kontoverwaltung. Passe dein Erlebnis an."
     },
     "zvzTracker": {
       "title": "ZvZ-Tracker",
-      "description": "Verfolge massive Open-World-Schlachten und Gildenführung in Albion Online.",
-      "liveTitle": "{count} Live-Schlachten - ZvZ-Tracker",
-      "liveDescription": "Verfolgt derzeit {count} aktive Schlachten in {region}. Top-Schlacht: {kills} Kills.",
-      "latestDescription": "Verfolge die jüngsten massiven Schlachten. Neueste: {kills} Kills in {location}."
-    },
-    "crafting": {
-      "title": "Herstellungs‑Gewinnrechner",
-      "description": "Berechne Handwerksgewinne, Fokus‑Effizienz und Ressourcenrücklauf für beliebige Gegenstände in Albion Online."
+      "description": "Verfolge massive Open-World-Schlachten und Gildenkriege in Albion Online. Echtzeit-ZvZ-Kampfüberwachung mit Kill-Zahlen und Gilden-Ranglisten.",
+      "liveTitle": "{count} Live-Schlachten",
+      "liveDescription": "Derzeit werden {count} aktive Schlachten in {region} verfolgt. Top-Schlacht: {kills} Kills.",
+      "latestDescription": "Verfolge recente massive Schlachten. Neueste: {kills} Kills in {location}."
     }
   },
   "Alchemy": {
@@ -1277,8 +1280,8 @@
     "loading": "Marktdaten werden geladen..."
   },
   "PvpIntel": {
-    "title": "PvP-Informationen",
-    "description": "Umfassende Spieler- und Gildenauskundschaftung.",
+    "title": "PvP Intel",
+    "description": "Umfassende Spieler- und Gildenaufklärung für Albion Online. Analysiere Kampfstatistiken, Waffenbeherrschung, Ausrüstung, recente Aktivitäten und Bedrohungsstufen. Unverzichtbar für kompetitive PvP-Spieler.",
     "searchPlaceholder": "Spielername, Gilde oder Allianz...",
     "searching": "Suche...",
     "searchType": {
@@ -1500,8 +1503,8 @@
     }
   },
   "Builds": {
-    "title": "Build-Datenbank",
-    "description": "Durchsuche alle Albion Online Builds an einem Ort und filtere nach Inhaltstyp.",
+    "title": "Builds",
+    "description": "Durchsuche alle Albion Online Builds an einem Ort. Filtere nach Inhaltstyp (Solo, ZvZ, PvP, Gruppe), sortiere nach Beliebtheit und entdecke Meta-Builds von Top-Spielern.",
     "createBuild": "Build erstellen",
     "loginToCreate": "Du musst angemeldet sein, um Builds zu erstellen und zu veröffentlichen.",
     "searchPlaceholder": "Builds suchen...",

@@ -31,6 +31,7 @@ import { getTickerData, getGlobalStats } from "@/lib/ticker-service";
 import { MarketTicker } from "@/components/MarketTicker";
 import { InfoStrip, InfoBanner } from "@/components/InfoStrip";
 import { FeatureSection } from "@/components/FeatureSection";
+import { SocialShare } from "@/components/SocialShare";
 import { useTranslations } from 'next-intl';
 import { getTranslations, getLocale } from 'next-intl/server';
 import { Metadata } from 'next';
@@ -318,6 +319,14 @@ export default async function Home() {
             </Link>
           </div>
 
+        </div>
+
+        {/* Social Share */}
+        <div className="mt-8 flex justify-center">
+          <SocialShare 
+            title="AlbionKit - The Ultimate Albion Online Companion"
+            description="Master Albion Online with real-time market data, PvP intel, and powerful tools."
+          />
         </div>
       </section>
 

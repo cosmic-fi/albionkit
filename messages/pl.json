@@ -171,6 +171,7 @@
     "cooking": "Gotowanie",
     "alchemy": "Alchemia",
     "choppedFish": "Patroszenie Ryb",
+    "crafting": "Rzemiosło",
     "community": "Społeczność",
     "communityHub": "Centrum Społeczności",
     "builds": "Buildy",
@@ -786,70 +787,70 @@
   "Metadata": {
     "title": "AlbionKit - Najlepszy towarzysz w Albion Online",
     "template": "%s | AlbionKit",
-    "description": "Zostań mistrzem z AlbionKit. Baza buildów, flipper rynkowy, wywiad PvP, kalkulatory i lista zabójstw.",
+    "description": "Zdominuj Albion Online z AlbionKit. Baza buildów, flipper rynkowy, wywiad PvP, kalkulatory rzemiosła i lista zabójstw na żywo. Twoja przewaga zaczyna się tutaj.",
     "keywords": "Albion Online, Buildy Albion, Rynek Albion, PvP Albion, MMORPG"
   },
   "Pages": {
     "home": {
       "title": "AlbionKit - Narzędzia rynku, PvP i Buildy Meta",
-      "description": "Popraw swoje wrażenia z gry dzięki danym rynkowym i najlepszym buildom społeczności."
+      "description": "Podnieś swoje doświadczenie z Albion Online dzięki danym rynkowym na żywo, inteligencji PvP i najlepszym buildom społeczności. Wszystkie narzędzia w jednym miejscu."
     },
     "about": {
       "title": "O AlbionKit",
-      "description": "Dowiedz się więcej o naszej misji i narzędziach dla graczy."
+      "description": "Poznaj misję AlbionKit i narzędzia stworzone dla społeczności Albion Online. Stworzone przez graczy, dla graczy."
     },
     "marketFlipper": {
       "title": "Flipper Rynkowy",
-      "description": "Znajdź zyskowne okazje między miastami a Czarnym Rynkiem."
+      "description": "Znajdź dochodowe możliwości handlu między Miastami Królewskimi a Czarnym Rynkiem w Albion Online. Analiza cen w czasie rzeczywistym z obliczeniami podatków i marż."
     },
     "killFeed": {
       "title": "Lista Zabójstw",
-      "description": "Śledź PvP w czasie rzeczywistym, analizuj walki i graczy.",
+      "description": "Śledź wydarzenia PvP na żywo, analizuj logi walk i obserwuj najlepszych graczy Albion Online. Strumień na żywo ze szczegółami wyposażenia i statystykami.",
       "descriptionDynamic": "Na żywo: {killer} właśnie zabił {victim} za {fame} Sławy! Śledź zabójstwa PvP, bitwy i łupy w czasie rzeczywistym w Albion Online."
     },
     "goldPrice": {
-      "title": "Śledzenie ceny złota",
-      "description": "Śledź historię i trendy kursu wymiany złota na srebro w Albion Online.",
+      "title": "Cena Złota",
+      "description": "Śledź pełną historię i trendy kursu wymiany złota na srebro w Albion Online. Obliczaj koszty Premium i analizuj rynek złota.",
       "descriptionDynamic": "Obecna cena złota to {price} Srebra. Śledź historię, obliczaj koszty premium i analizuj trendy rynkowe."
     },
     "farming": {
-      "title": "Kalkulator zysków z rolnictwa",
-      "description": "Zoptymalizuj rolnictwo na swojej prywatnej wyspie. Oblicz zyski dla wszystkich upraw i ziół przy użyciu cen w czasie rzeczywistym."
+      "title": "Zyski z Rolnictwa",
+      "description": "Zoptymalizuj rolnictwo na swojej prywatnej wyspie. Obliczaj zyski dla wszystkich upraw i ziół używając cen rynkowych na żywo. Maksymalizuj zyski z Premium i skupieniem."
     },
     "animal": {
-      "title": "Kalkulator zysków z hodowli zwierząt",
-      "description": "Oblicz najbardziej dochodowe opcje inwentarza żywego, wierzchowców i rzeźnictwa dla swojej wyspy."
+      "title": "Zyski z Hodowli",
+      "description": "Oblicz najbardziej dochodowe opcje hodowli zwierząt, wierzchowców i rzeźnictwa na swojej wyspie w Albion Online. Kompleksowa analiza kosztów i zwrotów na cykl."
     },
     "alchemy": {
-      "title": "Kalkulator zysków z alchemii",
-      "description": "Oblicz najlepsze mikstury do wytworzenia. Analiza zysków z alchemii w czasie rzeczywistym dla Albion Online."
+      "title": "Zyski z Alchemii",
+      "description": "Odkryj najbardziej dochodne mikstury do wytworzenia w Albion Online. Analiza zysków z alchemii w czasie rzeczywistym z obliczeniami RRR i zaawansowanymi strategiami."
     },
     "cooking": {
-      "title": "Kalkulator zysków z gotowania",
-      "description": "Oblicz zyski dla posiłków i napojów. Zoptymalizuj wydajność kulinarną swojej wyspy."
+      "title": "Zyski z Gotowania",
+      "description": "Obliczaj zyski ze wszystkich posiłków i napojów w Albion Online. Zoptymalizuj produkcję kulinarną swojej wyspy dzięki danym rynkowym na żywo."
     },
     "enchanting": {
-      "title": "Kalkulator zaklinania artefaktów",
-      "description": "Porównaj koszt zaklinania sprzętu z zakupem bezpośrednio na rynku."
+      "title": "Zaklinanie Artefaktów",
+      "description": "Porównaj koszt zaklinania sprzętu runami, duszami i relikwiami z zakupem bezpośrednio z rynku. Oblicz najbardziej ekonomiczną ścieżkę zaklinania."
     },
     "labour": {
-      "title": "Kalkulator zysków pracowników",
-      "description": "Śledź wydajność i ROI pracowników swojej wyspy. Porównuj dzienniki na wszystkich poziomach."
+      "title": "Zyski Pracowników",
+      "description": "Śledź wydajność i ROI pracowników swojej wyspy w Albion Online. Porównuj dzienniki wszystkich poziomów i optymalizuj produkcję zasobów."
     },
     "choppedFish": {
-      "title": "Kalkulator posiekanych ryb",
-      "description": "Określ, czy bardziej opłaca się sprzedawać rzadkie ryby, czy siekać je na sos rybny."
+      "title": "Posiekane Ryby",
+      "description": "Określ, czy bardziej opłaca się sprzedawać rzadkie ryby bezpośrednio, czy przetwarzać je na sos rybny w Albion Online. Kompleksowa analiza wartości rynkowej."
     },
     "zvzTracker": {
       "title": "Śledzenie ZvZ",
-      "description": "Śledź ogromne bitwy w otwartym świecie i wojny gildii w Albion Online.",
+      "description": "Śledź ogromne bitwy w otwartym świecie i wojny gildii w Albion Online. Statystyki walk ZvZ na żywo ze wszystkich serwerów.",
       "liveTitle": "{count} Bitew na żywo - Śledzenie ZvZ",
       "liveDescription": "Obecnie śledzone bitwy: {count} w regionie {region}. Największa bitwa: {kills} zabójstw.",
       "latestDescription": "Śledź ostatnie ogromne bitwy. Ostatnia: {kills} zabójstw w {location}."
     },
     "crafting": {
-      "title": "Kalkulator zysków z rzemiosła",
-      "description": "Obliczaj zyski z rzemiosła, efektywność focusu i współczynnik zwrotu zasobów dla dowolnego przedmiotu w Albion Online."
+      "title": "Zyski z Rzemiosła",
+      "description": "Obliczaj zyski z wytwarzania, efektywność skupienia i wskaźniki zwrotu zasobów dla dowolnego przedmiotu w Albion Online. Kompleksowa optymalizacja produkcji."
     }
   },
   "Alchemy": {

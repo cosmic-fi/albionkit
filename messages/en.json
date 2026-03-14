@@ -158,19 +158,20 @@
     "calculators": "Calculators",
     "forum": "Forum",
     "goldPrice": "Gold Price",
-    "killFeed": "Live Kill Feed",
+    "killFeed": "Kill Feed",
     "pvpIntel": "PvP Intel",
     "zvzTracker": "ZvZ Tracker",
     "marketFlipper": "Market Flipper",
-    "craftPlanner": "Craft Planner",
+    "craftPlanner": "Crafting",
     "profits": "Profits",
     "farming": "Farming",
     "animal": "Animal",
-    "labour": "Labour",
+    "labour": "Labourers",
     "enchanting": "Enchanting",
     "cooking": "Cooking",
     "alchemy": "Alchemy",
     "choppedFish": "Chopped Fish",
+    "crafting": "Crafting",
     "community": "Community",
     "communityHub": "Community Hub",
     "builds": "Builds",
@@ -210,7 +211,7 @@
   },
   "HomePage": {
     "heroTitle": "Make every session count in ",
-    "heroSubtitle": "Plan your next move with live market data, PvP insights, and meta builds — all in one place so you can spend less time tabbing out and more time playing.",
+    "heroSubtitle": "Plan your next move in Albion Online with live market data, PvP insights, and meta builds — all in one place so you can spend less time tabbing out and more time playing Albion Online.",
     "exploreMarket": "Explore Market Tools",
     "scoutPvP": "Scout PvP Players",
     "itemsTracked": "Items Tracked",
@@ -295,7 +296,7 @@
   },
   "MarketFlipper": {
     "title": "Market Flipper",
-    "description": "Real-time trading opportunities across all Royal Cities.",
+    "description": "Real-time trading opportunities across all Royal Cities and Black Market. Find profitable flips with tax calculations, ROI sorting, and watchlist tracking for Albion Online.",
     "scanningMarkets": "Scanning markets...",
     "noResults": "No profitable flips found matching your filters.",
     "myWatchlist": "My Watchlist",
@@ -568,8 +569,8 @@
     }
   },
   "GoldPrice": {
-    "title": "Gold Price Tracker",
-    "description": "Track the gold-to-silver exchange rate history and trends.",
+    "title": "Gold Price",
+    "description": "Track the gold-to-silver exchange rate history and trends in Albion Online. Calculate premium costs, analyze market data, and make informed trading decisions.",
     "currentPrice": "Current Price",
     "change": "Change ({range})",
     "high": "High ({range})",
@@ -715,7 +716,7 @@
     },
     "about": {
       "title": "About the Kill Feed",
-      "description": "The AlbionKit Live Kill Feed provides real-time tracking of PvP events across Albion Online servers. Data is sourced directly from the game's event API, allowing you to monitor battles, analyze guild performance, and track high-value kills as they happen.",
+      "description": "The AlbionKit Live Kill Feed provides real-time tracking of PvP events across all Albion Online servers (West, East, Europe). Data is sourced directly from the game's event API, allowing you to monitor battles as they happen, analyze guild and alliance performance, track high-value kills, and review detailed combat statistics. Perfect for PvP players, guild leaders, and anyone wanting to stay informed about Albion's dynamic battlefield.",
       "note": "Note:",
       "noteDesc": "There is typically a slight delay (seconds to minutes) between the actual in-game event and its appearance on the feed due to API processing times."
     },
@@ -792,72 +793,72 @@
   "Metadata": {
     "title": "AlbionKit - The Ultimate Albion Online Companion",
     "template": "%s | AlbionKit",
-    "description": "Master Albion Online with AlbionKit. Features include a powerful Build Database, Market Flipper, PvP Intel, Crafting Calculator, and real-time Kill Feeds.",
+    "description": "Master Albion Online with AlbionKit - the ultimate companion for serious players. Access powerful tools including Market Flipper for profitable trades, PvP Intel with live kill feeds, Crafting Calculator with focus optimization, Farming Profit trackers, and ZvZ Battle analytics. Join thousands of players who trust AlbionKit for real-time market data, build guides, and competitive advantages across all Albion Online servers.",
     "keywords": "Albion Online, Albion Builds, Market Flipper, PvP Intel, Crafting Calculator, Albion Tools, Albion Database, MMORPG, Albion Online Market, Albion Online PvP"
   },
   "Pages": {
     "home": {
       "title": "AlbionKit - Market Tools, PvP Intel & Meta Builds",
-      "description": "Elevate your Albion Online experience with real-time market data, PvP tracking, and the best community builds."
+      "description": "Elevate your Albion Online experience with AlbionKit's powerful suite of tools. Access real-time market data for profitable trading, track PvP kills with live feeds, discover meta builds from top players, calculate crafting profits, and optimize your farming. Trusted by thousands of Albion players worldwide."
     },
     "about": {
       "title": "About AlbionKit",
-      "description": "Learn more about AlbionKit and our mission to provide the best tools for the Albion Online community."
+      "description": "Learn more about AlbionKit and our mission to provide the best free tools for the Albion Online community. Built by players, for players - discover our story, features, and commitment to helping you dominate in Albion."
     },
     "marketFlipper": {
       "title": "Market Flipper",
-      "description": "Find profitable trade routes and flipping opportunities across Albion Online's Royal Cities and Black Market."
+      "description": "Find profitable trade routes and item flipping opportunities across Albion Online's Royal Cities and Black Market. Real-time price data, tax calculations, and profit margins to maximize your silver earnings."
     },
     "killFeed": {
       "title": "Live Kill Feed",
-      "description": "Monitor real-time PvP activity, analyze combat logs, and track top players across all Albion servers.",
+      "description": "Monitor real-time PvP activity across all Albion Online servers. Analyze combat logs, track top players and guilds, review detailed kill statistics, and stay informed about battles as they happen. Essential for PvP players.",
       "descriptionDynamic": "Live: {killer} just killed {victim} for {fame} Fame! Track real-time PvP kills, battles, and loot in Albion Online."
     },
     "goldPrice": {
       "title": "Gold Price Tracker",
-      "description": "Track the history and trends of the Gold to Silver exchange rate in Albion Online.",
+      "description": "Track the history and trends of Gold to Silver exchange rates in Albion Online. Make informed decisions about gold purchases, monitor premium costs, and analyze market trends with real-time data.",
       "descriptionDynamic": "Current Gold Price is {price} Silver. Track history, calculate premium costs, and analyze market trends."
     },
     "crafting": {
-      "title": "Crafting Profit Calculator",
-      "description": "Calculate crafting profits, focus efficiency, and resource return rates for any item in Albion Online."
+      "title": "Crafting",
+      "description": "Calculate crafting profits, focus efficiency, and resource return rates for any item in Albion Online. Optimize your crafting strategy with real-time material costs and market prices."
     },
     "farming": {
-      "title": "Farming Profit Calculator",
-      "description": "Optimize your private island farming. Calculate profits for all crops and herbs with real-time prices."
+      "title": "Farming",
+      "description": "Optimize your private island farming with AlbionKit's profit calculator. Calculate profits for all crops and herbs with real-time market prices, focus costs, and yield rates."
     },
     "animal": {
-      "title": "Animal Profit Calculator",
-      "description": "Calculate the most profitable livestock, mounts, and butchering options for your island."
+      "title": "Animal",
+      "description": "Calculate the most profitable livestock, mounts, and butchering options for your island. Real-time animal farming profit analysis for Albion Online players."
     },
     "alchemy": {
-      "title": "Alchemy Profit Calculator",
-      "description": "Calculate the best potions to craft. Real-time alchemy profit analysis for Albion Online."
+      "title": "Alchemy",
+      "description": "Calculate the best potions to craft for maximum profit. Real-time alchemy profit analysis with material costs, focus requirements, and market prices for Albion Online."
     },
     "cooking": {
-      "title": "Cooking Profit Calculator",
-      "description": "Calculate profits for meals and beverages. Optimize your island's culinary output."
+      "title": "Cooking",
+      "description": "Calculate profits for meals and beverages. Optimize your island's culinary output with real-time ingredient costs and market data for Albion Online cooking."
     },
     "enchanting": {
-      "title": "Artifact Enchanting Calculator",
-      "description": "Compare the cost of enchanting gear vs buying it directly from the market."
+      "title": "Enchanting",
+      "description": "Compare the cost of enchanting gear versus buying pre-enchanted items from the market. Make smart decisions about artifact usage and enchantment success rates."
     },
     "labour": {
-      "title": "Labourer Profit Calculator",
-      "description": "Track the yield and ROI of your island labourers. Compare journals across all tiers."
+      "title": "Labourers",
+      "description": "Track the yield and ROI of your island labourers. Compare journals across all tiers and optimize your labourer assignments for maximum resource returns."
     },
      "choppedFish": {
-       "title": "Chopped Fish Calculator",
-       "description": "Determine if it's more profitable to sell rare fish or chop them into fish sauce."
+       "title": "Chopped Fish",
+       "description": "Determine if it's more profitable to sell rare fish or chop them into fish sauce. Real-time profit comparison for Albion Online fishing."
      },
      "settings": {
        "title": "Settings",
-       "description": "Configure your app preferences and account settings."
+       "description": "Configure your AlbionKit preferences, notification settings, language options, and account management. Customize your experience."
      },
      "zvzTracker": {
       "title": "ZvZ Tracker",
-      "description": "Track massive open-world battles and guild warfare in Albion Online.",
-      "liveTitle": "{count} Live Battles - ZvZ Tracker",
+      "description": "Track massive open-world battles and guild warfare in Albion Online. Real-time ZvZ battle monitoring with kill counts and guild rankings.",
+      "liveTitle": "{count} Live Battles",
       "liveDescription": "Currently tracking {count} active battles in {region}. Top battle: {kills} kills.",
       "latestDescription": "Track recent massive battles. Latest: {kills} kills in {location}."
     }
@@ -1294,7 +1295,7 @@
   },
   "PvpIntel": {
     "title": "PvP Intel",
-    "description": "Comprehensive player and guild scouting.",
+    "description": "Comprehensive player and guild scouting for Albion Online. Analyze combat stats, weapon mastery, gear, recent activity, and threat levels. Essential for competitive PvP players.",
     "searchPlaceholder": "Player name, Guild or Alliance...",
     "searching": "Searching...",
     "searchType": {
@@ -1516,8 +1517,8 @@
     }
   },
   "Builds": {
-    "title": "Builds Database",
-    "description": "Browse all Albion Online builds in one place and filter by content type.",
+    "title": "Builds",
+    "description": "Browse all Albion Online builds in one place. Filter by content type (Solo, ZvZ, PvP, Group), sort by popularity, and discover meta builds from top players.",
     "createBuild": "Create Build",
     "loginToCreate": "You need to be logged in to create and publish builds.",
     "searchPlaceholder": "Search builds...",

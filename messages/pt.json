@@ -171,6 +171,7 @@
     "cooking": "Culinária",
     "alchemy": "Alquimia",
     "choppedFish": "Peixe Cortado",
+    "crafting": "Artesanato",
     "community": "Comunidade",
     "communityHub": "Centro da Comunidade",
     "builds": "Builds",
@@ -786,70 +787,70 @@
   "Metadata": {
     "title": "AlbionKit — O melhor companheiro de Albion Online",
     "template": "%s | AlbionKit",
-    "description": "Conquiste Albion com AlbionKit. Builds, mercado, PvP, calculadoras e abates ao vivo.",
+    "description": "Domine Albion Online com o AlbionKit. Acesse banco de builds, ferramentas de mercado, inteligência PvP, calculadoras de craft e feed de abates ao vivo. Sua vantagem competitiva começa aqui.",
     "keywords": "Albion Online, Builds Albion, Mercado Albion, PvP Albion, MMORPG"
   },
   "Pages": {
     "home": {
       "title": "AlbionKit — Mercado, PvP e builds meta",
-      "description": "Melhore sua experiência em Albion com dados em tempo real e builds da comunidade."
+      "description": "Eleve sua experiência em Albion Online com dados de mercado em tempo real, inteligência PvP e as melhores builds da comunidade. Todas as ferramentas que você precisa em um só lugar."
     },
     "about": {
       "title": "Sobre AlbionKit",
-      "description": "Saiba mais sobre nossa missão e ferramentas para Albion."
+      "description": "Conheça a missão do AlbionKit e as ferramentas criadas para a comunidade de Albion Online. Feito por jogadores, para jogadores."
     },
     "marketFlipper": {
       "title": "Flipper de Mercado",
-      "description": "Encontre lucros entre cidades e o Mercado Negro."
+      "description": "Encontre oportunidades lucrativas de comércio entre as Cidades Reais e o Mercado Negro em Albion Online. Análise de preços em tempo real com cálculos de impostos e margens de lucro."
     },
     "killFeed": {
       "title": "Feed de Abates",
-      "description": "Siga eventos PvP, logs de combate e melhores jogadores.",
+      "description": "Monitore eventos PvP em tempo real, analise logs de combate e acompanhe os melhores jogadores de Albion Online. Feed ao vivo com detalhes de equipamentos e estatísticas.",
       "descriptionDynamic": "Ao vivo: {killer} acabou de matar {victim} por {fame} de Fama! Acompanhe abates PvP, batalhas e saques em tempo real no Albion Online."
     },
     "goldPrice": {
-      "title": "Rastreador de Preço do Ouro",
-      "description": "Acompanhe o histórico e as tendências da taxa de câmbio de Ouro para Prata no Albion Online.",
+      "title": "Preço do Ouro",
+      "description": "Acompanhe o histórico completo e as tendências da taxa de câmbio entre Ouro e Prata no Albion Online. Calcule custos de Premium e analise o mercado de ouro.",
       "descriptionDynamic": "O preço atual do Ouro é {price} de Prata. Acompanhe o histórico, calcule custos de premium e analise tendências de mercado."
     },
     "farming": {
-      "title": "Calculadora de Lucro de Agricultura",
-      "description": "Otimize a agricultura em sua ilha privada. Calcule lucros para todos os cultivos e ervas com preços em tempo real."
+      "title": "Lucros de Agricultura",
+      "description": "Otimize a agricultura em sua ilha privada. Calcule lucros para todas as culturas e ervas usando preços de mercado em tempo real. Maximize seus ganhos com Premium e foco."
     },
     "animal": {
-      "title": "Calculadora de Lucro de Animais",
-      "description": "Calcule as opções mais lucrativas de gado, montarias e açougue para sua ilha."
+      "title": "Lucros de Criação",
+      "description": "Calcule as opções mais lucrativas de criação de animais, montarias e abate para sua ilha em Albion Online. Análise completa de custos e retornos por ciclo."
     },
     "alchemy": {
-      "title": "Calculadora de Lucro de Alquimia",
-      "description": "Calcule as melhores poções para fabricar. Análise de lucro de alquimia em tempo real para Albion Online."
+      "title": "Lucros de Alquimia",
+      "description": "Descubra as poções mais lucrativas para fabricar em Albion Online. Análise de lucro de alquimia em tempo real com cálculo de RRR e estratégias avançadas de mercado."
     },
     "cooking": {
-      "title": "Calculadora de Lucro de Culinária",
-      "description": "Calcule lucros para refeições e bebidas. Otimize a produção culunária de sua ilha."
+      "title": "Lucros de Culinária",
+      "description": "Calcule lucros para todas as refeições e bebidas em Albion Online. Otimize a produção culinária da sua ilha com dados de mercado em tempo real."
     },
     "enchanting": {
-      "title": "Calculadora de Encantamento de Artefatos",
-      "description": "Compare o custo de encantar equipamentos versus comprá-los diretamente no mercado."
+      "title": "Encantamento de Artefatos",
+      "description": "Compare o custo de encantar equipamentos com runas, almas e relíquias versus comprar diretamente no mercado. Calcule a rota de encantamento mais econômica."
     },
     "labour": {
-      "title": "Calculadora de Lucro de Trabalhadores",
-      "description": "Acompanhe o rendimento e o ROI dos trabalhadores de sua ilha. Compare diários em todos os níveis."
+      "title": "Lucros de Trabalhadores",
+      "description": "Acompanhe o rendimento e ROI dos trabalhadores da sua ilha em Albion Online. Compare diários de todos os níveis e otimize sua produção de recursos."
     },
     "choppedFish": {
-      "title": "Calculadora de Peixe Picado",
-      "description": "Determine se é mais lucrativo vender peixes raros ou picá-los para fazer molho de peixe."
+      "title": "Peixe Picado",
+      "description": "Determine se é mais lucrativo vender peixes raros diretamente ou processá-los em molho de peixe em Albion Online. Análise completa de valor de mercado."
     },
     "zvzTracker": {
       "title": "Rastreador de ZvZ",
-      "description": "Acompanhe batalhas massivas em mundo aberto e guerra de guildas no Albion Online.",
+      "description": "Acompanhe batalhas massivas em mundo aberto e guerras de guildas em Albion Online. Estatísticas em tempo real de combates ZvZ em todos os servidores.",
       "liveTitle": "{count} Batalhas ao Vivo - Rastreador de ZvZ",
       "liveDescription": "Acompanhando atualmente {count} batalhas ativas em {region}. Melhor batalha: {kills} abates.",
       "latestDescription": "Acompanhe batalhas massivas recentes. Última: {kills} abates em {location}."
     },
     "crafting": {
-      "title": "Calculadora de Lucro de Craft",
-      "description": "Calcule lucros de craft, eficiência de foco e taxa de retorno de recursos para qualquer item no Albion Online."
+      "title": "Lucros de Craft",
+      "description": "Calcule lucros de fabricação, eficiência de foco e taxas de retorno de recursos para qualquer item em Albion Online. Otimização completa de produção."
     }
   },
   "Auth": {

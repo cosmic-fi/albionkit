@@ -165,6 +165,7 @@
     "cooking": "烹饪",
     "alchemy": "炼金",
     "choppedFish": "切碎的鱼",
+    "crafting": "制作",
     "community": "社区",
     "communityHub": "社区中心",
     "builds": "配置 (Builds)",
@@ -420,21 +421,21 @@
       "profit": "扣除种子成本和预期收益后的单种子净利润。"
     },
     "cropNames": {
-        "carrot": "胡萝卜",
-        "bean": "豆子",
-        "wheat": "小麦",
-        "turnip": "芜菁",
-        "cabbage": "卷心菜",
-        "potato": "土豆",
-        "corn": "玉米",
-        "pumpkin": "南瓜",
-        "agaric": "伞菌",
-        "comfrey": "聚合草",
-        "burdock": "牛蒡",
-        "teasel": "起绒草",
-        "foxglove": "毛地黄",
-        "mullein": "毛蕊花",
-        "yarrow": "蓍草"
+      "carrot": "胡萝卜",
+      "bean": "豆子",
+      "wheat": "小麦",
+      "turnip": "芜菁",
+      "cabbage": "卷心菜",
+      "potato": "土豆",
+      "corn": "玉米",
+      "pumpkin": "南瓜",
+      "agaric": "伞菌",
+      "comfrey": "聚合草",
+      "burdock": "牛蒡",
+      "teasel": "起绒草",
+      "foxglove": "毛地黄",
+      "mullein": "毛蕊花",
+      "yarrow": "蓍草"
     }
   },
   "Animal": {
@@ -527,22 +528,22 @@
       "profit": "扣除所有成本和预期收益后的单周期净利润。"
     },
     "animalNames": {
-        "chicken": "鸡",
-        "goat": "山羊",
-        "goose": "鹅",
-        "sheep": "绵羊",
-        "pig": "猪",
-        "cow": "牛",
-        "horse": "马",
-        "ox": "牛"
+      "chicken": "鸡",
+      "goat": "山羊",
+      "goose": "鹅",
+      "sheep": "绵羊",
+      "pig": "猪",
+      "cow": "牛",
+      "horse": "马",
+      "ox": "牛"
     },
     "foodNames": {
-        "T3_FARM_WHEAT": "小麦",
-        "T4_FARM_TURNIP": "蔓菁",
-        "T5_FARM_CABBAGE": "卷心菜",
-        "T6_FARM_POTATO": "土豆",
-        "T7_FARM_CORN": "玉米",
-        "T8_FARM_PUMPKIN": "南瓜"
+      "T3_FARM_WHEAT": "小麦",
+      "T4_FARM_TURNIP": "蔓菁",
+      "T5_FARM_CABBAGE": "卷心菜",
+      "T6_FARM_POTATO": "土豆",
+      "T7_FARM_CORN": "玉米",
+      "T8_FARM_PUMPKIN": "南瓜"
     }
   },
   "GoldPrice": {
@@ -713,10 +714,10 @@
     "killFeed": "击杀信息源",
     "kdRatio": "K/D 比率",
     "stats": {
-        "killsPerMinute": "击杀数 / 分",
-        "avgFame": "平均声望",
-        "totalFame": "总声望",
-        "highestFame": "最高声望"
+      "killsPerMinute": "击杀数 / 分",
+      "avgFame": "平均声望",
+      "totalFame": "总声望",
+      "highestFame": "最高声望"
     }
   },
   "MarketTicker": {
@@ -749,63 +750,63 @@
   "Metadata": {
     "title": "AlbionKit — 你的 Albion Online 终极伴侣",
     "template": "%s | AlbionKit",
-    "description": "通过 AlbionKit 统治阿尔比恩。提供配置数据库、搬砖工具、PvP 情报、制作计算和实时播报。",
+    "description": "使用 AlbionKit 征服 Albion Online。访问配置数据库、市场搬砖工具、PvP 情报、制作计算器和实时击杀播报。你的竞争优势从这里开始。",
     "keywords": "Albion Online, 阿尔比恩, 配置, 搬砖, PvP, 制作, MMORPG"
   },
   "Pages": {
     "home": {
       "title": "AlbionKit — 市场工具、PvP 情报与 Meta 配置",
-      "description": "利用实时数据和最佳社区配置提升你的阿尔比恩游戏体验。"
+      "description": "通过实时市场数据、PvP 洞察和最佳社区配置提升你的 Albion Online 游戏体验。所有你需要的工具都集中在一个地方。"
     },
     "about": {
       "title": "关于 AlbionKit",
-      "description": "深入了解 AlbionKit 及其对阿尔比恩社区的使命。"
+      "description": "深入了解 AlbionKit 的使命以及为 Albion Online 社区打造的工具。由玩家打造，为玩家服务。"
     },
     "marketFlipper": {
       "title": "市场搬砖",
-      "description": "在主城与黑市之间寻找盈利的贸易路线。"
+      "description": "在 Albion Online 的皇家城市与黑市之间寻找盈利的贸易机会。实时价格分析，包含税费计算和利润率分析。"
     },
     "killFeed": {
       "title": "击杀播报",
-      "description": "实时监控 PvP、分析战斗日志并追踪顶级玩家。",
+      "description": "实时监控 Albion Online 中的 PvP 事件，分析战斗日志并追踪顶级玩家。包含装备详情和统计数据的实时播报。",
       "descriptionDynamic": "直播：{killer} 刚刚击杀了 {victim} 并获得了 {fame} 声望！在 Albion Online 中追踪实时 PvP 击杀、战斗和战利品。"
     },
     "goldPrice": {
       "title": "金币价格追踪",
-      "description": "追踪 Albion Online 中金币与银币汇率的历史和趋势。",
+      "description": "追踪 Albion Online 中金币与银币汇率的完整历史和趋势。计算会员成本并分析金币市场。",
       "descriptionDynamic": "当前金币价格为 {price} 银币。追踪历史，计算会员成本并分析市场趋势。"
     },
     "farming": {
       "title": "农业利润计算器",
-      "description": "优化你的个人岛屿农业。使用实时价格计算所有作物 and 草药的利润。"
+      "description": "优化你的个人岛屿农业。使用实时市场价格计算所有作物和草药的利润。通过会员和专注力最大化收益。"
     },
     "animal": {
       "title": "养殖利润计算器",
-      "description": "计算你的岛屿上最赚钱的牲畜、坐骑和屠宰选项。"
+      "description": "计算你的 Albion Online 岛屿上最赚钱的牲畜、坐骑和屠宰选项。每个周期的成本和回报全面分析。"
     },
     "alchemy": {
       "title": "炼金利润计算器",
-      "description": "计算最佳的药水制作方案。Albion Online 实时炼金利润分析。"
+      "description": "发现 Albion Online 中最适合制作的药水。实时炼金利润分析，包含 RRR 计算和高级市场策略。"
     },
     "cooking": {
       "title": "烹饪利润计算器",
-      "description": "计算食物和饮料的利润。优化你岛屿的烹饪产出。"
+      "description": "计算 Albion Online 中所有食物和饮料的利润。使用实时市场数据优化你岛屿的烹饪产量。"
     },
     "enchanting": {
       "title": "神器附魔计算器",
-      "description": "对比附魔装备与直接从市场购买的成本。"
+      "description": "比较使用符文、灵魂和遗物为装备附魔的成本与直接从市场购买的成本。计算最经济的附魔路径。"
     },
     "labour": {
       "title": "雇工利润计算器",
-      "description": "追踪岛屿雇工的产量和投资回报率。对比所有等阶的日记。"
+      "description": "追踪你的 Albion Online 岛屿雇工的产量和投资回报率。比较所有等级的日志并优化资源生产。"
     },
     "choppedFish": {
       "title": "切碎的鱼计算器",
-      "description": "确定卖出稀有鱼类还是将其切碎成鱼酱更划算。"
+      "description": "确定直接出售稀有鱼类还是将其加工成鱼酱更赚钱。全面的市场价值分析。"
     },
     "zvzTracker": {
       "title": "ZvZ 追踪",
-      "description": "追踪 Albion Online 中的大规模开放世界战斗和公会战争。",
+      "description": "追踪 Albion Online 中的大规模开放世界战斗和公会战争。来自所有服务器的实时 ZvZ 战斗统计数据。",
       "liveTitle": "{count} 场实时战斗 - ZvZ 追踪",
       "liveDescription": "正在追踪 {region} 的 {count} 场活跃战斗。顶级战斗：{kills} 次击杀。",
       "latestDescription": "追踪近期的大规模战斗。最新：位于 {location}，共有 {kills} 次击杀。"
@@ -2060,7 +2061,6 @@
     "city152": "主城 (15.2%)",
     "focus479": "专注力 (47.9%)",
     "customRate": "自定义 %...",
-
     "breakdown": {
       "title": "资源清单",
       "craftedFrom": "所需材料 (单件)",

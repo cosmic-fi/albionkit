@@ -128,12 +128,11 @@ export function Navbar() {
       title: t('tools'),
       icon: <Hammer className="h-4 w-4" />,
       submenu: [
-        { id: 'gold-price', title: t('goldPrice'), href: '/tools/gold-price', icon: <Coins className="h-4 w-4 text-warning" />, group: 'market' },
-        { id: 'market-flipper', title: t('marketFlipper'), href: '/tools/market-flipper', icon: <Coins className="h-4 w-4" />, group: 'market' },
-        { id: 'craft-planner', title: t('craftPlanner'), href: '/tools/crafting-calc', icon: <Hammer className="h-4 w-4" />, group: 'market' },
-        { id: 'pvp-intel', title: t('pvpIntel'), href: '/tools/pvp-intel', icon: <Sword className="h-4 w-4" />, group: 'pvp' },
-        { id: 'kill-feed', title: t('killFeed'), href: '/tools/kill-feed', icon: <Skull className="h-4 w-4" />, group: 'pvp' },
-        { id: 'zvz-tracker', title: t('zvzTracker'), href: '/tools/zvz-tracker', icon: <Swords className="h-4 w-4" />, group: 'pvp' },
+        { id: 'gold-price', title: t('goldPrice'), href: '/tools/gold-price', icon: <Coins className="h-4 w-4 text-warning" />, category: 'market' },
+        { id: 'market-flipper', title: t('marketFlipper'), href: '/tools/market-flipper', icon: <Coins className="h-4 w-4" />, category: 'market' },
+        { id: 'pvp-intel', title: t('pvpIntel'), href: '/tools/pvp-intel', icon: <Sword className="h-4 w-4" />, category: 'pvp' },
+        { id: 'kill-feed', title: t('killFeed'), href: '/tools/kill-feed', icon: <Skull className="h-4 w-4" />, category: 'pvp' },
+        { id: 'zvz-tracker', title: t('zvzTracker'), href: '/tools/zvz-tracker', icon: <Swords className="h-4 w-4" />, category: 'pvp' },
       ],
     },
     {
@@ -141,13 +140,14 @@ export function Navbar() {
       title: t('calculators'),
       icon: <Sparkles className="h-4 w-4" />,
       submenu: [
-        { id: 'farming', title: t('farming'), href: '/profits/farming', icon: <Sprout className="h-4 w-4" />, category: 'profits' },
-        { id: 'cooking', title: t('cooking'), href: '/profits/cooking', icon: <Utensils className="h-4 w-4" />, category: 'profits' },
-        { id: 'alchemy', title: t('alchemy'), href: '/profits/alchemy', icon: <FlaskConical className="h-4 w-4" />, category: 'profits' },
-        { id: 'enchanting', title: t('enchanting'), href: '/profits/enchanting', icon: <Sparkles className="h-4 w-4" />, category: 'profits' },
-        { id: 'labour', title: t('labour'), href: '/profits/labour', icon: <Users className="h-4 w-4" />, category: 'profits' },
-        { id: 'animal', title: t('animal'), href: '/profits/animal', icon: <PawPrint className="h-4 w-4" />, category: 'profits' },
-        { id: 'chopped-fish', title: t('choppedFish'), href: '/profits/chopped-fish', icon: <Fish className="h-4 w-4" />, category: 'profits' },
+        { id: 'crafting', title: t('crafting'), href: '/tools/crafting-calc', icon: <Hammer className="h-4 w-4" />, category: 'production' },
+        { id: 'farming', title: t('farming'), href: '/profits/farming', icon: <Sprout className="h-4 w-4" />, category: 'island' },
+        { id: 'cooking', title: t('cooking'), href: '/profits/cooking', icon: <Utensils className="h-4 w-4" />, category: 'island' },
+        { id: 'animal', title: t('animal'), href: '/profits/animal', icon: <PawPrint className="h-4 w-4" />, category: 'island' },
+        { id: 'alchemy', title: t('alchemy'), href: '/profits/alchemy', icon: <FlaskConical className="h-4 w-4" />, category: 'island' },
+        { id: 'labour', title: t('labour'), href: '/profits/labour', icon: <Users className="h-4 w-4" />, category: 'island' },
+        { id: 'chopped-fish', title: t('choppedFish'), href: '/profits/chopped-fish', icon: <Fish className="h-4 w-4" />, category: 'island' },
+        { id: 'enchanting', title: t('enchanting'), href: '/profits/enchanting', icon: <Sparkles className="h-4 w-4" />, category: 'gear' },
       ],
     },
     // {
@@ -279,81 +279,28 @@ export function Navbar() {
                       </button>
 
                       {isActive && (
-                        <div className="absolute top-full left-0 mt-2 w-72 bg-popover border border-border rounded-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
-                          <div className="p-3">
+                        <div className="absolute top-full left-0 mt-2 w-56 bg-popover border border-border rounded-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+                          <div className="p-2">
                             {(() => {
-                              // Group items by category
-                              const itemsWithCategory = item.submenu?.filter(s => s.category);
-                              const itemsWithoutCategory = item.submenu?.filter(s => !s.category);
-                              
-                              if (itemsWithCategory && itemsWithCategory.length > 0) {
-                                const categories = [...new Set(itemsWithCategory.map(s => s.category))];
-                                return (
-                                  <div className="flex gap-4">
-                                    {categories.map(cat => (
-                                      <div key={cat} className="flex-1">
-                                        <div className="text-xs font-semibold text-muted-foreground mb-2 px-2 uppercase tracking-wider">
-                                          {t(`profits`)}
-                                        </div>
-                                        <div className="space-y-1">
-                                          {itemsWithCategory
-                                            .filter(s => s.category === cat)
-                                            .map(sub => (
-                                              <Link
-                                                key={sub.id}
-                                                href={sub.href!}
-                                                onClick={() => setActiveDropdown(null)}
-                                                className="flex items-center gap-3 px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
-                                              >
-                                                {sub.icon}
-                                                {sub.title}
-                                              </Link>
-                                            ))}
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                );
-                              }
-                              
+                              const submenu = item.submenu || [];
                               return (
                                 <div className="space-y-1">
-                                  {(() => {
-                                    // Group submenu items
-                                    const submenu = item.submenu || [];
-                                    const groups: Record<string, NavItem[]> = {};
-                                    
-                                    submenu.forEach((sub) => {
-                                      const group = sub.group || 'default';
-                                      if (!groups[group]) {
-                                        groups[group] = [];
-                                      }
-                                      groups[group]!.push(sub);
-                                    });
-
-                                    const groupOrder = Object.keys(groups);
-                                    
-                                    return groupOrder.map((group, groupIndex) => (
-                                      <div key={group}>
-                                        {groups[group]?.map((sub) => (
-                                          sub.group === group && (
-                                            <Link
-                                              key={sub.id}
-                                              href={sub.href!}
-                                              onClick={() => setActiveDropdown(null)}
-                                              className="flex items-center gap-3 px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
-                                            >
-                                              {sub.icon}
-                                              {sub.title}
-                                            </Link>
-                                          )
-                                        ))}
-                                        {groupIndex < groupOrder.length - 1 && (
-                                          <div className="my-2 border-t border-border" />
-                                        )}
-                                      </div>
-                                    ));
-                                  })()}
+                                  {submenu.map((sub, index) => (
+                                    <div key={sub.id}>
+                                      {index > 0 && submenu[index - 1]?.category !== sub.category && submenu[index - 1]?.group !== sub.group && (
+                                        <div className="my-2 border-t border-border" />
+                                      )}
+                                      <Link
+                                        key={sub.id}
+                                        href={sub.href!}
+                                        onClick={() => setActiveDropdown(null)}
+                                        className="flex items-center gap-3 px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
+                                      >
+                                        {sub.icon}
+                                        {sub.title}
+                                      </Link>
+                                    </div>
+                                  ))}
                                 </div>
                               );
                             })()}
@@ -546,40 +493,25 @@ export function Navbar() {
                       {isExpanded && (
                         <div className="mt-1 ml-4 space-y-1 border-l-2 border-border pl-2">
                           {(() => {
-                            // Group submenu items for mobile
                             const submenu = item.submenu || [];
-                            const groups: Record<string, NavItem[]> = {};
-                            
-                            submenu.forEach((sub) => {
-                              const group = sub.group || 'default';
-                              if (!groups[group]) {
-                                groups[group] = [];
-                              }
-                              groups[group]!.push(sub);
-                            });
-
-                            const groupOrder = Object.keys(groups);
-                            
-                            return groupOrder.map((group, groupIndex) => (
-                              <div key={group}>
-                                {groups[group]?.map((sub) => (
-                                  <Link
-                                    key={sub.id}
-                                    href={sub.href!}
-                                    className={`
-                                      flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors
-                                      ${pathname === sub.href
-                                        ? 'bg-primary/10 text-primary'
-                                        : 'text-muted-foreground hover:text-foreground hover:bg-accent'}
-                                    `}
-                                  >
-                                    {sub.icon}
-                                    {sub.title}
-                                  </Link>
-                                ))}
-                                {groupIndex < groupOrder.length - 1 && (
+                            return submenu.map((sub, index) => (
+                              <div key={sub.id}>
+                                {index > 0 && submenu[index - 1]?.category !== sub.category && submenu[index - 1]?.group !== sub.group && (
                                   <div className="my-2 border-t border-border" />
                                 )}
+                                <Link
+                                  key={sub.id}
+                                  href={sub.href!}
+                                  className={`
+                                    flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors
+                                    ${pathname === sub.href
+                                      ? 'bg-primary/10 text-primary'
+                                      : 'text-muted-foreground hover:text-foreground hover:bg-accent'}
+                                  `}
+                                >
+                                  {sub.icon}
+                                  {sub.title}
+                                </Link>
                               </div>
                             ));
                           })()}

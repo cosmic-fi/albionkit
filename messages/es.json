@@ -171,6 +171,7 @@
     "cooking": "Cocina",
     "alchemy": "Alquimia",
     "choppedFish": "Pescado Troceado",
+    "crafting": "Artesanía",
     "community": "Comunidad",
     "communityHub": "Centro de Comunidad",
     "builds": "Builds",
@@ -786,70 +787,72 @@
   "Metadata": {
     "title": "AlbionKit - El Compañero Definitivo de Albion Online",
     "template": "%s | AlbionKit",
-    "description": "Domina Albion Online con AlbionKit. Incluye Base de Datos de Builds, Flipper de Mercado, Información PvP, Calculadora de Artesanía y Feeds de Muertes en tiempo real.",
+    "description": "Domina Albion Online con AlbionKit - el compañero definitivo para jugadores serios. Accede a herramientas poderosas incluyendo Market Flipper para trades rentables, PvP Intel con kill feeds en vivo, Crafting Calculator con optimización de foco, rastreadores de beneficios de Farming y análisis de batallas ZvZ. Únete a miles de jugadores que confían en AlbionKit para datos de mercado en tiempo real, guías de builds y ventajas competitivas en todos los servidores de Albion Online.",
     "keywords": "Albion Online, Builds Albion, Flipper de Mercado, Información PvP, Calculadora de Artesanía, Herramientas Albion, MMORPG"
   },
   "Pages": {
     "home": {
       "title": "AlbionKit - Herramientas de Mercado, Información PvP y Meta Builds",
-      "description": "Mejora tu experiencia en Albion Online con datos de mercado en tiempo real, seguimiento PvP y las mejores builds de la comunidad."
+      "description": "Eleva tu experiencia en Albion Online con el poderoso conjunto de herramientas de AlbionKit. Accede a datos de mercado en tiempo real para trading rentable, rastrea kills PvP con feeds en vivo, descubre meta builds de los mejores jugadores, calcula beneficios de crafting y optimiza tu farming. Con la confianza de miles de jugadores de Albion en todo el mundo."
     },
     "about": {
       "title": "Sobre AlbionKit",
-      "description": "Más sobre AlbionKit y nuestra misión de proporcionar las mejores herramientas para la comunidad de Albion Online."
+      "description": "Conoce más sobre AlbionKit y nuestra misión de proporcionar las mejores herramientas gratuitas para la comunidad de Albion Online. Construido por jugadores, para jugadores - descubre nuestra historia, características y compromiso de ayudarte a dominar en Albion."
     },
     "marketFlipper": {
-      "title": "Flipper de Mercado",
-      "description": "Encuentra rutas comerciales rentables y oportunidades de flipping en las Ciudades Reales y el Mercado Negro de Albion Online."
+      "title": "Market Flipper",
+      "description": "Encuentra rutas comerciales rentables y oportunidades de flipping de objetos en las Ciudades Reales y Mercado Negro de Albion Online. Datos de precios en tiempo real, cálculos de impuestos y márgenes de beneficio para maximizar tus ganancias de plata."
     },
     "killFeed": {
       "title": "Feed de Muertes en Vivo",
-      "description": "Monitorea la actividad PvP en tiempo real, analiza registros de combate y rastrea a los mejores jugadores.",
-      "descriptionDynamic": "En vivo: ¡{killer} acaba de matar a {victim} por {fame} de Fama! Sigue las muertes PvP, batallas y botines en tiempo real en Albion Online."
+      "description": "Monitorea la actividad PvP en tiempo real en todos los servidores de Albion Online. Analiza registros de combate, rastrea los mejores jugadores y gremios, revisa estadísticas detalladas de kills y mantente informado sobre las batallas mientras ocurren. Esencial para jugadores PvP."
     },
     "goldPrice": {
       "title": "Rastreador de Precio del Oro",
-      "description": "Sigue el historial y las tendencias de la tasa de cambio de Oro a Plata en Albion Online.",
-      "descriptionDynamic": "El precio actual del Oro es {price} de Plata. Sigue el historial, calcula los costos de premium y analiza las tendencias del mercado."
-    },
-    "farming": {
-      "title": "Calculadora de Beneficios de Agricultura",
-      "description": "Optimiza la agricultura en tu isla privada. Calcula los beneficios de todos los cultivos y hierbas con precios en tiempo real."
-    },
-    "animal": {
-      "title": "Calculadora de Beneficios de Animales",
-      "description": "Calcula las opciones más rentables de ganado, monturas y carnicería para tu isla."
-    },
-    "alchemy": {
-      "title": "Calculadora de Beneficios de Alquimia",
-      "description": "Calcula las mejores pociones para fabricar. Análisis de beneficios de alquimia en tiempo real para Albion Online."
-    },
-    "cooking": {
-      "title": "Calculadora de Beneficios de Cocina",
-      "description": "Calcula los beneficios de comidas y bebidas. Optimiza la producción culinaria de tu isla."
-    },
-    "enchanting": {
-      "title": "Calculadora de Encantamiento de Artefactos",
-      "description": "Compara el costo de encantar equipo frente a comprarlo directamente en el mercado."
-    },
-    "labour": {
-      "title": "Calculadora de Beneficios de Trabajadores",
-      "description": "Sigue el rendimiento y el ROI de los trabajadores de tu isla. Compara diarios de todos los niveles."
-    },
-    "choppedFish": {
-      "title": "Calculadora de Pescado Picado",
-      "description": "Determina si es más rentable vender peces raros o picarlos para hacer salsa de pescado."
-    },
-    "zvzTracker": {
-      "title": "Rastreador de ZvZ",
-      "description": "Sigue las batallas masivas en mundo abierto y la guerra de gremios en Albion Online.",
-      "liveTitle": "{count} Batallas en Vivo - Rastreador de ZvZ",
-      "liveDescription": "Siguiendo actualmente {count} batallas activas en {region}. Top batalla: {kills} muertes.",
-      "latestDescription": "Sigue las batallas masivas recientes. Última: {kills} muertes en {location}."
+      "description": "Rastrea el historial y las tendencias de las tasas de cambio de Oro a Plata en Albion Online. Toma decisiones informadas sobre compras de oro, monitorea costos de premium y analiza tendencias del mercado con datos en tiempo real."
     },
     "crafting": {
       "title": "Calculadora de Beneficios de Artesanía",
-      "description": "Calcula beneficios de artesanía, eficiencia de foco y tasas de retorno de recursos para cualquier objeto en Albion Online."
+      "description": "Calcula beneficios de crafting, eficiencia de foco y tasas de retorno de recursos para cualquier objeto en Albion Online. Optimiza tu estrategia de crafting con costos de materiales y precios de mercado en tiempo real."
+    },
+    "farming": {
+      "title": "Calculadora de Beneficios de Agricultura",
+      "description": "Optimiza tu agricultura de isla privada con la calculadora de beneficios de AlbionKit. Calcula beneficios para todos los cultivos y hierbas con precios de mercado en tiempo real, costos de foco y tasas de rendimiento."
+    },
+    "animal": {
+      "title": "Calculadora de Beneficios de Ganadería",
+      "description": "Calcula el ganado, monturas y opciones de carnicería más rentables para tu isla. Análisis de beneficios de cría de animales en tiempo real para jugadores de Albion Online."
+    },
+    "alchemy": {
+      "title": "Calculadora de Beneficios de Alquimia",
+      "description": "Calcula las mejores pociones para fabricar para máximo beneficio. Análisis de beneficios de alquimia en tiempo real con costos de materiales, requisitos de foco y precios de mercado para Albion Online."
+    },
+    "cooking": {
+      "title": "Calculadora de Beneficios de Cocina",
+      "description": "Calcula beneficios para comidas y bebidas. Optimiza tu producción culinaria de isla con costos de ingredientes y datos de mercado en tiempo real para cocina de Albion Online."
+    },
+    "enchanting": {
+      "title": "Calculadora de Encantamiento de Artefactos",
+      "description": "Compara el costo de encantar equipo versus comprar objetos pre-encantados del mercado. Toma decisiones inteligentes sobre uso de artefactos y tasas de éxito de encantamiento."
+    },
+    "labour": {
+      "title": "Trabajadores",
+      "description": "Rastrea el rendimiento y ROI de tus trabajadores de isla. Compara diarios en todos los niveles y optimiza tus asignaciones de trabajadores para máximos retornos de recursos."
+    },
+    "choppedFish": {
+      "title": "Pescado Troceado",
+      "description": "Determina si es más rentable vender peces raros o trocearlos en salsa de pescado. Comparación de beneficios en tiempo real para pesca de Albion Online."
+    },
+    "settings": {
+      "title": "Configuración",
+      "description": "Configura tus preferencias de AlbionKit, ajustes de notificación, opciones de idioma y gestión de cuenta. Personaliza tu experiencia."
+    },
+    "zvzTracker": {
+      "title": "Rastreador ZvZ",
+      "description": "Rastrea batallas masivas de mundo abierto y guerras de gremios en Albion Online. Monitoreo de batallas ZvZ en tiempo real con conteos de kills y clasificaciones de gremios.",
+      "liveTitle": "{count} Batallas en Vivo",
+      "liveDescription": "Siguiendo actualmente {count} batallas activas en {region}. Top batalla: {kills} muertes.",
+      "latestDescription": "Sigue las batallas masivas recientes. Última: {kills} muertes en {location}."
     }
   },
   "Alchemy": {
@@ -1277,8 +1280,8 @@
     "loading": "Cargando datos de mercado..."
   },
   "PvpIntel": {
-    "title": "Información PvP",
-    "description": "Herramienta integral de exploración de jugadores y gremios.",
+    "title": "PvP Intel",
+    "description": "Exploración integral de jugadores y gremios para Albion Online. Analiza estadísticas de combate, dominio de armas, equipo, actividad reciente y niveles de amenaza. Esencial para jugadores PvP competitivos.",
     "searchPlaceholder": "Nombre de jugador, gremio o alianza...",
     "searching": "Buscando...",
     "searchType": {
@@ -1500,8 +1503,8 @@
     }
   },
   "Builds": {
-    "title": "Base de Datos de Builds",
-    "description": "Explora todas las builds en un solo lugar y filtra por tipo de contenido.",
+    "title": "Builds",
+    "description": "Explora todas las builds de Albion Online en un solo lugar. Filtra por tipo de contenido (Solo, ZvZ, PvP, Grupo), ordena por popularidad y descubre meta builds de los mejores jugadores.",
     "createBuild": "Crear Build",
     "loginToCreate": "Debes iniciar sesión para crear y publicar builds.",
     "searchPlaceholder": "Buscar builds...",
