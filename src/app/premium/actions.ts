@@ -67,18 +67,24 @@ export async function getProductPrices() {
 
     if (!personalVariantId || !guildVariantId) {
       console.warn('Missing variant IDs for price fetching');
-      return null;
+      return { personal: '$4.99', guild: '$19.99' }; // Fallback prices
+    }
+
+    // Validate variant IDs are numbers
+    if (isNaN(Number(personalVariantId)) || isNaN(Number(guildVariantId))) {
+      console.error('Invalid variant IDs - must be numeric');
+      return { personal: '$4.99', guild: '$19.99' }; // Fallback prices
     }
 
     console.log(`[getProductPrices] Fetching prices for variants: Personal=${personalVariantId}, Guild=${guildVariantId}`);
 
     const [personal, guild] = await Promise.all([
       getVariant(personalVariantId).catch(err => {
-        console.error('[getProductPrices] Error fetching personal variant:', err);
+        console.error('[getProductPrices] Error fetching personal variant:', err.message || err);
         return { data: null, error: err };
       }),
       getVariant(guildVariantId).catch(err => {
-        console.error('[getProductPrices] Error fetching guild variant:', err);
+        console.error('[getProductPrices] Error fetching guild variant:', err.message || err);
         return { data: null, error: err };
       })
     ]);
@@ -87,7 +93,7 @@ export async function getProductPrices() {
     const formatPrice = (variant: any) => {
         if (!variant || !variant.data || !variant.data.data) {
           console.warn('[getProductPrices] Variant data missing for formatting');
-          return '$0.00';
+          return '$4.99'; // Fallback price
         }
         try {
           const price = variant.data.data.attributes.price / 100;
@@ -97,7 +103,7 @@ export async function getProductPrices() {
           });
         } catch (e) {
           console.error('[getProductPrices] Error formatting price:', e);
-          return '$0.00';
+          return '$4.99'; // Fallback price
         }
     };
 
@@ -108,7 +114,7 @@ export async function getProductPrices() {
 
   } catch (error) {
     console.error('Error fetching prices:', error);
-    return null;
+    return { personal: '$4.99', guild: '$19.99' }; // Fallback prices
   }
 }
 
@@ -178,20 +184,51 @@ export async function getCheckoutURL(userId: string, type: 'personal' | 'guild',
     console.log('Creating checkout with payload:', JSON.stringify(checkoutPayload, null, 2));
 
     try {
+        // Validate environment variables before making API call
+        if (!process.env.LEMONSQUEEZY_API_KEY) {
+            console.error('[getCheckoutURL] LEMON_SQUEEZY_API_KEY is missing');
+            return { error: 'Payment configuration incomplete. Please contact support.' };
+        }
+
         const checkout = await createCheckout(
-            parseInt(storeId), 
-            parseInt(variantId), 
+            parseInt(storeId),
+            parseInt(variantId),
             checkoutPayload
         );
-        
+
+        console.log('[getCheckoutURL] Checkout response:', JSON.stringify(checkout, null, 2));
+
+        // Check for errors in the response
         if (checkout.error) {
             console.error('[getCheckoutURL] Lemon Squeezy Error:', checkout.error);
             return { error: `Payment provider error: ${checkout.error.message || 'Unknown error'}` };
         }
 
-        return { url: checkout.data?.data.attributes.url };
+        // Extract URL from the nested response structure
+        const checkoutUrl = checkout.data?.data?.attributes?.url;
+        
+        if (!checkoutUrl) {
+            console.error('[getCheckoutURL] No checkout URL in response:', checkout);
+            return { error: 'Failed to create checkout session. Please try again.' };
+        }
+
+        console.log('[getCheckoutURL] Checkout URL created successfully:', checkoutUrl);
+        return { url: checkoutUrl };
     } catch (lsError: any) {
         console.error('[getCheckoutURL] Exception during createCheckout:', lsError);
+
+        // Check if it's an HTTP error with HTML response
+        if (lsError.message && lsError.message.includes('Unexpected token')) {
+            console.error('[getCheckoutURL] Lemon Squeezy returned HTML instead of JSON.');
+            console.error('[getCheckoutURL] This usually means:');
+            console.error('[getCheckoutURL] 1. API Key is invalid/expired');
+            console.error('[getCheckoutURL] 2. Store ID or Variant ID is incorrect');
+            console.error('[getCheckoutURL] 3. Lemon Squeezy API is down');
+            return {
+                error: 'Payment provider configuration error. Please check API credentials or contact support.'
+            };
+        }
+
         return { error: 'Failed to connect to payment provider' };
     }
 
