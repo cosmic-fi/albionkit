@@ -2682,5 +2682,34 @@
       "large-scale": "Gran Escala",
       "group": "Grupo"
     }
+  },
+  "Footer": {
+    "tools": "Herramientas",
+    "marketFlipper": "Reventa de Mercado",
+    "killFeed": "Feed de Asesinatos",
+    "pvpIntel": "Información PvP",
+    "craftingCalc": "Calculadora de Artesanía",
+    "goldPrice": "Precio del Oro",
+    "zvzTracker": "Rastreador ZvZ",
+    "calculators": "Calculadoras",
+    "farming": "Agricultura",
+    "cooking": "Cocina",
+    "alchemy": "Alquimia",
+    "laborers": "Trabajadores",
+    "animal": "Animales",
+    "choppedFish": "Pescado Picado",
+    "enchanting": "Encantamiento",
+    "community": "Comunidad",
+    "builds": "Builds",
+    "forum": "Comunidad",
+    "about": "Sobre Nosotros",
+    "legal": "Legal",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "cookies": "Política de Cookies",
+    "refund": "Política de Reembolso",
+    "description": "La herramienta definitiva de Albion Online para comercio de mercado, seguimiento PvP y compartir builds.",
+    "allRightsReserved": "Todos los derechos reservados.",
+    "notAffiliated": "No afiliado con Sandbox Interactive Ltd. Albion Online es una marca comercial de Sandbox Interactive Ltd."
   }
 }

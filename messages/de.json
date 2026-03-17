@@ -2664,5 +2664,34 @@
         "content": "Wir bieten eine 7-tägige kostenlose Testversion für neue monatliche Abonnenten an. Sobald die Testversion endet und die erste Zahlung verarbeitet wurde, erfolgt keine Erstattung für diesen Zeitraum."
       }
     }
+  },
+  "Footer": {
+    "tools": "Werkzeuge",
+    "marketFlipper": "Markt Flipper",
+    "killFeed": "Kill Feed",
+    "pvpIntel": "PvP Infos",
+    "craftingCalc": "Handwerksrechner",
+    "goldPrice": "Goldpreis",
+    "zvzTracker": "ZvZ Tracker",
+    "calculators": "Rechner",
+    "farming": "Landwirtschaft",
+    "cooking": "Kochen",
+    "alchemy": "Alchemie",
+    "laborers": "Arbeiter",
+    "animal": "Tiere",
+    "choppedFish": "Gehackter Fisch",
+    "enchanting": "Verzauberung",
+    "community": "Community",
+    "builds": "Builds",
+    "forum": "Community",
+    "about": "Über uns",
+    "legal": "Rechtliches",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "cookies": "Cookie-Richtlinie",
+    "refund": "Erstattungsrichtlinie",
+    "description": "Das ultimative Albion Online Begleit-Tool für Markthandel, PvP-Tracking und Build-Sharing.",
+    "allRightsReserved": "Alle Rechte vorbehalten.",
+    "notAffiliated": "Nicht verbunden mit Sandbox Interactive Ltd. Albion Online ist eine Marke von Sandbox Interactive Ltd."
   }
 }

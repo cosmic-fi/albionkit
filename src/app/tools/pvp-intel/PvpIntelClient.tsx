@@ -647,11 +647,7 @@ function PlayerDetailView({ player, stats, recentKills, recentDeaths, onBack, on
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
-          <ChevronLeft className="h-4 w-4" /> {tk('backToFeed')}
-        </button>
-
+      <div className="flex items-center justify-end">
         <div className="flex bg-card border border-border rounded-lg p-1 overflow-x-auto">
           {(['all', '12h', '24h', '7d', '30d'] as const).map((filter) => (
             <button

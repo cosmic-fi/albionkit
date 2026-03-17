@@ -44,9 +44,9 @@ export function Breadcrumbs({ lastSegmentLabel }: BreadcrumbsProps) {
       label = lastSegmentLabel;
     } else if (
       // Long segments are always "Detail"
-      segment.length > 20 || 
+      segment.length > 20 ||
       // Segments with dashes (like build-slugs) longer than 15 chars
-      (segment.includes('-') && segment.length > 15) || 
+      (segment.includes('-') && segment.length > 15) ||
       // Pure alphanumeric 16+ chars (UUIDs, build IDs)
       /^[A-Za-z0-9]{16,}$/.test(segment)
     ) {
@@ -69,31 +69,60 @@ export function Breadcrumbs({ lastSegmentLabel }: BreadcrumbsProps) {
 
   if (breadcrumbs.length === 0) return null;
 
-  return (
-    <nav className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-2">
-      <Link
-        href="/"
-        className="hover:text-primary transition-colors flex items-center gap-1"
-      >
-        <Home className="h-3 w-3" />
-        {t('home')}
-      </Link>
+  // Always use production URL for Schema.org (Google crawls production, not localhost)
+  const baseUrl = 'https://albionkit.com';
 
-      {breadcrumbs.map((crumb, index) => (
-        <React.Fragment key={`${index}-${crumb.href}`}>
-          <ChevronRight className="h-3 w-3 opacity-40" />
-          {index === breadcrumbs.length - 1 ? (
-            <span className="text-primary/80 font-black">{crumb.label}</span>
-          ) : (
-            <Link
-              href={crumb.href}
-              className="hover:text-primary transition-colors"
-            >
-              {crumb.label}
-            </Link>
-          )}
-        </React.Fragment>
-      ))}
-    </nav>
+  // Create Schema.org JSON-LD for SEO
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: t('home'),
+        item: baseUrl
+      },
+      ...breadcrumbs.map((crumb, index) => ({
+        '@type': 'ListItem' as const,
+        position: index + 2,
+        name: crumb.label,
+        item: `${baseUrl}${crumb.href}`
+      }))
+    ]
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <nav className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-2">
+        <Link
+          href="/"
+          className="hover:text-primary transition-colors flex items-center gap-1"
+        >
+          <Home className="h-3 w-3" />
+          {t('home')}
+        </Link>
+
+        {breadcrumbs.map((crumb, index) => (
+          <React.Fragment key={`${index}-${crumb.href}`}>
+            <ChevronRight className="h-3 w-3 opacity-40" />
+            {index === breadcrumbs.length - 1 ? (
+              <span className="text-primary/80 font-black">{crumb.label}</span>
+            ) : (
+              <Link
+                href={crumb.href}
+                className="hover:text-primary transition-colors"
+              >
+                {crumb.label}
+              </Link>
+            )}
+          </React.Fragment>
+        ))}
+      </nav>
+    </>
   );
 }

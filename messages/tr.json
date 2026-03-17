@@ -2668,5 +2668,34 @@
       "large-scale": "Geniş Ölçekli",
       "group": "Grup"
     }
+  },
+  "Footer": {
+    "tools": "Araçlar",
+    "marketFlipper": "Pazar Çevirici",
+    "killFeed": "Ölüm Akışı",
+    "pvpIntel": "PvP Bilgisi",
+    "craftingCalc": "Zanaat Hesaplayıcı",
+    "goldPrice": "Altın Fiyatı",
+    "zvzTracker": "ZvZ Takipçisi",
+    "calculators": "Hesaplayıcılar",
+    "farming": "Çiftçilik",
+    "cooking": "Yemek Pişirme",
+    "alchemy": "Simya",
+    "laborers": "İşçiler",
+    "animal": "Hayvanlar",
+    "choppedFish": "Doğranmış Balık",
+    "enchanting": "Büyüleme",
+    "community": "Topluluk",
+    "builds": "Buildler",
+    "forum": "Topluluk",
+    "about": "Hakkımızda",
+    "legal": "Yasal",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Hizmet Koşulları",
+    "cookies": "Çerez Politikası",
+    "refund": "İade Politikası",
+    "description": "Albion Online için pazar ticareti, PvP takibi ve build paylaşımı için en iyi yardımcı araç.",
+    "allRightsReserved": "Tüm hakları saklıdır.",
+    "notAffiliated": "Sandbox Interactive Ltd. ile bağlantılı değildir. Albion Online, Sandbox Interactive Ltd.'nin tescilli markasıdır."
   }
 }

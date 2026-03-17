@@ -181,7 +181,7 @@ export default async function AboutPage() {
               <h3 className="text-xl font-bold text-foreground">{t('legalDisclaimer')}</h3>
             </div>
             <p className="text-xs text-muted-foreground/80 max-w-2xl leading-relaxed">
-              {tFooter('disclaimer')}
+              {tFooter('notAffiliated')}
             </p>
           </div>
         </div>

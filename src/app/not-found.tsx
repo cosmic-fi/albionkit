@@ -82,7 +82,7 @@ export default function NotFound() {
         </div>
 
         {/* Suggested Links */}
-        <div className="pt-12 w-full">
+        <div className="py-12 w-full">
           <p className="text-xs font-bold text-muted-foreground/50 uppercase tracking-[0.2em] mb-6">
             {t('safeZones')}
           </p>

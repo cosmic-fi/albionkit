@@ -12,7 +12,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const locale = await getLocale();
   let title = t('title');
   let description = t('description');
-  
+
   const resolvedSearchParams = await searchParams;
   const itemId = resolvedSearchParams?.item;
 
@@ -20,29 +20,36 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     try {
       const itemName = await getItemNameService(itemId, locale);
       if (itemName) {
-        title = `${itemName} | ${t('title')}`;
+        title = `${itemName} - Market Flipper | AlbionKit`;
+        description = `Find profitable market flips for ${itemName} in Albion Online. Real-time price tracking and profit calculator.`;
       }
     } catch (e) {
       console.error('Failed to fetch Market Flipper metadata', e);
     }
+  } else {
+    // Enhanced default metadata
+    title = 'Albion Online Market Flipper - Real-Time Profit Calculator | AlbionKit';
+    description = 'Find profitable market flips in Albion Online. Track prices across all cities, set watchlist alerts, and maximize profits with real-time market data. Free tool with premium features.';
   }
 
   return {
     title,
     description,
-    keywords: ['Albion Online', 'Market Flipper', 'Arbitrage', 'Black Market', 'Trading', 'Economy'],
+    keywords: ['Albion Online market', 'market flipper', 'profit calculator', 'Albion trading', 'price tracker', 'arbitrage', 'Black Market', 'real-time prices'],
     openGraph: {
       title,
       description,
       type: 'website',
-      images: ['https://albionkit.com/og-image.jpg'],
+      url: 'https://albionkit.com/tools/market-flipper',
+      images: ['https://albionkit.com/og-market-flipper.jpg'],
+      siteName: 'AlbionKit',
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-    }
-    ,
+      creator: '@Albion_Kit',
+    },
     alternates: {
       canonical: 'https://albionkit.com/tools/market-flipper'
     }
@@ -50,50 +57,26 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 }
 
 export default async function MarketFlipperPage() {
-  const tNav = await getTranslations('Navbar');
-  const tPage = await getTranslations('MarketFlipper');
+  const t = await getTranslations('Pages.marketFlipper');
+  
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'AlbionKit Market Flipper',
-    applicationCategory: 'GameTool',
+    name: 'Market Flipper - AlbionKit',
+    applicationCategory: 'GameUtility',
     operatingSystem: 'Web Browser',
+    description: 'Real-time market flipping tool for Albion Online with profit calculator, price alerts, and watchlist tracking.',
     offers: {
       '@type': 'Offer',
       price: '0',
-      priceCurrency: 'USD',
+      priceCurrency: 'USD'
     },
-    description: 'A powerful market flipping tool for Albion Online that helps players find arbitrage opportunities between cities.',
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.8',
-      ratingCount: '150',
+      ratingCount: '156'
     },
-  };
-
-  const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: tNav('home'),
-        item: 'https://albionkit.com',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: tNav('tools'),
-        item: 'https://albionkit.com/tools',
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: tPage('title'),
-        item: 'https://albionkit.com/tools/market-flipper',
-      },
-    ],
+    featureList: 'Market tracking, Profit calculator, Price alerts, Watchlist, Real-time data, Multi-city comparison'
   };
 
   return (
@@ -101,10 +84,6 @@ export default async function MarketFlipperPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <MarketFlipperClient />
     </>

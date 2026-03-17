@@ -2654,5 +2654,34 @@
         "content": "Oferecemos um teste gratuito de 7 dias para novos assinantes mensais. Você pode cancelar a qualquer momento durante o período de teste para evitar ser cobrado. Uma vez que o teste termina e o primeiro pagamento é processado, nenhum reembolso será emitido para esse período."
       }
     }
+  },
+  "Footer": {
+    "tools": "Ferramentas",
+    "marketFlipper": "Market Flipper",
+    "killFeed": "Kill Feed",
+    "pvpIntel": "Informações PvP",
+    "craftingCalc": "Calculadora de Artesanato",
+    "goldPrice": "Preço do Ouro",
+    "zvzTracker": "Rastreador ZvZ",
+    "calculators": "Calculadoras",
+    "farming": "Agricultura",
+    "cooking": "Cozinha",
+    "alchemy": "Alquimia",
+    "laborers": "Trabalhadores",
+    "animal": "Animais",
+    "choppedFish": "Peixe Picado",
+    "enchanting": "Encantamento",
+    "community": "Comunidade",
+    "builds": "Builds",
+    "forum": "Comunidade",
+    "about": "Sobre Nós",
+    "legal": "Jurídico",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Serviço",
+    "cookies": "Política de Cookies",
+    "refund": "Política de Reembolso",
+    "description": "A ferramenta definitiva de Albion Online para negociação de mercado, rastreamento PvP e compartilhamento de builds.",
+    "allRightsReserved": "Todos os direitos reservados.",
+    "notAffiliated": "Não afiliado à Sandbox Interactive Ltd. Albion Online é uma marca comercial da Sandbox Interactive Ltd."
   }
 }

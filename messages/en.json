@@ -2668,5 +2668,34 @@
         "content": "We offer a 7-day free trial for new monthly subscribers. You can cancel at any time during the trial period to avoid being charged. Once the trial ends and the first payment is processed, no refunds will be issued for that period."
       }
     }
+  },
+  "Footer": {
+    "tools": "Tools",
+    "marketFlipper": "Market Flipper",
+    "killFeed": "Kill Feed",
+    "pvpIntel": "PvP Intel",
+    "craftingCalc": "Crafting Calculator",
+    "goldPrice": "Gold Price",
+    "zvzTracker": "ZvZ Tracker",
+    "calculators": "Calculators",
+    "farming": "Farming",
+    "cooking": "Cooking",
+    "alchemy": "Alchemy",
+    "laborers": "Laborers",
+    "animal": "Animal",
+    "choppedFish": "Chopped Fish",
+    "enchanting": "Enchanting",
+    "community": "Community",
+    "builds": "Builds",
+    "forum": "Community",
+    "about": "About",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Policy",
+    "refund": "Refund Policy",
+    "description": "The ultimate Albion Online companion tool for market trading, PvP tracking, and build sharing.",
+    "allRightsReserved": "All rights reserved.",
+    "notAffiliated": "Not affiliated with Sandbox Interactive Ltd. Albion Online is a trademark of Sandbox Interactive Ltd."
   }
 }

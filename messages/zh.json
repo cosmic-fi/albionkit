@@ -285,6 +285,16 @@
   "MarketFlipper": {
     "title": "市场搬砖",
     "description": "全主城实时贸易机会。",
+    "categoryLabels": {
+      "popular": "热门",
+      "melee": "近战武器",
+      "ranged": "远程/魔法",
+      "armor_plate": "盔甲（板甲）",
+      "armor_leather": "盔甲（皮甲）",
+      "armor_cloth": "盔甲（布甲）",
+      "accessories": "饰品",
+      "artifact_weapons": "神器武器"
+    },
     "scanningMarkets": "正在扫描市场...",
     "noResults": "未发现符合你过滤条件的盈利机会。",
     "myWatchlist": "我的关注列表",
@@ -2565,5 +2575,34 @@
         "content": "我们提供 7 天免费试用。一旦试用结束并产生首次扣费，该周期内不予退款。"
       }
     }
+  },
+  "Footer": {
+    "tools": "工具",
+    "marketFlipper": "市场翻转器",
+    "killFeed": "击杀动态",
+    "pvpIntel": "PvP 情报",
+    "craftingCalc": "制作计算器",
+    "goldPrice": "金币价格",
+    "zvzTracker": "ZvZ 追踪器",
+    "calculators": "计算器",
+    "farming": "农业",
+    "cooking": "烹饪",
+    "alchemy": "炼金术",
+    "laborers": "劳工",
+    "animal": "动物",
+    "choppedFish": "鱼肉碎",
+    "enchanting": "附魔",
+    "community": "社区",
+    "builds": "Builds",
+    "forum": "社区",
+    "about": "关于我们",
+    "legal": "法律",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "cookies": "Cookie 政策",
+    "refund": "退款政策",
+    "description": "Albion Online 终极伴侣工具，用于市场交易、PvP 追踪和 Build 分享。",
+    "allRightsReserved": "版权所有。",
+    "notAffiliated": "与 Sandbox Interactive Ltd. 无关。Albion Online 是 Sandbox Interactive Ltd. 的商标。"
   }
 }

@@ -2648,5 +2648,34 @@
       "large-scale": "Крупные группы",
       "group": "Группа"
     }
+  },
+  "Footer": {
+    "tools": "Инструменты",
+    "marketFlipper": "Market Flipper",
+    "killFeed": "Kill Feed",
+    "pvpIntel": "PvP Информация",
+    "craftingCalc": "Калькулятор Ремесла",
+    "goldPrice": "Цена Золота",
+    "zvzTracker": "ZvZ Трекер",
+    "calculators": "Калькуляторы",
+    "farming": "Фермерство",
+    "cooking": "Готовка",
+    "alchemy": "Алхимия",
+    "laborers": "Работники",
+    "animal": "Животные",
+    "choppedFish": "Рыбный Фарш",
+    "enchanting": "Зачарование",
+    "community": "Сообщество",
+    "builds": "Билды",
+    "forum": "Сообщество",
+    "about": "О нас",
+    "legal": "Правовая информация",
+    "privacy": "Политика Конфиденциальности",
+    "terms": "Условия Использования",
+    "cookies": "Политика Cookies",
+    "refund": "Политика Возврата",
+    "description": "Лучший инструмент для Albion Online для торговли на рынке, отслеживания PvP и обмена билдами.",
+    "allRightsReserved": "Все права защищены.",
+    "notAffiliated": "Не связано с Sandbox Interactive Ltd. Albion Online является торговой маркой Sandbox Interactive Ltd."
   }
 }

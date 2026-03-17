@@ -2655,5 +2655,34 @@
       "large-scale": "대규모",
       "group": "그룹"
     }
+  },
+  "Footer": {
+    "tools": "도구",
+    "marketFlipper": "시장 플리퍼",
+    "killFeed": "킬 피드",
+    "pvpIntel": "PvP 정보",
+    "craftingCalc": "제작 계산기",
+    "goldPrice": "골드 가격",
+    "zvzTracker": "ZvZ 추적기",
+    "calculators": "계산기",
+    "farming": "농사",
+    "cooking": "요리",
+    "alchemy": "연금술",
+    "laborers": "노동자",
+    "animal": "동물",
+    "choppedFish": "다진 생선",
+    "enchanting": "마법 부여",
+    "community": "커뮤니티",
+    "builds": "빌드",
+    "forum": "커뮤니티",
+    "about": "소개",
+    "legal": "법률",
+    "privacy": "개인정보처리방침",
+    "terms": "이용약관",
+    "cookies": "쿠키 정책",
+    "refund": "환불 정책",
+    "description": "알비온 온라인의 시장 거래, PvP 추적 및 빌드 공유를 위한 궁극의 동반자 도구입니다.",
+    "allRightsReserved": "모든 권리 보유.",
+    "notAffiliated": "Sandbox Interactive Ltd. 와는 무관합니다. Albion Online 은 Sandbox Interactive Ltd. 의 상표입니다."
   }
 }
