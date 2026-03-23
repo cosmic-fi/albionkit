@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, use, useRef } from 'react';
+import { useState, useEffect, use, useRef, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { PageShell } from '@/components/PageShell';
 import { BuildCard } from '@/components/BuildCard';
-import { getUserBuildsPaginated, Build } from '@/lib/builds-service';
+import { getUserBuildsPaginated, getUserBuildCount, Build } from '@/lib/builds-service';
 import { getUserProfile, updateUserProfile, UserProfile, calculateUserGamification } from '@/lib/user-profile';
 import { useAuth } from '@/context/AuthContext';
 import { Pagination } from '@/components/ui/Pagination';
@@ -36,6 +36,7 @@ export default function UserProfileClient({ userId }: { userId: string }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [totalBuilds, setTotalBuilds] = useState(0);
   
   // Banner Repositioning State
   const [isRepositioning, setIsRepositioning] = useState(false);
@@ -53,19 +54,21 @@ export default function UserProfileClient({ userId }: { userId: string }) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [profileData, buildsResult] = await Promise.all([
+        const [profileData, buildsResult, totalCount] = await Promise.all([
           getUserProfile(userId),
-          getUserBuildsPaginated(userId, 1, 12) // Load first page with 12 builds
+          getUserBuildsPaginated(userId, 1, 12), // Load first page with 12 builds
+          getUserBuildCount(userId) // Get total count
         ]);
         setProfile(profileData);
         if (profileData?.bannerPositionY !== undefined) {
             setBannerY(profileData.bannerPositionY);
         }
         setBuilds(buildsResult.builds);
-        // Estimate total pages (API returns -1 for total if hasMore)
-        const estimatedTotal = buildsResult.total > 0 ? buildsResult.total : 100; // Assume 100 if unknown
-        const estimatedPages = Math.ceil(estimatedTotal / 12);
-        setTotalPages(buildsResult.hasMore ? estimatedPages : Math.ceil(buildsResult.total / 12));
+        setTotalBuilds(totalCount);
+        
+        // Calculate total pages
+        const totalPagesCount = Math.ceil(totalCount / 12);
+        setTotalPages(totalPagesCount || 1);
       } catch (error) {
         console.error('Error fetching user data:', error);
       } finally {
@@ -169,6 +172,14 @@ export default function UserProfileClient({ userId }: { userId: string }) {
       setBannerY(profile?.bannerPositionY ?? 50);
   };
 
+  // Calculate total views - MUST be before early returns (Rules of Hooks)
+  const totalViews = useMemo(() => {
+    if (totalBuilds <= 12) {
+      return builds.reduce((acc, b) => acc + (b.views || 0), 0);
+    }
+    return builds.reduce((acc, b) => acc + (b.views || 0), 0) * Math.ceil(totalBuilds / builds.length);
+  }, [builds, totalBuilds]);
+
   if (loading) {
     return (
       <PageShell enableHeader={false} title={t('loading')} description={t('loadingDesc')}>
@@ -202,7 +213,6 @@ export default function UserProfileClient({ userId }: { userId: string }) {
     );
   }
 
-  const totalViews = builds.reduce((acc, b) => acc + (b.views || 0), 0);
   const { rank, badges } = profile ? calculateUserGamification(profile, builds) : { rank: 'Wanderer', badges: [] };
 
   const getRankColor = (r: string) => {
@@ -420,7 +430,7 @@ export default function UserProfileClient({ userId }: { userId: string }) {
                                     </div>
                                     <div className="flex items-center gap-1.5">
                                         <Shield className="h-3.5 w-3.5 text-amber-500" />
-                                        <span><strong className="text-foreground">{builds.length}</strong> {t('builds')}</span>
+                                        <span><strong className="text-foreground">{totalBuilds}</strong> {t('builds')}</span>
                                     </div>
                                     <div className="flex items-center gap-1.5">
                                         <Eye className="h-3.5 w-3.5 text-blue-400" />

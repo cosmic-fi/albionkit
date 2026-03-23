@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { ThumbsUp, MessageSquare, User, Eye, Star, Heart } from 'lucide-react';
 import { Build } from '@/lib/builds-service';
 import { ItemIcon } from '@/components/ItemIcon';
@@ -12,7 +13,7 @@ interface BuildCardProps {
   compactMode?: boolean;
 }
 
-export function BuildCard({ build, compactMode = false }: BuildCardProps) {
+export const BuildCard = React.memo(({ build, compactMode = false }: BuildCardProps) => {
   const t = useTranslations('Builds');
   const router = useRouter();
 
@@ -23,13 +24,13 @@ export function BuildCard({ build, compactMode = false }: BuildCardProps) {
   const buildLink = `/builds/${build.id}`;
   const authorLink = `/user/${build.authorId}`;
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleCardClick = React.useCallback((e: React.MouseEvent) => {
     // Prevent navigation if clicking on a link or button
     if ((e.target as HTMLElement).closest('a') || (e.target as HTMLElement).closest('button')) {
       return;
     }
     router.push(buildLink);
-  };
+  }, [buildLink, router]);
 
   return (
     <div
@@ -116,4 +117,6 @@ export function BuildCard({ build, compactMode = false }: BuildCardProps) {
       </div>
     </div>
   );
-}
+});
+
+BuildCard.displayName = 'BuildCard';

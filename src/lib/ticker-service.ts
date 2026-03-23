@@ -35,10 +35,12 @@ export const getGlobalStats = cache(async (locale: string = 'en'): Promise<Globa
   const items = await getItems(locale);
 
   // Fetch recent battles from Albion API to get a "real" number for activity
+  // Note: Not cached due to size (>2MB limit)
   let battlesCount = 0;
   try {
     const response = await fetch('https://gameinfo.albiononline.com/api/gameinfo/battles?limit=50&sort=totalFame', {
-       next: { revalidate: 300 }
+       // Don't cache - too large for Next.js cache
+       cache: 'no-store'
     });
     if (response.ok) {
         const data = await response.json();

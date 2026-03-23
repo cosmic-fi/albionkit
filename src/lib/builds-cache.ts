@@ -20,6 +20,7 @@ interface CacheMetadata {
 interface CachedPage extends CacheMetadata {
   builds: Build[];
   lastDocId?: string | null;
+  currentPage?: number;
 }
 
 /**
@@ -56,16 +57,40 @@ function simpleHash(str: string): string {
 }
 
 /**
- * Safely get item from localStorage
+ * Safely get item from localStorage with timeout
  */
 function getFromStorage<T>(key: string): T | null {
   if (typeof window === 'undefined') return null;
   
   try {
+    // Add timeout for localStorage operations
+    const startTime = Date.now();
     const item = localStorage.getItem(key);
+    const duration = Date.now() - startTime;
+    
+    if (duration > 1000) {
+      console.warn(`localStorage.getItem took ${duration}ms - consider clearing cache`);
+    }
+    
     if (!item) return null;
     return JSON.parse(item) as T;
   } catch (error) {
+    // Handle quota exceeded or corrupted data
+    if (error instanceof DOMException) {
+      if (error.name === 'QuotaExceededError' || error.name === 'InvalidStateError') {
+        console.warn('localStorage quota exceeded or corrupted, clearing cache...');
+        try {
+          clearBuildsCache();
+        } catch (clearError) {
+          console.error('Failed to clear cache:', clearError);
+        }
+        return null;
+      }
+      if (error.name === 'TimeoutError') {
+        console.warn('localStorage operation timed out:', key);
+        return null;
+      }
+    }
     console.warn('Failed to parse cache item:', key, error);
     return null;
   }
@@ -160,7 +185,8 @@ export function cacheBuilds(
     timestamp: Date.now(),
     ttl,
     total: result.total,
-    hasMore: result.hasMore
+    hasMore: result.hasMore,
+    currentPage: result.currentPage
   };
   
   setToStorage(cacheKey, cached);

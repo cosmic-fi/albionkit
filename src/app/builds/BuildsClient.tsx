@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip, InfoBanner } from '@/components/InfoStrip';
 import { useAuth } from '@/context/AuthContext';
@@ -33,6 +33,23 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
+// Memoized filter options to prevent re-creation
+const FILTER_OPTIONS = {
+  zoneTags: [
+    'black_zone', 'blue_zone', 'red_zone', 'yellow_zone', 'orange_zone',
+    'open_world', 'mists', 'roads_avalon', 'hellgate', 'arena',
+    'ava-dungeon', 'corrupted-dungeon', 'crystal_league', 'depths',
+    'knightfall_abbey', 'solo-dungeon', 'static-dungeon', 'territory'
+  ] as const,
+  
+  activityTags: [
+    'crafting', 'exploration', 'faction_warfare', 'fame_silver_farm',
+    'gathering', 'ganking', 'pvp', 'ratting', 'tracking', 'transporting'
+  ] as const,
+  
+  roleTags: ['Tank', 'Healer', 'DPS', 'Assassin', 'Burst'] as const
+};
+
 export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) {
   const t = useTranslations('Builds');
   const { user, profile } = useAuth();
@@ -61,29 +78,16 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
   
   const router = useRouter();
   const pathname = usePathname();
+  const isInitialMount = useRef(true);
   
-  // Debounced search
+  // Debounced search (300ms delay)
   const debouncedSearch = useDebounce(search, 300);
 
-  // Zone tags
-  const zoneTags = useMemo(() => [
-    'black_zone', 'blue_zone', 'red_zone', 'yellow_zone', 'orange_zone',
-    'open_world', 'mists', 'roads_avalon', 'hellgate', 'arena',
-    'ava-dungeon', 'corrupted-dungeon', 'crystal_league', 'depths',
-    'knightfall_abbey', 'solo-dungeon', 'static-dungeon', 'territory'
-  ], []);
-
-  // Activity tags
-  const activityTags = useMemo(() => [
-    'crafting', 'exploration', 'faction_warfare', 'fame_silver_farm',
-    'gathering', 'ganking', 'pvp', 'ratting', 'tracking', 'transporting'
-  ], []);
-
-  // Role tags
-  const roleTags = useMemo(() => ['Tank', 'Healer', 'DPS', 'Assassin', 'Burst'], []);
-
-  // Fetch builds with pagination
-  const fetchBuilds = useCallback(async (pageToFetch: number = 1) => {
+  // Fetch builds with pagination - optimized dependencies
+  const fetchBuilds = useCallback(async (pageToFetch: number = 1, resetPagination: boolean = false) => {
+    // Prevent concurrent fetches
+    if (loadingMore && pageToFetch === 1 && !resetPagination) return;
+    
     setLoading(true);
     setLoadingMore(true);
 
@@ -97,16 +101,17 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
           role: selectedRole !== 'all' ? selectedRole : undefined,
           search: debouncedSearch || undefined,
           limit: 24,
-          page: pageToFetch
+          page: resetPagination ? 1 : pageToFetch
         },
-        pageToFetch > currentPage ? lastDoc : null
+        (resetPagination || pageToFetch === 1) ? null : lastDoc
       );
 
+      // Reset builds array if this is a new search/filter
       setBuilds(result.builds);
       setLastDoc(result.lastDoc);
       setHasMore(result.hasMore);
       setTotal(result.total || 0);
-      setCurrentPage(result.currentPage || pageToFetch);
+      setCurrentPage(resetPagination ? 1 : pageToFetch);
       setTotalPages(result.total ? Math.ceil(result.total / 24) : 1);
     } catch (error) {
       console.error('Error fetching builds:', error);
@@ -114,17 +119,29 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [sort, tag, selectedZone, selectedActivity, selectedRole, debouncedSearch, lastDoc, currentPage]);
+  }, [sort, tag, selectedZone, selectedActivity, selectedRole, debouncedSearch, lastDoc, loadingMore]);
 
   // Initial load and filter changes - reset to page 1
   useEffect(() => {
+    // Skip fetch on initial mount if we're loading from URL
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    
+    // Reset pagination state BEFORE fetching
     setCurrentPage(1);
-    fetchBuilds(1);
+    setLastDoc(null);
+    
+    // Fetch with reset
+    fetchBuilds(1, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort, tag, selectedZone, selectedActivity, selectedRole, debouncedSearch]);
 
-  // Sync URL with filters
+  // Sync URL with filters (only after initial mount)
   useEffect(() => {
+    if (isInitialMount.current) return;
+    
     const params = new URLSearchParams();
     if (tag && tag !== 'all') params.set('tag', tag);
     if (selectedZone !== 'all') params.set('zone', selectedZone);
@@ -138,7 +155,7 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
     router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false });
   }, [tag, selectedZone, selectedActivity, selectedRole, search, sort, currentPage, pathname, router]);
 
-  // Load from URL params on mount
+  // Load from URL params on mount (once)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const urlTag = params.get('tag') || 'all';
@@ -156,6 +173,12 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
     setSearch(urlSearch);
     setSort(urlSort);
     setCurrentPage(urlPage);
+    
+    // Fetch after setting state from URL
+    setTimeout(() => {
+      fetchBuilds(urlPage);
+    }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const tagTitle = tag === 'all' ? t('allBuilds') : t(`tagOptions.${tag}`);
@@ -169,16 +192,19 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
     }
   };
 
-  const clearAllFilters = () => {
+  const clearAllFilters = useCallback(() => {
     setTag('all');
     setSelectedZone('all');
     setSelectedActivity('all');
     setSelectedRole('all');
     setSearch('');
     setSort('recent');
-  };
+    setCurrentPage(1);
+  }, []);
 
-  const activeFiltersCount = [tag, selectedZone, selectedActivity, selectedRole].filter(f => f !== 'all').length + (search ? 1 : 0);
+  const activeFiltersCount = useMemo(() => 
+    [tag, selectedZone, selectedActivity, selectedRole].filter(f => f !== 'all').length + (search ? 1 : 0)
+  , [tag, selectedZone, selectedActivity, selectedRole, search]);
 
   const headerActions = (
     <button
@@ -207,7 +233,7 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
         {!loading && (
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span>
-              {total > 0
+              {total > 0 
                 ? t('showingResults', { count: builds.length, total })
                 : t('noBuilds')
               }
@@ -225,43 +251,45 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
         )}
 
         {/* Search Bar */}
-        <div className="flex gap-4 items-center">
+        <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder={t('searchPlaceholder')}
-              className="pl-9 h-10 text-sm bg-muted/50 border-border focus:border-primary w-full"
+              className="pl-9 h-10 text-sm bg-muted/50 border-border w-full"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
-          <Button
-            variant="outline"
-            onClick={() => setShowFilters(!showFilters)}
-            className="h-10 px-4 gap-2 whitespace-nowrap"
-          >
-            <Filter className="h-4 w-4" />
-            {t('filters')}
-            {activeFiltersCount > 0 && (
-              <span className="ml-1 px-2 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
-                {activeFiltersCount}
-              </span>
-            )}
-          </Button>
+          <div className="flex gap-4 sm:flex-nowrap flex-wrap">
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+              className="h-10 px-4 gap-2 whitespace-nowrap"
+            >
+              <Filter className="h-4 w-4" />
+              {t('filters')}
+              {activeFiltersCount > 0 && (
+                <span className="ml-1 px-2 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
+                  {activeFiltersCount}
+                </span>
+              )}
+            </Button>
 
-          <div className="w-48">
-            <Select
-              options={[
-                { value: 'recent', label: t('newestFirst') },
-                { value: 'popular', label: t('mostPopular') },
-                { value: 'rating', label: t('highestRated') },
-                { value: 'likes', label: t('mostLiked') }
-              ]}
-              value={sort}
-              onChange={(val) => setSort(val as SortOption)}
-              className="h-10 bg-muted/50 border-border"
-            />
+            <div className="w-full sm:w-48">
+              <Select
+                options={[
+                  { value: 'recent', label: t('newestFirst') },
+                  { value: 'popular', label: t('mostPopular') },
+                  { value: 'rating', label: t('highestRated') },
+                  { value: 'likes', label: t('mostLiked') }
+                ]}
+                value={sort}
+                onChange={(val) => setSort(val as SortOption)}
+                className="h-10 bg-muted/50 border-border w-full"
+              />
+            </div>
           </div>
         </div>
 
@@ -315,7 +343,7 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
                 <Select
                   options={[
                     { value: 'all', label: t('allZones') },
-                    ...zoneTags.map(zone => ({
+                    ...FILTER_OPTIONS.zoneTags.map(zone => ({
                       value: zone,
                       label: t(`tagOptions.${zone}`) || zone
                     }))
@@ -334,7 +362,7 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
                 <Select
                   options={[
                     { value: 'all', label: t('allActivities') },
-                    ...activityTags.map(activity => ({
+                    ...FILTER_OPTIONS.activityTags.map(activity => ({
                       value: activity,
                       label: t(`tagOptions.${activity}`) || activity
                     }))
@@ -353,7 +381,7 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
                 <Select
                   options={[
                     { value: 'all', label: t('allRoles') },
-                    ...roleTags.map(role => ({
+                    ...FILTER_OPTIONS.roleTags.map(role => ({
                       value: role,
                       label: t(`tagOptions.${role}`) || role
                     }))

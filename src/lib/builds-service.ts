@@ -110,7 +110,7 @@ function getItemSlot(itemId: string): keyof BuildEquipment | null {
 }
 
 /**
- * Get paginated builds with server-side filtering and caching
+ * Get paginated builds with SERVER-SIDE filtering
  * Efficient for large datasets with thousands of builds
  */
 export const getPaginatedBuilds = async (
@@ -128,32 +128,26 @@ export const getPaginatedBuilds = async (
     page
   } = filters;
 
-  // Try to get from cache first (only for simple filter combinations)
-  const useCache = !search && !page; // Don't cache search results or specific pages
-  const cacheKey = { sort, tag, zone, activity, role, page };
-  
-  if (useCache) {
-    const cached = getCachedBuilds(cacheKey);
-    if (cached) {
-      console.log('💾 Cache HIT for builds');
-      return {
-        builds: cached.builds,
-        lastDoc: cached.lastDocId ? ({ id: cached.lastDocId } as QueryDocumentSnapshot) : null,
-        hasMore: cached.hasMore || false,
-        total: cached.total,
-        currentPage: page
-      };
-    }
-  }
-
   try {
     const buildsRef = collection(db, COLLECTION);
     const constraints: any[] = [];
+    
+    // Start with hidden filter
+    constraints.push(where('hidden', '==', false));
 
-    // Build query constraints based on filters
-    // Note: Firestore requires composite indexes for multiple where/orderBy clauses
-    // For complex filtering with multiple fields, we filter client-side after fetching
+    // SERVER-SIDE tag filtering using array-contains
+    // This ensures we only fetch matching builds from Firestore
+    if (tag && tag !== 'all') {
+      constraints.push(where('tags', 'array-contains', tag));
+    } else if (zone && zone !== 'all') {
+      constraints.push(where('tags', 'array-contains', zone));
+    } else if (activity && activity !== 'all') {
+      constraints.push(where('tags', 'array-contains', activity));
+    } else if (role && role !== 'all') {
+      constraints.push(where('tags', 'array-contains', role));
+    }
 
+    // Add sorting
     if (sort === 'popular') {
       constraints.push(orderBy('views', 'desc'));
     } else if (sort === 'rating') {
@@ -164,6 +158,7 @@ export const getPaginatedBuilds = async (
       constraints.push(orderBy('createdAt', 'desc'));
     }
 
+    // Add pagination cursor
     if (lastDoc) {
       constraints.push(startAfter(lastDoc));
     }
@@ -173,24 +168,9 @@ export const getPaginatedBuilds = async (
     let q = query(buildsRef, ...constraints);
     const snapshot = await getDocs(q);
 
-    let builds = snapshot.docs
-      .map(doc => ({ id: doc.id, ...doc.data() } as Build))
-      .filter(build => !build.hidden);
+    let builds = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Build));
 
-    // Apply client-side filtering for tags
-    // This is more flexible than Firestore's array-contains for multiple values
-    if (tag && tag !== 'all') {
-      builds = builds.filter(b => b.tags?.includes(tag));
-    }
-    if (zone && zone !== 'all') {
-      builds = builds.filter(b => b.tags?.includes(zone));
-    }
-    if (activity && activity !== 'all') {
-      builds = builds.filter(b => b.tags?.includes(activity));
-    }
-    if (role && role !== 'all') {
-      builds = builds.filter(b => b.tags?.includes(role));
-    }
+    // CLIENT-SIDE search (text search can't be done with Firestore queries)
     if (search && search.trim()) {
       const term = search.toLowerCase();
       builds = builds.filter(b => 
@@ -204,22 +184,46 @@ export const getPaginatedBuilds = async (
     const newLastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
     const hasMore = snapshot.docs.length === limit;
 
+    // Get total count for pagination - MUST respect filters
+    let total: number | undefined;
+    if (!page || page === 1) {
+      try {
+        // Count query that respects the active filters
+        const countConstraints: any[] = [where('hidden', '==', false)];
+        
+        // Add the same tag filter we used for the main query
+        if (tag && tag !== 'all') {
+          countConstraints.push(where('tags', 'array-contains', tag));
+        } else if (zone && zone !== 'all') {
+          countConstraints.push(where('tags', 'array-contains', zone));
+        } else if (activity && activity !== 'all') {
+          countConstraints.push(where('tags', 'array-contains', activity));
+        } else if (role && role !== 'all') {
+          countConstraints.push(where('tags', 'array-contains', role));
+        }
+        
+        const countQuery = query(buildsRef, ...countConstraints);
+        const countSnapshot = await getDocs(countQuery);
+        total = countSnapshot.size;
+      } catch (countError) {
+        console.warn('Could not get filtered total count:', countError);
+        // Fallback: use the number of builds we got
+        total = builds.length;
+      }
+    }
+
     const result: PaginatedBuilds = {
       builds,
       lastDoc: newLastDoc,
       hasMore,
-      currentPage: page
+      currentPage: page || 1,
+      total
     };
-
-    // Cache the result
-    if (useCache && builds.length > 0) {
-      cacheBuilds(cacheKey, result);
-    }
 
     return result;
   } catch (error) {
     console.error('Error fetching paginated builds:', error);
-    return { builds: [], lastDoc: null, hasMore: false, currentPage: page };
+    return { builds: [], lastDoc: null, hasMore: false, currentPage: page || 1 };
   }
 };
 
@@ -442,14 +446,38 @@ export const getUserBuildsPaginated = async (
     const builds = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Build));
     const hasMore = snapshot.docs.length === limit;
 
-    // Get total count (this requires a separate query or denormalized count)
-    // For now, we'll estimate based on page and hasMore
-    const total = hasMore ? -1 : ((page - 1) * limit) + builds.length;
+    // Get total count (only on first page to save reads)
+    let total = 0;
+    if (page === 1) {
+      try {
+        const countQuery = query(buildsRef, where('authorId', '==', userId));
+        const countSnapshot = await getDocs(countQuery);
+        total = countSnapshot.size;
+      } catch (countError) {
+        console.warn('Could not get total build count:', countError);
+        total = hasMore ? ((page - 1) * limit) + builds.length : ((page - 1) * limit) + builds.length;
+      }
+    }
 
     return { builds, hasMore, total };
   } catch (error) {
     console.error('Error fetching paginated user builds:', error);
     return { builds: [], hasMore: false, total: 0 };
+  }
+};
+
+/**
+ * Get user's total build count (lightweight)
+ */
+export const getUserBuildCount = async (userId: string): Promise<number> => {
+  try {
+    const buildsRef = collection(db, COLLECTION);
+    const countQuery = query(buildsRef, where('authorId', '==', userId));
+    const countSnapshot = await getDocs(countQuery);
+    return countSnapshot.size;
+  } catch (error) {
+    console.error('Error getting build count:', error);
+    return 0;
   }
 };
 

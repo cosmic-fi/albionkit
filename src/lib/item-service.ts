@@ -56,7 +56,7 @@ async function getRawItems(): Promise<AlbionItem[]> {
   if (typeof window !== 'undefined') {
     const cached = localStorage.getItem('albion_items_raw');
     const cachedTime = localStorage.getItem('albion_items_raw_timestamp');
-    
+
     if (cached && cachedTime) {
       const age = Date.now() - parseInt(cachedTime);
       if (age < 3600000) { // 1 hour cache
@@ -71,8 +71,10 @@ async function getRawItems(): Promise<AlbionItem[]> {
   }
 
   try {
+    // Don't use Next.js cache - items.json is 31MB (exceeds 2MB limit)
+    // Use localStorage caching instead
     const response = await fetch(ITEMS_JSON_URL, {
-        next: { revalidate: 3600 } // Cache for 1 hour
+        cache: 'no-store' // Disable Next.js caching
     });
 
     if (!response.ok) throw new Error('Failed to fetch items');
