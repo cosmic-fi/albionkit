@@ -87,7 +87,7 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
   const fetchBuilds = useCallback(async (pageToFetch: number = 1, resetPagination: boolean = false) => {
     // Prevent concurrent fetches
     if (loadingMore && pageToFetch === 1 && !resetPagination) return;
-    
+
     setLoading(true);
     setLoadingMore(true);
 
@@ -103,7 +103,9 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
           limit: 24,
           page: resetPagination ? 1 : pageToFetch
         },
-        (resetPagination || pageToFetch === 1) ? null : lastDoc
+        // Always pass null - the service will handle cursor calculation internally
+        // This prevents stale cursor issues when filters change
+        null
       );
 
       // Reset builds array if this is a new search/filter
@@ -119,7 +121,7 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [sort, tag, selectedZone, selectedActivity, selectedRole, debouncedSearch, lastDoc, loadingMore]);
+  }, [sort, tag, selectedZone, selectedActivity, selectedRole, debouncedSearch, loadingMore]);
 
   // Initial load and filter changes - reset to page 1
   useEffect(() => {
@@ -128,11 +130,11 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
       isInitialMount.current = false;
       return;
     }
-    
+
     // Reset pagination state BEFORE fetching
     setCurrentPage(1);
     setLastDoc(null);
-    
+
     // Fetch with reset
     fetchBuilds(1, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,7 +143,7 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
   // Sync URL with filters (only after initial mount)
   useEffect(() => {
     if (isInitialMount.current) return;
-    
+
     const params = new URLSearchParams();
     if (tag && tag !== 'all') params.set('tag', tag);
     if (selectedZone !== 'all') params.set('zone', selectedZone);
@@ -150,7 +152,7 @@ export default function BuildsClient({ initialTag = 'all' }: BuildsClientProps) 
     if (search) params.set('search', search);
     if (sort !== 'recent') params.set('sort', sort);
     if (currentPage > 1) params.set('page', String(currentPage));
-    
+
     const queryString = params.toString();
     router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false });
   }, [tag, selectedZone, selectedActivity, selectedRole, search, sort, currentPage, pathname, router]);

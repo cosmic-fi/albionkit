@@ -125,13 +125,13 @@ export const getPaginatedBuilds = async (
     role,
     search,
     limit = PAGE_SIZE,
-    page
+    page = 1
   } = filters;
 
   try {
     const buildsRef = collection(db, COLLECTION);
     const constraints: any[] = [];
-    
+
     // Start with hidden filter
     constraints.push(where('hidden', '==', false));
 
@@ -158,9 +158,47 @@ export const getPaginatedBuilds = async (
       constraints.push(orderBy('createdAt', 'desc'));
     }
 
+    // Get total count for pagination - MUST respect filters
+    // Always fetch total count to calculate totalPages correctly
+    let total: number | undefined;
+    try {
+      // Count query that respects the active filters
+      const countConstraints: any[] = [where('hidden', '==', false)];
+
+      // Add the same tag filter we used for the main query
+      if (tag && tag !== 'all') {
+        countConstraints.push(where('tags', 'array-contains', tag));
+      } else if (zone && zone !== 'all') {
+        countConstraints.push(where('tags', 'array-contains', zone));
+      } else if (activity && activity !== 'all') {
+        countConstraints.push(where('tags', 'array-contains', activity));
+      } else if (role && role !== 'all') {
+        countConstraints.push(where('tags', 'array-contains', role));
+      }
+
+      const countQuery = query(buildsRef, ...countConstraints);
+      const countSnapshot = await getDocs(countQuery);
+      total = countSnapshot.size;
+    } catch (countError) {
+      console.warn('Could not get filtered total count:', countError);
+      total = 0;
+    }
+
+    // For page > 1 without a valid cursor, we need to fetch documents to get the cursor
+    // This handles direct navigation to page X (e.g., from URL or pagination click)
+    let queryLastDoc = lastDoc;
+    if (page > 1 && !lastDoc) {
+      // Fetch previous pages to get the cursor for the current page
+      const prevDocsCount = (page - 1) * limit;
+      const prevConstraints = [...constraints, limitQuery(prevDocsCount)];
+      const prevQuery = query(buildsRef, ...prevConstraints);
+      const prevSnapshot = await getDocs(prevQuery);
+      queryLastDoc = prevSnapshot.docs[prevSnapshot.docs.length - 1] || null;
+    }
+
     // Add pagination cursor
-    if (lastDoc) {
-      constraints.push(startAfter(lastDoc));
+    if (queryLastDoc) {
+      constraints.push(startAfter(queryLastDoc));
     }
 
     constraints.push(limitQuery(limit));
@@ -173,7 +211,7 @@ export const getPaginatedBuilds = async (
     // CLIENT-SIDE search (text search can't be done with Firestore queries)
     if (search && search.trim()) {
       const term = search.toLowerCase();
-      builds = builds.filter(b => 
+      builds = builds.filter(b =>
         b.title.toLowerCase().includes(term) ||
         b.authorName.toLowerCase().includes(term) ||
         b.category.toLowerCase().includes(term) ||
@@ -184,46 +222,18 @@ export const getPaginatedBuilds = async (
     const newLastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
     const hasMore = snapshot.docs.length === limit;
 
-    // Get total count for pagination - MUST respect filters
-    let total: number | undefined;
-    if (!page || page === 1) {
-      try {
-        // Count query that respects the active filters
-        const countConstraints: any[] = [where('hidden', '==', false)];
-        
-        // Add the same tag filter we used for the main query
-        if (tag && tag !== 'all') {
-          countConstraints.push(where('tags', 'array-contains', tag));
-        } else if (zone && zone !== 'all') {
-          countConstraints.push(where('tags', 'array-contains', zone));
-        } else if (activity && activity !== 'all') {
-          countConstraints.push(where('tags', 'array-contains', activity));
-        } else if (role && role !== 'all') {
-          countConstraints.push(where('tags', 'array-contains', role));
-        }
-        
-        const countQuery = query(buildsRef, ...countConstraints);
-        const countSnapshot = await getDocs(countQuery);
-        total = countSnapshot.size;
-      } catch (countError) {
-        console.warn('Could not get filtered total count:', countError);
-        // Fallback: use the number of builds we got
-        total = builds.length;
-      }
-    }
-
     const result: PaginatedBuilds = {
       builds,
       lastDoc: newLastDoc,
       hasMore,
-      currentPage: page || 1,
+      currentPage: page,
       total
     };
 
     return result;
   } catch (error) {
     console.error('Error fetching paginated builds:', error);
-    return { builds: [], lastDoc: null, hasMore: false, currentPage: page || 1 };
+    return { builds: [], lastDoc: null, hasMore: false, currentPage: page, total: 0 };
   }
 };
 
