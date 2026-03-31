@@ -187,14 +187,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Twitter:** [@Albion_Kit](https://twitter.com/Albion_Kit)
 - **Email:** support@albionkit.com
 
-## 🚀 Deploy Your Own
-
-The easiest way to deploy your own instance is using [Vercel](https://vercel.com/new):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/albionkit)
-
-Make sure to set up all environment variables in your Vercel project settings.
-
 ---
 
 Built with ❤️ for Albion Online Community by Cosmic-fi (Albion Team)
