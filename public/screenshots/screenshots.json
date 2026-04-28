@@ -745,5 +745,61 @@
       "homepage"
     ],
     "page": "/"
+  },
+  "faction-efficiency": {
+    "alt": "Faction Reward Efficiency Tool - Albion Online",
+    "title": "Faction Efficiency",
+    "caption": "Maximize your Faction Point returns",
+    "keywords": [
+      "faction warfare",
+      "faction points",
+      "efficiency",
+      "albion online",
+      "faction rewards",
+      "point conversion",
+      "silver per point"
+    ],
+    "page": "/faction/efficiency"
+  },
+  "heart-transport": {
+    "alt": "Heart Transport Profitability Tool - Albion Online",
+    "title": "Heart Transport",
+    "caption": "Calculate transport profits across cities",
+    "keywords": [
+      "heart transport",
+      "city transport",
+      "faction transport",
+      "albion online",
+      "profit calculator",
+      "trade routes"
+    ],
+    "page": "/faction/transport"
+  },
+  "bandit-tracker": {
+    "alt": "Bandit Assault Tracker - Live Countdown",
+    "title": "Bandit Tracker",
+    "caption": "Never miss a Bandit Assault event",
+    "keywords": [
+      "bandit assault",
+      "bandit tracker",
+      "albion online",
+      "live countdown",
+      "outlands events",
+      "faction warfare"
+    ],
+    "page": "/faction/bandit"
+  },
+  "campaign-tracker": {
+    "alt": "Faction Campaign Progress Tracker",
+    "title": "Campaign Tracker",
+    "caption": "Track your monthly campaign goals",
+    "keywords": [
+      "faction campaign",
+      "campaign tracker",
+      "albion online",
+      "monthly rewards",
+      "faction progress"
+    ],
+    "page": "/faction/campaign"
   }
 }

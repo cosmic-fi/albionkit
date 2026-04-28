@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { BookOpen, Menu, X, Search, Sun, Moon, User as UserIcon, LogOut, Settings, Crown, Heart, Bell, ChevronDown, ChevronLeft, Coins, Store, Sword, Skull, Swords, Hammer, Sprout, ChefHat, PawPrint, FlaskConical, ForkKnife, Leaf, FishOff, Fish, Pickaxe, Shield } from 'lucide-react';
+import { BookOpen, Menu, X, Search, Sun, Moon, User as UserIcon, LogOut, Settings, Crown, Heart, Bell, ChevronDown, ChevronLeft, Coins, Store, Sword, Skull, Swords, Hammer, Sprout, ChefHat, PawPrint, FlaskConical, ForkKnife, Leaf, FishOff, Fish, Pickaxe, Shield, TrendingUp, Truck, Clock, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
@@ -114,6 +114,17 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         { id: 'labour', title: t('labour'), href: '/profits/labour', icon: <Leaf className='h-4 w-4' />},
         { id: 'chopped-fish', title: t('choppedFish'), href: '/profits/chopped-fish', icon: <Fish className='h-4 w-4' />},
         { id: 'enchanting', title: t('enchanting'), href: '/profits/enchanting', icon: <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg> },
+      ],
+    },
+    {
+      id: 'faction',
+      title: t('faction'),
+      icon: <Shield className="h-5 w-5" />,
+      submenu: [
+        { id: 'faction-efficiency', title: t('factionEfficiency'), href: '/faction/efficiency', icon: <TrendingUp className="h-4 w-4" /> },
+        { id: 'heart-transport', title: t('heartTransport'), href: '/faction/transport', icon: <Truck className="h-4 w-4" /> },
+        { id: 'bandit-tracker', title: t('banditTracker'), href: '/faction/bandit', icon: <Clock className="h-4 w-4" /> },
+        { id: 'campaign-tracker', title: t('campaignTracker'), href: '/faction/campaign', icon: <Activity className="h-4 w-4" /> },
       ],
     },
     {

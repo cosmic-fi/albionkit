@@ -5,7 +5,8 @@ export const LOCATIONS = [
   'Fort Sterling',
   'Lymhurst',
   'Martlock',
-  'Thetford'
+  'Thetford',
+  'Brecilien'
 ];
 
 export const REGION_URLS = {

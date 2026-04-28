@@ -1,8 +1,131 @@
 {
+  "FactionEfficiencyPage": {
+    "title": "Faction Reward Efficiency - Albion Online",
+    "description": "Calculate the most profitable items to buy with your Faction Points. Compare hearts, crests, and mounts across all royal cities."
+  },
+  "HeartTransportPage": {
+    "title": "Heart Transport Profitability - Albion Online",
+    "description": "Calculate net profits for city-to-city heart transports. Account for market taxes and transport fees."
+  },
+  "BanditTrackerPage": {
+    "title": "Bandit Assault Tracker - Albion Online",
+    "description": "Live countdown and notification system for the next Bandit Assault event in the Outlands."
+  },
+  "CampaignTrackerPage": {
+    "title": "Campaign Progress Tracker - Albion Online",
+    "description": "Track your monthly faction campaign progress and see how many points you need to reach your goal."
+  },
+  "FactionTools": {
+    "efficiency": {
+      "title": "Faction Reward Efficiency",
+      "subtitle": "Maximize your Silver per Point",
+      "points": "Points",
+      "spp": "Silver / Point",
+      "price": "Market Price",
+      "bestRewards": "Best Rewards",
+      "allFactions": "All Factions",
+      "selectFaction": "Filter by Faction",
+      "efficiencyTable": "Efficiency Table",
+      "reward": "Reward",
+      "category": "Category",
+      "item": "Item",
+      "tier": "Tier",
+      "faction": "Faction",
+      "lastUpdated": "Last Updated",
+      "efficiency": "Efficiency",
+      "premiumStatus": "Premium Status",
+      "premiumDesc": "Reduces market tax from 8% to 4%",
+      "marketTax": "Market Tax",
+      "setupFee": "Market Setup Fee",
+      "overridePrice": "Override Price",
+      "reset": "Reset",
+      "netReturn": "Net Return",
+      "marketIntelligence": "Market Intelligence",
+      "calculatedUsing": "Calculated using real-time {region} market data",
+      "profitBreakdown": "Profit Breakdown",
+      "configuration": "Configuration",
+      "efficiencyResults": "Efficiency Results",
+      "finalSpp": "Final Silver Per Point",
+      "searchItems": "Search rewards...",
+      "updated": "Updated",
+      "never": "Never",
+      "silver": "Silver"
+    },
+    "transport": {
+      "title": "Heart Transport Profitability",
+      "subtitle": "City-to-City Trade Matrix",
+      "source": "Source City",
+      "destination": "Destination City",
+      "profit": "Net Profit",
+      "roi": "ROI",
+      "calculate": "Calculate Profit",
+      "selectHearts": "Select Heart Type",
+      "configuration": "Configuration",
+      "quantity": "Transport Quantity",
+      "quantityTooltip": "The number of hearts you plan to transport. Affects total profit display.",
+      "maxRoiRoute": "Max ROI Route",
+      "maxProfitRun": "Max Profit per Run",
+      "best": "Best",
+      "updating": "Updating Market Data...",
+      "matrixNote": "The matrix shows the Best ROI Heart for each route. Hover over any cell to see specific prices and which heart is currently the most profitable for that trip.",
+      "calcNote": "Profit is calculated using <strong>Sell Price Min</strong> at Source and <strong>Buy Order Max</strong> at Destination, after <strong>6.5%</strong> total fees.",
+      "basedOnQuantity": "Based on <span>{quantity}</span> hearts transport.",
+      "silver": "silver",
+      "loading": "Loading..."
+    },
+    "bandit": {
+      "title": "Bandit Assault Tracker",
+      "subtitle": "Next Event Countdown",
+      "nextAssault": "Next Potential Assault",
+      "status": "Current Status",
+      "active": "Event Active!",
+      "cooldown": "Cooling Down",
+      "window": "Potential Window",
+      "overdue": "Overdue / Missed",
+      "imminent": "Imminent (Any Minute)",
+      "notify": "Notify Me",
+      "lastAssault": "Last Assault End",
+      "reportButton": "Report Active!",
+      "reportSuccess": "Thank you for reporting!",
+      "reportError": "Error reporting event.",
+      "history": "Recent Bandit History",
+      "estimatedWindow": "Estimated Window",
+      "timezoneNote": "All times are in UTC (Game Time).",
+      "probability": "Probability of Assault:",
+      "targetHour": "Target Hour (UTC)",
+      "serverTime": "Server Time (UTC)",
+      "dailySchedule": "Daily Schedule (UTC)",
+      "nextWindowLabel": "Next Window",
+      "chance": "{chance}% Chance",
+      "reminders": "Reminders",
+      "remindersDesc": "Notify before window opens",
+      "mute": "Mute Sound",
+      "unmute": "Unmute Sound",
+      "disableNotifications": "Disable Notifications",
+      "enableNotifications": "Enable Notifications",
+      "mins": "{mins} mins",
+      "rolling": "Rolling Now",
+      "waiting": "Waiting",
+      "imminentTitle": "Bandit Assault Imminent! 🚩",
+      "imminentBody": "Next roll window for {region} starts in {mins} minutes ({chance}% chance)."
+    },
+    "campaign": {
+      "title": "Campaign Progress Tracker",
+      "subtitle": "Monthly Point Projections",
+      "goal": "Monthly Goal",
+      "current": "Current Points",
+      "required": "Daily Points Required",
+      "remaining": "Points Remaining",
+      "projection": "Monthly Projection"
+    }
+  },
   "regions": {
     "Americas": "Americas",
     "Asia": "Asia",
-    "Europe": "Europe"
+    "Europe": "Europe",
+    "west": "Americas",
+    "east": "Asia",
+    "europe": "Europe"
   },
   "Common": {
     "comingSoon": "Coming Soon",
@@ -188,7 +311,12 @@
     "combatPositioning": "Combat Positioning",
     "gatheringRoutes": "Gathering Routes",
     "silverFarmingGuide": "Silver Farming",
-    "silverFarming": "Silver Farming"
+    "silverFarming": "Silver Farming",
+    "faction": "Faction",
+    "factionEfficiency": "Efficiency",
+    "heartTransport": "Heart Transport",
+    "banditTracker": "Bandit Tracker",
+    "campaignTracker": "Campaign Tracker"
   },
   "Footer": {
     "tools": "Tools",
@@ -208,6 +336,11 @@
     "choppedFish": "Chopped Fish",
     "enchanting": "Enchanting",
     "silverFarming": "Silver Farming",
+    "faction": "Faction",
+    "factionEfficiency": "Efficiency",
+    "heartTransport": "Heart Transport",
+    "banditTracker": "Bandit Tracker",
+    "campaignTracker": "Campaign Tracker",
     "community": "Community",
     "builds": "Builds",
     "guides": "Guides",
@@ -3198,6 +3331,11 @@
       "kill-feed": "Kill Feed",
       "zvz-tracker": "ZvZ Tracker",
       "crafting-calc": "Crafting Calculator",
+      "faction": "Faction",
+      "efficiency": "Efficiency",
+      "transport": "Heart Transport",
+      "bandit": "Bandit Tracker",
+      "campaign": "Campaign Tracker",
       "community": "Community",
       "builds": "Builds",
       "profits": "Profits",
@@ -4277,5 +4415,13 @@
   "ZvZTrackerPage": {
     "title": "ZvZ Tracker - Albion Online Battle Tracker",
     "description": "Track massive ZvZ and GvG battles in Albion Online. Live battle statistics, guild warfare analysis, and participant tracking."
+  },
+  "items": {
+    "T1_FACTION_HIGHLAND_TOKEN_1": "Rock Heart",
+    "T1_FACTION_FOREST_TOKEN_1": "Tree Heart",
+    "T1_FACTION_SWAMP_TOKEN_1": "Vine Heart",
+    "T1_FACTION_MOUNTAIN_TOKEN_1": "Mountain Heart",
+    "T1_FACTION_STEPPE_TOKEN_1": "Beast Heart",
+    "T1_FACTION_CAERLEON_TOKEN_1": "Shadowheart"
   }
 }

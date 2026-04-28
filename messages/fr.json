@@ -1,4 +1,107 @@
 {
+  "FactionEfficiencyPage": {
+    "title": "Efficacité des Récompenses de Faction - Albion Online",
+    "description": "Calculez les articles les plus rentables à acheter avec vos points de faction. Comparez les cœurs, les crêtes et les montures dans toutes les villes royales."
+  },
+  "HeartTransportPage": {
+    "title": "Rentabilité du Transport de Cœurs - Albion Online",
+    "description": "Calculez les bénéfices nets pour les transports de cœurs de ville en ville. Tenez compte des taxes de marché et des frais de transport."
+  },
+  "BanditTrackerPage": {
+    "title": "Traqueur d'Assaut de Bandits - Albion Online",
+    "description": "Compte à rebours en direct et système de notification pour le prochain événement d'Assaut de Bandits dans les Terres Lointaines."
+  },
+  "CampaignTrackerPage": {
+    "title": "Traqueur de Progression de Campagne - Albion Online",
+    "description": "Suivez votre progression mensuelle dans la campagne de faction et voyez combien de points il vous reste."
+  },
+  "FactionTools": {
+    "efficiency": {
+      "title": "Efficacité des Récompenses de Faction",
+      "subtitle": "Maximisez votre Argent par Point",
+      "points": "Points",
+      "spp": "Argent / Point",
+      "price": "Prix du Marché",
+      "bestRewards": "Meilleures Récompenses",
+      "allFactions": "Toutes les Factions",
+      "selectFaction": "Filtrer par Faction",
+      "efficiencyTable": "Tableau d'Efficacité",
+      "reward": "Récompense",
+      "category": "Catégorie",
+      "item": "Article",
+      "tier": "Tier",
+      "faction": "Faction",
+      "lastUpdated": "Dernière mise à jour",
+      "efficiency": "Efficacité",
+      "premiumStatus": "Statut Premium",
+      "premiumDesc": "Réduit la taxe de marché de 8% à 4%",
+      "marketTax": "Taxe de Marché",
+      "setupFee": "Frais de Mise en Vente",
+      "overridePrice": "Remplacer le Prix",
+      "reset": "Réinitialiser",
+      "netReturn": "Rendement Net",
+      "marketIntelligence": "Intelligence du Marché",
+      "calculatedUsing": "Calculé à l'aide des données de marché de {region} en temps réel",
+      "profitBreakdown": "Détail des Bénéfices",
+      "configuration": "Configuration",
+      "efficiencyResults": "Résultats d'Efficacité",
+      "finalSpp": "Argent Final par Point",
+      "searchItems": "Rechercher des récompenses...",
+      "updated": "Mis à jour",
+      "never": "Jamais",
+      "silver": "Argent"
+    },
+    "transport": {
+      "title": "Rentabilité du Transport de Cœurs",
+      "subtitle": "Matrice de Commerce de Ville en Ville",
+      "source": "Ville d'Origine",
+      "destination": "Ville de Destination",
+      "profit": "Bénéfice Net",
+      "roi": "ROI",
+      "calculate": "Calculer le Bénéfice",
+      "selectHearts": "Sélectionner le Type de Cœur",
+      "configuration": "Configuration",
+      "quantity": "Quantité de Transport",
+      "quantityTooltip": "Le nombre de cœurs que vous prévoyez de transporter. Affecte l'affichage du profit total.",
+      "maxRoiRoute": "Route ROI Max",
+      "maxProfitRun": "Bénéfice Max par Trajet",
+      "best": "Meilleur",
+      "updating": "Mise à jour des données du marché...",
+      "matrixNote": "La matrice affiche le meilleur cœur (selon le ROI) pour chaque trajet. Survolez une cellule pour voir les prix spécifiques et quel cœur est actuellement le plus rentable.",
+      "calcNote": "Le bénéfice est calculé sur la base du <b>Prix de Vente Minimum</b> à la source et de l''<b>Ordre d''Achat Maximum</b> à la destination, après <b>6,5 %</b> de frais totaux.",
+      "basedOnQuantity": "Basé sur le transport de <span>{quantity}</span> cœurs.",
+      "silver": "argent",
+      "loading": "Chargement..."
+    },
+    "bandit": {
+      "title": "Traqueur d'Assaut de Bandits",
+      "subtitle": "Compte à rebours du Prochain Événement",
+      "nextAssault": "Prochain Assaut Potentiel",
+      "status": "Statut Actuel",
+      "active": "Événement Actif !",
+      "cooldown": "Refroidissement",
+      "window": "Fenêtre Potentielle",
+      "overdue": "En retard / Manqué",
+      "imminent": "Imminent (À tout moment)",
+      "notify": "M'avertir",
+      "lastAssault": "Fin du dernier assaut",
+      "reportButton": "Signaler l'événement !",
+      "reportSuccess": "Merci pour le signalement !",
+      "reportError": "Erreur lors du signalement.",
+      "history": "Historique des bandits",
+      "estimatedWindow": "Fenêtre estimée",
+      "timezoneNote": "Toutes les heures sont en UTC (Heure du jeu)."
+    },
+    "campaign": {
+      "title": "Traqueur de Progression de Campagne",
+      "subtitle": "Projections Mensuelles de Points",
+      "goal": "Objectif Mensuel",
+      "current": "Points Actuels",
+      "required": "Points Quotidiens Requis",
+      "remaining": "Points Restants",
+      "projection": "Projection Mensuelle"
+    }
+  },
   "regions": {
     "Americas": "Amériques",
     "Asia": "Asie",
@@ -190,7 +293,12 @@
     "silverFarmingGuide": "Farm d'Argent",
     "weapons": "Armes",
     "weaponsList": "Toutes les Armes",
-    "silverFarming": "Farm d'Argent"
+    "silverFarming": "Farm d'Argent",
+    "faction": "Faction",
+    "factionEfficiency": "Efficacité",
+    "heartTransport": "Transport de Cœurs",
+    "banditTracker": "Suivi des Bandits",
+    "campaignTracker": "Suivi de Campagne"
   },
   "Footer": {
     "tools": "Outils",
@@ -209,6 +317,12 @@
     "animal": "Animaux",
     "choppedFish": "Poisson Haché",
     "enchanting": "Enchantement",
+    "silverFarming": "Farm d'Argent",
+    "faction": "Faction",
+    "factionEfficiency": "Efficacité",
+    "heartTransport": "Transport de Cœurs",
+    "banditTracker": "Suivi des Bandits",
+    "campaignTracker": "Suivi de Campagne",
     "community": "Communauté",
     "builds": "Builds",
     "about": "À Propos de Nous",
@@ -3372,8 +3486,13 @@
       "market-flipper": "Flipping de Marché",
       "pvp-intel": "Renseignements PvP",
       "kill-feed": "Flux d'Éliminations",
-      "zvz-tracker": "Traqueur ZvZ",
+      "zvz-tracker": "Suivi ZvZ",
       "crafting-calc": "Calculateur d'Artisanat",
+      "faction": "Faction",
+      "efficiency": "Efficacité",
+      "transport": "Transport de Cœurs",
+      "bandit": "Bandits",
+      "campaign": "Campagne",
       "community": "Communauté",
       "builds": "Builds",
       "profits": "Profits",
@@ -4182,5 +4301,13 @@
   "ZvZTrackerPage": {
     "title": "Suivi ZvZ - Suivi de Batailles",
     "description": "Suivez les batailles massives ZvZ et GvG dans Albion Online. Statistiques de batailles en direct et analyse de guerre de guildes."
+  },
+  "items": {
+    "T1_FACTION_HIGHLAND_TOKEN_1": "Cœur de Roche",
+    "T1_FACTION_FOREST_TOKEN_1": "Cœur d'Arbre",
+    "T1_FACTION_SWAMP_TOKEN_1": "Cœur de Vigne",
+    "T1_FACTION_MOUNTAIN_TOKEN_1": "Cœur de Montagne",
+    "T1_FACTION_STEPPE_TOKEN_1": "Cœur de Bête",
+    "T1_FACTION_CAERLEON_TOKEN_1": "Cœur d'Ombre"
   }
 }

@@ -1,4 +1,99 @@
 {
+  "FactionEfficiencyPage": {
+    "title": "Fraksiyon Ödül Verimliliği - Albion Online",
+    "description": "Fraksiyon puanlarınızla satın alabileceğiniz en karlı eşyaları hesaplayın. Tüm şehirlerdeki kalpleri, armaları ve binekleri karşılaştırın."
+  },
+  "HeartTransportPage": {
+    "title": "Kalp Taşıma Karlılığı - Albion Online",
+    "description": "Şehirler arası kalp taşımacılığı için net karı hesaplayın. Pazar vergilerini ve taşıma ücretlerini göz önünde bulundurun."
+  },
+  "BanditTrackerPage": {
+    "title": "Haydut Baskını Takibi - Albion Online",
+    "description": "Outlands'deki bir sonraki Haydut Baskını etkinliği için canlı geri sayım ve bildirim sistemi."
+  },
+  "CampaignTrackerPage": {
+    "title": "Kampanya İlerleme Takibi - Albion Online",
+    "description": "Aylık fraksiyon kampanya ilerlemenizi takip edin ve hedefinize ulaşmak için kaç puan gerektiğini görün."
+  },
+  "FactionTools": {
+    "efficiency": {
+      "title": "Fraksiyon Ödül Verimliliği",
+      "subtitle": "Puan Başına Gümüşünüzü Maksimuma Çıkarın",
+      "points": "Puan",
+      "spp": "Gümüş / Puan",
+      "price": "Pazar Fiyatı",
+      "bestRewards": "En İyi Ödüller",
+      "allFactions": "Tüm Fraksiyonlar",
+      "selectFaction": "Fraksiyona Göre Filtrele",
+      "efficiencyTable": "Verimlilik Tablosu",
+      "reward": "Ödül",
+      "category": "Kategori",
+      "item": "Eşya",
+      "tier": "Tier",
+      "faction": "Fraksiyon",
+      "lastUpdated": "Son Güncelleme",
+      "efficiency": "Verimlilik",
+      "premiumStatus": "Premium Durumu",
+      "premiumDesc": "Pazar vergisini %8'den %4'e düşürür",
+      "marketTax": "Pazar Vergisi",
+      "setupFee": "Kurulum Ücreti",
+      "overridePrice": "Fiyatı Geçersiz Kıl",
+      "reset": "Sıfırla",
+      "netReturn": "Net Getiri",
+      "marketIntelligence": "Pazar Analizi",
+      "calculatedUsing": "Gerçek zamanlı {region} pazar verileri kullanılarak hesaplanmıştır",
+      "profitBreakdown": "Kar Detayları",
+      "configuration": "Yapılandırma",
+      "efficiencyResults": "Verimlilik Sonuçları",
+      "finalSpp": "Puan Başına Nihai Gümüş",
+      "searchItems": "Ödül ara...",
+      "updated": "Güncellendi",
+      "never": "Hiçbir zaman",
+      "silver": "Gümüş"
+    },
+    "transport": {
+      "title": "Kalp Taşıma Karlılığı",
+      "subtitle": "Şehirler Arası Ticaret Matrisi",
+      "source": "Kaynak Şehir",
+      "destination": "Hedef Şehir",
+      "profit": "Net Kar",
+      "roi": "ROI",
+      "calculate": "Kar Hesapla",
+      "selectHearts": "Kalp Türü Seç",
+      "configuration": "Yapılandırma",
+      "quantity": "Taşıma Miktarı",
+      "quantityTooltip": "Taşımayı planladığınız kalp sayısı. Toplam kar görünümünü etkiler.",
+      "maxRoiRoute": "Maks. ROI Rotası",
+      "maxProfitRun": "Sefer Başına Maks. Kar",
+      "best": "En İyi",
+      "updating": "Pazar verileri güncelleniyor...",
+      "matrixNote": "Matris, her rota için en iyi ROI'ye sahip kalbi gösterir. Belirli fiyatları ve şu anda o yolculuk için en karlı olan kalbi görmek için herhangi bir hücrenin üzerine gelin.",
+      "calcNote": "Kar, kaynakta <strong>Minimum Satış Fiyatı</strong> ve hedefte <strong>Maksimum Satın Alma Emri</strong> kullanılarak, <strong>%6,5</strong> toplam kesintiden sonra hesaplanır.",
+      "basedOnQuantity": "<span>{quantity}</span> kalp taşımacılığına dayanmaktadır.",
+      "silver": "gümüş",
+      "loading": "Yükleniyor..."
+    },
+    "bandit": {
+      "title": "Haydut Baskını Takibi",
+      "subtitle": "Bir Sonraki Etkinlik Geri Sayımı",
+      "nextAssault": "Bir Sonraki Potansiyel Baskın",
+      "status": "Güncel Durum",
+      "active": "Etkinlik Aktif!",
+      "waiting": "Zamanlayıcı Bekleniyor",
+      "imminent": "Eli Kulağında (Her an başlayabilir)",
+      "notify": "Beni Bilgilendir",
+      "history": "Son Haydut Geçmişi"
+    },
+    "campaign": {
+      "title": "Kampanya İlerleme Takibi",
+      "subtitle": "Aylık Puan Tahminleri",
+      "goal": "Aylık Hedef",
+      "current": "Mevcut Puan",
+      "required": "Günlük Gereken Puan",
+      "remaining": "Kalan Puan",
+      "projection": "Aylık Tahmin"
+    }
+  },
   "regions": {
     "Americas": "Amerika",
     "Asia": "Asya",
@@ -190,7 +285,12 @@
     "silverFarmingGuide": "Gümüş Farmı",
     "weapons": "Silahlar",
     "weaponsList": "Tüm Silahlar",
-    "silverFarming": "Gümüş Farmı"
+    "silverFarming": "Gümüş Farmı",
+    "faction": "Fraksiyon",
+    "factionEfficiency": "Verimlilik",
+    "heartTransport": "Kalp Taşıma",
+    "banditTracker": "Haydut Takibi",
+    "campaignTracker": "Kampanya Takibi"
   },
   "Footer": {
     "tools": "Araçlar",
@@ -209,6 +309,12 @@
     "animal": "Hayvanlar",
     "choppedFish": "Doğranmış Balık",
     "enchanting": "Büyüleme",
+    "silverFarming": "Gümüş Farmı",
+    "faction": "Fraksiyon",
+    "factionEfficiency": "Verimlilik",
+    "heartTransport": "Kalp Taşıma",
+    "banditTracker": "Haydut Takibi",
+    "campaignTracker": "Kampanya Takibi",
     "community": "Topluluk",
     "builds": "Buildler",
     "about": "Hakkımızda",
@@ -3374,6 +3480,11 @@
       "kill-feed": "Ölüm Akışı",
       "zvz-tracker": "ZvZ Takipçisi",
       "crafting-calc": "Zanaat Hesaplayıcı",
+      "faction": "Fraksiyon",
+      "efficiency": "Verimlilik",
+      "transport": "Kalp Taşıma",
+      "bandit": "Haydutlar",
+      "campaign": "Kampanya",
       "community": "Topluluk",
       "builds": "Buildler",
       "profits": "Kar",
@@ -4167,5 +4278,13 @@
   "ZvZTrackerPage": {
     "title": "ZvZ Takipçisi - Savaş Takibi",
     "description": "Albion Online'da büyük ZvZ ve GvG savaşlarını takip et. Canlı savaş istatistikleri ve lonca savaşı analizi."
+  },
+  "items": {
+    "T1_FACTION_HIGHLAND_TOKEN_1": "Kaya Kalbi",
+    "T1_FACTION_FOREST_TOKEN_1": "Ağaç Kalbi",
+    "T1_FACTION_SWAMP_TOKEN_1": "Sarmaşık Kalbi",
+    "T1_FACTION_MOUNTAIN_TOKEN_1": "Dağ Kalbi",
+    "T1_FACTION_STEPPE_TOKEN_1": "Canavar Kalbi",
+    "T1_FACTION_CAERLEON_TOKEN_1": "Gölgekalbi"
   }
 }

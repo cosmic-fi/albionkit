@@ -1,4 +1,99 @@
 {
+  "FactionEfficiencyPage": {
+    "title": "Fraktions-Belohnungseffizienz - Albion Online",
+    "description": "Berechnen Sie die profitabelsten Gegenstände, die Sie mit Ihren Fraktionspunkten kaufen können. Vergleichen Sie Herzen, Wappen und Reittiere in allen Städten."
+  },
+  "HeartTransportPage": {
+    "title": "Herztransport-Rentabilität - Albion Online",
+    "description": "Berechnen Sie Nettogewinne für Herztransporte von Stadt zu Stadt. Berücksichtigen Sie Marktsteuern und Transportgebühren."
+  },
+  "BanditTrackerPage": {
+    "title": "Banditenüberfall-Tracker - Albion Online",
+    "description": "Live-Countdown und Benachrichtigungssystem für das nächste Banditenüberfall-Event in den Outlands."
+  },
+  "CampaignTrackerPage": {
+    "title": "Kampagnenfortschritt-Tracker - Albion Online",
+    "description": "Verfolgen Sie Ihren monatlichen Fraktionskampagnenfortschritt und sehen Sie, wie viele Punkte Sie noch benötigen."
+  },
+  "FactionTools": {
+    "efficiency": {
+      "title": "Fraktions-Belohnungseffizienz",
+      "subtitle": "Maximieren Sie Ihr Silber pro Punkt",
+      "points": "Punkte",
+      "spp": "Silber / Punkt",
+      "price": "Marktpreis",
+      "bestRewards": "Beste Belohnungen",
+      "allFactions": "Alle Fraktionen",
+      "selectFaction": "Nach Fraktion filtern",
+      "efficiencyTable": "Effizienz-Tabelle",
+      "reward": "Belohnung",
+      "category": "Kategorie",
+      "item": "Gegenstand",
+      "tier": "Stufe",
+      "faction": "Fraktion",
+      "lastUpdated": "Zuletzt aktualisiert",
+      "efficiency": "Effizienz",
+      "premiumStatus": "Premium-Status",
+      "premiumDesc": "Reduziert die Marktsteuer von 8% auf 4%",
+      "marketTax": "Marktsteuer",
+      "setupFee": "Einstellgebühr",
+      "overridePrice": "Preis überschreiben",
+      "reset": "Zurücksetzen",
+      "netReturn": "Netto-Ertrag",
+      "marketIntelligence": "Markt-Informationen",
+      "calculatedUsing": "Berechnet mit Echtzeit-{region}-Marktdaten",
+      "profitBreakdown": "Gewinn-Aufschlüsselung",
+      "configuration": "Konfiguration",
+      "efficiencyResults": "Effizienz-Ergebnisse",
+      "finalSpp": "Finales Silber pro Punkt",
+      "searchItems": "Belohnungen suchen...",
+      "updated": "Aktualisiert",
+      "never": "Nie",
+      "silver": "Silber"
+    },
+    "transport": {
+      "title": "Herztransport-Rentabilität",
+      "subtitle": "Stadt-zu-Stadt Handelsmatrix",
+      "source": "Ausgangsstadt",
+      "destination": "Zielstadt",
+      "profit": "Nettogewinn",
+      "roi": "ROI",
+      "calculate": "Gewinn berechnen",
+      "selectHearts": "Herztyp wählen",
+      "configuration": "Konfiguration",
+      "quantity": "Transportmenge",
+      "quantityTooltip": "Die Anzahl der Herzen, die Sie transportieren möchten. Beeinflusst die Gesamtgewinnanzeige.",
+      "maxRoiRoute": "Beste ROI-Route",
+      "maxProfitRun": "Max. Gewinn pro Fahrt",
+      "best": "Beste",
+      "updating": "Marktdaten werden aktualisiert...",
+      "matrixNote": "Die Matrix zeigt das Herz mit dem besten ROI für jede Route. Bewegen Sie den Mauszeiger über eine Zelle, um spezifische Preise zu sehen und zu erfahren, welches Herz derzeit am profitabelsten ist.",
+      "calcNote": "Der Gewinn wird unter Verwendung des <strong>Mindestverkaufspreises</strong> am Quellort und des <strong>maximalen Kaufauftrags</strong> am Zielort nach Abzug von <strong>6,5 %</strong> Gesamgebühren berechnet.",
+      "basedOnQuantity": "Basierend auf dem Transport von <span>{quantity}</span> Herzen.",
+      "silver": "Silber",
+      "loading": "Laden..."
+    },
+    "bandit": {
+      "title": "Banditenüberfall-Tracker",
+      "subtitle": "Countdown zum nächsten Event",
+      "nextAssault": "Nächster potenzieller Überfall",
+      "status": "Aktueller Status",
+      "active": "Event Aktiv!",
+      "waiting": "Warten auf Timer",
+      "imminent": "Unmittelbar bevorstehend",
+      "notify": "Benachrichtigen",
+      "history": "Verlauf der Banditenüberfälle"
+    },
+    "campaign": {
+      "title": "Kampagnenfortschritt-Tracker",
+      "subtitle": "Monatliche Punktprognosen",
+      "goal": "Monatsziel",
+      "current": "Aktuelle Punkte",
+      "required": "Tägliche Punkte benötigt",
+      "remaining": "Verbleibende Punkte",
+      "projection": "Monatsprognose"
+    }
+  },
   "regions": {
     "Americas": "Amerika",
     "Asia": "Asien",
@@ -190,7 +285,12 @@
     "silverFarmingGuide": "Silber Farming",
     "weapons": "Waffen",
     "weaponsList": "Alle Waffen",
-    "silverFarming": "Silber Farming"
+    "silverFarming": "Silber Farming",
+    "faction": "Fraktion",
+    "factionEfficiency": "Effizienz",
+    "heartTransport": "Herztransport",
+    "banditTracker": "Bandit Tracker",
+    "campaignTracker": "Kampagnen Tracker"
   },
   "Footer": {
     "tools": "Werkzeuge",
@@ -209,6 +309,12 @@
     "animal": "Tiere",
     "choppedFish": "Gehackter Fisch",
     "enchanting": "Verzauberung",
+    "silverFarming": "Silber-Farmen",
+    "faction": "Fraktion",
+    "factionEfficiency": "Effizienz",
+    "heartTransport": "Herztransport",
+    "banditTracker": "Banditen-Tracker",
+    "campaignTracker": "Kampagnen-Tracker",
     "community": "Community",
     "builds": "Builds",
     "about": "Über uns",
@@ -3196,6 +3302,11 @@
       "kill-feed": "Kill-Feed",
       "zvz-tracker": "ZvZ-Tracker",
       "crafting-calc": "Handwerks-Rechner",
+      "faction": "Fraktion",
+      "efficiency": "Effizienz",
+      "transport": "Herztransport",
+      "bandit": "Banditen",
+      "campaign": "Kampagne",
       "community": "Community",
       "builds": "Builds",
       "profits": "Gewinne",
@@ -4190,5 +4301,13 @@
   "ZvZTrackerPage": {
     "title": "ZvZ-Tracker - Albion Online Kampf-Tracker",
     "description": "Verfolge massive ZvZ- und GvG-Kämpfe in Albion Online. Live-Kampfstatistiken, Gildenkriegsanalyse und Teilnehmerverfolgung."
+  },
+  "items": {
+    "T1_FACTION_HIGHLAND_TOKEN_1": "Felsenherz",
+    "T1_FACTION_FOREST_TOKEN_1": "Baumherz",
+    "T1_FACTION_SWAMP_TOKEN_1": "Rankenherz",
+    "T1_FACTION_MOUNTAIN_TOKEN_1": "Bergherz",
+    "T1_FACTION_STEPPE_TOKEN_1": "Bestienherz",
+    "T1_FACTION_CAERLEON_TOKEN_1": "Schattenherz"
   }
 }

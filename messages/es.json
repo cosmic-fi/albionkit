@@ -1,4 +1,99 @@
 {
+  "FactionEfficiencyPage": {
+    "title": "Eficiencia de Recompensas de Facción - Albion Online",
+    "description": "Calcula los artículos más rentables para comprar con tus Puntos de Facción. Compara corazones, insignias y monturas en todas las ciudades reales."
+  },
+  "HeartTransportPage": {
+    "title": "Rentabilidad de Transporte de Corazones - Albion Online",
+    "description": "Calcula beneficios netos para transportes de corazones entre ciudades. Ten en cuenta los impuestos de mercado y las tasas de transporte."
+  },
+  "BanditTrackerPage": {
+    "title": "Rastreador de Asalto de Bandidos - Albion Online",
+    "description": "Cuenta atrás en vivo y sistema de notificaciones para el próximo evento de Asalto de Bandidos en las Outlands."
+  },
+  "CampaignTrackerPage": {
+    "title": "Rastreador de Progreso de Campaña - Albion Online",
+    "description": "Sigue el progreso de tu campaña de facción mensual y mira cuántos puntos necesitas para alcanzar tu objetivo."
+  },
+  "FactionTools": {
+    "efficiency": {
+      "title": "Eficiencia de Recompensas de Facción",
+      "subtitle": "Maximiza tu Plata por Punto",
+      "points": "Puntos",
+      "spp": "Plata / Punto",
+      "price": "Precio de Mercado",
+      "bestRewards": "Mejores Recompensas",
+      "allFactions": "Todas las Facciones",
+      "selectFaction": "Filtrar por Facción",
+      "efficiencyTable": "Tabla de Eficiencia",
+      "reward": "Recompensa",
+      "category": "Categoría",
+      "item": "Artículo",
+      "tier": "Tier",
+      "faction": "Facción",
+      "lastUpdated": "Última actualización",
+      "efficiency": "Eficiencia",
+      "premiumStatus": "Estado Premium",
+      "premiumDesc": "Reduce el impuesto de mercado del 8% al 4%",
+      "marketTax": "Impuesto de Mercado",
+      "setupFee": "Tasa de Configuración",
+      "overridePrice": "Sobrescribir Precio",
+      "reset": "Restablecer",
+      "netReturn": "Retorno Neto",
+      "marketIntelligence": "Inteligencia de Mercado",
+      "calculatedUsing": "Calculado usando datos de mercado de {region} en tiempo real",
+      "profitBreakdown": "Desglose de Beneficios",
+      "configuration": "Configuración",
+      "efficiencyResults": "Resultados de Eficiencia",
+      "finalSpp": "Plata Final Por Punto",
+      "searchItems": "Buscar recompensas...",
+      "updated": "Actualizado",
+      "never": "Nunca",
+      "silver": "Plata"
+    },
+    "transport": {
+      "title": "Rentabilidad de Transporte de Corazones",
+      "subtitle": "Matriz de Comercio entre Ciudades",
+      "source": "Ciudad de Origen",
+      "destination": "Ciudad de Destino",
+      "profit": "Beneficio Neto",
+      "roi": "ROI",
+      "calculate": "Calcular Beneficio",
+      "selectHearts": "Seleccionar Tipo de Corazón",
+      "configuration": "Configuración",
+      "quantity": "Cantidad de Transporte",
+      "quantityTooltip": "La cantidad de corazones que planeas transportar. Afecta a la visualización del beneficio total.",
+      "maxRoiRoute": "Ruta de Mayor ROI",
+      "maxProfitRun": "Beneficio Máx por Viaje",
+      "best": "Mejor",
+      "updating": "Actualizando datos de mercado...",
+      "matrixNote": "La matriz muestra el corazón con mejor ROI para cada ruta. Pasa el cursor sobre cualquier celda para ver los precios específicos y qué corazón es el más rentable en este momento.",
+      "calcNote": "El beneficio se calcula utilizando el <strong>Precio Mínimo de Venta</strong> en el origen y la <strong>Orden Máxima de Compra</strong> en el destino, tras un <strong>6,5%</strong> de comisiones totales.",
+      "basedOnQuantity": "Basado en el transporte de <span>{quantity}</span> corazones.",
+      "silver": "plata",
+      "loading": "Cargando..."
+    },
+    "bandit": {
+      "title": "Rastreador de Asalto de Bandidos",
+      "subtitle": "Cuenta Atrás del Próximo Evento",
+      "nextAssault": "Próximo Asalto Potencial",
+      "status": "Estado Actual",
+      "active": "¡Evento Activo!",
+      "waiting": "Esperando Temporizador",
+      "imminent": "Inminente (Cualquier minuto)",
+      "notify": "Notificarme",
+      "history": "Historial Reciente de Bandidos"
+    },
+    "campaign": {
+      "title": "Rastreador de Progreso de Campaña",
+      "subtitle": "Proyecciones Mensuales de Puntos",
+      "goal": "Objetivo Mensual",
+      "current": "Puntos Actuales",
+      "required": "Puntos Diarios Requeridos",
+      "remaining": "Puntos Restantes",
+      "projection": "Proyección Mensual"
+    }
+  },
   "regions": {
     "Americas": "Américas",
     "Asia": "Asia",
@@ -190,7 +285,12 @@
     "silverFarmingGuide": "Farm de Plata",
     "weapons": "Armas",
     "weaponsList": "Todas las Armas",
-    "silverFarming": "Farm de Plata"
+    "silverFarming": "Farm de Plata",
+    "faction": "Facción",
+    "factionEfficiency": "Eficiencia",
+    "heartTransport": "Transporte de Corazones",
+    "banditTracker": "Rastreador de Bandidos",
+    "campaignTracker": "Rastreador de Campaña"
   },
   "Footer": {
     "tools": "Herramientas",
@@ -209,6 +309,12 @@
     "animal": "Animales",
     "choppedFish": "Pescado Picado",
     "enchanting": "Encantamiento",
+    "silverFarming": "Farm de Plata",
+    "faction": "Facción",
+    "factionEfficiency": "Eficiencia",
+    "heartTransport": "Transporte de Corazones",
+    "banditTracker": "Rastreador de Bandidos",
+    "campaignTracker": "Rastreador de Campaña",
     "community": "Comunidad",
     "builds": "Builds",
     "about": "Sobre Nosotros",
@@ -3400,6 +3506,11 @@
       "kill-feed": "Feed de Asesinatos",
       "zvz-tracker": "Rastreador ZvZ",
       "crafting-calc": "Calculadora de Artesanía",
+      "faction": "Facción",
+      "efficiency": "Eficiencia",
+      "transport": "Transporte de Corazones",
+      "bandit": "Bandidos",
+      "campaign": "Campaña",
       "community": "Comunidad",
       "builds": "Builds",
       "profits": "Ganancias",
@@ -4208,5 +4319,13 @@
   "ZvZTrackerPage": {
     "title": "Rastreador ZvZ - Batallas en Albion Online",
     "description": "Rastrea batallas masivas ZvZ y GvG en Albion Online. Estadísticas de batallas en vivo y análisis de guerra de gremios."
+  },
+  "items": {
+    "T1_FACTION_HIGHLAND_TOKEN_1": "Corazón de Roca",
+    "T1_FACTION_FOREST_TOKEN_1": "Corazón de Árbol",
+    "T1_FACTION_SWAMP_TOKEN_1": "Corazón de Vid",
+    "T1_FACTION_MOUNTAIN_TOKEN_1": "Corazón de Montaña",
+    "T1_FACTION_STEPPE_TOKEN_1": "Corazón de Bestia",
+    "T1_FACTION_CAERLEON_TOKEN_1": "Corazón de Sombra"
   }
 }

@@ -30,7 +30,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 1,
   }));
 
-  // 3. Profit Calculators (High Priority)
+  // 3. Faction Warfare Suite (High Priority)
+  const factionPages = [
+    '/faction/efficiency',
+    '/faction/transport',
+    '/faction/bandit',
+    '/faction/campaign',
+  ].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily' as const,
+    priority: 1,
+  }));
+
+  // 4. Profit Calculators (High Priority)
   const profitsPages = [
     '/profits/crafting',
     '/profits/farming',
@@ -86,6 +99,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...corePages,
     ...toolsPages,
+    ...factionPages,
     ...profitsPages,
     ...guidePages,
     ...infoPages,

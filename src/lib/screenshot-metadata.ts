@@ -169,7 +169,8 @@ export function getScreenshotsByCategory(category: string): ScreenshotKey[] {
     builds: ['builds-list', 'build-detail'],
     forum: ['forum-list', 'thread-detail'],
     user: ['user-profile', 'settings'],
-    misc: ['homepage', 'login', 'about']
+    misc: ['homepage', 'login', 'about'],
+    faction: ['faction-efficiency', 'heart-transport', 'bandit-tracker', 'campaign-tracker']
   };
 
   return categoryMapping[category] || [];
@@ -217,7 +218,13 @@ function getScreenshotPathMapping(key: ScreenshotKey): string {
     
     // User
     'user-profile': 'user',
-    'settings': 'user'
+    'settings': 'user',
+
+    // Faction
+    'faction-efficiency': 'faction',
+    'heart-transport': 'faction',
+    'bandit-tracker': 'faction',
+    'campaign-tracker': 'faction'
   };
   
   return pathMapping[key] || 'misc';

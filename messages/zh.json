@@ -1,4 +1,99 @@
 {
+  "FactionEfficiencyPage": {
+    "title": "阵营奖励效率 - 阿尔比恩在线",
+    "description": "计算用您的阵营点数购买最赚钱的物品。比较所有城市的阵营心、纹章和坐骑。"
+  },
+  "HeartTransportPage": {
+    "title": "阵营心运输利润 - 阿尔比恩在线",
+    "description": "计算城市间运输阵营心的净利润。考虑市场税和运输费用。"
+  },
+  "BanditTrackerPage": {
+    "title": "强盗袭击追踪器 - 阿尔比恩在线",
+    "description": "外域下一次强盗袭击活动的实时倒计时和通知系统。"
+  },
+  "CampaignTrackerPage": {
+    "title": "战役进度追踪器 - 阿尔比恩在线",
+    "description": "追踪您的每月阵营战役进度，查看距离目标还差多少点数。"
+  },
+  "FactionTools": {
+    "efficiency": {
+      "title": "阵营奖励效率",
+      "subtitle": "最大化您的每点银币收益",
+      "points": "点数",
+      "spp": "银币 / 点数",
+      "price": "市场价格",
+      "bestRewards": "最佳奖励",
+      "allFactions": "所有阵营",
+      "selectFaction": "按阵营筛选",
+      "efficiencyTable": "效率表",
+      "reward": "奖励",
+      "category": "类别",
+      "item": "物品",
+      "tier": "阶级",
+      "faction": "阵营",
+      "lastUpdated": "最后更新",
+      "efficiency": "效率",
+      "premiumStatus": "高级状态",
+      "premiumDesc": "将市场税从 8% 降至 4%",
+      "marketTax": "市场税",
+      "setupFee": "上架费",
+      "overridePrice": "覆盖价格",
+      "reset": "重置",
+      "netReturn": "净回报",
+      "marketIntelligence": "市场情报",
+      "calculatedUsing": "使用实时 {region} 市场数据计算",
+      "profitBreakdown": "利润明细",
+      "configuration": "配置",
+      "efficiencyResults": "效率结果",
+      "finalSpp": "最终每点银币",
+      "searchItems": "搜索奖励...",
+      "updated": "已更新",
+      "never": "从未",
+      "silver": "银币"
+    },
+    "transport": {
+      "title": "阵营心运输利润",
+      "subtitle": "城市间贸易矩阵",
+      "source": "起始城市",
+      "destination": "目标城市",
+      "profit": "净利润",
+      "roi": "投资回报率",
+      "calculate": "计算利润",
+      "selectHearts": "选择阵营心类型",
+      "configuration": "配置",
+      "quantity": "运输数量",
+      "quantityTooltip": "您计划运输的阵营心数量。影响总利润显示。",
+      "maxRoiRoute": "最高回报率路线",
+      "maxProfitRun": "单次最高利润",
+      "best": "最佳",
+      "updating": "更新市场数据中...",
+      "matrixNote": "矩阵显示每条路线回报率最高的阵营心。将鼠标悬停在任何单元格上，查看具体价格以及当前哪种阵营心最赚钱。",
+      "calcNote": "利润使用起始城市的<strong>最低卖价</strong>和目标城市的<strong>最高买单价</strong>计算，已扣除 <strong>6.5%</strong> 的总费用。",
+      "basedOnQuantity": "基于运输 <span>{quantity}</span> 个阵营心。",
+      "silver": "银币",
+      "loading": "加载中..."
+    },
+    "bandit": {
+      "title": "强盗袭击追踪器",
+      "subtitle": "下一次活动倒计时",
+      "nextAssault": "下一次潜在袭击",
+      "status": "当前状态",
+      "active": "活动开启！",
+      "waiting": "等待计时器",
+      "imminent": "即将开始 (随时可能)",
+      "notify": "通知我",
+      "history": "近期强盗记录"
+    },
+    "campaign": {
+      "title": "战役进度追踪器",
+      "subtitle": "每月点数预测",
+      "goal": "每月目标",
+      "current": "当前点数",
+      "required": "每日所需点数",
+      "remaining": "剩余点数",
+      "projection": "每月预测"
+    }
+  },
   "Common": {
     "comingSoon": "敬请期待",
     "underConstructionDesc": "我们正在开发 {tool} 工具。请稍后再来查看更新！",
@@ -185,7 +280,12 @@
     "silverFarmingGuide": "银币 farming",
     "weapons": "武器",
     "weaponsList": "所有武器",
-    "silverFarming": "银币 farming"
+    "silverFarming": "银币获取",
+    "faction": "阵营",
+    "factionEfficiency": "效率",
+    "heartTransport": "阵营心运输",
+    "banditTracker": "强盗追踪",
+    "campaignTracker": "战役追踪"
   },
   "Footer": {
     "tools": "工具",
@@ -204,6 +304,12 @@
     "animal": "动物",
     "choppedFish": "鱼肉碎",
     "enchanting": "附魔",
+    "silverFarming": "银币获取",
+    "faction": "阵营",
+    "factionEfficiency": "效率",
+    "heartTransport": "阵营心运输",
+    "banditTracker": "强盗追踪",
+    "campaignTracker": "战役追踪",
     "community": "社区",
     "builds": "Build",
     "about": "关于我们",
@@ -3193,7 +3299,12 @@
       "pvp-intel": "PvP 情报",
       "kill-feed": "击杀信息流",
       "zvz-tracker": "ZvZ 追踪器",
-      "crafting-calc": "制作计算器",
+      "crafting-calc": "制造计算器",
+      "faction": "阵营",
+      "efficiency": "效率",
+      "transport": "阵营心运输",
+      "bandit": "强盗袭击",
+      "campaign": "战役",
       "community": "社区",
       "builds": "配置",
       "profits": "利润",
@@ -4175,5 +4286,13 @@
   "ZvZTrackerPage": {
     "title": "ZvZ 追踪器 - Albion Online 战斗追踪",
     "description": "追踪 Albion Online 中的大规模 ZvZ 和 GvG 战斗。实时战斗统计、公会战分析和参与者追踪。"
+  },
+  "items": {
+    "T1_FACTION_HIGHLAND_TOKEN_1": "高地之心",
+    "T1_FACTION_FOREST_TOKEN_1": "森林之心",
+    "T1_FACTION_SWAMP_TOKEN_1": "沼泽之心",
+    "T1_FACTION_MOUNTAIN_TOKEN_1": "山地之心",
+    "T1_FACTION_STEPPE_TOKEN_1": "草原之心",
+    "T1_FACTION_CAERLEON_TOKEN_1": "暗影之心"
   }
 }

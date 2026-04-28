@@ -131,6 +131,33 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Faction Column */}
+          <div>
+            <h4 className="font-extrabold mb-4 text-foreground text-sm uppercase tracking-wider">{t('faction')}</h4>
+            <ul className="space-y-2.5 text-sm">
+              <li>
+                <Link href="/faction/efficiency" className="text-muted-foreground hover:text-primary hover:translate-x-1 transition-all inline-block">
+                  {t('factionEfficiency')}
+                </Link>
+              </li>
+              <li>
+                <Link href="/faction/transport" className="text-muted-foreground hover:text-primary hover:translate-x-1 transition-all inline-block">
+                  {t('heartTransport')}
+                </Link>
+              </li>
+              <li>
+                <Link href="/faction/bandit" className="text-muted-foreground hover:text-primary hover:translate-x-1 transition-all inline-block">
+                  {t('banditTracker')}
+                </Link>
+              </li>
+              <li>
+                <Link href="/faction/campaign" className="text-muted-foreground hover:text-primary hover:translate-x-1 transition-all inline-block">
+                  {t('campaignTracker')}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* Legal Column */}
           <div>
             <h4 className="font-extrabold mb-4 text-foreground text-sm uppercase tracking-wider">{t('legal')}</h4>

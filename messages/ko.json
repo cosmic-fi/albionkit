@@ -1,4 +1,99 @@
 {
+  "FactionEfficiencyPage": {
+    "title": "파벌 보상 효율 - 알비온 온라인",
+    "description": "파벌 포인트로 구매할 수 있는 가장 수익성 높은 아이템을 계산하세요. 모든 도시의 하트, 문장 및 탈것을 비교합니다."
+  },
+  "HeartTransportPage": {
+    "title": "하트 운송 수익성 - 알비온 온라인",
+    "description": "도시 간 하트 운송에 대한 순이익을 계산하세요. 시장 세금 및 운송 비용을 고려합니다."
+  },
+  "BanditTrackerPage": {
+    "title": "밴디트 습격 추적기 - 알비온 온라인",
+    "description": "아웃랜드에서 열리는 다음 밴디트 습격 이벤트를 위한 실시간 카운트다운 및 알림 시스템입니다."
+  },
+  "CampaignTrackerPage": {
+    "title": "캠페인 진행 추적기 - 알비온 온라인",
+    "description": "월간 파벌 캠페인 진행 상황을 추적하고 목표 달성까지 필요한 포인트를 확인하세요."
+  },
+  "FactionTools": {
+    "efficiency": {
+      "title": "파벌 보상 효율",
+      "subtitle": "포인트당 실버 수익 극대화",
+      "points": "포인트",
+      "spp": "실버 / 포인트",
+      "price": "시장 가격",
+      "bestRewards": "최고의 보상",
+      "allFactions": "모든 파벌",
+      "selectFaction": "파벌로 필터링",
+      "efficiencyTable": "효율성 표",
+      "reward": "보상",
+      "category": "카테고리",
+      "item": "아이템",
+      "tier": "티어",
+      "faction": "파벌",
+      "lastUpdated": "최근 업데이트",
+      "efficiency": "효율",
+      "premiumStatus": "프리미엄 상태",
+      "premiumDesc": "시장 세금을 8%에서 4%로 감소시킵니다",
+      "marketTax": "시장 세금",
+      "setupFee": "등록 수수료",
+      "overridePrice": "가격 직접 입력",
+      "reset": "초기화",
+      "netReturn": "순수익",
+      "marketIntelligence": "시장 정보",
+      "calculatedUsing": "실시간 {region} 시장 데이터를 사용하여 계산됨",
+      "profitBreakdown": "수익 분석",
+      "configuration": "구성",
+      "efficiencyResults": "효율성 결과",
+      "finalSpp": "최종 포인트당 실버",
+      "searchItems": "보상 검색...",
+      "updated": "업데이트됨",
+      "never": "기록 없음",
+      "silver": "실버"
+    },
+    "transport": {
+      "title": "하트 운송 수익성",
+      "subtitle": "도시 간 무역 매트릭스",
+      "source": "출발 도시",
+      "destination": "도착 도시",
+      "profit": "순이익",
+      "roi": "투자 수익률",
+      "calculate": "수익 계산",
+      "selectHearts": "하트 유형 선택",
+      "configuration": "구성",
+      "quantity": "운송 수량",
+      "quantityTooltip": "운송하려는 하트의 개수입니다. 총 수익 표시에 영향을 줍니다.",
+      "maxRoiRoute": "최대 ROI 경로",
+      "maxProfitRun": "회당 최대 수익",
+      "best": "최고",
+      "updating": "시장 데이터 업데이트 중...",
+      "matrixNote": "매트릭스는 각 경로에 대해 ROI가 가장 높은 하트를 보여줍니다. 셀 위에 마우스를 올리면 구체적인 가격과 현재 해당 여정에서 가장 수익성이 높은 하트를 확인할 수 있습니다.",
+      "calcNote": "수익은 출발지의 <strong>최저 판매가</strong>와 도착지의 <strong>최고 구매 주문가</strong>를 사용하여 계산되며, <strong>6.5%</strong>의 전체 수수료가 차감됩니다.",
+      "basedOnQuantity": "하트 <span>{quantity}</span>개 운송 기준.",
+      "silver": "실버",
+      "loading": "로딩 중..."
+    },
+    "bandit": {
+      "title": "밴디트 습격 추적기",
+      "subtitle": "다음 이벤트 카운트다운",
+      "nextAssault": "다음 예상 습격",
+      "status": "현재 상태",
+      "active": "이벤트 활성화!",
+      "waiting": "타이머 대기 중",
+      "imminent": "임박 (언제든지 시작 가능)",
+      "notify": "알림 받기",
+      "history": "최근 밴디트 기록"
+    },
+    "campaign": {
+      "title": "캠페인 진행 추적기",
+      "subtitle": "월간 포인트 예측",
+      "goal": "월간 목표",
+      "current": "현재 포인트",
+      "required": "일일 필요 포인트",
+      "remaining": "남은 포인트",
+      "projection": "월간 예측"
+    }
+  },
   "regions": {
     "Americas": "아메리카",
     "Asia": "아시아",
@@ -190,7 +285,12 @@
     "silverFarmingGuide": "실버 파밍",
     "weapons": "무기",
     "weaponsList": "모든 무기",
-    "silverFarming": "실버 파밍"
+    "silverFarming": "실버 파밍",
+    "faction": "파벌",
+    "factionEfficiency": "효율",
+    "heartTransport": "하트 운송",
+    "banditTracker": "밴디트 추적기",
+    "campaignTracker": "캠페인 추적기"
   },
   "Footer": {
     "tools": "도구",
@@ -209,6 +309,12 @@
     "animal": "동물",
     "choppedFish": "다진 생선",
     "enchanting": "마법 부여",
+    "silverFarming": "실버 파밍",
+    "faction": "파벌",
+    "factionEfficiency": "효율",
+    "heartTransport": "하트 운송",
+    "banditTracker": "밴디트 추적기",
+    "campaignTracker": "캠페인 추적기",
     "community": "커뮤니티",
     "builds": "빌드",
     "about": "소개",
@@ -3374,6 +3480,11 @@
       "kill-feed": "킬 피드",
       "zvz-tracker": "ZvZ 추적기",
       "crafting-calc": "제작 계산기",
+      "faction": "파벌",
+      "efficiency": "효율",
+      "transport": "하트 운송",
+      "bandit": "밴디트",
+      "campaign": "캠페인",
       "community": "커뮤니티",
       "builds": "빌드",
       "profits": "이익",
@@ -4164,5 +4275,13 @@
   "ZvZTrackerPage": {
     "title": "ZvZ 추적기 - Albion Online 전투 추적",
     "description": "Albion Online 에서 대규모 ZvZ 및 GvG 전투를 추적하세요. 실시간 전투 통계, 길드전 분석 및 참가자 추적."
+  },
+  "items": {
+    "T1_FACTION_HIGHLAND_TOKEN_1": "바위 심장",
+    "T1_FACTION_FOREST_TOKEN_1": "나무 심장",
+    "T1_FACTION_SWAMP_TOKEN_1": "덩굴 심장",
+    "T1_FACTION_MOUNTAIN_TOKEN_1": "산의 심장",
+    "T1_FACTION_STEPPE_TOKEN_1": "야수 심장",
+    "T1_FACTION_CAERLEON_TOKEN_1": "그림자심장"
   }
 }

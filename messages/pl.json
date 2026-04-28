@@ -1,4 +1,99 @@
 {
+  "FactionEfficiencyPage": {
+    "title": "Efektywność Nagród Frakcyjnych - Albion Online",
+    "description": "Oblicz najbardziej opłacalne przedmioty do kupienia za Punkty Frakcji. Porównaj serca, herby i wierzchowce we wszystkich miastach."
+  },
+  "HeartTransportPage": {
+    "title": "Rentowność Transportu Serc - Albion Online",
+    "description": "Oblicz zyski netto z transportu serc między miastami. Uwzględnij podatki rynkowe i opłaty transportowe."
+  },
+  "BanditTrackerPage": {
+    "title": "Tracker Napadu Bandytów - Albion Online",
+    "description": "Odliczanie na żywo i system powiadomień o kolejnym Napadzie Bandytów na Rubieżach."
+  },
+  "CampaignTrackerPage": {
+    "title": "Tracker Postępu Kampanii - Albion Online",
+    "description": "Śledź swój miesięczny postęp w kampanii frakcyjnej i sprawdź, ile punktów brakuje Ci do celu."
+  },
+  "FactionTools": {
+    "efficiency": {
+      "title": "Efektywność Nagród Frakcyjnych",
+      "subtitle": "Maksymalizuj Srebro za Punkt",
+      "points": "Punkty",
+      "spp": "Srebro / Punkt",
+      "price": "Cena Rynkowa",
+      "bestRewards": "Najlepsze Nagrody",
+      "allFactions": "Wszystkie Frakcje",
+      "selectFaction": "Filtruj wg Frakcji",
+      "efficiencyTable": "Tabela Efektywności",
+      "reward": "Nagroda",
+      "category": "Kategoria",
+      "item": "Przedmiot",
+      "tier": "Stopień",
+      "faction": "Frakcja",
+      "lastUpdated": "Ostatnia aktualizacja",
+      "efficiency": "Efektywność",
+      "premiumStatus": "Status Premium",
+      "premiumDesc": "Obniża podatek rynkowy z 8% do 4%",
+      "marketTax": "Podatek Rynkowy",
+      "setupFee": "Opłata Wystawienia",
+      "overridePrice": "Nadpisz Cenę",
+      "reset": "Resetuj",
+      "netReturn": "Zysk Netto",
+      "marketIntelligence": "Analiza Rynku",
+      "calculatedUsing": "Obliczono na podstawie danych rynkowych {region} w czasie rzeczywistym",
+      "profitBreakdown": "Szczegóły Zysku",
+      "configuration": "Konfiguracja",
+      "efficiencyResults": "Wyniki Efektywności",
+      "finalSpp": "Ostateczne Srebro za Punkt",
+      "searchItems": "Szukaj nagród...",
+      "updated": "Zaktualizowano",
+      "never": "Nigdy",
+      "silver": "Srebro"
+    },
+    "transport": {
+      "title": "Rentowność Transportu Serc",
+      "subtitle": "Macierz Handlu Międzymiastowego",
+      "source": "Miasto Początkowe",
+      "destination": "Miasto Docelowe",
+      "profit": "Zysk Netto",
+      "roi": "ROI",
+      "calculate": "Oblicz Zysk",
+      "selectHearts": "Wybierz Typ Serca",
+      "configuration": "Konfiguracja",
+      "quantity": "Ilość do Transportu",
+      "quantityTooltip": "Liczba serc, które planujesz przetransportować. Wpływa na wyświetlanie całkowitego zysku.",
+      "maxRoiRoute": "Trasa z Najlepszym ROI",
+      "maxProfitRun": "Maks. Zysk na Kurs",
+      "best": "Najlepsze",
+      "updating": "Aktualizacja danych rynkowych...",
+      "matrixNote": "Macierz pokazuje serce z najlepszym ROI dla każdej trasy. Najedź na komórkę, aby zobaczyć konkretne ceny i dowiedzieć się, które serce jest obecnie najbardziej opłacalne.",
+      "calcNote": "Zysk jest obliczany przy użyciu <strong>Minimalnej Ceny Sprzedaży</strong> w źródle i <strong>Maksymalnego Zlecenia Kupna</strong> w miejscu docelowym, po uwzględnieniu <strong>6,5%</strong> opłat całkowitych.",
+      "basedOnQuantity": "Na podstawie transportu <span>{quantity}</span> serc.",
+      "silver": "srebra",
+      "loading": "Ładowanie..."
+    },
+    "bandit": {
+      "title": "Tracker Napadu Bandytów",
+      "subtitle": "Odliczanie do Kolejnego Wydarzenia",
+      "nextAssault": "Kolejny Potencjalny Napad",
+      "status": "Aktualny Status",
+      "active": "Wydarzenie Aktywne!",
+      "waiting": "Oczekiwanie na licznik",
+      "imminent": "Bliski (Może zacząć się w każdej chwili)",
+      "notify": "Powiadom mnie",
+      "history": "Ostatnia Historia Bandytów"
+    },
+    "campaign": {
+      "title": "Tracker Postępu Kampanii",
+      "subtitle": "Miesięczne Prognozy Punktowe",
+      "goal": "Cel Miesięczny",
+      "current": "Aktualne Punkty",
+      "required": "Wymagane Punkty Dziennie",
+      "remaining": "Pozostałe Punkty",
+      "projection": "Prognoza Miesięczna"
+    }
+  },
   "regions": {
     "Americas": "Ameryki",
     "Asia": "Azja",
@@ -190,7 +285,12 @@
     "silverFarmingGuide": "Farmienie Srebra",
     "weapons": "Bronie",
     "weaponsList": "Wszystkie Bronie",
-    "silverFarming": "Farmienie Srebra"
+    "silverFarming": "Farmienie Srebra",
+    "faction": "Frakcja",
+    "factionEfficiency": "Efektywność",
+    "heartTransport": "Transport Serc",
+    "banditTracker": "Tracker Bandytów",
+    "campaignTracker": "Tracker Kampanii"
   },
   "Footer": {
     "tools": "Narzędzia",
@@ -209,6 +309,12 @@
     "animal": "Zwierzęta",
     "choppedFish": "Ryba w Kawałkach",
     "enchanting": "Zaklinanie",
+    "silverFarming": "Farmienie Srebra",
+    "faction": "Frakcja",
+    "factionEfficiency": "Efektywność",
+    "heartTransport": "Transport Serc",
+    "banditTracker": "Tracker Bandytów",
+    "campaignTracker": "Tracker Kampanii",
     "community": "Społeczność",
     "builds": "Buildy",
     "about": "O nas",
@@ -3372,7 +3478,12 @@
       "pvp-intel": "Informacje PvP",
       "kill-feed": "Kill Feed",
       "zvz-tracker": "ZvZ Tracker",
-      "crafting-calc": "Kalkulator rzemiosła",
+      "crafting-calc": "Kalkulator Rzemiosła",
+      "faction": "Frakcja",
+      "efficiency": "Efektywność",
+      "transport": "Transport Serc",
+      "bandit": "Bandydzi",
+      "campaign": "Kampania",
       "community": "Społeczność",
       "builds": "Buildy",
       "profits": "Zyski",
@@ -4163,5 +4274,13 @@
   "ZvZTrackerPage": {
     "title": "Śledzenie ZvZ - Bitwy w Albion Online",
     "description": "Śledź masowe bitwy ZvZ i GvG w Albion Online. Statystyki bitew na żywo i analiza wojen gildii."
+  },
+  "items": {
+    "T1_FACTION_HIGHLAND_TOKEN_1": "Kamienne Serce",
+    "T1_FACTION_FOREST_TOKEN_1": "Serce Drzewa",
+    "T1_FACTION_SWAMP_TOKEN_1": "Serce Pnącza",
+    "T1_FACTION_MOUNTAIN_TOKEN_1": "Serce Górskie",
+    "T1_FACTION_STEPPE_TOKEN_1": "Serce Bestii",
+    "T1_FACTION_CAERLEON_TOKEN_1": "Serce Cienia"
   }
 }
