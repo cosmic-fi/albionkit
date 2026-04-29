@@ -17,6 +17,10 @@
   },
   "FactionTools": {
     "efficiency": {
+      "whatIs": "What is Faction Efficiency?",
+      "whatIsDesc": "Faction Efficiency determines how many actual Faction Points you receive per activity. It scales based on your Faction Standing, Premium status, and the risk level of the zone you are in (Red Zones yield the highest multipliers).",
+      "howWorks": "How does this calculator work?",
+      "howWorksDesc": "Select your Faction, Standing level, and Premium status. The calculator will automatically pull the live daily zone modifiers and multiply them to show you exactly how many points you'll earn per 100 base points in any activity.",
       "title": "Faction Reward Efficiency",
       "subtitle": "Maximize your Silver per Point",
       "points": "Points",
@@ -52,6 +56,10 @@
       "silver": "Silver"
     },
     "transport": {
+      "whatIs": "What are Heart Transports?",
+      "whatIsDesc": "Heart Transports are high-risk, high-reward smuggling missions where you carry your faction's Hearts to an enemy city. The longer the route, the higher the payout.",
+      "howWorks": "How to read the matrix",
+      "howWorksDesc": "The matrix displays the profit margins for transporting hearts between different cities. It factors in the distance multiplier and current market prices. Select your origin city to see the most profitable destination routes.",
       "title": "Heart Transport Profitability",
       "subtitle": "City-to-City Trade Matrix",
       "source": "Source City",
@@ -96,6 +104,7 @@
       "serverTime": "Server Time (UTC)",
       "dailySchedule": "Daily Schedule (UTC)",
       "nextWindowLabel": "Next Window",
+      "chanceLabel": "Probability",
       "chance": "{chance}% Chance",
       "reminders": "Reminders",
       "remindersDesc": "Notify before window opens",
@@ -107,7 +116,17 @@
       "rolling": "Rolling Now",
       "waiting": "Waiting",
       "imminentTitle": "Bandit Assault Imminent! 🚩",
-      "imminentBody": "Next roll window for {region} starts in {mins} minutes ({chance}% chance)."
+      "imminentBody": "Next roll window for {region} starts in {mins} minutes ({chance}% chance).",
+      "proTip": "Pro Tip",
+      "proTipDesc": "Bandit Assault triggers within a 1-hour roll window. Each window has a specific probability based on historical game data. Using the Outlands portals during the start of the window is recommended for solo transport safety.",
+      "whatIs": "What is Bandit Assault?",
+      "whatIsDesc1": "Bandit Assault is a major Faction Warfare event in the Red Zones of the Royal Continent. During the event, Caerleon takes control of all outposts, and factions must fight to capture them back.",
+      "whatIsDesc2": "This event is highly profitable for Faction Points and is also a strategic window for heart transports.",
+      "howWorks": "How does the tracker work?",
+      "howWorksDesc": "We use historical data to estimate when the next window might open. While we cannot guarantee exact times, our model provides the highest probability windows to help you plan your gameplay.",
+      "triggerProbabilities": "Trigger Probabilities",
+      "triggerProbDesc": "Albion Online uses a rolling system for Bandit Assaults. Every few hours, there's a \"roll\" to see if an assault starts. Our tracker uses community-sourced probability percentages to show you when an event is most likely to begin.",
+      "notificationSettings": "Notification Settings"
     },
     "campaign": {
       "title": "Campaign Progress Tracker",
@@ -116,7 +135,32 @@
       "current": "Current Points",
       "required": "Daily Points Required",
       "remaining": "Points Remaining",
-      "projection": "Monthly Projection"
+      "projection": "Monthly Projection",
+      "daysLeft": "Days Left",
+      "tier1": "Tier 1",
+      "tier2": "Tier 2",
+      "tier3": "Tier 3",
+      "tier4": "Tier 4",
+      "tier5": "Tier 5",
+      "tier6": "Tier 6",
+      "monthlyChest": "Monthly Chest",
+      "progress": "Campaign Progress",
+      "ahead": "Ahead of Pace",
+      "behind": "Behind Pace",
+      "expected": "Expected",
+      "today": "Today",
+      "goalReached": "Goal Reached!",
+      "goalReachedDesc": "You have successfully reached your faction campaign goal for this month.",
+      "requiredPacing": "Required Pacing",
+      "dailyGoal": "Daily Goal",
+      "ptsPerDay": "pts / day",
+      "weeklyGoal": "Weekly Goal",
+      "ptsPerWeek": "pts / week",
+      "calculationNote": "Calculations are based on {days} days remaining in the current calendar month (UTC).",
+      "whatIs": "What is the Campaign Tracker?",
+      "whatIsDesc": "The Faction Campaign is a monthly progression system in Albion Online. By participating in Faction Warfare, you earn points that unlock valuable tier chests containing tomes, silver, and faction hearts.",
+      "proTip": "Pro Tip",
+      "proTipDesc": "To maximize your rewards, aim for at least Tier 6 every month. Use the Daily Goal metric above to ensure you are pacing correctly. Participating in Bandit Assaults is the fastest way to stay ahead of pace."
     }
   },
   "regions": {
@@ -369,9 +413,9 @@
     "marketTitle": "Market Flipping Made Easy",
     "marketDescription": "Identify profitable trade routes between cities. Compare buy and sell orders with automatic tax calculations to maximize your margins.",
     "startFlipping": "Start Flipping",
-    "pvpTitle": "Live PvP Activity Feed",
+    "pvpTitle": "Live PvP Killboard",
     "pvpDescription": "Monitor server-wide PvP kills as they happen. Track active players and popular equipment in real-time.",
-    "watchFeed": "Watch Live Feed",
+    "watchFeed": "View Killboard",
     "zvzTitle": "ZvZ Battle Tracker",
     "zvzDescription": "Analyze large-scale battles with detailed metrics on guild performance, attendance, and gear composition.",
     "analyzeBattles": "Analyze Battles",
@@ -416,7 +460,41 @@
   },
   "AboutPage": {
     "title": "About AlbionKit - Our Mission & Team",
-    "description": "Learn about AlbionKit, our mission to provide free Albion Online tools, and the team behind the project."
+    "description": "Learn about AlbionKit, our mission to provide free Albion Online tools, and the team behind the project.",
+    "heroBadge": "About Us",
+    "heroTitle": "Built by Players,",
+    "heroJourney": " For Players",
+    "heroSubtitle": "Our mission is to provide the Albion Online community with the most powerful, accurate, and easy-to-use tools completely free of charge.",
+    "missionTitle": "Our Mission",
+    "missionP1": "AlbionKit started as a simple passion project by a single player who was tired of relying on outdated spreadsheets and clunky Discord bots.",
+    "missionP2": "Today, it has evolved into a comprehensive suite of tools designed to help players of all skill levels navigate the complex economy and dangerous PvP zones of Albion Online.",
+    "missionP3": "We believe in an open-source ethos. No premium tiers, no paywalls, just pure utility powered by the incredible Albion Data Project.",
+    "itemsTracked": "Items Tracked",
+    "marketUpdates": "Market Updates",
+    "coreFeatures": "Core Features",
+    "openSource": "Open Source",
+    "supportedLanguages": "Supported Languages",
+    "everythingYouNeed": "Everything you need to succeed",
+    "marketFlipper": "Market Flipper",
+    "marketFlipperDesc": "Instantly find profitable trade routes between the Royal Cities and the Black Market. Factor in fast travel, taxes, and daily volume to guarantee silver profits.",
+    "pvpIntel": "PvP Intel",
+    "pvpIntelDesc": "Analyze the live Killboard to see what meta weapons are dominating the Outlands. Scout enemy players and guilds before you engage.",
+    "killFeed": "Live Killboard",
+    "killFeedDesc": "Monitor real-time PvP combat across all servers. See exactly who is dying, where, and what gear they dropped.",
+    "craftingCalc": "Profit Calculators",
+    "craftingCalcDesc": "Whether you are a chef, an alchemist, a farmer, or a laborer, our tools calculate exact margins based on real-time prices so you never craft at a loss.",
+    "metaBuilds": "Meta Builds",
+    "metaBuildsDesc": "Discover the most popular loadouts used by top players in Corrupted Dungeons, Hellgates, and ZvZ battles.",
+    "guildManagement": "Faction Warfare",
+    "guildManagementDesc": "Track Bandit Assaults, calculate faction point efficiency, and maximize your returns on heart transports.",
+    "globalSupport": "Global Support",
+    "globalSupportDesc": "Fully localized in 9 languages, ensuring the global Albion community can trade and fight without language barriers.",
+    "dataSources": "Data Sources",
+    "dataSourcesDesc": "We rely heavily on the Albion Data Project. If you find our tools useful, please consider installing the client to help keep prices updated for everyone!",
+    "learnMoreADP": "Learn about Albion Data Project",
+    "legalDisclaimer": "Legal Disclaimer",
+    "joinCommunity": "Join the Community",
+    "twitter": "Follow us on Twitter"
   },
   "MarketFlipper": {
     "title": "Market Flipper",
@@ -1072,13 +1150,13 @@
   "Metadata": {
     "title": "AlbionKit - The Ultimate Albion Online Companion",
     "template": "%s",
-    "description": "Master Albion Online with AlbionKit - the ultimate companion for serious players. Access powerful tools including Market Flipper for profitable trades, PvP Intel with live kill feeds, Crafting Calculator with focus optimization, Farming Profit trackers, and ZvZ Battle analytics. Join thousands of players who trust AlbionKit for real-time market data, build guides, and competitive advantages across all Albion Online servers.",
-    "keywords": "Albion Online, Albion Builds, Market Flipper, PvP Intel, Crafting Calculator, Albion Tools, Albion Database, MMORPG, Albion Online Market, Albion Online PvP"
+    "description": "Master Albion Online with AlbionKit - the ultimate companion for serious players. Access powerful tools including Market Flipper for profitable trades, Faction Warfare tools (Campaign, Transport & Efficiency), Bandit Assault Tracker, PvP Intel with live kill feeds, Crafting Calculator with focus optimization, Farming Profit trackers, and ZvZ Battle analytics. Join thousands of players who trust AlbionKit for real-time market data, build guides, and competitive advantages across all Albion Online servers.",
+    "keywords": "Albion Online, Albion Builds, Market Flipper, PvP Intel, Crafting Calculator, Faction Warfare, Bandit Tracker, Albion Tools, Albion Database, MMORPG"
   },
   "Pages": {
     "home": {
-      "title": "AlbionKit - Market Tools, PvP Intel & Meta Builds",
-      "description": "Elevate your Albion Online experience with AlbionKit's powerful suite of tools. Access real-time market data for profitable trading, track PvP kills with live feeds, discover meta builds from top players, calculate crafting profits, and optimize your farming. Trusted by thousands of Albion players worldwide."
+      "title": "AlbionKit - Market Tools, Faction Trackers, PvP Intel & Meta Builds",
+      "description": "Elevate your Albion Online experience with AlbionKit's powerful suite of tools. Access real-time market data for profitable trading, track Faction Campaigns and Bandit Assaults, monitor PvP kills with live feeds, discover meta builds from top players, calculate crafting profits, and optimize your farming. Trusted by thousands of Albion players worldwide."
     },
     "about": {
       "title": "About AlbionKit",

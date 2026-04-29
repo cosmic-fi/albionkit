@@ -118,7 +118,8 @@ export default async function AboutPage() {
               <div className="grid grid-cols-2 gap-4">
                 <StatCard number="100k+" label={t('itemsTracked')} icon={Database} />
                 <StatCard number="24/7" label={t('marketUpdates')} icon={Clock} />
-                <StatCard number="Free" label={t('coreFeatures')} icon={Heart} />
+                <StatCard number={t('openSource')} label={t('coreFeatures')} icon={Heart} />
+                <StatCard number="9" label={t('supportedLanguages')} icon={Globe} />
               </div>
             </div>
           </div>

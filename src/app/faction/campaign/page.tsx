@@ -1,19 +1,20 @@
-import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import CampaignClient from './CampaignClient';
+import { Metadata } from 'next';
 import { createPageMetadata } from '@/lib/screenshot-metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('CampaignTrackerPage');
-
+  const t = await getTranslations('FactionTools.campaign');
+  
   return createPageMetadata(
     'campaign-tracker',
     t('title'),
-    t('description'),
+    t('subtitle'),
     { canonicalUrl: 'https://albionkit.com/faction/campaign' }
   );
 }
 
-export default function CampaignTrackerPage() {
+export default function CampaignPage() {
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -40,15 +41,12 @@ export default function CampaignTrackerPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <h1 className="text-4xl font-bold mb-4">Campaign Progress Tracker</h1>
-      <p className="text-muted-foreground text-lg max-w-2xl">
-        This tool is currently under development. Soon you will be able to track your monthly faction campaign progress and see how many points you need to reach your goal.
-      </p>
-    </div>
+      <CampaignClient />
+    </>
   );
 }

@@ -49,7 +49,11 @@
       "searchItems": "보상 검색...",
       "updated": "업데이트됨",
       "never": "기록 없음",
-      "silver": "실버"
+      "silver": "실버",
+      "whatIs": "파벌 효율이란 무엇인가요?",
+      "whatIsDesc": "파벌 효율은 활동당 실제로 받는 파벌 포인트의 양을 결정합니다. 파벌 스탠딩, 프리미엄 상태, 그리고 현재 있는 지역의 위험 수준에 따라 배율이 적용됩니다 (레드존이 가장 높음).",
+      "howWorks": "이 계산기는 어떻게 작동하나요?",
+      "howWorksDesc": "자신의 파벌, 스탠딩 레벨, 프리미엄 상태를 선택하세요. 계산기가 실시간 일일 지역 모디파이어를 자동으로 가져와 기본 100점당 정확히 몇 포인트를 얻을 수 있는지 보여줍니다."
     },
     "transport": {
       "title": "하트 운송 수익성",
@@ -71,7 +75,11 @@
       "calcNote": "수익은 출발지의 <strong>최저 판매가</strong>와 도착지의 <strong>최고 구매 주문가</strong>를 사용하여 계산되며, <strong>6.5%</strong>의 전체 수수료가 차감됩니다.",
       "basedOnQuantity": "하트 <span>{quantity}</span>개 운송 기준.",
       "silver": "실버",
-      "loading": "로딩 중..."
+      "loading": "로딩 중...",
+      "whatIs": "하트 수송이란 무엇인가요?",
+      "whatIsDesc": "하트 수송은 파벌의 하트를 적대 도시로 운반하는 고위험 고수익 밀수 임무입니다. 경로가 길수록 보상이 더 큽니다.",
+      "howWorks": "매트릭스 읽는 방법",
+      "howWorksDesc": "이 매트릭스는 여러 도시 간 하트 수송의 이윤을 보여줍니다. 거리 배수와 현재 시장 가격을 모두 고려합니다. 출발 도시를 선택하여 가장 수익성이 높은 도착지 경로를 확인하세요."
     },
     "bandit": {
       "title": "밴디트 습격 추적기",
@@ -79,10 +87,46 @@
       "nextAssault": "다음 예상 습격",
       "status": "현재 상태",
       "active": "이벤트 활성화!",
-      "waiting": "타이머 대기 중",
+      "waiting": "대기 중",
       "imminent": "임박 (언제든지 시작 가능)",
       "notify": "알림 받기",
-      "history": "최근 밴디트 기록"
+      "history": "최근 밴디트 기록",
+      "cooldown": "Cooling Down",
+      "window": "Potential Window",
+      "overdue": "Overdue / Missed",
+      "lastAssault": "Last Assault End",
+      "reportButton": "Report Active!",
+      "reportSuccess": "Thank you for reporting!",
+      "reportError": "Error reporting event.",
+      "estimatedWindow": "예상 시간대",
+      "timezoneNote": "모든 시간은 UTC (게임 서버 시간) 기준입니다.",
+      "probability": "습격 확률:",
+      "targetHour": "대상 시간 (UTC)",
+      "serverTime": "서버 시간 (UTC)",
+      "dailySchedule": "일일 일정 (UTC)",
+      "nextWindowLabel": "다음 습격 시간",
+      "chance": "{chance}% 확률",
+      "reminders": "알림 설정",
+      "remindersDesc": "습격 시간대가 열리기 전에 알림",
+      "mute": "소리 끄기",
+      "unmute": "소리 켜기",
+      "disableNotifications": "알림 비활성화",
+      "enableNotifications": "알림 활성화",
+      "mins": "{mins} 분",
+      "rolling": "주사위 굴리는 중",
+      "imminentTitle": "밴디트 습격 임박! 🚩",
+      "imminentBody": "{region} 지역의 다음 밴디트 주사위가 {mins}분 후에 시작됩니다 ({chance}% 확률).",
+      "proTip": "프로 팁",
+      "proTipDesc": "밴디트 습격은 1시간의 주사위 시간 내에 발생합니다. 각 시간대는 과거 게임 데이터를 기반으로 한 확률을 가집니다. 솔로 수송 시 안전을 위해 이 시간대가 시작될 때 아웃랜드 포탈을 사용하는 것을 권장합니다.",
+      "whatIs": "밴디트 습격이란?",
+      "whatIsDesc1": "밴디트 습격은 로얄 대륙의 레드존에서 열리는 주요 파벌 전쟁 이벤트입니다. 이벤트 동안 칼레온 파벌이 모든 전초기지를 장악하며, 각 파벌은 이를 되찾기 위해 싸워야 합니다.",
+      "whatIsDesc2": "이 이벤트는 파벌 포인트를 모으기에 아주 좋으며, 하트 수송을 위한 전략적 시간대이기도 합니다.",
+      "howWorks": "추적기는 어떻게 작동하나요?",
+      "howWorksDesc": "과거 데이터를 사용하여 다음 습격이 언제 열릴지 예측합니다. 정확한 시간을 보장할 수는 없지만, 게임 플레이 계획을 돕기 위해 확률이 가장 높은 시간대를 제공합니다.",
+      "triggerProbabilities": "발생 확률",
+      "triggerProbDesc": "알비온 온라인은 밴디트 습격에 롤링 시스템을 사용합니다. 몇 시간마다 습격이 시작될지 결정하는 '주사위'가 굴려집니다. 우리의 추적기는 커뮤니티 데이터를 사용해 언제 이벤트가 시작될 확률이 가장 높은지 보여줍니다.",
+      "notificationSettings": "알림 설정",
+      "chanceLabel": "확률"
     },
     "campaign": {
       "title": "캠페인 진행 추적기",
@@ -91,13 +135,41 @@
       "current": "현재 포인트",
       "required": "일일 필요 포인트",
       "remaining": "남은 포인트",
-      "projection": "월간 예측"
+      "projection": "월간 예측",
+      "daysLeft": "남은 일수",
+      "tier1": "1단계",
+      "tier2": "2단계",
+      "tier3": "3단계",
+      "tier4": "4단계",
+      "tier5": "5단계",
+      "tier6": "6단계",
+      "monthlyChest": "월간 상자",
+      "progress": "캠페인 진행 상황",
+      "ahead": "목표 초과",
+      "behind": "목표 미달",
+      "expected": "예상치",
+      "today": "오늘",
+      "goalReached": "목표 달성!",
+      "goalReachedDesc": "이번 달 파벌 캠페인 목표를 성공적으로 달성했습니다.",
+      "requiredPacing": "필요 페이스",
+      "dailyGoal": "일일 목표",
+      "ptsPerDay": "포인트 / 일",
+      "weeklyGoal": "주간 목표",
+      "ptsPerWeek": "포인트 / 주",
+      "calculationNote": "현재 남은 캘린더 일수(UTC 기준 {days}일)를 바탕으로 계산되었습니다.",
+      "whatIs": "캠페인 추적기란 무엇인가요?",
+      "whatIsDesc": "파벌 캠페인은 알비온 온라인의 월간 진행 시스템입니다. 파벌 전쟁에 참여하여 포인트를 얻으면 통찰의 서, 실버, 파벌 하트가 들어 있는 가치 있는 단계별 상자를 얻을 수 있습니다.",
+      "proTip": "프로 팁",
+      "proTipDesc": "보상을 극대화하려면 매달 최소 6단계를 목표로 하세요. 위의 일일 목표를 사용하여 진행 속도를 확인하세요. 밴디트 습격에 참여하는 것이 진행 속도를 높이는 가장 빠른 방법입니다."
     }
   },
   "regions": {
     "Americas": "아메리카",
     "Asia": "아시아",
-    "Europe": "유럽"
+    "Europe": "유럽",
+    "west": "Americas",
+    "east": "Asia",
+    "europe": "Europe"
   },
   "Common": {
     "comingSoon": "준비 중",
@@ -327,7 +399,8 @@
     "allRightsReserved": "모든 권리 보유.",
     "notAffiliated": "Sandbox Interactive Ltd. 와는 무관합니다. Albion Online 은 Sandbox Interactive Ltd. 의 상표입니다.",
     "madeWith": "만든 이:",
-    "forCommunity": "알비온 온라인 커뮤니티를 위해"
+    "forCommunity": "알비온 온라인 커뮤니티를 위해",
+    "guides": "Guides"
   },
   "HomePage": {
     "heroTitle": "모든 세션을 가치 있게, ",
@@ -341,9 +414,9 @@
     "marketTitle": "쉬운 시장 시세 차익 계산",
     "marketDescription": "도시 간 수익성 있는 무역 경로를 확인하세요. 세금 계산 기능으로 구매 및 판매 주문을 비교하여 마진을 극대화하세요.",
     "startFlipping": "차익 거래 시작",
-    "pvpTitle": "실시간 PvP 활동 피드",
+    "pvpTitle": "실시간 PvP 킬보드",
     "pvpDescription": "서버 전체의 PvP 킬 현황을 실시간으로 모니터링하세요. 활발한 플레이어와 인기 장비를 추적합니다.",
-    "watchFeed": "실시간 피드 보기",
+    "watchFeed": "킬보드 보기",
     "zvzTitle": "ZvZ 전투 추적기",
     "zvzDescription": "길드 성과, 참여도, 장비 구성 등 상세한 메트릭으로 대규모 전투를 분석하세요.",
     "analyzeBattles": "전투 분석",
@@ -388,8 +461,42 @@
     "zvzTrackerDesc": "대규모 오픈 월드 전투를 추적하세요"
   },
   "AboutPage": {
-    "title": "AlbionKit 소개 - 미션 및 팀",
-    "description": "AlbionKit, Albion Online 무료 도구 제공 미션 및 팀에 대해 알아보세요."
+    "title": "AlbionKit 소개 - 우리의 임무 및 팀",
+    "description": "AlbionKit, 무료 알비온 온라인 도구를 제공하는 우리의 임무, 그리고 프로젝트 팀에 대해 알아보세요.",
+    "heroBadge": "우리에 대해",
+    "heroTitle": "플레이어에 의해 만들어진,",
+    "heroJourney": " 플레이어를 위한",
+    "heroSubtitle": "우리의 임무는 알비온 온라인 커뮤니티에 가장 강력하고, 정확하며, 사용하기 쉬운 도구를 완전 무료로 제공하는 것입니다.",
+    "missionTitle": "우리의 임무",
+    "missionP1": "AlbionKit은 낡은 스프레드시트와 불편한 디스코드 봇에 지친 한 플레이어의 단순한 열정 프로젝트로 시작되었습니다.",
+    "missionP2": "오늘날 이 프로젝트는 모든 수준의 플레이어가 알비온 온라인의 복잡한 경제와 위험한 PvP 지역을 헤쳐 나갈 수 있도록 돕는 종합 도구 세트로 발전했습니다.",
+    "missionP3": "우리는 오픈 소스의 정신을 믿습니다. 프리미엄 등급이나 페이월 없이, 놀라운 Albion Data Project에 의해 구동되는 순수한 유틸리티뿐입니다.",
+    "itemsTracked": "추적된 아이템",
+    "marketUpdates": "시장 업데이트",
+    "coreFeatures": "핵심 기능",
+    "everythingYouNeed": "성공에 필요한 모든 것",
+    "marketFlipper": "시장 시세 차익",
+    "marketFlipperDesc": "로열 시티와 암시장 간의 수익성 있는 무역 경로를 즉시 찾아보세요. 빠른 이동, 세금 및 일일 거래량을 고려하여 실버 수익을 보장합니다.",
+    "pvpIntel": "PvP 정보",
+    "pvpIntelDesc": "실시간 킬보드를 분석하여 아웃랜드에서 어떤 메타 무기가 지배하고 있는지 확인하세요. 전투에 참여하기 전에 적 플레이어와 길드를 정찰하세요.",
+    "killFeed": "실시간 킬보드",
+    "killFeedDesc": "모든 서버에서 실시간 PvP 전투를 모니터링하세요. 누가 어디서 죽고 어떤 장비를 떨어뜨렸는지 정확히 확인하세요.",
+    "craftingCalc": "수익 계산기",
+    "craftingCalcDesc": "요리사, 연금술사, 농부 또는 노동자이든 상관없이 실시간 가격을 기반으로 정확한 마진을 계산하여 절대 손해 보고 제작하지 마세요.",
+    "metaBuilds": "메타 빌드",
+    "metaBuildsDesc": "오염된 던전, 헬게이트 및 ZvZ 전투에서 최고 플레이어들이 사용하는 가장 인기 있는 장비 조합을 찾아보세요.",
+    "guildManagement": "파벌 전쟁",
+    "guildManagementDesc": "밴디트 습격을 추적하고, 파벌 포인트 효율을 계산하며, 하트 운송의 수익을 극대화하세요.",
+    "globalSupport": "글로벌 지원",
+    "globalSupportDesc": "9개 언어로 완벽하게 현지화되어, 전 세계 알비온 커뮤니티가 언어 장벽 없이 거래하고 싸울 수 있도록 보장합니다.",
+    "dataSources": "데이터 출처",
+    "dataSourcesDesc": "우리는 Albion Data Project에 크게 의존합니다. 우리 도구가 유용하다면, 모든 사람을 위해 가격을 최신 상태로 유지하는 데 도움이 되도록 클라이언트를 설치해 주세요!",
+    "learnMoreADP": "Albion Data Project 알아보기",
+    "legalDisclaimer": "법적 고지",
+    "joinCommunity": "커뮤니티 가입",
+    "twitter": "트위터 팔로우",
+    "openSource": "오픈 소스",
+    "supportedLanguages": "지원 언어"
   },
   "MarketFlipper": {
     "itemsTracked": "{count}개 아이템 추적 중",
@@ -1045,13 +1152,13 @@
   "Metadata": {
     "title": "AlbionKit — 알비온 온라인 최고의 동반자",
     "template": "%s",
-    "description": "AlbionKit 으로 알비온 온라인을 정복하세요. 빌드 데이터베이스, 시장 분석 도구, PvP 정보, 제작 계산기 및 실시간 킬 피드를 제공합니다. 당신의 경쟁 우위가 여기서 시작됩니다.",
+    "description": "AlbionKit으로 알비온 온라인을 정복하세요. 시장 시세 차익, 파벌전 도구(캠페인, 운송, 효율성), 밴디트 습격 추적기, PvP 킬 피드, 제작 계산기 및 ZvZ 전투 분석 등 강력한 도구들을 제공합니다.",
     "keywords": "알비온 온라인, 알비온 빌드, 알비온 시장, 알비온 PvP, 제작 계산기, MMORPG"
   },
   "Pages": {
     "home": {
-      "title": "AlbionKit — 시장 도구, PvP 정보 및 메타 빌드",
-      "description": "실시간 시장 데이터, PvP 인사이트 및 최고의 커뮤니티 빌드로 알비온 온라인 경험을 한 단계 업그레이드하세요. 필요한 모든 도구가 한곳에 모여 있습니다."
+      "title": "AlbionKit — 시장 도구, 파벌 추적기, PvP 정보 및 메타 빌드",
+      "description": "실시간 시장 데이터, 파벌전 및 밴디트 습격 추적기, 실시간 PvP 인사이트 및 커뮤니티 메타 빌드로 알비온 온라인 경험을 한 단계 업그레이드하세요."
     },
     "about": {
       "title": "AlbionKit 소개",
@@ -1393,7 +1500,15 @@
       "profit": "모든 비용과 세금을 제외한 순수익입니다",
       "roi": "투자 대비 수익률 (수익 / 비용 * 100)입니다"
     },
-    "refresh": "새로고침"
+    "refresh": "새로고침",
+    "focusDesc": "Focus increases resource return rate",
+    "profitTooltip": "Net profit per crafting cycle",
+    "roiTooltip": "Return on Investment (Profit / Cost × 100)",
+    "profitAnalysis": "Profit Analysis",
+    "effectiveCost": "Effective Cost",
+    "revenue": "Revenue",
+    "perUnit": "per unit",
+    "city": "City"
   },
   "Enchanting": {
     "title": "아티팩트 마법 부여 계산기",
@@ -2585,7 +2700,14 @@
       "Ascended": "승천자"
     },
     "avatarUpdated": "아바타가 성공적으로 업데이트되었습니다!",
-    "bannerUpdated": "배너가 성공적으로 업데이트되었습니다!"
+    "bannerUpdated": "배너가 성공적으로 업데이트되었습니다!",
+    "guides": {
+      "gettingStarted": "Getting Started",
+      "combatRotations": "Combat Rotations",
+      "combatPositioning": "Combat Positioning",
+      "gatheringRoutes": "Gathering Routes",
+      "silverFarmingGuide": "Silver Farming"
+    }
   },
   "Login": {
     "redirecting": "로그인 페이지로 이동 중..."
@@ -3201,7 +3323,18 @@
       "Caerleon": "캐를리온",
       "Brecilien": "브레실리엔",
       "Black Market": "암시장"
-    }
+    },
+    "loading": "Loading...",
+    "noData": "No Data",
+    "noDataDesc": "No crafting data available",
+    "allItems": "All Items",
+    "profitPerPlot": "Profit/Plot",
+    "seedCost": "Seed Cost",
+    "totalProfit": "Total Profit",
+    "totalROI": "Total ROI",
+    "perUnit": "per unit",
+    "perCycle": "per cycle",
+    "lowStock": "Low stock - may not be able to buy full amount"
   },
   "GuildLicense": {
     "title": "길드 라이선스 관리",
@@ -3458,7 +3591,8 @@
     },
     "checkoutBuild": "AlbionKit 에서 {author}님의 {category} 빌드를 확인하세요.",
     "commentError": "댓글 게시 실패",
-    "backToBuilds": "빌드로 돌아가기"
+    "backToBuilds": "빌드로 돌아가기",
+    "buildInfo": "Build Info"
   },
   "NotFound": {
     "title": "안개 속에서 길을 잃으셨나요?",
@@ -3727,49 +3861,150 @@
         "name": "수정 거미",
         "desc": "타락한 던전에서 수정 거미를 사냥하여 가치 있는 수정과 희귀 전리품을 얻으세요.",
         "silver": "500k - 2M",
-        "time": "30 분"
+        "time": "30 분",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Experienced",
+          "1": "High Risk/High Reward",
+          "2": "Crystal Spiders"
+        },
+        "tips": {
+          "0": "Full loot on death - gear + resources",
+          "1": "Crystal spiders spawn here (high value)",
+          "2": "Always scout before gathering",
+          "3": "Use invisibility potions when possible",
+          "4": "Have escape route planned"
+        }
       },
       "static": {
         "name": "고정 던전",
         "desc": "고정 던전을 클리어하여 일정한 전리품과 명성을 얻으세요. 초보자에게 좋습니다.",
         "silver": "300k - 800k",
-        "time": "1 시간"
+        "time": "1 시간",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Beginners",
+          "1": "Safe Gathering",
+          "2": "Focus Farming"
+        },
+        "tips": {
+          "0": "No risk of losing resources on death",
+          "1": "Lower yield but consistent income",
+          "2": "Great for learning gathering mechanics",
+          "3": "Use focus points for maximum efficiency"
+        }
       },
       "hellgates": {
         "name": "지옥문",
         "desc": "1v1 부터 5v5 까지 PvP 아레나. 고위험 고수익. 이겨서 상대의 장비를 약탈하세요.",
         "silver": "200k - 1M",
-        "time": "30 분"
+        "time": "30 분",
+        "premium": false,
+        "difficulty": "hard",
+        "best": {
+          "0": "PvP Players",
+          "1": "High Risk/High Reward"
+        },
+        "tips": {
+          "0": "Unique Avalonian resources",
+          "1": "Dangerous but rewarding",
+          "2": "Learn safe routes through cities",
+          "3": "Exit timers are crucial"
+        }
       },
       "corrupted": {
         "name": "타락한 던전",
         "desc": "솔로 또는 듀오 던전으로 가치 있는 전리품. 사망 시 장비 손실 위험.",
         "silver": "400k - 1.5M",
-        "time": "45 분"
+        "time": "45 분",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Experienced",
+          "1": "High Risk/High Reward"
+        },
+        "tips": {
+          "0": "100% resource loss on death",
+          "1": "Highest tier resources available",
+          "2": "Always bring escape mount",
+          "3": "Group up for safety",
+          "4": "Avoid peak hours"
+        }
       },
       "faction": {
         "name": "진영 전쟁",
         "desc": "영토를 점령하고 진영 전투에 참여하여 보상을 얻으세요.",
         "silver": "300k - 600k",
-        "time": "1 시간"
+        "time": "1 시간",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Intermediate",
+          "1": "Balanced Risk/Reward"
+        },
+        "tips": {
+          "0": "50% resource loss on death",
+          "1": "Better resource density than royal",
+          "2": "Watch for gankers at choke points",
+          "3": "Bring cheap mount for escape"
+        }
       },
       "crystal": {
         "name": "수정 채집",
         "desc": "위험한 지역에서 마수정을 채집하세요. 낮은 등급 장비로 안전.",
         "silver": "200k - 500k",
-        "time": "1-2 시간"
+        "time": "1-2 시간",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Solo Gatherers",
+          "1": "Exploration"
+        },
+        "tips": {
+          "0": "Safe from regular players (no combat)",
+          "1": "Mist mobs can still kill you",
+          "2": "Unique resources not found elsewhere",
+          "3": "Good for peaceful gathering sessions"
+        }
       },
       "fiber": {
         "name": "섬유 농사",
         "desc": "섬유를 심고 수확하세요. 집중력으로 수동 수입.",
         "silver": "150k - 400k",
-        "time": "1-2 시간"
+        "time": "1-2 시간",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Beginners",
+          "1": "Safe Gathering",
+          "2": "Focus Farming"
+        },
+        "tips": {
+          "0": "No risk of losing resources on death",
+          "1": "Lower yield but consistent income",
+          "2": "Great for learning gathering mechanics",
+          "3": "Use focus points for maximum efficiency"
+        }
       },
       "laborers": {
         "name": "노동자",
         "desc": "노동자를 매일 미션에 보내세요. 프리미엄 계정으로 수동 수입.",
         "silver": "100k - 300k",
-        "time": "매일"
+        "time": "매일",
+        "premium": true,
+        "difficulty": "easy",
+        "best": {
+          "0": "Premium Users",
+          "1": "Passive Income"
+        },
+        "tips": {
+          "0": "Requires premium account",
+          "1": "Set up once, collect daily",
+          "2": "Scales with laborer tier",
+          "3": "Essential passive income source"
+        }
       }
     }
   },
@@ -3872,6 +4107,33 @@
           "2": "PvP 콘텐츠 시도",
           "3": "장기 목표 설정"
         }
+      },
+      "Day 1-2": {
+        "title": "Learn the Basics",
+        "goals": {
+          "0": "Complete tutorial and early quests",
+          "1": "Choose your starting weapons",
+          "2": "Learn to gather basic resources",
+          "3": "Understand the death mechanics"
+        }
+      },
+      "Day 3-4": {
+        "title": "Establish Income",
+        "goals": {
+          "0": "Set up laborers on your island",
+          "1": "Start farming or gathering",
+          "2": "Learn basic crafting",
+          "3": "Build your silver reserve"
+        }
+      },
+      "Day 5-7": {
+        "title": "Specialize",
+        "goals": {
+          "0": "Choose your specialization",
+          "1": "Join a guild or find a group",
+          "2": "Try PvP content",
+          "3": "Set long-term goals"
+        }
       }
     },
     "mistakes": {
@@ -3911,7 +4173,10 @@
     "bestFor": "최적",
     "easy": "쉬움",
     "medium": "보통",
-    "hard": "어려움"
+    "hard": "어려움",
+    "newWeaponsDatabase": "🎉 New: Complete Weapons Database",
+    "newWeaponsDesc": "Check out our comprehensive 2026 weapons database with 18+ weapons, detailed rotations, gear recommendations, and meta ratings!",
+    "viewAllWeapons": "View All Weapons"
   },
   "CombatPositioning": {
     "title": "전투 포지셔닝 가이드",

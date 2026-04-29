@@ -3,11 +3,11 @@
 import { useTranslations } from 'next-intl';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
-import { 
-  Pickaxe, 
-  MapPin, 
-  Shield, 
-  Skull, 
+import {
+  Pickaxe,
+  MapPin,
+  Shield,
+  Skull,
   TrendingUp,
   AlertCircle,
   Clock,
@@ -117,6 +117,7 @@ export default function GatheringRoutesClient() {
     <PageShell
       title={t('title')}
       description={t('description')}
+      backgroundImage='/background/ao-player.jpg'
     >
       <div className="space-y-6">
         {/* Info Banner */}
@@ -164,7 +165,7 @@ export default function GatheringRoutesClient() {
         {/* Zones Grid */}
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-foreground">{t('gatheringZones')}</h2>
-          
+
           {GATHERING_ZONES.map((zone) => {
             const Icon = zone.icon;
             return (

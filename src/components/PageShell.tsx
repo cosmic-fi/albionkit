@@ -17,7 +17,7 @@ interface PageShellProps {
   variant?: 'default' | 'gradient' | 'minimal';
   stats?: Array<{
     label: string;
-    value: string | number;
+    value: string | number | React.ReactNode;
     icon?: React.ReactNode;
     trend?: 'up' | 'down' | 'neutral';
   }>;
@@ -77,7 +77,12 @@ export function PageShell({
 
             {/* Stats Section */}
             {stats && stats.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+              <div className={`grid grid-cols-1 sm:grid-cols-2 ${
+                stats.length === 1 ? 'lg:grid-cols-1' :
+                stats.length === 2 ? 'lg:grid-cols-2' :
+                stats.length === 3 ? 'lg:grid-cols-3' :
+                'lg:grid-cols-4'
+              } gap-4 pt-2 w-full`}>
                 {stats.map((stat, index) => (
                   <StatCard
                     key={index}
@@ -112,7 +117,7 @@ export function PageShell({
   );
 }
 
-function StatCard({ label, value, icon, trend }: { label: string; value: string | number; icon?: React.ReactNode; trend?: 'up' | 'down' | 'neutral' }) {
+function StatCard({ label, value, icon, trend }: { label: string; value: string | number | React.ReactNode; icon?: React.ReactNode; trend?: 'up' | 'down' | 'neutral' }) {
   return (
     <div className="group bg-card/50 hover:bg-card/80 p-5 rounded-2xl border border-border/50 transition-all hover:scale-[1.02] hover:shadow-xl">
       <div className="flex items-center gap-2.5 mb-3">

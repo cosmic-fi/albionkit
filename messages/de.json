@@ -49,7 +49,11 @@
       "searchItems": "Belohnungen suchen...",
       "updated": "Aktualisiert",
       "never": "Nie",
-      "silver": "Silber"
+      "silver": "Silber",
+      "whatIs": "Was ist die Fraktionseffizienz?",
+      "whatIsDesc": "Die Fraktionseffizienz bestimmt, wie viele tatsächliche Fraktionspunkte du pro Aktivität erhältst. Sie skaliert basierend auf deinem Ruf, Premium-Status und dem Risikolevel der Zone (Rote Zonen am höchsten).",
+      "howWorks": "Wie funktioniert dieser Rechner?",
+      "howWorksDesc": "Wähle deine Fraktion, deinen Ruf und deinen Premium-Status aus. Der Rechner zieht automatisch die täglichen Zonenmodifikatoren heran, um dir exakt zu zeigen, wie viele Punkte du pro 100 Basispunkte erhältst."
     },
     "transport": {
       "title": "Herztransport-Rentabilität",
@@ -71,7 +75,11 @@
       "calcNote": "Der Gewinn wird unter Verwendung des <strong>Mindestverkaufspreises</strong> am Quellort und des <strong>maximalen Kaufauftrags</strong> am Zielort nach Abzug von <strong>6,5 %</strong> Gesamgebühren berechnet.",
       "basedOnQuantity": "Basierend auf dem Transport von <span>{quantity}</span> Herzen.",
       "silver": "Silber",
-      "loading": "Laden..."
+      "loading": "Laden...",
+      "whatIs": "Was sind Herzen-Transporte?",
+      "whatIsDesc": "Herzen-Transporte sind Schmuggelmissionen mit hohem Risiko und hoher Belohnung, bei denen du Herzen deiner Fraktion in eine feindliche Stadt transportierst. Je länger die Route, desto höher die Auszahlung.",
+      "howWorks": "Wie man die Matrix liest",
+      "howWorksDesc": "Die Matrix zeigt die Gewinnmargen für den Transport von Herzen zwischen verschiedenen Städten. Sie berücksichtigt den Entfernungsmodifikator und aktuelle Marktpreise. Wähle deine Startstadt, um die profitabelsten Routen zu sehen."
     },
     "bandit": {
       "title": "Banditenüberfall-Tracker",
@@ -79,10 +87,46 @@
       "nextAssault": "Nächster potenzieller Überfall",
       "status": "Aktueller Status",
       "active": "Event Aktiv!",
-      "waiting": "Warten auf Timer",
+      "waiting": "Warten",
       "imminent": "Unmittelbar bevorstehend",
       "notify": "Benachrichtigen",
-      "history": "Verlauf der Banditenüberfälle"
+      "history": "Verlauf der Banditenüberfälle",
+      "cooldown": "Cooling Down",
+      "window": "Potential Window",
+      "overdue": "Overdue / Missed",
+      "lastAssault": "Last Assault End",
+      "reportButton": "Report Active!",
+      "reportSuccess": "Thank you for reporting!",
+      "reportError": "Error reporting event.",
+      "estimatedWindow": "Geschätztes Fenster",
+      "timezoneNote": "Alle Zeiten in UTC (Spielzeit).",
+      "probability": "Wahrscheinlichkeit:",
+      "targetHour": "Zielstunde (UTC)",
+      "serverTime": "Serverzeit (UTC)",
+      "dailySchedule": "Täglicher Zeitplan (UTC)",
+      "nextWindowLabel": "Nächstes Fenster",
+      "chance": "{chance}% Chance",
+      "reminders": "Erinnerungen",
+      "remindersDesc": "Benachrichtigen bevor Fenster öffnet",
+      "mute": "Stumm",
+      "unmute": "Ton an",
+      "disableNotifications": "Benachrichtigungen aus",
+      "enableNotifications": "Benachrichtigungen an",
+      "mins": "{mins} Min",
+      "rolling": "Würfelt jetzt",
+      "imminentTitle": "Banditenüberfall droht! 🚩",
+      "imminentBody": "Das nächste Fenster für {region} startet in {mins} Minuten ({chance}% Chance).",
+      "proTip": "Profi-Tipp",
+      "proTipDesc": "Der Banditenüberfall wird innerhalb eines 1-stündigen Zeitfensters ausgelöst. Jedes Fenster hat eine bestimmte Wahrscheinlichkeit basierend auf historischen Daten. Es wird empfohlen, die Portale in die Outlands zu Beginn des Fensters für sichere Solo-Transporte zu nutzen.",
+      "whatIs": "Was ist der Banditenüberfall?",
+      "whatIsDesc1": "Der Banditenüberfall ist ein großes Fraktionskriegs-Event in den roten Zonen des Royalen Kontinents. Während des Events übernimmt Caerleon die Kontrolle über alle Außenposten, und die Fraktionen müssen kämpfen, um sie zurückzuerobern.",
+      "whatIsDesc2": "Dieses Event ist sehr profitabel für Fraktionspunkte und ist ein strategisches Zeitfenster für Herzen-Transporte.",
+      "howWorks": "Wie funktioniert der Tracker?",
+      "howWorksDesc": "Wir verwenden historische Daten, um zu schätzen, wann sich das nächste Fenster öffnen könnte. Auch wenn wir keine genauen Zeiten garantieren können, bietet unser Modell die wahrscheinlichsten Zeitfenster, um dein Gameplay zu planen.",
+      "triggerProbabilities": "Auslösewahrscheinlichkeiten",
+      "triggerProbDesc": "Albion Online nutzt ein Rollensystem für Banditenüberfälle. Alle paar Stunden gibt es einen Wurf, um zu sehen, ob ein Überfall beginnt. Unser Tracker nutzt Wahrscheinlichkeiten aus der Community, um dir zu zeigen, wann ein Event am wahrscheinlichsten beginnt.",
+      "notificationSettings": "Benachrichtigungseinstellungen",
+      "chanceLabel": "Wahrscheinlichkeit"
     },
     "campaign": {
       "title": "Kampagnenfortschritt-Tracker",
@@ -91,13 +135,41 @@
       "current": "Aktuelle Punkte",
       "required": "Tägliche Punkte benötigt",
       "remaining": "Verbleibende Punkte",
-      "projection": "Monatsprognose"
+      "projection": "Monatsprognose",
+      "daysLeft": "Verbleibende Tage",
+      "tier1": "Stufe 1",
+      "tier2": "Stufe 2",
+      "tier3": "Stufe 3",
+      "tier4": "Stufe 4",
+      "tier5": "Stufe 5",
+      "tier6": "Stufe 6",
+      "monthlyChest": "Monatliche Truhe",
+      "progress": "Kampagnenfortschritt",
+      "ahead": "Dem Zeitplan voraus",
+      "behind": "Im Rückstand",
+      "expected": "Erwartet",
+      "today": "Heute",
+      "goalReached": "Ziel erreicht!",
+      "goalReachedDesc": "Du hast dein Fraktionskampagnenziel für diesen Monat erfolgreich erreicht.",
+      "requiredPacing": "Benötigtes Tempo",
+      "dailyGoal": "Tagesziel",
+      "ptsPerDay": "Pkt / Tag",
+      "weeklyGoal": "Wochenziel",
+      "ptsPerWeek": "Pkt / Woche",
+      "calculationNote": "Berechnungen basieren auf {days} verbleibenden Tagen im aktuellen Kalendermonat (UTC).",
+      "whatIs": "Was ist der Kampagnen-Tracker?",
+      "whatIsDesc": "Die Fraktionskampagne ist ein monatliches Fortschrittssystem in Albion Online. Durch die Teilnahme am Fraktionskrieg erhältst du Punkte, um wertvolle Truhen mit Folianten, Silber und Fraktionsherzen freizuschalten.",
+      "proTip": "Profi-Tipp",
+      "proTipDesc": "Um deine Belohnungen zu maximieren, peile jeden Monat mindestens Stufe 6 an. Nutze das Tagesziel oben, um dein Tempo zu halten. Die Teilnahme an Banditenüberfällen ist der schnellste Weg, um voranzukommen."
     }
   },
   "regions": {
     "Americas": "Amerika",
     "Asia": "Asien",
-    "Europe": "Europa"
+    "Europe": "Europa",
+    "west": "Americas",
+    "east": "Asia",
+    "europe": "Europe"
   },
   "Common": {
     "comingSoon": "Demnächst",
@@ -327,7 +399,8 @@
     "allRightsReserved": "Alle Rechte vorbehalten.",
     "notAffiliated": "Nicht verbunden mit Sandbox Interactive Ltd. Albion Online ist eine Marke von Sandbox Interactive Ltd.",
     "madeWith": "Gemacht mit",
-    "forCommunity": "für die Albion Online Community"
+    "forCommunity": "für die Albion Online Community",
+    "guides": "Guides"
   },
   "HomePage": {
     "heroTitle": "Mach jede Session wertvoll in ",
@@ -341,9 +414,9 @@
     "marketTitle": "Markt-Flipping leicht gemacht",
     "marketDescription": "Identifiziere profitable Handelsrouten zwischen Städten. Vergleiche Kauf- und Verkaufsaufträge mit automatischer Steuerberechnung, um deine Margen zu maximieren.",
     "startFlipping": "Flipping starten",
-    "pvpTitle": "Live-PvP-Aktivitätsfeed",
+    "pvpTitle": "Live PvP-Killboard",
     "pvpDescription": "Überwache serverweite PvP-Kills in Echtzeit. Verfolge aktive Spieler und beliebte Ausrüstung.",
-    "watchFeed": "Live-Feed ansehen",
+    "watchFeed": "Killboard ansehen",
     "zvzTitle": "ZvZ-Schlachten-Tracker",
     "zvzDescription": "Analysiere groß angelegte Schlachten mit detaillierten Metriken zur Gildenleistung, Teilnahme und Ausrüstungszusammensetzung.",
     "analyzeBattles": "Schlachten analysieren",
@@ -389,7 +462,41 @@
   },
   "AboutPage": {
     "title": "Über AlbionKit - Unsere Mission & Team",
-    "description": "Erfahre mehr über AlbionKit, unsere Mission, kostenlose Albion Online-Tools bereitzustellen, und das Team."
+    "description": "Erfahre mehr über AlbionKit, unsere Mission, kostenlose Albion Online Tools bereitzustellen, und das Team hinter dem Projekt.",
+    "heroBadge": "Über Uns",
+    "heroTitle": "Von Spielern entwickelt,",
+    "heroJourney": " für Spieler",
+    "heroSubtitle": "Unsere Mission ist es, der Albion Online Community die mächtigsten, genauesten und am einfachsten zu bedienenden Tools völlig kostenlos zur Verfügung zu stellen.",
+    "missionTitle": "Unsere Mission",
+    "missionP1": "AlbionKit begann als einfaches Leidenschaftsprojekt eines einzelnen Spielers, der es leid war, sich auf veraltete Tabellenkalkulationen und unhandliche Discord-Bots zu verlassen.",
+    "missionP2": "Heute hat es sich zu einer umfassenden Suite von Tools entwickelt, die Spielern aller Erfahrungsstufen helfen, sich in der komplexen Wirtschaft und den gefährlichen PvP-Zonen von Albion Online zurechtzufinden.",
+    "missionP3": "Wir glauben an das Open-Source-Ethos. Keine Premium-Stufen, keine Paywalls, nur purer Nutzen, angetrieben vom unglaublichen Albion Data Project.",
+    "itemsTracked": "Verfolgte Gegenstände",
+    "marketUpdates": "Marktaktualisierungen",
+    "coreFeatures": "Kernfunktionen",
+    "everythingYouNeed": "Alles, was du für den Erfolg brauchst",
+    "marketFlipper": "Market Flipper",
+    "marketFlipperDesc": "Finde sofort profitable Handelsrouten zwischen den Königsstädten und dem Schwarzmarkt. Berücksichtige Schnellreisen, Steuern und tägliches Volumen, um Silberprofite zu garantieren.",
+    "pvpIntel": "PvP Intel",
+    "pvpIntelDesc": "Analysiere das Live-Killboard, um zu sehen, welche Meta-Waffen die Outlands dominieren. Kläre feindliche Spieler und Gilden auf, bevor du dich in den Kampf stürzt.",
+    "killFeed": "Live Killboard",
+    "killFeedDesc": "Überwache PvP-Kämpfe in Echtzeit auf allen Servern. Sieh genau, wer stirbt, wo und welche Ausrüstung fallen gelassen wurde.",
+    "craftingCalc": "Profitrechner",
+    "craftingCalcDesc": "Egal, ob du Koch, Alchemist, Bauer oder Arbeiter bist, unsere Tools berechnen exakte Margen basierend auf Echtzeitpreisen, damit du niemals mit Verlust herstellst.",
+    "metaBuilds": "Meta Builds",
+    "metaBuildsDesc": "Entdecke die beliebtesten Ausrüstungen, die von Top-Spielern in Corrupted Dungeons, Hellgates und ZvZ-Kämpfen verwendet werden.",
+    "guildManagement": "Fraktionskrieg",
+    "guildManagementDesc": "Verfolge Banditenüberfälle, berechne die Effizienz von Fraktionspunkten und maximiere deine Erträge bei Herzentransporten.",
+    "globalSupport": "Globaler Support",
+    "globalSupportDesc": "Vollständig in 9 Sprachen lokalisiert, um sicherzustellen, dass die globale Albion-Community ohne Sprachbarrieren handeln und kämpfen kann.",
+    "dataSources": "Datenquellen",
+    "dataSourcesDesc": "Wir verlassen uns stark auf das Albion Data Project. Wenn du unsere Tools nützlich findest, erwäge bitte, den Client zu installieren, um die Preise für alle aktuell zu halten!",
+    "learnMoreADP": "Erfahre mehr über das Albion Data Project",
+    "legalDisclaimer": "Haftungsausschluss",
+    "joinCommunity": "Tritt der Community bei",
+    "twitter": "Folge uns auf Twitter",
+    "openSource": "Open Source",
+    "supportedLanguages": "Unterstützte Sprachen"
   },
   "MarketFlipper": {
     "itemsTracked": "{count} Items verfolgt",
@@ -1045,13 +1152,13 @@
   "Metadata": {
     "title": "AlbionKit - Der ultimative Albion Online Begleiter",
     "template": "%s",
-    "description": "Meistere Albion Online mit AlbionKit - dem ultimativen Begleiter für ernsthafte Spieler. Zugriff auf leistungsstarke Tools wie Market Flipper für profitable Trades, PvP Intel mit Live-Kill-Feeds, Crafting Calculator mit Fokus-Optimierung, Farming-Profit-Tracker und ZvZ-Kampfanalyse. Schließe dich Tausenden von Spielern an, die AlbionKit für Echtzeit-Marktdaten, Build-Guides und Wettbewerbsvorteile auf allen Albion Online Servern vertrauen.",
+    "description": "Meistere Albion Online mit AlbionKit. Greife auf mächtige Werkzeuge wie Market Flipper, Fraktionskrieg-Tools (Kampagne, Transport & Effizienz), Bandit Assault Tracker, PvP Intel, Crafting Calculator und ZvZ Battle Analytics zu.",
     "keywords": "Albion Online, Albion Builds, Markt-Flipper, PvP-Informationen, Handwerksrechner, MMORPG"
   },
   "Pages": {
     "home": {
-      "title": "AlbionKit - Markt-Tools, PvP-Informationen & Meta-Builds",
-      "description": "Verbessere dein Albion Online-Erlebnis mit AlbionKit's leistungsstarker Tool-Suite. Zugriff auf Echtzeit-Marktdaten für profitables Trading, verfolge PvP-Kills mit Live-Feeds, entdecke Meta-Builds von Top-Spielern, berechne Crafting-Profite und optimiere deine Farm. Vertraut von Tausenden Albion-Spielern weltweit."
+      "title": "AlbionKit - Markt-Tools, Fraktions-Tracker, PvP Intel & Meta Builds",
+      "description": "Verbessere dein Albion Online Erlebnis mit Live-Marktdaten, Fraktionskampagnen- und Bandit Assault-Trackern, PvP-Kills mit Live-Feeds und Meta-Builds von Top-Spielern."
     },
     "about": {
       "title": "Über AlbionKit",
@@ -1393,7 +1500,15 @@
       "profit": "Nettogewinn nach allen Kosten und Steuern",
       "roi": "Return on Investment (Gewinn / Kosten * 100)"
     },
-    "refresh": "Aktualisieren"
+    "refresh": "Aktualisieren",
+    "focusDesc": "Focus increases resource return rate",
+    "profitTooltip": "Net profit per crafting cycle",
+    "roiTooltip": "Return on Investment (Profit / Cost × 100)",
+    "profitAnalysis": "Profit Analysis",
+    "effectiveCost": "Effective Cost",
+    "revenue": "Revenue",
+    "perUnit": "per unit",
+    "city": "City"
   },
   "Enchanting": {
     "title": "Artefakt-Verzauberungsrechner",
@@ -2585,7 +2700,14 @@
       "Ascended": "Aufgestiegen"
     },
     "avatarUpdated": "Avatar erfolgreich aktualisiert!",
-    "bannerUpdated": "Banner erfolgreich aktualisiert!"
+    "bannerUpdated": "Banner erfolgreich aktualisiert!",
+    "guides": {
+      "gettingStarted": "Getting Started",
+      "combatRotations": "Combat Rotations",
+      "combatPositioning": "Combat Positioning",
+      "gatheringRoutes": "Gathering Routes",
+      "silverFarmingGuide": "Silver Farming"
+    }
   },
   "Login": {
     "redirecting": "Weiterleitung zum Login..."
@@ -3015,7 +3137,18 @@
       "Caerleon": "Caerleon",
       "Brecilien": "Brecilien",
       "Black Market": "Schwarzmarkt"
-    }
+    },
+    "loading": "Loading...",
+    "noData": "No Data",
+    "noDataDesc": "No crafting data available",
+    "allItems": "All Items",
+    "profitPerPlot": "Profit/Plot",
+    "seedCost": "Seed Cost",
+    "totalProfit": "Total Profit",
+    "totalROI": "Total ROI",
+    "perUnit": "per unit",
+    "perCycle": "per cycle",
+    "lowStock": "Low stock - may not be able to buy full amount"
   },
   "GuildLicense": {
     "title": "Gildenlizenz-Verwaltung",
@@ -3280,7 +3413,8 @@
     },
     "checkoutBuild": "Schau dir diesen {category}-Build von {author} auf AlbionKit an.",
     "commentError": "Kommentar konnte nicht gepostet werden",
-    "backToBuilds": "Zurück zu den Builds"
+    "backToBuilds": "Zurück zu den Builds",
+    "buildInfo": "Build Info"
   },
   "NotFound": {
     "title": "In den Nebeln verirrt?",
@@ -3735,49 +3869,150 @@
         "name": "Kristallspinnen",
         "desc": "Farme Kristallspinnen in verdorbenen Dungeons für wertvolle Kristalle und seltene Drops.",
         "silver": "500k - 2M",
-        "time": "30 min"
+        "time": "30 min",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Experienced",
+          "1": "High Risk/High Reward",
+          "2": "Crystal Spiders"
+        },
+        "tips": {
+          "0": "Full loot on death - gear + resources",
+          "1": "Crystal spiders spawn here (high value)",
+          "2": "Always scout before gathering",
+          "3": "Use invisibility potions when possible",
+          "4": "Have escape route planned"
+        }
       },
       "static": {
         "name": "Statische Dungeons",
         "desc": "Räume statische Dungeons für konsistente Beute und Ruhm. Großartig für Anfänger.",
         "silver": "300k - 800k",
-        "time": "1 Stunde"
+        "time": "1 Stunde",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Beginners",
+          "1": "Safe Gathering",
+          "2": "Focus Farming"
+        },
+        "tips": {
+          "0": "No risk of losing resources on death",
+          "1": "Lower yield but consistent income",
+          "2": "Great for learning gathering mechanics",
+          "3": "Use focus points for maximum efficiency"
+        }
       },
       "hellgates": {
         "name": "Höllentore",
         "desc": "1v1 bis 5v5 PvP-Arenas. Hohes Risiko, hohe Belohnung. Gewinne um Ausrüstung des Gegners zu plündern.",
         "silver": "200k - 1M",
-        "time": "30 min"
+        "time": "30 min",
+        "premium": false,
+        "difficulty": "hard",
+        "best": {
+          "0": "PvP Players",
+          "1": "High Risk/High Reward"
+        },
+        "tips": {
+          "0": "Unique Avalonian resources",
+          "1": "Dangerous but rewarding",
+          "2": "Learn safe routes through cities",
+          "3": "Exit timers are crucial"
+        }
       },
       "corrupted": {
         "name": "Verdorbene Dungeons",
         "desc": "Solo oder Duo Dungeons mit wertvoller Beute. Risiko Ausrüstung beim Tod zu verlieren.",
         "silver": "400k - 1.5M",
-        "time": "45 min"
+        "time": "45 min",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Experienced",
+          "1": "High Risk/High Reward"
+        },
+        "tips": {
+          "0": "100% resource loss on death",
+          "1": "Highest tier resources available",
+          "2": "Always bring escape mount",
+          "3": "Group up for safety",
+          "4": "Avoid peak hours"
+        }
       },
       "faction": {
         "name": "Fraktionskriegsführung",
         "desc": "Erobere Territorien und nimm an Fraktionskämpfen für Belohnungen teil.",
         "silver": "300k - 600k",
-        "time": "1 Stunde"
+        "time": "1 Stunde",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Intermediate",
+          "1": "Balanced Risk/Reward"
+        },
+        "tips": {
+          "0": "50% resource loss on death",
+          "1": "Better resource density than royal",
+          "2": "Watch for gankers at choke points",
+          "3": "Bring cheap mount for escape"
+        }
       },
       "crystal": {
         "name": "Kristallsammeln",
         "desc": "Sammle verzauberte Kristalle in gefährlichen Zonen. Sicher mit niedriger Ausrüstung.",
         "silver": "200k - 500k",
-        "time": "1-2 Stunden"
+        "time": "1-2 Stunden",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Solo Gatherers",
+          "1": "Exploration"
+        },
+        "tips": {
+          "0": "Safe from regular players (no combat)",
+          "1": "Mist mobs can still kill you",
+          "2": "Unique resources not found elsewhere",
+          "3": "Good for peaceful gathering sessions"
+        }
       },
       "fiber": {
         "name": "Faserfarmen",
         "desc": "Pflanze und ernte Faser auf deiner Insel. Passives Einkommen mit Fokuspunkten.",
         "silver": "150k - 400k",
-        "time": "1-2 Stunden"
+        "time": "1-2 Stunden",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Beginners",
+          "1": "Safe Gathering",
+          "2": "Focus Farming"
+        },
+        "tips": {
+          "0": "No risk of losing resources on death",
+          "1": "Lower yield but consistent income",
+          "2": "Great for learning gathering mechanics",
+          "3": "Use focus points for maximum efficiency"
+        }
       },
       "laborers": {
         "name": "Arbeiter",
         "desc": "Schicke Arbeiter täglich auf Missionen. Passives Einkommen mit Premium-Konto.",
         "silver": "100k - 300k",
-        "time": "Täglich"
+        "time": "Täglich",
+        "premium": true,
+        "difficulty": "easy",
+        "best": {
+          "0": "Premium Users",
+          "1": "Passive Income"
+        },
+        "tips": {
+          "0": "Requires premium account",
+          "1": "Set up once, collect daily",
+          "2": "Scales with laborer tier",
+          "3": "Essential passive income source"
+        }
       }
     }
   },
@@ -3898,6 +4133,15 @@
           "2": "Probiere PvP-Inhalte aus",
           "3": "Setze langfristige Ziele"
         }
+      },
+      "Day 5-7": {
+        "title": "Specialize",
+        "goals": {
+          "0": "Choose your specialization",
+          "1": "Join a guild or find a group",
+          "2": "Try PvP content",
+          "3": "Set long-term goals"
+        }
       }
     },
     "mistakes": [
@@ -3937,7 +4181,10 @@
     "bestFor": "Am besten für",
     "easy": "Easy",
     "medium": "Medium",
-    "hard": "Hard"
+    "hard": "Hard",
+    "newWeaponsDatabase": "🎉 New: Complete Weapons Database",
+    "newWeaponsDesc": "Check out our comprehensive 2026 weapons database with 18+ weapons, detailed rotations, gear recommendations, and meta ratings!",
+    "viewAllWeapons": "View All Weapons"
   },
   "CombatPositioning": {
     "title": "Kampfpositionierungs-Guide",

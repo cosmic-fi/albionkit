@@ -49,7 +49,11 @@
       "searchItems": "Поиск наград...",
       "updated": "Обновлено",
       "never": "Никогда",
-      "silver": "Серебро"
+      "silver": "Серебро",
+      "whatIs": "Что такое эффективность фракции?",
+      "whatIsDesc": "Эффективность фракции определяет, сколько реальных очков фракции вы получаете. Она зависит от вашей репутации, статуса Premium и уровня риска зоны (в Красных Зонах множитель самый высокий).",
+      "howWorks": "Как работает этот калькулятор?",
+      "howWorksDesc": "Выберите фракцию, уровень репутации и статус Premium. Калькулятор автоматически извлечет ежедневные модификаторы зон, чтобы показать, сколько именно очков вы получите за каждые 100 базовых очков."
     },
     "transport": {
       "title": "Рентабельность перевозки сердец",
@@ -71,7 +75,11 @@
       "calcNote": "Прибыль рассчитывается с использованием <strong>мин. цены продажи</strong> в источнике и <strong>макс. цены покупки</strong> в пункте назначения за вычетом <strong>6,5%</strong> комиссий.",
       "basedOnQuantity": "На основе перевозки <span>{quantity}</span> сердец.",
       "silver": "серебра",
-      "loading": "Загрузка..."
+      "loading": "Загрузка...",
+      "whatIs": "Что такое перевозка сердец?",
+      "whatIsDesc": "Перевозка сердец — это контрабандные миссии с высоким риском и высокой наградой, где вы переносите сердца своей фракции во вражеский город. Чем длиннее маршрут, тем выше выплата.",
+      "howWorks": "Как читать матрицу",
+      "howWorksDesc": "Матрица показывает размер прибыли за транспортировку сердец между городами. Она учитывает множитель расстояния и текущие рыночные цены. Выберите начальный город, чтобы увидеть самые прибыльные маршруты."
     },
     "bandit": {
       "title": "Трекер нападения бандитов",
@@ -79,10 +87,46 @@
       "nextAssault": "Следующее возможное нападение",
       "status": "Текущий статус",
       "active": "Событие активно!",
-      "waiting": "Ожидание таймера",
+      "waiting": "Ожидание",
       "imminent": "Ожидается с минуты на минуту",
       "notify": "Уведомить меня",
-      "history": "История недавних нападений"
+      "history": "История недавних нападений",
+      "cooldown": "Cooling Down",
+      "window": "Potential Window",
+      "overdue": "Overdue / Missed",
+      "lastAssault": "Last Assault End",
+      "reportButton": "Report Active!",
+      "reportSuccess": "Thank you for reporting!",
+      "reportError": "Error reporting event.",
+      "estimatedWindow": "Ожидаемое окно",
+      "timezoneNote": "Все время указано в UTC (Серверное время).",
+      "probability": "Вероятность:",
+      "targetHour": "Целевой час (UTC)",
+      "serverTime": "Время сервера (UTC)",
+      "dailySchedule": "Расписание (UTC)",
+      "nextWindowLabel": "Следующее окно",
+      "chance": "{chance}% Шанс",
+      "reminders": "Напоминания",
+      "remindersDesc": "Уведомить до открытия окна",
+      "mute": "Выкл звук",
+      "unmute": "Вкл звук",
+      "disableNotifications": "Отключить уведомления",
+      "enableNotifications": "Включить уведомления",
+      "mins": "{mins} мин",
+      "rolling": "Бросок костей",
+      "imminentTitle": "Нападение бандитов! 🚩",
+      "imminentBody": "Следующее окно для {region} начнется через {mins} мин ({chance}% шанс).",
+      "proTip": "Полезный совет",
+      "proTipDesc": "Нападение бандитов происходит в течение 1-часового окна. У каждого окна есть своя вероятность, основанная на исторических данных. Рекомендуется использовать порталы Запределья в начале окна для безопасной соло-перевозки.",
+      "whatIs": "Что такое Нападение бандитов?",
+      "whatIsDesc1": "Нападение бандитов — это крупное событие Войны Фракций в Красных Зонах Королевского континента. Во время события Карлеон захватывает все заставы, и фракции должны сражаться, чтобы отбить их.",
+      "whatIsDesc2": "Это событие очень выгодно для получения очков фракции и является стратегическим окном для перевозки сердец.",
+      "howWorks": "Как работает трекер?",
+      "howWorksDesc": "Мы используем исторические данные, чтобы оценить, когда может открыться следующее окно. Хотя мы не можем гарантировать точное время, наша модель предоставляет окна с самой высокой вероятностью для планирования игры.",
+      "triggerProbabilities": "Вероятности срабатывания",
+      "triggerProbDesc": "Albion Online использует систему бросков для Нападений бандитов. Каждые несколько часов происходит бросок, определяющий, начнется ли нападение. Наш трекер использует данные сообщества, чтобы показать, когда событие начнется с наибольшей вероятностью.",
+      "notificationSettings": "Настройки уведомлений",
+      "chanceLabel": "Вероятность"
     },
     "campaign": {
       "title": "Трекер прогресса кампании",
@@ -91,13 +135,41 @@
       "current": "Текущие очки",
       "required": "Требуется очков в день",
       "remaining": "Осталось очков",
-      "projection": "Прогноз на месяц"
+      "projection": "Прогноз на месяц",
+      "daysLeft": "Осталось дней",
+      "tier1": "Ранг 1",
+      "tier2": "Ранг 2",
+      "tier3": "Ранг 3",
+      "tier4": "Ранг 4",
+      "tier5": "Ранг 5",
+      "tier6": "Ранг 6",
+      "monthlyChest": "Ежемесячный сундук",
+      "progress": "Прогресс кампании",
+      "ahead": "С опережением",
+      "behind": "С отставанием",
+      "expected": "Ожидается",
+      "today": "Сегодня",
+      "goalReached": "Цель достигнута!",
+      "goalReachedDesc": "Вы успешно достигли своей цели в кампании фракции в этом месяце.",
+      "requiredPacing": "Необходимый темп",
+      "dailyGoal": "Дневная цель",
+      "ptsPerDay": "очков / день",
+      "weeklyGoal": "Недельная цель",
+      "ptsPerWeek": "очков / неделю",
+      "calculationNote": "Расчеты основаны на {days} оставшихся днях в текущем месяце (UTC).",
+      "whatIs": "Что такое трекер кампании?",
+      "whatIsDesc": "Кампания фракции — это ежемесячная система прогрессии в Albion Online. Участвуя в войнах фракций, вы зарабатываете очки для открытия сундуков с фолиантами, серебром и сердцами фракции.",
+      "proTip": "Полезный совет",
+      "proTipDesc": "Чтобы получить максимальную награду, стремитесь как минимум к Рангу 6 каждый месяц. Используйте метрику Дневной Цели, чтобы следить за темпом. Нападение бандитов — самый быстрый способ заработать очки."
     }
   },
   "regions": {
     "Americas": "Америка",
     "Asia": "Азия",
-    "Europe": "Европа"
+    "Europe": "Европа",
+    "west": "Americas",
+    "east": "Asia",
+    "europe": "Europe"
   },
   "Common": {
     "comingSoon": "Скоро",
@@ -327,7 +399,8 @@
     "allRightsReserved": "Все права защищены.",
     "notAffiliated": "Не связано с Sandbox Interactive Ltd. Albion Online является торговой маркой Sandbox Interactive Ltd.",
     "madeWith": "Сделано с",
-    "forCommunity": "для сообщества Albion Online"
+    "forCommunity": "для сообщества Albion Online",
+    "guides": "Guides"
   },
   "HomePage": {
     "heroTitle": "Сделайте каждую сессию эффективной в ",
@@ -341,9 +414,9 @@
     "marketTitle": "Простая перепродажа",
     "marketDescription": "Находите выгодные торговые маршруты между городами. Сравнивайте ордера на покупку и продажу с учетом налогов.",
     "startFlipping": "Начать торговать",
-    "pvpTitle": "Лента PvP в реальном времени",
+    "pvpTitle": "Live PvP Киллборд",
     "pvpDescription": "Следите за убийствами на всем сервере. Отслеживайте активных игроков и популярное снаряжение.",
-    "watchFeed": "Смотреть ленту",
+    "watchFeed": "Смотреть Киллборд",
     "zvzTitle": "ZvZ Трекер битв",
     "zvzDescription": "Анализируйте масштабные сражения с детальными метриками гильдий и составом снаряжения.",
     "analyzeBattles": "Анализ битв",
@@ -388,8 +461,42 @@
     "zvzTrackerDesc": "Отслеживайте масштабные битвы в открытом мире"
   },
   "AboutPage": {
-    "title": "О AlbionKit - Наша Миссия и Команда",
-    "description": "Узнайте о AlbionKit, нашей миссии предоставления бесплатных инструментов для Albion Online и команде."
+    "title": "Об AlbionKit - Наша Миссия и Команда",
+    "description": "Узнайте об AlbionKit, нашей миссии по предоставлению бесплатных инструментов для Albion Online и команде проекта.",
+    "heroBadge": "О Нас",
+    "heroTitle": "Создано игроками,",
+    "heroJourney": " для игроков",
+    "heroSubtitle": "Наша миссия — бесплатно предоставить сообществу Albion Online самые мощные, точные и простые в использовании инструменты.",
+    "missionTitle": "Наша Миссия",
+    "missionP1": "AlbionKit начинался как простой проект одного игрока, которому надоело полагаться на устаревшие электронные таблицы и неуклюжие боты Discord.",
+    "missionP2": "Сегодня он превратился в комплексный набор инструментов, разработанный, чтобы помочь игрокам любого уровня ориентироваться в сложной экономике и опасных PvP-зонах Albion Online.",
+    "missionP3": "Мы верим в дух открытого исходного кода. Никаких премиум-уровней, никаких платных подписок, только чистая польза на базе невероятного Albion Data Project.",
+    "itemsTracked": "Отслеживаемые предметы",
+    "marketUpdates": "Обновления рынка",
+    "coreFeatures": "Основные возможности",
+    "everythingYouNeed": "Всё, что нужно для успеха",
+    "marketFlipper": "Рыночный флиппер",
+    "marketFlipperDesc": "Мгновенно находите выгодные торговые маршруты между Королевскими Городами и Черным Рынком. Учитывайте быстрые перемещения, налоги и ежедневный объем, чтобы гарантировать прибыль в серебре.",
+    "pvpIntel": "PvP Разведка",
+    "pvpIntelDesc": "Анализируйте киллборд в реальном времени, чтобы узнать, какие мета-сборки доминируют в Черных землях. Разведывайте вражеских игроков и гильдии перед вступлением в бой.",
+    "killFeed": "Живой Киллборд",
+    "killFeedDesc": "Следите за PvP-боями в реальном времени на всех серверах. Точно знайте, кто умирает, где и какую экипировку они роняют.",
+    "craftingCalc": "Калькуляторы прибыли",
+    "craftingCalcDesc": "Кем бы вы ни были — поваром, алхимиком, фермером или рабочим, наши инструменты рассчитывают точную маржу на основе цен в реальном времени, чтобы вы никогда не крафтили в убыток.",
+    "metaBuilds": "Мета-билды",
+    "metaBuildsDesc": "Откройте для себя самые популярные наборы экипировки, используемые лучшими игроками в Проклятых подземельях, Вратах Ада и ZvZ-боях.",
+    "guildManagement": "Войны фракций",
+    "guildManagementDesc": "Отслеживайте Нападения Бандитов, рассчитывайте эффективность очков фракции и максимизируйте свою прибыль от перевозки сердец.",
+    "globalSupport": "Глобальная поддержка",
+    "globalSupportDesc": "Полностью локализовано на 9 языках, чтобы гарантировать мировому сообществу Albion возможность торговать и сражаться без языковых барьеров.",
+    "dataSources": "Источники данных",
+    "dataSourcesDesc": "Мы сильно зависим от Albion Data Project. Если вы находите наши инструменты полезными, пожалуйста, рассмотрите возможность установки клиента, чтобы помочь поддерживать актуальные цены для всех!",
+    "learnMoreADP": "Узнать больше об Albion Data Project",
+    "legalDisclaimer": "Юридическая информация",
+    "joinCommunity": "Присоединиться к сообществу",
+    "twitter": "Читайте нас в Twitter",
+    "openSource": "Открытый исходный код",
+    "supportedLanguages": "Поддерживаемые языки"
   },
   "MarketFlipper": {
     "itemsTracked": "{count} предметов отслеживается",
@@ -1045,13 +1152,13 @@
   "Metadata": {
     "title": "AlbionKit — Лучший помощник в Albion Online",
     "template": "%s",
-    "description": "Покорите Albion Online с AlbionKit - лучшим помощником для серьезных игроков. Доступ к мощным инструментам, включая Market Flipper для прибыльных сделок, PvP Intel с лентой убийств в реальном времени, Crafting Calculator с оптимизацией фокуса, трекеры прибыли от фермерства и аналитику ZvZ-сражений. Присоединяйтесь к тысячам игроков, которые доверяют AlbionKit для данных рынка в реальном времени, гайдов по сборкам и конкурентных преимуществ на всех серверах Albion Online.",
+    "description": "Покоряйте Albion Online с AlbionKit. Доступ к мощным инструментам: Market Flipper, инструменты войн фракций (кампания, транспорт и эффективность), трекер нападений бандитов, PvP Intel, калькулятор крафта и аналитика ZvZ.",
     "keywords": "Albion Online, Альбион Онлайн, Сборки Альбион, Рынок Альбион, PvP Альбион, MMORPG"
   },
   "Pages": {
     "home": {
-      "title": "AlbionKit — Инструменты рынка, PvP разведка и Мета-сборки",
-      "description": "Улучшите свой опыт в Albion Online с мощным набором инструментов AlbionKit. Доступ к данным рынка в реальном времени для прибыльной торговли, отслеживание PvP-убийств с живыми лентами, открытие мета-сборок от топ-игроков, расчет прибыли от крафта и оптимизация фермерства. Доверен тысячами игроков Albion по всему миру."
+      "title": "AlbionKit - Инструменты рынка, трекеры фракций, PvP Intel и Мета билды",
+      "description": "Улучшите свой опыт в Albion Online с актуальными рыночными данными, трекерами фракций и бандитов, прямыми трансляциями PvP-убийств и мета-билдами."
     },
     "about": {
       "title": "Об AlbionKit",
@@ -1393,7 +1500,15 @@
       "profit": "Чистая прибыль после вычета всех затрат и налогов",
       "roi": "Окупаемость инвестиций (прибыль / затраты * 100)"
     },
-    "refresh": "Обновить"
+    "refresh": "Обновить",
+    "focusDesc": "Focus increases resource return rate",
+    "profitTooltip": "Net profit per crafting cycle",
+    "roiTooltip": "Return on Investment (Profit / Cost × 100)",
+    "profitAnalysis": "Profit Analysis",
+    "effectiveCost": "Effective Cost",
+    "revenue": "Revenue",
+    "perUnit": "per unit",
+    "city": "City"
   },
   "Enchanting": {
     "title": "Калькулятор зачарования артефактов",
@@ -2585,7 +2700,14 @@
       "Ascended": "Вознесённый"
     },
     "avatarUpdated": "Аватар обновлен!",
-    "bannerUpdated": "Баннер обновлен!"
+    "bannerUpdated": "Баннер обновлен!",
+    "guides": {
+      "gettingStarted": "Getting Started",
+      "combatRotations": "Combat Rotations",
+      "combatPositioning": "Combat Positioning",
+      "gatheringRoutes": "Gathering Routes",
+      "silverFarmingGuide": "Silver Farming"
+    }
   },
   "Login": {
     "redirecting": "Перенаправление на страницу входа..."
@@ -3201,7 +3323,18 @@
       "Caerleon": "Кэрлеон",
       "Brecilien": "Бресилиен",
       "Black Market": "Чёрный Рынок"
-    }
+    },
+    "loading": "Loading...",
+    "noData": "No Data",
+    "noDataDesc": "No crafting data available",
+    "allItems": "All Items",
+    "profitPerPlot": "Profit/Plot",
+    "seedCost": "Seed Cost",
+    "totalProfit": "Total Profit",
+    "totalROI": "Total ROI",
+    "perUnit": "per unit",
+    "perCycle": "per cycle",
+    "lowStock": "Low stock - may not be able to buy full amount"
   },
   "GuildLicense": {
     "title": "Управление лицензией гильдии",
@@ -3458,7 +3591,8 @@
     },
     "checkoutBuild": "Посмотрите этот билд {category} от {author} на AlbionKit.",
     "commentError": "Ошибка публикации комментария",
-    "backToBuilds": "Вернуться к сборкам"
+    "backToBuilds": "Вернуться к сборкам",
+    "buildInfo": "Build Info"
   },
   "NotFound": {
     "title": "Заблудились в Туманах?",
@@ -3727,49 +3861,150 @@
         "name": "Кристальные Пауки",
         "desc": "Фармите кристальных пауков в испорченных подземельях для ценных кристаллов и редкой добычи.",
         "silver": "500k - 2M",
-        "time": "30 мин"
+        "time": "30 мин",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Experienced",
+          "1": "High Risk/High Reward",
+          "2": "Crystal Spiders"
+        },
+        "tips": {
+          "0": "Full loot on death - gear + resources",
+          "1": "Crystal spiders spawn here (high value)",
+          "2": "Always scout before gathering",
+          "3": "Use invisibility potions when possible",
+          "4": "Have escape route planned"
+        }
       },
       "static": {
         "name": "Статичные Подземелья",
         "desc": "Очищайте статичные подземелья для постоянной добычи и славы. Отлично для новичков.",
         "silver": "300k - 800k",
-        "time": "1 час"
+        "time": "1 час",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Beginners",
+          "1": "Safe Gathering",
+          "2": "Focus Farming"
+        },
+        "tips": {
+          "0": "No risk of losing resources on death",
+          "1": "Lower yield but consistent income",
+          "2": "Great for learning gathering mechanics",
+          "3": "Use focus points for maximum efficiency"
+        }
       },
       "hellgates": {
         "name": "Врата Ада",
         "desc": "PvP арены 1v1 до 5v5. Высокий риск, высокая награда. Победите чтобы ограбить снаряжение противника.",
         "silver": "200k - 1M",
-        "time": "30 мин"
+        "time": "30 мин",
+        "premium": false,
+        "difficulty": "hard",
+        "best": {
+          "0": "PvP Players",
+          "1": "High Risk/High Reward"
+        },
+        "tips": {
+          "0": "Unique Avalonian resources",
+          "1": "Dangerous but rewarding",
+          "2": "Learn safe routes through cities",
+          "3": "Exit timers are crucial"
+        }
       },
       "corrupted": {
         "name": "Испорченные Подземелья",
         "desc": "Соло или дуо подземелья с ценной добычей. Риск потерять снаряжение при смерти.",
         "silver": "400k - 1.5M",
-        "time": "45 мин"
+        "time": "45 мин",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Experienced",
+          "1": "High Risk/High Reward"
+        },
+        "tips": {
+          "0": "100% resource loss on death",
+          "1": "Highest tier resources available",
+          "2": "Always bring escape mount",
+          "3": "Group up for safety",
+          "4": "Avoid peak hours"
+        }
       },
       "faction": {
         "name": "Война Фракций",
         "desc": "Захватывайте территории и участвуйте в боях фракций за награды.",
         "silver": "300k - 600k",
-        "time": "1 час"
+        "time": "1 час",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Intermediate",
+          "1": "Balanced Risk/Reward"
+        },
+        "tips": {
+          "0": "50% resource loss on death",
+          "1": "Better resource density than royal",
+          "2": "Watch for gankers at choke points",
+          "3": "Bring cheap mount for escape"
+        }
       },
       "crystal": {
         "name": "Сбор Кристаллов",
         "desc": "Собирайте зачарованные кристаллы в опасных зонах. Безопасно с низкой экипировкой.",
         "silver": "200k - 500k",
-        "time": "1-2 часа"
+        "time": "1-2 часа",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Solo Gatherers",
+          "1": "Exploration"
+        },
+        "tips": {
+          "0": "Safe from regular players (no combat)",
+          "1": "Mist mobs can still kill you",
+          "2": "Unique resources not found elsewhere",
+          "3": "Good for peaceful gathering sessions"
+        }
       },
       "fiber": {
         "name": "Фарм Волокна",
         "desc": "Сажайте и собирайте волокно на вашем острове. Пассивный доход с фокусом.",
         "silver": "150k - 400k",
-        "time": "1-2 часа"
+        "time": "1-2 часа",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Beginners",
+          "1": "Safe Gathering",
+          "2": "Focus Farming"
+        },
+        "tips": {
+          "0": "No risk of losing resources on death",
+          "1": "Lower yield but consistent income",
+          "2": "Great for learning gathering mechanics",
+          "3": "Use focus points for maximum efficiency"
+        }
       },
       "laborers": {
         "name": "Рабочие",
         "desc": "Отправляйте рабочих на ежедневные миссии. Пассивный доход с премиум аккаунтом.",
         "silver": "100k - 300k",
-        "time": "Ежедневно"
+        "time": "Ежедневно",
+        "premium": true,
+        "difficulty": "easy",
+        "best": {
+          "0": "Premium Users",
+          "1": "Passive Income"
+        },
+        "tips": {
+          "0": "Requires premium account",
+          "1": "Set up once, collect daily",
+          "2": "Scales with laborer tier",
+          "3": "Essential passive income source"
+        }
       }
     }
   },
@@ -3872,6 +4107,33 @@
           "2": "Попробуйте PvP контент",
           "3": "Поставьте долгосрочные цели"
         }
+      },
+      "Day 1-2": {
+        "title": "Learn the Basics",
+        "goals": {
+          "0": "Complete tutorial and early quests",
+          "1": "Choose your starting weapons",
+          "2": "Learn to gather basic resources",
+          "3": "Understand the death mechanics"
+        }
+      },
+      "Day 3-4": {
+        "title": "Establish Income",
+        "goals": {
+          "0": "Set up laborers on your island",
+          "1": "Start farming or gathering",
+          "2": "Learn basic crafting",
+          "3": "Build your silver reserve"
+        }
+      },
+      "Day 5-7": {
+        "title": "Specialize",
+        "goals": {
+          "0": "Choose your specialization",
+          "1": "Join a guild or find a group",
+          "2": "Try PvP content",
+          "3": "Set long-term goals"
+        }
       }
     },
     "mistakes": {
@@ -3911,7 +4173,10 @@
     "bestFor": "Лучше Для",
     "easy": "Легко",
     "medium": "Средне",
-    "hard": "Сложно"
+    "hard": "Сложно",
+    "newWeaponsDatabase": "🎉 New: Complete Weapons Database",
+    "newWeaponsDesc": "Check out our comprehensive 2026 weapons database with 18+ weapons, detailed rotations, gear recommendations, and meta ratings!",
+    "viewAllWeapons": "View All Weapons"
   },
   "CombatPositioning": {
     "title": "Гайд по Позиционированию в Бою",

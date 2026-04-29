@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { Shield, TrendingUp, Filter, RefreshCcw, Search, ChevronUp, ChevronDown, ChevronRight, RefreshCw, Info, Coins, Percent, Clock, ExternalLink } from 'lucide-react';
+import { Shield, TrendingUp, Filter, RefreshCcw, Search, ChevronUp, ChevronDown, ChevronRight, RefreshCw, Info, Coins, Percent, Clock, ExternalLink, Activity } from 'lucide-react';
+import { InfoStrip, InfoBanner } from '@/components/InfoStrip';
 import { FACTION_CITIES } from '@/data/faction-data';
 import { getFactionEfficiency, RewardEfficiency } from '@/lib/faction-service';
 import { PageShell } from '@/components/PageShell';
@@ -205,6 +206,17 @@ export default function EfficiencyClient() {
             </table>
           </div>
         </div>
+
+        {/* SEO Info Strip */}
+        <InfoStrip currentPage="faction-efficiency">
+          <InfoBanner title={t('whatIs')} icon={<Shield className="h-5 w-5" />} color="text-primary">
+            {t('whatIsDesc')}
+          </InfoBanner>
+          <InfoBanner title={t('howWorks')} icon={<Activity className="h-5 w-5" />} color="text-blue-500">
+            {t('howWorksDesc')}
+          </InfoBanner>
+        </InfoStrip>
+
       </div>
     </PageShell>
   );

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Bell, BellOff, Volume2, VolumeX } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { Select } from '@/components/ui/Select';
 
 interface BanditReminderProps {
   onReminderChange: (enabled: boolean, leadTime: number) => void;
@@ -23,7 +24,7 @@ export const BanditReminder: React.FC<BanditReminderProps> = ({ onReminderChange
     setEnabled(savedEnabled);
     setLeadTime(savedLeadTime);
     setAudioEnabled(savedAudio);
-    
+
     onReminderChange(savedEnabled, savedLeadTime);
     onAudioChange(savedAudio);
   }, []);
@@ -34,13 +35,14 @@ export const BanditReminder: React.FC<BanditReminderProps> = ({ onReminderChange
     localStorage.setItem('bandit_reminder_enabled', String(newVal));
     onReminderChange(newVal, leadTime);
 
-    if (newVal && Notification.permission !== 'granted') {
-      Notification.requestPermission();
+    if (newVal && typeof window !== 'undefined' && 'Notification' in window) {
+      if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+        Notification.requestPermission();
+      }
     }
   };
 
-  const changeLeadTime = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newVal = parseInt(e.target.value);
+  const changeLeadTime = (newVal: number) => {
     setLeadTime(newVal);
     localStorage.setItem('bandit_reminder_lead_time', String(newVal));
     onReminderChange(enabled, newVal);
@@ -54,8 +56,8 @@ export const BanditReminder: React.FC<BanditReminderProps> = ({ onReminderChange
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mt-4 bg-card border border-border rounded-2xl p-4 shadow-sm">
-      <div className="flex items-center justify-between gap-4">
+    <div className="w-full bg-card border border-border rounded-3xl p-6 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-3">
           <button
             onClick={toggleReminder}
@@ -64,24 +66,24 @@ export const BanditReminder: React.FC<BanditReminderProps> = ({ onReminderChange
           >
             {enabled ? <Bell className="w-5 h-5" /> : <BellOff className="w-5 h-5" />}
           </button>
-          
+
           <div className="flex flex-col">
             <span className="text-sm font-semibold">{t('reminders')}</span>
             <span className="text-xs text-muted-foreground">{t('remindersDesc')}</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <select
+        <div className="flex items-center gap-2 w-fit">
+          <Select
             value={leadTime}
             onChange={changeLeadTime}
-            disabled={!enabled}
-            className="bg-muted border-none rounded-lg text-xs font-medium p-2 focus:ring-1 focus:ring-primary disabled:opacity-50"
-          >
-            <option value="5">{t('mins', { mins: 5 })}</option>
-            <option value="10">{t('mins', { mins: 10 })}</option>
-            <option value="15">{t('mins', { mins: 15 })}</option>
-          </select>
+            options={[
+              { value: 5, label: t('mins', { mins: 5 }) },
+              { value: 10, label: t('mins', { mins: 10 }) },
+              { value: 15, label: t('mins', { mins: 15 }) }
+            ]}
+            className="w-full bg-muted border-none shadow-none text-xs font-small py-2 focus:ring-1 focus:ring-primary cursor-pointer"
+          />
 
           <button
             onClick={toggleAudio}

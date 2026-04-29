@@ -65,7 +65,7 @@ export default async function MarketFlipperPage() {
   
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
+    '@type': 'WebApplication',
     name: 'Market Flipper - AlbionKit',
     applicationCategory: 'GameUtility',
     operatingSystem: 'Web Browser',

@@ -3,12 +3,12 @@
 import { useTranslations } from 'next-intl';
 import { PageShell } from '@/components/PageShell';
 import Link from 'next/link';
-import { 
-  BookOpen, 
-  Coins, 
-  Sword, 
-  Pickaxe, 
-  FlaskConical, 
+import {
+  BookOpen,
+  Coins,
+  Sword,
+  Pickaxe,
+  FlaskConical,
   Hammer,
   ChefHat,
   PawPrint,
@@ -143,6 +143,7 @@ export default function GuidesClient() {
     <PageShell
       title={t('title')}
       description={t('description')}
+      backgroundImage='/background/ao-player.jpg'
     >
       <div className="space-y-8">
         {/* Hero Section */}

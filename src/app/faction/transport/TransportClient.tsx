@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import { Truck, TrendingUp, Info, RefreshCw, Coins, ArrowRightLeft } from 'lucide-react';
+import { Shield, ArrowRightLeft, TrendingUp, Info, Activity, RefreshCw } from 'lucide-react';
+import { InfoStrip, InfoBanner } from '@/components/InfoStrip';
 import { PageShell } from '@/components/PageShell';
 import { TransportMatrix } from '@/components/faction/TransportMatrix';
 import { getHeartTransportMatrix } from '@/lib/faction-service';
@@ -158,8 +159,17 @@ export default function TransportClient() {
             {t('matrixNote')}
           </p>
         </div>
+
+        {/* SEO Info Strip */}
+        <InfoStrip currentPage="faction-transport">
+          <InfoBanner title={t('whatIs')} icon={<Shield className="h-5 w-5" />} color="text-primary">
+            {t('whatIsDesc')}
+          </InfoBanner>
+          <InfoBanner title={t('howWorks')} icon={<Activity className="h-5 w-5" />} color="text-purple-500">
+            {t('howWorksDesc')}
+          </InfoBanner>
+        </InfoStrip>
       </div>
     </PageShell>
   );
 }
-

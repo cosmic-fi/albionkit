@@ -49,7 +49,11 @@
       "searchItems": "Ödül ara...",
       "updated": "Güncellendi",
       "never": "Hiçbir zaman",
-      "silver": "Gümüş"
+      "silver": "Gümüş",
+      "whatIs": "Fraksiyon Verimliliği Nedir?",
+      "whatIsDesc": "Fraksiyon Verimliliği, etkinlik başına kaç gerçek Fraksiyon Puanı alacağınızı belirler. Fraksiyon İtibarınıza, Premium durumunuza ve bölgenin risk seviyesine göre ölçeklenir (Kırmızı Bölgeler en yüksek çarpanı verir).",
+      "howWorks": "Bu hesap makinesi nasıl çalışıyor?",
+      "howWorksDesc": "Fraksiyonunuzu, İtibar seviyenizi ve Premium durumunuzu seçin. Hesap makinesi, herhangi bir etkinlikte her 100 taban puan için tam olarak kaç puan kazanacağınızı göstermek üzere günlük bölge değiştiricilerini otomatik olarak çekecektir."
     },
     "transport": {
       "title": "Kalp Taşıma Karlılığı",
@@ -71,7 +75,11 @@
       "calcNote": "Kar, kaynakta <strong>Minimum Satış Fiyatı</strong> ve hedefte <strong>Maksimum Satın Alma Emri</strong> kullanılarak, <strong>%6,5</strong> toplam kesintiden sonra hesaplanır.",
       "basedOnQuantity": "<span>{quantity}</span> kalp taşımacılığına dayanmaktadır.",
       "silver": "gümüş",
-      "loading": "Yükleniyor..."
+      "loading": "Yükleniyor...",
+      "whatIs": "Kalp Taşımacılığı Nedir?",
+      "whatIsDesc": "Kalp Taşımacılığı, fraksiyonunuzun Kalplerini düşman bir şehre taşıdığınız yüksek riskli, yüksek ödüllü kaçakçılık görevleridir. Rota ne kadar uzun olursa ödeme o kadar yüksek olur.",
+      "howWorks": "Matris nasıl okunur",
+      "howWorksDesc": "Matris, şehirler arasında kalp taşımak için kâr marjlarını gösterir. Mesafe çarpanını ve mevcut piyasa fiyatlarını hesaba katar. En kârlı varış rotalarını görmek için başlangıç şehrinizi seçin."
     },
     "bandit": {
       "title": "Haydut Baskını Takibi",
@@ -79,10 +87,46 @@
       "nextAssault": "Bir Sonraki Potansiyel Baskın",
       "status": "Güncel Durum",
       "active": "Etkinlik Aktif!",
-      "waiting": "Zamanlayıcı Bekleniyor",
+      "waiting": "Bekleniyor",
       "imminent": "Eli Kulağında (Her an başlayabilir)",
       "notify": "Beni Bilgilendir",
-      "history": "Son Haydut Geçmişi"
+      "history": "Son Haydut Geçmişi",
+      "cooldown": "Cooling Down",
+      "window": "Potential Window",
+      "overdue": "Overdue / Missed",
+      "lastAssault": "Last Assault End",
+      "reportButton": "Report Active!",
+      "reportSuccess": "Thank you for reporting!",
+      "reportError": "Error reporting event.",
+      "estimatedWindow": "Tahmini Pencere",
+      "timezoneNote": "Tüm saatler UTC (Oyun Saati) cinsindendir.",
+      "probability": "Olasılık:",
+      "targetHour": "Hedef Saat (UTC)",
+      "serverTime": "Sunucu Saati (UTC)",
+      "dailySchedule": "Günlük Program (UTC)",
+      "nextWindowLabel": "Sonraki Pencere",
+      "chance": "%{chance} Şans",
+      "reminders": "Hatırlatıcılar",
+      "remindersDesc": "Pencere açılmadan önce bildir",
+      "mute": "Sesi Kapat",
+      "unmute": "Sesi Aç",
+      "disableNotifications": "Bildirimleri Kapat",
+      "enableNotifications": "Bildirimleri Aç",
+      "mins": "{mins} dk",
+      "rolling": "Zar Atılıyor",
+      "imminentTitle": "Haydut Saldırısı Yaklaşıyor! 🚩",
+      "imminentBody": "{region} için sonraki pencere {mins} dakika içinde başlıyor (%{chance} şans).",
+      "proTip": "İpucu",
+      "proTipDesc": "Haydut Saldırısı 1 saatlik bir pencere içinde tetiklenir. Her pencerenin geçmiş oyun verilerine dayanan belirli bir olasılığı vardır. Solo taşıma güvenliği için pencerenin başında Outlands portallarını kullanmanız önerilir.",
+      "whatIs": "Haydut Saldırısı Nedir?",
+      "whatIsDesc1": "Haydut Saldırısı, Royal Kıta'nın Kırmızı Bölgelerinde gerçekleşen büyük bir Fraksiyon Savaşı etkinliğidir. Etkinlik sırasında Caerleon tüm karakolların kontrolünü ele geçirir ve fraksiyonlar bunları geri almak için savaşmalıdır.",
+      "whatIsDesc2": "Bu etkinlik Fraksiyon Puanları için oldukça kârlıdır ve kalp taşımacılığı için stratejik bir penceredir.",
+      "howWorks": "Takipçi nasıl çalışıyor?",
+      "howWorksDesc": "Bir sonraki pencerenin ne zaman açılabileceğini tahmin etmek için geçmiş verileri kullanıyoruz. Kesin zamanı garanti edemesek de, modelimiz oyununuzu planlamanıza yardımcı olmak için en yüksek olasılıklı pencereleri sağlar.",
+      "triggerProbabilities": "Tetiklenme Olasılıkları",
+      "triggerProbDesc": "Albion Online, Haydut Saldırıları için zar atma sistemini kullanır. Bir saldırının başlayıp başlamadığını görmek için birkaç saatte bir zar atılır. Takipçimiz, bir etkinliğin ne zaman başlama olasılığının en yüksek olduğunu göstermek için topluluk verilerini kullanır.",
+      "notificationSettings": "Bildirim Ayarları",
+      "chanceLabel": "Olasılık"
     },
     "campaign": {
       "title": "Kampanya İlerleme Takibi",
@@ -91,13 +135,41 @@
       "current": "Mevcut Puan",
       "required": "Günlük Gereken Puan",
       "remaining": "Kalan Puan",
-      "projection": "Aylık Tahmin"
+      "projection": "Aylık Tahmin",
+      "daysLeft": "Kalan Günler",
+      "tier1": "Aşama 1",
+      "tier2": "Aşama 2",
+      "tier3": "Aşama 3",
+      "tier4": "Aşama 4",
+      "tier5": "Aşama 5",
+      "tier6": "Aşama 6",
+      "monthlyChest": "Aylık Sandık",
+      "progress": "Kampanya İlerlemesi",
+      "ahead": "İleride",
+      "behind": "Geride",
+      "expected": "Beklenen",
+      "today": "Bugün",
+      "goalReached": "Hedefe Ulaşıldı!",
+      "goalReachedDesc": "Bu ayki fraksiyon kampanya hedefinize başarıyla ulaştınız.",
+      "requiredPacing": "Gereken Tempo",
+      "dailyGoal": "Günlük Hedef",
+      "ptsPerDay": "puan / gün",
+      "weeklyGoal": "Haftalık Hedef",
+      "ptsPerWeek": "puan / hafta",
+      "calculationNote": "Hesaplamalar, takvim ayında (UTC) kalan {days} güne dayanmaktadır.",
+      "whatIs": "Kampanya Takipçisi Nedir?",
+      "whatIsDesc": "Fraksiyon Kampanyası, Albion Online'da aylık bir ilerleme sistemidir. Fraksiyon Savaşlarına katılarak, kitap, gümüş ve fraksiyon kalpleri içeren değerli aşama sandıklarını açmak için puan kazanırsınız.",
+      "proTip": "İpucu",
+      "proTipDesc": "Ödüllerinizi en üst düzeye çıkarmak için her ay en az 6. Aşamayı hedefleyin. Hızınızı doğru ayarlamak için yukarıdaki Günlük Hedef metriğini kullanın. Haydut Saldırılarına katılmak hızınızı artırmanın en hızlı yoludur."
     }
   },
   "regions": {
     "Americas": "Amerika",
     "Asia": "Asya",
-    "Europe": "Avrupa"
+    "Europe": "Avrupa",
+    "west": "Americas",
+    "east": "Asia",
+    "europe": "Europe"
   },
   "Common": {
     "comingSoon": "Yakında",
@@ -327,7 +399,8 @@
     "allRightsReserved": "Tüm hakları saklıdır.",
     "notAffiliated": "Sandbox Interactive Ltd. ile bağlantılı değildir. Albion Online, Sandbox Interactive Ltd.'nin tescilli markasıdır.",
     "madeWith": "İle yapıldı",
-    "forCommunity": "Albion Online topluluğu için"
+    "forCommunity": "Albion Online topluluğu için",
+    "guides": "Guides"
   },
   "HomePage": {
     "heroTitle": "Albion'da her anını değerli kıl ",
@@ -341,9 +414,9 @@
     "marketTitle": "Kolay Piyasa Ticareti",
     "marketDescription": "Şehirler arası karlı ticaret rotalarını belirle. Vergi hesaplamalarıyla birlikte alış ve satış emirlerini karşılaştır.",
     "startFlipping": "Ticarete Başla",
-    "pvpTitle": "Canlı PvP Akışı",
+    "pvpTitle": "Canlı PvP Killboard",
     "pvpDescription": "Sunucudaki tüm PvP ölümlerini gerçek zamanlı izle. Aktif oyuncuları ve popüler ekipmanları takip et.",
-    "watchFeed": "Akışı İzle",
+    "watchFeed": "Killboard'u Görüntüle",
     "zvzTitle": "ZvZ Savaş Takibi",
     "zvzDescription": "Geniş ölçekli savaşları, lonca performansını ve ekipman dağılımlarını detaylı metriklerle analiz et.",
     "analyzeBattles": "Savaşları Analiz Et",
@@ -388,8 +461,42 @@
     "zvzTrackerDesc": "Büyük açık dünya savaşlarını takip edin"
   },
   "AboutPage": {
-    "title": "AlbionKit Hakkında - Misyonumuz ve Ekibimiz",
-    "description": "AlbionKit, Albion Online için ücretsiz araçlar sağlama misyonumuz ve ekibimiz hakkında bilgi edinin."
+    "title": "AlbionKit Hakkında - Misyonumuz & Ekibimiz",
+    "description": "AlbionKit, ücretsiz Albion Online araçları sağlama misyonumuz ve projenin arkasındaki ekip hakkında bilgi edinin.",
+    "heroBadge": "Hakkımızda",
+    "heroTitle": "Oyuncular Tarafından,",
+    "heroJourney": " Oyuncular İçin Geliştirildi",
+    "heroSubtitle": "Misyonumuz, Albion Online topluluğuna en güçlü, doğru ve kullanımı kolay araçları tamamen ücretsiz olarak sunmaktır.",
+    "missionTitle": "Misyonumuz",
+    "missionP1": "AlbionKit, güncelliğini yitirmiş e-tablolara ve hantal Discord botlarına güvenmekten yorulmuş tek bir oyuncunun basit bir tutku projesi olarak başladı.",
+    "missionP2": "Bugün, her yetenek seviyesinden oyuncunun Albion Online'ın karmaşık ekonomisinde ve tehlikeli PvP bölgelerinde gezinmesine yardımcı olmak için tasarlanmış kapsamlı bir araç paketine dönüştü.",
+    "missionP3": "Açık kaynak ahlakına inanıyoruz. Premium seviyeler yok, ödeme duvarları yok, inanılmaz Albion Data Project tarafından desteklenen sadece saf fayda.",
+    "itemsTracked": "İzlenen Eşyalar",
+    "marketUpdates": "Pazar Güncellemeleri",
+    "coreFeatures": "Temel Özellikler",
+    "everythingYouNeed": "Başarmak için ihtiyacınız olan her şey",
+    "marketFlipper": "Market Flipper",
+    "marketFlipperDesc": "Kraliyet Şehirleri ile Karaborsa arasında kârlı ticaret rotalarını anında bulun. Gümüş kârını garanti etmek için hızlı seyahat, vergiler ve günlük hacmi hesaba katın.",
+    "pvpIntel": "PvP İstihbaratı",
+    "pvpIntelDesc": "Dış bölgelere hangi meta silahların hakim olduğunu görmek için canlı Killboard'u analiz edin. Savaşa girmeden önce düşman oyuncuları ve loncaları keşfedin.",
+    "killFeed": "Canlı Killboard",
+    "killFeedDesc": "Tüm sunuculardaki gerçek zamanlı PvP savaşlarını izleyin. Tam olarak kimin öldüğünü, nerede öldüğünü ve hangi eşyaları düşürdüğünü görün.",
+    "craftingCalc": "Kâr Hesaplayıcıları",
+    "craftingCalcDesc": "İster aşçı, ister simyacı, ister çiftçi veya işçi olun, araçlarımız gerçek zamanlı fiyatlara dayalı tam marjları hesaplar, böylece asla zararına üretim yapmazsınız.",
+    "metaBuilds": "Meta Dizilimleri",
+    "metaBuildsDesc": "Yozlaşmış Zindanlar, Cehennem Kapıları ve ZvZ savaşlarında en iyi oyuncular tarafından kullanılan en popüler ekipmanları keşfedin.",
+    "guildManagement": "Fraksiyon Savaşı",
+    "guildManagementDesc": "Haydut Saldırılarını takip edin, fraksiyon puanı verimliliğini hesaplayın ve kalp taşımacılığından elde ettiğiniz getiriyi en üst düzeye çıkarın.",
+    "globalSupport": "Küresel Destek",
+    "globalSupportDesc": "Küresel Albion topluluğunun dil engeli olmadan ticaret yapabilmesini ve savaşabilmesini sağlamak için 9 dilde tamamen yerelleştirildi.",
+    "dataSources": "Veri Kaynakları",
+    "dataSourcesDesc": "Albion Data Project'e büyük ölçüde güveniyoruz. Araçlarımızı yararlı buluyorsanız, fiyatları herkes için güncel tutmaya yardımcı olmak amacıyla lütfen istemciyi yüklemeyi düşünün!",
+    "learnMoreADP": "Albion Data Project hakkında daha fazla bilgi edinin",
+    "legalDisclaimer": "Yasal Uyarı",
+    "joinCommunity": "Topluluğa Katıl",
+    "twitter": "Bizi Twitter'da Takip Et",
+    "openSource": "Açık Kaynak",
+    "supportedLanguages": "Desteklenen Diller"
   },
   "MarketFlipper": {
     "itemsTracked": "{count} öğe izleniyor",
@@ -1045,13 +1152,13 @@
   "Metadata": {
     "title": "AlbionKit — En İyi Albion Online Yardımcısı",
     "template": "%s",
-    "description": "AlbionKit ile Albion Online'da hüküm sür. Build veritabanı, piyasa al-sat araçları, PvP istihbaratı, zanaat hesaplayıcıları ve canlı kill feed. Rekabet avantajın burada başlar.",
+    "description": "AlbionKit ile Albion Online'a hükmet. Market Flipper, Fraksiyon Savaş araçları (Kampanya, Taşıma ve Verimlilik), Haydut Saldırısı Takipçisi, PvP Intel, Üretim Hesaplayıcısı ve ZvZ savaş analizlerine erişin.",
     "keywords": "Albion Online, Albion Buildleri, Albion Market, Albion PvP, MMORPG"
   },
   "Pages": {
     "home": {
-      "title": "AlbionKit — Piyasa Araçları, PvP ve Meta Buildler",
-      "description": "Gerçek zamanlı piyasa verileri, PvP istihbaratı ve en iyi topluluk buildleri ile Albion Online deneyimini zirveye taşı. İhtiyacın olan tüm araçlar tek bir yerde."
+      "title": "AlbionKit - Pazar Araçları, Fraksiyon Takipçileri, PvP Intel ve Meta Dizilimleri",
+      "description": "Canlı pazar verileri, Fraksiyon ve Haydut Saldırısı takipçileri, canlı PvP ölüm akışları ve en iyi meta dizilimleriyle Albion Online deneyiminizi bir üst seviyeye taşıyın."
     },
     "about": {
       "title": "AlbionKit Hakkında",
@@ -1393,7 +1500,15 @@
       "profit": "Tüm maliyetler ve vergiler sonrası net kar",
       "roi": "Yatırım Getirisi (Kar / Maliyet * 100)"
     },
-    "refresh": "Yenile"
+    "refresh": "Yenile",
+    "focusDesc": "Focus increases resource return rate",
+    "profitTooltip": "Net profit per crafting cycle",
+    "roiTooltip": "Return on Investment (Profit / Cost × 100)",
+    "profitAnalysis": "Profit Analysis",
+    "effectiveCost": "Effective Cost",
+    "revenue": "Revenue",
+    "perUnit": "per unit",
+    "city": "City"
   },
   "Enchanting": {
     "title": "Eser Büyüleme Hesaplayıcı",
@@ -2585,7 +2700,14 @@
       "Ascended": "Yükselmiş"
     },
     "avatarUpdated": "Avatar güncellendi!",
-    "bannerUpdated": "Banner güncellendi!"
+    "bannerUpdated": "Banner güncellendi!",
+    "guides": {
+      "gettingStarted": "Getting Started",
+      "combatRotations": "Combat Rotations",
+      "combatPositioning": "Combat Positioning",
+      "gatheringRoutes": "Gathering Routes",
+      "silverFarmingGuide": "Silver Farming"
+    }
   },
   "Login": {
     "redirecting": "Giriş ekranına yönlendiriliyorsunuz..."
@@ -3201,7 +3323,18 @@
       "Caerleon": "Caerleon",
       "Brecilien": "Brecilien",
       "Black Market": "Kara Bazar"
-    }
+    },
+    "loading": "Loading...",
+    "noData": "No Data",
+    "noDataDesc": "No crafting data available",
+    "allItems": "All Items",
+    "profitPerPlot": "Profit/Plot",
+    "seedCost": "Seed Cost",
+    "totalProfit": "Total Profit",
+    "totalROI": "Total ROI",
+    "perUnit": "per unit",
+    "perCycle": "per cycle",
+    "lowStock": "Low stock - may not be able to buy full amount"
   },
   "GuildLicense": {
     "title": "Lonca Lisans Yönetimi",
@@ -3458,7 +3591,8 @@
       "high": "Yüksek"
     },
     "checkoutBuild": "AlbionKit'te {author} tarafından yapılan {category} buildi inceleyin.",
-    "backToBuilds": "Buildlere Dön"
+    "backToBuilds": "Buildlere Dön",
+    "buildInfo": "Build Info"
   },
   "NotFound": {
     "title": "Sislerde mi kayboldunuz?",
@@ -3727,49 +3861,150 @@
         "name": "Kristal Örümcekler",
         "desc": "Değerli kristaller ve nadir ganimetler için bozuk zindanlarda kristal örümcekleri farm yap.",
         "silver": "500k - 2M",
-        "time": "30 dk"
+        "time": "30 dk",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Experienced",
+          "1": "High Risk/High Reward",
+          "2": "Crystal Spiders"
+        },
+        "tips": {
+          "0": "Full loot on death - gear + resources",
+          "1": "Crystal spiders spawn here (high value)",
+          "2": "Always scout before gathering",
+          "3": "Use invisibility potions when possible",
+          "4": "Have escape route planned"
+        }
       },
       "static": {
         "name": "Statik Zindanlar",
         "desc": "Tutarlı ganimet ve şöhret için statik zindanları temizle. Yeni başlayanlar için harika.",
         "silver": "300k - 800k",
-        "time": "1 saat"
+        "time": "1 saat",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Beginners",
+          "1": "Safe Gathering",
+          "2": "Focus Farming"
+        },
+        "tips": {
+          "0": "No risk of losing resources on death",
+          "1": "Lower yield but consistent income",
+          "2": "Great for learning gathering mechanics",
+          "3": "Use focus points for maximum efficiency"
+        }
       },
       "hellgates": {
         "name": "Cehennem Kapıları",
         "desc": "1v1 den 5v5 e PvP arenaları. Yüksek risk, yüksek ödül. Rakibin ekipmanını yağmalamak için kazan.",
         "silver": "200k - 1M",
-        "time": "30 dk"
+        "time": "30 dk",
+        "premium": false,
+        "difficulty": "hard",
+        "best": {
+          "0": "PvP Players",
+          "1": "High Risk/High Reward"
+        },
+        "tips": {
+          "0": "Unique Avalonian resources",
+          "1": "Dangerous but rewarding",
+          "2": "Learn safe routes through cities",
+          "3": "Exit timers are crucial"
+        }
       },
       "corrupted": {
         "name": "Bozuk Zindanlar",
         "desc": "Değerli ganimetli solo veya duo zindanlar. Ölümde ekipman kaybetme riski.",
         "silver": "400k - 1.5M",
-        "time": "45 dk"
+        "time": "45 dk",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Experienced",
+          "1": "High Risk/High Reward"
+        },
+        "tips": {
+          "0": "100% resource loss on death",
+          "1": "Highest tier resources available",
+          "2": "Always bring escape mount",
+          "3": "Group up for safety",
+          "4": "Avoid peak hours"
+        }
       },
       "faction": {
         "name": "Faksiyon Savaşı",
         "desc": "Bölgeleri ele geçir ve ödüller için faksiyon savaşlarına katıl.",
         "silver": "300k - 600k",
-        "time": "1 saat"
+        "time": "1 saat",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Intermediate",
+          "1": "Balanced Risk/Reward"
+        },
+        "tips": {
+          "0": "50% resource loss on death",
+          "1": "Better resource density than royal",
+          "2": "Watch for gankers at choke points",
+          "3": "Bring cheap mount for escape"
+        }
       },
       "crystal": {
         "name": "Kristal Toplama",
         "desc": "Tehlikeli bölgelerde büyülü kristalleri topla. Düşük ekipmanla güvenli.",
         "silver": "200k - 500k",
-        "time": "1-2 saat"
+        "time": "1-2 saat",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Solo Gatherers",
+          "1": "Exploration"
+        },
+        "tips": {
+          "0": "Safe from regular players (no combat)",
+          "1": "Mist mobs can still kill you",
+          "2": "Unique resources not found elsewhere",
+          "3": "Good for peaceful gathering sessions"
+        }
       },
       "fiber": {
         "name": "Lif Farmı",
         "desc": "Adanda lif ek ve topla. Odak puanlarıyla pasif gelir.",
         "silver": "150k - 400k",
-        "time": "1-2 saat"
+        "time": "1-2 saat",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Beginners",
+          "1": "Safe Gathering",
+          "2": "Focus Farming"
+        },
+        "tips": {
+          "0": "No risk of losing resources on death",
+          "1": "Lower yield but consistent income",
+          "2": "Great for learning gathering mechanics",
+          "3": "Use focus points for maximum efficiency"
+        }
       },
       "laborers": {
         "name": "İşçiler",
         "desc": "İşçileri günlük görevlere gönder. Premium hesapla pasif gelir.",
         "silver": "100k - 300k",
-        "time": "Günlük"
+        "time": "Günlük",
+        "premium": true,
+        "difficulty": "easy",
+        "best": {
+          "0": "Premium Users",
+          "1": "Passive Income"
+        },
+        "tips": {
+          "0": "Requires premium account",
+          "1": "Set up once, collect daily",
+          "2": "Scales with laborer tier",
+          "3": "Essential passive income source"
+        }
       }
     }
   },
@@ -3872,6 +4107,33 @@
           "2": "PvP içeriğini dene",
           "3": "Uzun vadeli hedefler belirle"
         }
+      },
+      "Day 1-2": {
+        "title": "Learn the Basics",
+        "goals": {
+          "0": "Complete tutorial and early quests",
+          "1": "Choose your starting weapons",
+          "2": "Learn to gather basic resources",
+          "3": "Understand the death mechanics"
+        }
+      },
+      "Day 3-4": {
+        "title": "Establish Income",
+        "goals": {
+          "0": "Set up laborers on your island",
+          "1": "Start farming or gathering",
+          "2": "Learn basic crafting",
+          "3": "Build your silver reserve"
+        }
+      },
+      "Day 5-7": {
+        "title": "Specialize",
+        "goals": {
+          "0": "Choose your specialization",
+          "1": "Join a guild or find a group",
+          "2": "Try PvP content",
+          "3": "Set long-term goals"
+        }
       }
     },
     "mistakes": {
@@ -3911,7 +4173,10 @@
     "bestFor": "En İyi",
     "easy": "Easy",
     "medium": "Medium",
-    "hard": "Hard"
+    "hard": "Hard",
+    "newWeaponsDatabase": "🎉 New: Complete Weapons Database",
+    "newWeaponsDesc": "Check out our comprehensive 2026 weapons database with 18+ weapons, detailed rotations, gear recommendations, and meta ratings!",
+    "viewAllWeapons": "View All Weapons"
   },
   "CombatPositioning": {
     "title": "Savaş Pozisyonu Rehberi",

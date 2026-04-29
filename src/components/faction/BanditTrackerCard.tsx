@@ -106,10 +106,10 @@ export const BanditTrackerCard: React.FC<BanditTrackerCardProps> = ({
       : 'text-muted-foreground';
 
   return (
-    <div className="w-full max-w-md mx-auto bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-semibold flex items-center gap-2">
+    <div className="w-full bg-card border border-border rounded-3xl overflow-hidden shadow-sm">
+      <div className="p-8">
+        <div className="flex justify-between items-center mb-8">
+          <h3 className="text-xl font-black flex items-center gap-3">
             {t('nextAssault')}
           </h3>
           <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase ${statusDisplay.bg} ${statusDisplay.color}`}>
@@ -119,7 +119,7 @@ export const BanditTrackerCard: React.FC<BanditTrackerCardProps> = ({
         </div>
 
         <div className="text-center py-4">
-          <div className={`text-6xl font-mono font-bold tracking-tighter mb-4 ${status === 'ROLLING' ? 'text-green-500' : ''}`}>
+          <div className={`text-6xl font-mono font-bold tracking-tighter mb-4 ${status === 'ROLLING' ? 'text-green-500' : ''}`} suppressHydrationWarning>
             {status === 'ROLLING' ? '00:00:00' : formatTime(remainingMs)}
           </div>
           
@@ -138,7 +138,7 @@ export const BanditTrackerCard: React.FC<BanditTrackerCardProps> = ({
           </div>
           <div className="flex flex-col text-right">
             <span>{t('serverTime')}</span>
-            <span className="font-medium text-foreground">
+            <span className="font-medium text-foreground" suppressHydrationWarning>
               {now.getUTCHours().toString().padStart(2, '0')}:{now.getUTCMinutes().toString().padStart(2, '0')}
             </span>
           </div>

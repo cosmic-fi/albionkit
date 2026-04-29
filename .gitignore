@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# planning
+plans/
+
 # next.js
 /.next/
 /out/

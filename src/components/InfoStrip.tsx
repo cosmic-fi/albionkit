@@ -5,7 +5,7 @@ import { MessageSquare, Crown, TrendingUp, Shield, Zap, Heart, Coins, Hammer, Li
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
-export type PageId = 'home' | 'pvp-intel' | 'zvz-tracker' | 'market-flipper' | 'crafting-calc' | 'killboard' | 'gold-price' | 'builds' | 'profits' | 'profits-alchemy' | 'profits-cooking' | 'profits-animal' | 'profits-farming' | 'profits-labour' | 'profits-enchanting' | 'profits-chopped-fish';
+export type PageId = 'home' | 'pvp-intel' | 'zvz-tracker' | 'market-flipper' | 'crafting-calc' | 'killboard' | 'gold-price' | 'builds' | 'profits' | 'profits-alchemy' | 'profits-cooking' | 'profits-animal' | 'profits-farming' | 'profits-labour' | 'profits-enchanting' | 'profits-chopped-fish' | 'faction-campaign' | 'faction-efficiency' | 'faction-transport' | 'faction-bandit';
 
 interface InfoItem {
   id: string;
@@ -114,11 +114,11 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'feedback',
     icon: Bug,
     translationKey: 'feedback',
-    actionLink: "https://github.com/albionkit",
+    actionLink: "https://github.com/cosmic-fi/albionkit/issues",
     color: "text-rose-400",
     isExternal: true
   },
-  
+
   // Support & Contributions
   {
     id: 'donate',
@@ -131,7 +131,7 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'contribute',
     icon: Github,
     translationKey: 'contributeInfo',
-    actionLink: "https://github.com/cosmic-fi/albionkit",
+    actionLink: "https://github.com/cosmic-fi/albionkit?tab=contributing-ov-file",
     color: "text-foreground",
     isExternal: true
   }

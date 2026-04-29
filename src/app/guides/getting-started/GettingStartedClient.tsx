@@ -4,12 +4,12 @@ import { useTranslations } from 'next-intl';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
 import Link from 'next/link';
-import { 
-  CheckCircle2, 
-  Circle, 
-  Sword, 
-  Coins, 
-  Pickaxe, 
+import {
+  CheckCircle2,
+  Circle,
+  Sword,
+  Coins,
+  Pickaxe,
   Hammer,
   Home,
   BookOpen,
@@ -123,6 +123,7 @@ export default function GettingStartedClient() {
     <PageShell
       title={t('title')}
       description={t('description')}
+      backgroundImage='/background/ao-player.jpg'
     >
       <div className="space-y-8">
         {/* Hero */}

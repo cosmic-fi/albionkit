@@ -1,49 +1,132 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useServer } from '@/hooks/useServer';
 import { ServerSelector } from '@/components/ServerSelector';
 import { BanditTrackerCard } from '@/components/faction/BanditTrackerCard';
 import { BanditScheduleList } from '@/components/faction/BanditScheduleList';
 import { BanditReminder } from '@/components/faction/BanditReminder';
 import { useTranslations } from 'next-intl';
+import { PageShell } from '@/components/PageShell';
+import { InfoStrip } from '@/components/InfoStrip';
+import { Clock, Info, Shield, Bell, Calendar, Activity } from 'lucide-react';
+import { getNextWindow } from '@/lib/bandit-service';
 
 export default function BanditTrackerClient() {
   const { server, setServer } = useServer('west');
   const t = useTranslations('BanditTrackerPage');
-  
+  const tBandit = useTranslations('FactionTools.bandit');
+
   const [reminderEnabled, setReminderEnabled] = useState(false);
   const [reminderLeadTime, setReminderLeadTime] = useState(10);
   const [audioEnabled, setAudioEnabled] = useState(true);
+  const [now, setNow] = useState(new Date());
+
+  // Keep time updated for header stats
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const { window: nextWin } = getNextWindow(server, now);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto space-y-8">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight">{t('title')}</h1>
-          <p className="text-muted-foreground text-lg">
-            {t('description')}
-          </p>
-        </div>
+    <PageShell
+      title={t('title')}
+      description={t('description')}
+      backgroundImage='/background/ak-factions.jpeg'
+      headerActions={
+        <ServerSelector
+          selectedServer={server}
+          onServerChange={setServer}
+          size="sm"
+        />
+      }
+      stats={[
+        {
+          label: tBandit('serverTime'),
+          value: <span suppressHydrationWarning>{`${now.getUTCHours().toString().padStart(2, '0')}:${now.getUTCMinutes().toString().padStart(2, '0')}`}</span>,
+          icon: <Clock className="h-4 w-4 text-primary" />
+        },
+        {
+          label: tBandit('nextWindowLabel'),
+          value: `${nextWin.utcHour}:00`,
+          icon: <Calendar className="h-4 w-4 text-primary" />
+        },
+        {
+          label: tBandit('chanceLabel'),
+          value: `${Math.round(nextWin.chance * 100)}%`,
+          icon: <Shield className="h-4 w-4 text-primary" />,
+          trend: nextWin.chance >= 0.6 ? 'up' : nextWin.chance >= 0.4 ? 'neutral' : 'down'
+        }
+      ]}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main Content Area */}
+        <div className="lg:col-span-2 space-y-8">
+          <BanditTrackerCard
+            region={server}
+            reminderEnabled={reminderEnabled}
+            reminderLeadTime={reminderLeadTime}
+          />
 
-        <div className="flex flex-col items-center gap-6">
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-sm font-medium text-muted-foreground">Select Game Server</span>
-            <ServerSelector 
-              selectedServer={server} 
-              onServerChange={setServer} 
-              size="md"
-            />
+          <div className="bg-blue-500/10 border border-blue-500/20 p-5 rounded-2xl flex gap-4">
+            <div className="h-10 w-10 rounded-xl bg-blue-500/20 flex items-center justify-center shrink-0">
+              <Info className="h-5 w-5 text-blue-500" />
+            </div>
+            <div>
+              <p className="font-bold text-blue-500 text-sm uppercase tracking-wider mb-1">{tBandit('proTip')}</p>
+              <p className="text-blue-500/80 text-sm leading-relaxed">
+                {tBandit('proTipDesc')}
+              </p>
+            </div>
           </div>
 
-          <div className="w-full space-y-4">
-            <BanditTrackerCard 
-              region={server} 
-              reminderEnabled={reminderEnabled}
-              reminderLeadTime={reminderLeadTime}
-            />
-            
-            <BanditReminder 
+          <div className="prose dark:prose-invert max-w-none bg-card/50 border border-border p-8 rounded-3xl">
+            <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
+              <Shield className="h-6 w-6 text-primary" />
+              {tBandit('whatIs')}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <p className="text-muted-foreground leading-relaxed">
+                  {tBandit('whatIsDesc1')}
+                </p>
+                <p className="text-muted-foreground leading-relaxed font-medium text-foreground italic border-l-2 border-primary pl-4">
+                  "{tBandit('whatIsDesc2')}"
+                </p>
+              </div>
+              <div className="space-y-4">
+                <h3 className="text-lg font-bold flex items-center gap-2 mb-3">
+                  <Activity className="h-5 w-5 text-primary" />
+                  {tBandit('howWorks')}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {tBandit('howWorksDesc')}
+                </p>
+              </div>
+              <div className="space-y-4 md:col-span-2">
+                <h3 className="text-lg font-bold">{tBandit('triggerProbabilities')}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {tBandit('triggerProbDesc')}
+                </p>
+                <div className="p-3 bg-muted/50 rounded-xl border border-border flex items-center gap-3 text-xs text-muted-foreground mt-4">
+                  <Clock className="h-4 w-4 text-primary" />
+                  {tBandit('timezoneNote')}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar Area */}
+        <div className="lg:col-span-1 space-y-6">
+          <div className="space-y-2">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2 px-2">
+              <Bell className="h-4 w-4" />
+              {tBandit('notificationSettings')}
+            </h3>
+            <BanditReminder
               onReminderChange={(enabled, leadTime) => {
                 setReminderEnabled(enabled);
                 setReminderLeadTime(leadTime);
@@ -52,32 +135,17 @@ export default function BanditTrackerClient() {
             />
           </div>
 
-          <div className="w-full max-w-md bg-blue-500/10 border border-blue-500/20 p-4 rounded-xl text-sm text-blue-500 text-center">
-            <p className="font-medium">Pro Tip:</p>
-            <p>Bandit Assault triggers within a 1-hour roll window. Each window has a specific probability based on historical game data.</p>
+          <div className="space-y-2">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2 px-2">
+              <Calendar className="h-4 w-4" />
+              {tBandit('dailySchedule')}
+            </h3>
+            <BanditScheduleList region={server} />
           </div>
-
-          <BanditScheduleList region={server} />
-        </div>
-
-        <div className="mt-12 prose dark:prose-invert max-w-none border-t border-border pt-8">
-          <h2 className="text-2xl font-bold mb-4">What is Bandit Assault?</h2>
-          <p>
-            Bandit Assault is a major Faction Warfare event in the Red Zones of the Royal Continent. 
-            During the event, Caerleon takes control of all outposts, and factions must fight to capture them back.
-          </p>
-          <p>
-            This event is highly profitable for Faction Points and is also a strategic window for heart transports, 
-            as many PKs (Player Killers) are distracted by the faction blobs.
-          </p>
-          <h3 className="text-xl font-bold mt-6 mb-2">Trigger Probabilities</h3>
-          <p>
-            Albion Online uses a rolling system for Bandit Assaults. Every few hours, there's a "roll" to see if an 
-            assault starts. Our tracker uses the community-sourced probability percentages to show you when an 
-            event is most likely to begin.
-          </p>
         </div>
       </div>
-    </div>
+
+      <InfoStrip currentPage="faction-bandit" />
+    </PageShell>
   );
 }

@@ -49,7 +49,11 @@
       "searchItems": "搜索奖励...",
       "updated": "已更新",
       "never": "从未",
-      "silver": "银币"
+      "silver": "银币",
+      "whatIs": "什么是阵营效率？",
+      "whatIsDesc": "阵营效率决定了您每次活动实际获得多少阵营点数。它会根据您的阵营声望、高级会员状态和所在区域的风险级别（红区倍率最高）进行调整。",
+      "howWorks": "这个计算器是如何工作的？",
+      "howWorksDesc": "选择您的阵营、声望等级和高级会员状态。计算器将自动获取实时每日区域加成，并为您准确显示每 100 基础点数能获得多少实际点数。"
     },
     "transport": {
       "title": "阵营心运输利润",
@@ -71,7 +75,11 @@
       "calcNote": "利润使用起始城市的<strong>最低卖价</strong>和目标城市的<strong>最高买单价</strong>计算，已扣除 <strong>6.5%</strong> 的总费用。",
       "basedOnQuantity": "基于运输 <span>{quantity}</span> 个阵营心。",
       "silver": "银币",
-      "loading": "加载中..."
+      "loading": "加载中...",
+      "whatIs": "什么是阵营之心运输？",
+      "whatIsDesc": "阵营之心运输是一种高风险、高回报的走私任务，您需要将本阵营的“心”运往敌对城市。路线越长，回报越高。",
+      "howWorks": "如何阅读矩阵",
+      "howWorksDesc": "矩阵显示了在不同城市之间运输阵营之心的利润率。它综合了距离倍率和当前市场价格。选择您的出发城市即可查看最赚钱的终点路线。"
     },
     "bandit": {
       "title": "强盗袭击追踪器",
@@ -79,10 +87,46 @@
       "nextAssault": "下一次潜在袭击",
       "status": "当前状态",
       "active": "活动开启！",
-      "waiting": "等待计时器",
+      "waiting": "等待中",
       "imminent": "即将开始 (随时可能)",
       "notify": "通知我",
-      "history": "近期强盗记录"
+      "history": "近期强盗记录",
+      "cooldown": "Cooling Down",
+      "window": "Potential Window",
+      "overdue": "Overdue / Missed",
+      "lastAssault": "Last Assault End",
+      "reportButton": "Report Active!",
+      "reportSuccess": "Thank you for reporting!",
+      "reportError": "Error reporting event.",
+      "estimatedWindow": "预计窗口",
+      "timezoneNote": "所有时间均为 UTC（游戏内时间）。",
+      "probability": "强盗袭击概率：",
+      "targetHour": "目标时间 (UTC)",
+      "serverTime": "服务器时间 (UTC)",
+      "dailySchedule": "每日时间表 (UTC)",
+      "nextWindowLabel": "下一个窗口",
+      "chance": "{chance}% 概率",
+      "reminders": "提醒",
+      "remindersDesc": "窗口开启前通知",
+      "mute": "静音",
+      "unmute": "取消静音",
+      "disableNotifications": "禁用通知",
+      "enableNotifications": "启用通知",
+      "mins": "{mins} 分钟",
+      "rolling": "正在投骰",
+      "imminentTitle": "强盗袭击即将开始！🚩",
+      "imminentBody": "{region} 的下一个随机窗口将在 {mins} 分钟后开始（{chance}% 概率）。",
+      "proTip": "专业提示",
+      "proTipDesc": "强盗袭击会在1小时的随机窗口内触发。根据历史数据，每个窗口都有特定的触发概率。建议在窗口刚开始时通过传送门单人运输，这样最安全。",
+      "whatIs": "什么是强盗袭击？",
+      "whatIsDesc1": "强盗袭击是皇家大陆红区的一个大型阵营战争事件。在活动期间，卡莱恩将占领所有的前哨站，各个阵营必须战斗来夺回它们。",
+      "whatIsDesc2": "参加此活动可以获得大量的阵营点数，同时也是进行阵营之心运输的绝佳战略时机。",
+      "howWorks": "追踪器是如何工作的？",
+      "howWorksDesc": "我们利用历史数据来预估下一个窗口的开启时间。虽然无法保证精确的分钟，但模型会提供最高概率的时间段来帮你安排游戏。",
+      "triggerProbabilities": "触发概率",
+      "triggerProbDesc": "阿尔比恩在线对强盗袭击使用了随机投骰机制。每隔几个小时就会进行一次判定。我们的追踪器利用社区数据告诉你事件最有可能在何时开始。",
+      "notificationSettings": "通知设置",
+      "chanceLabel": "概率"
     },
     "campaign": {
       "title": "战役进度追踪器",
@@ -91,7 +135,32 @@
       "current": "当前点数",
       "required": "每日所需点数",
       "remaining": "剩余点数",
-      "projection": "每月预测"
+      "projection": "每月预测",
+      "daysLeft": "剩余天数",
+      "tier1": "1级",
+      "tier2": "2级",
+      "tier3": "3级",
+      "tier4": "4级",
+      "tier5": "5级",
+      "tier6": "6级",
+      "monthlyChest": "月度宝箱",
+      "progress": "战役进度",
+      "ahead": "进度超前",
+      "behind": "进度落后",
+      "expected": "预期",
+      "today": "今天",
+      "goalReached": "目标达成！",
+      "goalReachedDesc": "你已经成功达成了本月的阵营战役目标。",
+      "requiredPacing": "所需进度",
+      "dailyGoal": "每日目标",
+      "ptsPerDay": "点数 / 天",
+      "weeklyGoal": "每周目标",
+      "ptsPerWeek": "点数 / 周",
+      "calculationNote": "计算基于当前日历月剩余的 {days} 天 (UTC)。",
+      "whatIs": "什么是战役追踪器？",
+      "whatIsDesc": "阵营战役是阿尔比恩在线中的每月进度系统。参与阵营战争可获得点数，解锁包含洞察之书、银币和阵营之心的珍贵宝箱。",
+      "proTip": "专业提示",
+      "proTipDesc": "为了最大化您的奖励，争取每月至少达到 6 级。使用上方的每日目标指标确保进度。参与强盗袭击是超前完成进度的最快方式。"
     }
   },
   "Common": {
@@ -322,7 +391,8 @@
     "allRightsReserved": "版权所有。",
     "notAffiliated": "与 Sandbox Interactive Ltd. 无关。Albion Online 是 Sandbox Interactive Ltd. 的商标。",
     "madeWith": "用心制作",
-    "forCommunity": "献给阿尔比恩在线社区"
+    "forCommunity": "献给阿尔比恩在线社区",
+    "guides": "Guides"
   },
   "HomePage": {
     "heroTitle": "让你的每一次上线更有价值 ",
@@ -336,9 +406,9 @@
     "marketTitle": "轻松市场搬砖",
     "marketDescription": "识别城市间的利润贸易路线。对比买卖单价格，自动计算税费以最大化利润。",
     "startFlipping": "开始搬砖",
-    "pvpTitle": "实时 PvP 活动",
+    "pvpTitle": "实时 PvP 击杀榜",
     "pvpDescription": "实时监控全服击杀。追踪活跃玩家和热门装备。",
-    "watchFeed": "查看实时播报",
+    "watchFeed": "查看击杀榜",
     "zvzTitle": "ZvZ 战斗追踪",
     "zvzDescription": "分析大规模战斗，包含公会表现、出席率和装备构成的详细数据。",
     "analyzeBattles": "分析战斗",
@@ -383,8 +453,42 @@
     "zvzTrackerDesc": "追踪大规模开放世界战斗"
   },
   "AboutPage": {
-    "title": "关于 AlbionKit - 我们的使命和团队",
-    "description": "了解 AlbionKit、我们为 Albion Online 提供免费工具的使命以及团队。"
+    "title": "关于 AlbionKit - 我们的使命与团队",
+    "description": "了解 AlbionKit，我们提供免费阿尔比恩在线工具的使命，以及项目背后的团队。",
+    "heroBadge": "关于我们",
+    "heroTitle": "玩家打造，",
+    "heroJourney": " 服务玩家",
+    "heroSubtitle": "我们的使命是完全免费地为阿尔比恩在线社区提供最强大、最准确且易于使用的工具。",
+    "missionTitle": "我们的使命",
+    "missionP1": "AlbionKit 最初是一个简单的个人项目，由一名厌倦了依赖过时电子表格和笨拙 Discord 机器人的玩家创立。",
+    "missionP2": "如今，它已发展成为一套全面的工具套件，旨在帮助各种技能水平的玩家驾驭阿尔比恩在线复杂的经济和危险的 PvP 区域。",
+    "missionP3": "我们坚信开源精神。没有高级会员，没有付费墙，只有由令人惊叹的 Albion Data Project 提供支持的纯粹实用功能。",
+    "itemsTracked": "跟踪的物品",
+    "marketUpdates": "市场更新",
+    "coreFeatures": "核心功能",
+    "everythingYouNeed": "成功所需的一切",
+    "marketFlipper": "市场翻转器",
+    "marketFlipperDesc": "立即查找皇家城市与黑市之间有利可图的贸易路线。考虑快速旅行、税收和每日交易量以保证白银利润。",
+    "pvpIntel": "PvP 战报",
+    "pvpIntelDesc": "分析实时击杀榜，查看哪些 Meta 武器正在统治异界。在交战前侦察敌方玩家和公会。",
+    "killFeed": "实时击杀榜",
+    "killFeedDesc": "监控所有服务器的实时 PvP 战斗。准确了解谁在死亡、死亡地点以及掉落了什么装备。",
+    "craftingCalc": "利润计算器",
+    "craftingCalcDesc": "无论您是厨师、炼金术士、农民还是劳工，我们的工具都会根据实时价格计算确切利润率，确保您永远不会亏本制作。",
+    "metaBuilds": "Meta 配装",
+    "metaBuildsDesc": "发现顶级玩家在腐蚀地下城、地狱之门和 ZvZ 战斗中使用的最受欢迎配装。",
+    "guildManagement": "阵营战争",
+    "guildManagementDesc": "追踪强盗袭击，计算阵营点数效率，并最大化您在阵营之心运输上的回报。",
+    "globalSupport": "全球支持",
+    "globalSupportDesc": "全面本地化为 9 种语言，确保全球阿尔比恩社区可以无语言障碍地进行交易和战斗。",
+    "dataSources": "数据来源",
+    "dataSourcesDesc": "我们严重依赖 Albion Data Project。如果您觉得我们的工具有用，请考虑安装客户端以帮助为所有人保持价格更新！",
+    "learnMoreADP": "了解 Albion Data Project",
+    "legalDisclaimer": "法律声明",
+    "joinCommunity": "加入社区",
+    "twitter": "在 Twitter 上关注我们",
+    "openSource": "开源",
+    "supportedLanguages": "支持的语言"
   },
   "MarketFlipper": {
     "itemsTracked": "{count} 个物品已追踪",
@@ -1040,13 +1144,13 @@
   "Metadata": {
     "title": "AlbionKit — 你的 Albion Online 终极伴侣",
     "template": "%s",
-    "description": "使用 AlbionKit 征服 Albion Online。访问配置数据库、市场搬砖工具、PvP 情报、制作计算器和实时击杀播报。你的竞争优势从这里开始。",
+    "description": "使用 AlbionKit 称霸阿尔比恩在线。访问强大的工具，包括市场翻转器、阵营战争工具（战役、运输和效率）、强盗袭击追踪器、PvP 战报、制造计算器和 ZvZ 战斗分析。",
     "keywords": "Albion Online, 阿尔比恩, 配置, 搬砖, PvP, 制作, MMORPG"
   },
   "Pages": {
     "home": {
-      "title": "AlbionKit — 市场工具、PvP 情报与 Meta 配置",
-      "description": "通过实时市场数据、PvP 洞察和最佳社区配置提升你的 Albion Online 游戏体验。所有你需要的工具都集中在一个地方。"
+      "title": "AlbionKit - 市场工具、阵营追踪器、PvP 战报及 Meta 配装",
+      "description": "通过实时市场数据、阵营战役和强盗袭击追踪器、实时 PvP 击杀动态以及社区 Meta 配装，提升您的阿尔比恩在线体验。"
     },
     "about": {
       "title": "关于 AlbionKit",
@@ -1388,7 +1492,15 @@
       "profit": "扣除所有成本后的净利润",
       "roi": "投资回报率 (利润 / 成本 * 100)"
     },
-    "refresh": "刷新"
+    "refresh": "刷新",
+    "focusDesc": "Focus increases resource return rate",
+    "profitTooltip": "Net profit per crafting cycle",
+    "roiTooltip": "Return on Investment (Profit / Cost × 100)",
+    "profitAnalysis": "Profit Analysis",
+    "effectiveCost": "Effective Cost",
+    "revenue": "Revenue",
+    "perUnit": "per unit",
+    "city": "City"
   },
   "Enchanting": {
     "title": "神器附魔计算器",
@@ -2580,7 +2692,14 @@
       "Ascended": "飞升者"
     },
     "avatarUpdated": "头像已更新!",
-    "bannerUpdated": "横幅已更新!"
+    "bannerUpdated": "横幅已更新!",
+    "guides": {
+      "gettingStarted": "Getting Started",
+      "combatRotations": "Combat Rotations",
+      "combatPositioning": "Combat Positioning",
+      "gatheringRoutes": "Gathering Routes",
+      "silverFarmingGuide": "Silver Farming"
+    }
   },
   "Login": {
     "redirecting": "正在跳转至登录..."
@@ -3013,7 +3132,18 @@
       "Caerleon": "克列昂",
       "Brecilien": "布瑞西利恩",
       "Black Market": "黑市"
-    }
+    },
+    "loading": "Loading...",
+    "noData": "No Data",
+    "noDataDesc": "No crafting data available",
+    "allItems": "All Items",
+    "profitPerPlot": "Profit/Plot",
+    "seedCost": "Seed Cost",
+    "totalProfit": "Total Profit",
+    "totalROI": "Total ROI",
+    "perUnit": "per unit",
+    "perCycle": "per cycle",
+    "lowStock": "Low stock - may not be able to buy full amount"
   },
   "GuildLicense": {
     "title": "公会许可管理",
@@ -3278,7 +3408,8 @@
       "bag": "包裹"
     },
     "commentError": "发布评论失败",
-    "backToBuilds": "返回构建列表"
+    "backToBuilds": "返回构建列表",
+    "buildInfo": "Build Info"
   },
   "NotFound": {
     "title": "迷失在迷雾中？",
@@ -3515,7 +3646,10 @@
   "regions": {
     "Americas": "Americas",
     "Asia": "Asia",
-    "Europe": "Europe"
+    "Europe": "Europe",
+    "west": "Americas",
+    "east": "Asia",
+    "europe": "Europe"
   },
   "ZvZTracker": {
     "title": "ZvZ 追踪器",
@@ -3738,49 +3872,150 @@
         "name": "水晶蜘蛛",
         "desc": "在堕落地下城刷水晶蜘蛛获得珍贵水晶和稀有战利品。",
         "silver": "500k - 2M",
-        "time": "30 分钟"
+        "time": "30 分钟",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Experienced",
+          "1": "High Risk/High Reward",
+          "2": "Crystal Spiders"
+        },
+        "tips": {
+          "0": "Full loot on death - gear + resources",
+          "1": "Crystal spiders spawn here (high value)",
+          "2": "Always scout before gathering",
+          "3": "Use invisibility potions when possible",
+          "4": "Have escape route planned"
+        }
       },
       "static": {
         "name": "固定地下城",
         "desc": "清理固定地下城获得稳定战利品和声望。适合新手。",
         "silver": "300k - 800k",
-        "time": "1 小时"
+        "time": "1 小时",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Beginners",
+          "1": "Safe Gathering",
+          "2": "Focus Farming"
+        },
+        "tips": {
+          "0": "No risk of losing resources on death",
+          "1": "Lower yield but consistent income",
+          "2": "Great for learning gathering mechanics",
+          "3": "Use focus points for maximum efficiency"
+        }
       },
       "hellgates": {
         "name": "地狱门",
         "desc": "1v1 到 5v5 PvP 竞技场。高风险高回报。获胜掠夺对手装备。",
         "silver": "200k - 1M",
-        "time": "30 分钟"
+        "time": "30 分钟",
+        "premium": false,
+        "difficulty": "hard",
+        "best": {
+          "0": "PvP Players",
+          "1": "High Risk/High Reward"
+        },
+        "tips": {
+          "0": "Unique Avalonian resources",
+          "1": "Dangerous but rewarding",
+          "2": "Learn safe routes through cities",
+          "3": "Exit timers are crucial"
+        }
       },
       "corrupted": {
         "name": "堕落地下城",
         "desc": "单人或双人地下城有珍贵战利品。死亡时装备损失风险。",
         "silver": "400k - 1.5M",
-        "time": "45 分钟"
+        "time": "45 分钟",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Experienced",
+          "1": "High Risk/High Reward"
+        },
+        "tips": {
+          "0": "100% resource loss on death",
+          "1": "Highest tier resources available",
+          "2": "Always bring escape mount",
+          "3": "Group up for safety",
+          "4": "Avoid peak hours"
+        }
       },
       "faction": {
         "name": "派系战争",
         "desc": "占领领土并参加派系战斗获得奖励。",
         "silver": "300k - 600k",
-        "time": "1 小时"
+        "time": "1 小时",
+        "premium": false,
+        "difficulty": "medium",
+        "best": {
+          "0": "Intermediate",
+          "1": "Balanced Risk/Reward"
+        },
+        "tips": {
+          "0": "50% resource loss on death",
+          "1": "Better resource density than royal",
+          "2": "Watch for gankers at choke points",
+          "3": "Bring cheap mount for escape"
+        }
       },
       "crystal": {
         "name": "水晶采集",
         "desc": "在危险区域采集附魔水晶。低等级装备安全。",
         "silver": "200k - 500k",
-        "time": "1-2 小时"
+        "time": "1-2 小时",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Solo Gatherers",
+          "1": "Exploration"
+        },
+        "tips": {
+          "0": "Safe from regular players (no combat)",
+          "1": "Mist mobs can still kill you",
+          "2": "Unique resources not found elsewhere",
+          "3": "Good for peaceful gathering sessions"
+        }
       },
       "fiber": {
         "name": "纤维刷取",
         "desc": "在岛上种植和收获纤维。专注力被动收入。",
         "silver": "150k - 400k",
-        "time": "1-2 小时"
+        "time": "1-2 小时",
+        "premium": false,
+        "difficulty": "easy",
+        "best": {
+          "0": "Beginners",
+          "1": "Safe Gathering",
+          "2": "Focus Farming"
+        },
+        "tips": {
+          "0": "No risk of losing resources on death",
+          "1": "Lower yield but consistent income",
+          "2": "Great for learning gathering mechanics",
+          "3": "Use focus points for maximum efficiency"
+        }
       },
       "laborers": {
         "name": "劳工",
         "desc": "每天派遣劳工执行任务。Premium 账户被动收入。",
         "silver": "100k - 300k",
-        "time": "每天"
+        "time": "每天",
+        "premium": true,
+        "difficulty": "easy",
+        "best": {
+          "0": "Premium Users",
+          "1": "Passive Income"
+        },
+        "tips": {
+          "0": "Requires premium account",
+          "1": "Set up once, collect daily",
+          "2": "Scales with laborer tier",
+          "3": "Essential passive income source"
+        }
       }
     }
   },
@@ -3883,6 +4118,33 @@
           "2": "尝试 PvP 内容",
           "3": "设定长期目标"
         }
+      },
+      "Day 1-2": {
+        "title": "Learn the Basics",
+        "goals": {
+          "0": "Complete tutorial and early quests",
+          "1": "Choose your starting weapons",
+          "2": "Learn to gather basic resources",
+          "3": "Understand the death mechanics"
+        }
+      },
+      "Day 3-4": {
+        "title": "Establish Income",
+        "goals": {
+          "0": "Set up laborers on your island",
+          "1": "Start farming or gathering",
+          "2": "Learn basic crafting",
+          "3": "Build your silver reserve"
+        }
+      },
+      "Day 5-7": {
+        "title": "Specialize",
+        "goals": {
+          "0": "Choose your specialization",
+          "1": "Join a guild or find a group",
+          "2": "Try PvP content",
+          "3": "Set long-term goals"
+        }
       }
     },
     "mistakes": {
@@ -3922,7 +4184,10 @@
     "bestFor": "最适合",
     "easy": "简单",
     "medium": "中等",
-    "hard": "困难"
+    "hard": "困难",
+    "newWeaponsDatabase": "🎉 New: Complete Weapons Database",
+    "newWeaponsDesc": "Check out our comprehensive 2026 weapons database with 18+ weapons, detailed rotations, gear recommendations, and meta ratings!",
+    "viewAllWeapons": "View All Weapons"
   },
   "CombatPositioning": {
     "title": "战斗站位指南",

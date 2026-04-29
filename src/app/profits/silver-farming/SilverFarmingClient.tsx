@@ -4,13 +4,13 @@ import { useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
-import { 
-  Coins, 
-  Clock, 
-  Target, 
-  TrendingUp, 
-  AlertCircle, 
-  CheckCircle2, 
+import {
+  Coins,
+  Clock,
+  Target,
+  TrendingUp,
+  AlertCircle,
+  CheckCircle2,
   Crown,
   Sword,
   Skull,
@@ -36,7 +36,7 @@ interface SilverActivity {
 
 export default function SilverFarmingClient() {
   const t = useTranslations('SilverFarming');
-  
+
   const SILVER_ACTIVITIES: SilverActivity[] = [
     {
       id: 'crystal-spiders',
@@ -175,6 +175,7 @@ export default function SilverFarmingClient() {
     <PageShell
       title={t('title')}
       description={t('description')}
+      backgroundImage='/background/ao-player.jpg'
       headerActions={
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="gap-1">

@@ -3,10 +3,10 @@
 import { useTranslations } from 'next-intl';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
-import { 
-  Shield, 
-  Sword, 
-  Target, 
+import {
+  Shield,
+  Sword,
+  Target,
   MapPin,
   AlertTriangle,
   CheckCircle2,
@@ -23,6 +23,7 @@ export default function CombatPositioningClient() {
     <PageShell
       title={t('title')}
       description={t('description')}
+      backgroundImage='/background/ao-player.jpg'
     >
       <div className="space-y-8">
         {/* Hero */}
@@ -114,7 +115,7 @@ export default function CombatPositioningClient() {
         {/* Role-Based Positioning */}
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-foreground">{t('rolePositioning')}</h2>
-          
+
           {/* Tank */}
           <div className="bg-card rounded-xl border border-border p-6">
             <div className="flex items-center gap-3 mb-4">

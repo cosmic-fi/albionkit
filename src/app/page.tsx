@@ -207,7 +207,7 @@ export default async function Home() {
         <FeatureSection
           title={t('pvpTitle')}
           description={t('pvpDescription')}
-          link="/tools/kill-feed"
+          link="/tools/killboard"
           linkText={t('watchFeed')}
           backgroundImage="/background/ao-pvp.jpg"
           previewImageLight="/background/ak-killfeed-light.png"
@@ -276,7 +276,7 @@ export default async function Home() {
               color="blue"
             />
             <FeatureCard
-              href="/tools/crafting-calc"
+              href="/profits/crafting"
               icon={<Hammer className="h-6 w-6 text-success" />}
               itemImage="T8_2H_TOOL_HAMMER_AVALON"
               title={t('craftingCalc')}
@@ -373,7 +373,7 @@ export default async function Home() {
 
         {/* Social Share */}
         <div className="mt-8 flex justify-center">
-          <SocialShare 
+          <SocialShare
             title="AlbionKit - The Ultimate Albion Online Companion"
             description="Master Albion Online with real-time market data, PvP intel, and powerful tools."
           />

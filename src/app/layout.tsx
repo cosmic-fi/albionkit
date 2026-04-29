@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Afacad, Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { MainLayout } from "@/components/MainLayout";
 import { AuthProvider } from "@/context/AuthContext";
@@ -9,26 +8,6 @@ import { Toaster } from 'sonner';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, getLocale } from 'next-intl/server';
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const afacad = Afacad({
-  variable: "--font-afacad",
-  subsets: ["latin"],
-})
 
 export const viewport: Viewport = {
   themeColor: "#f59e0b",
@@ -48,8 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: t('description'),
     keywords: t('keywords').split(', '),
-    authors: [{ name: "AlbionKit Team" }],
-    creator: "AlbionKit",
+    authors: [{ name: "Cosmic-fi (Cosmic Boucher)" }],
+    creator: "Cosmic-fi (Cosmic Boucher)",
     publisher: "AlbionKit",
     alternates: {
       canonical: 'https://albionkit.com',
@@ -142,7 +121,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${afacad.variable} ${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased min-h-screen bg-background text-foreground flex flex-col transition-colors duration-300`}
+        className={`antialiased min-h-screen bg-background text-foreground flex flex-col transition-colors duration-300`}
       >
         <noscript>
           <iframe

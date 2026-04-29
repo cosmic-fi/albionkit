@@ -68,11 +68,30 @@ export default async function KillboardPage() {
     ],
   };
 
+  const webAppJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Killboard - AlbionKit',
+    applicationCategory: 'GameUtility',
+    operatingSystem: 'Web Browser',
+    description: 'Real-time PvP battle tracker and killboard for Albion Online. Analyze player statistics, guild wars, and live combat logs.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD'
+    },
+    featureList: 'Live Kill Feed, PvP Analysis, Guild Wars Tracking, Meta Weapon Tracking'
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
       />
       <KillboardClient />
     </>

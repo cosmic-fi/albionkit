@@ -65,8 +65,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const guidePages = [
     '/guides/getting-started',
     '/guides/combat/positioning',
-    '/guides/combat/rotations',
-    '/guides/combat/weapons',
     '/guides/gathering/routes',
   ].map((route) => ({
     url: `${baseUrl}${route}`,

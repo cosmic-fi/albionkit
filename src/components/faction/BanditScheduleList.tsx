@@ -15,9 +15,8 @@ export const BanditScheduleList: React.FC<BanditScheduleListProps> = ({ region }
   const { window: nextWindow } = getNextWindow(region);
 
   return (
-    <div className="w-full max-w-md mx-auto mt-8 bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+    <div className="w-full bg-card border border-border rounded-3xl overflow-hidden shadow-sm">
       <div className="p-6">
-        <h3 className="text-lg font-semibold mb-4">{t('dailySchedule')}</h3>
         <div className="space-y-2">
           {schedule.map((window, index) => {
             const isNext = window.utcHour === nextWindow.utcHour;
