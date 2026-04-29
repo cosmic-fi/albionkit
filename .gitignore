@@ -16,6 +16,9 @@
 # planning
 plans/
 
+# bot
+/albionkit-bot
+
 # next.js
 /.next/
 /out/
