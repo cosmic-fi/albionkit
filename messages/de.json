@@ -163,6 +163,47 @@
       "proTipDesc": "Um deine Belohnungen zu maximieren, peile jeden Monat mindestens Stufe 6 an. Nutze das Tagesziel oben, um dein Tempo zu halten. Die Teilnahme an Banditenüberfällen ist der schnellste Weg, um voranzukommen."
     }
   },
+  "BotPage": {
+    "title": "AlbionKit Discord Bot - Markt- und Event-Informationen",
+    "description": "Bringen Sie AlbionKit auf Ihren Discord-Server. Erhalten Sie Echtzeit-Marktpreise, Gold-Trends und Banditenüberfall-Benachrichtigungen direkt in Ihren Kanälen.",
+    "heroTitle": "AlbionKit Bot",
+    "heroSubtitle": "Der ultimative Discord-Begleiter für jeden Albion Online-Spieler. Bringen Sie Marktdaten, Event-Benachrichtigungen und PvP-Informationen in Ihre Community.",
+    "addToDiscord": "Zu Discord hinzufügen",
+    "viewOnGithub": "Auf GitHub ansehen",
+    "featuresTitle": "Leistungsstarke Funktionen",
+    "featureMarket": "Markt-Informationen",
+    "featureMarketDesc": "Prüfen Sie Echtzeitpreise für jeden Gegenstand in allen Städten mit `/price`. Verfolgen Sie Gold-Trends mit `/gold`.",
+    "featureEvents": "Event-Benachrichtigungen",
+    "featureEventsDesc": "Erhalten Sie automatische Benachrichtigungen, bevor Banditenüberfälle beginnen. Nutzen Sie `/bandit` für Live-Countdowns.",
+    "featureKillboard": "Killboard-Feeds",
+    "featureKillboardDesc": "Leiten Sie Live-PvP-Kill-Feeds für Ihre Gilde oder Lieblingsspieler direkt in jeden Discord-Kanal.",
+    "featureSuggest": "Direktes Feedback",
+    "featureSuggestDesc": "Haben Sie eine Idee? Nutzen Sie `/suggest`, um Ihr Feedback direkt an unser Entwicklerteam zu senden.",
+    "howToUse": "Anleitung",
+    "step1Title": "Einfache Einladung",
+    "step1": "Laden Sie den Bot über die Schaltfläche oben auf Ihren Server ein.",
+    "step2Title": "Einheitliche Hilfe",
+    "step2": "Nutzen Sie `/help`, um eine vollständige Liste der verfügbaren Befehle und deren Verwendung anzuzeigen.",
+    "step3Title": "Erweiterte Konfiguration",
+    "step3": "Admins können `/config` nutzen, um automatische Benachrichtigungen und Tracker einzurichten.",
+    "securityTitle": "Sicher, Offen & Community-getrieben",
+    "securityDesc": "Der AlbionKit Bot ist vollständig Open-Source und basiert auf dem Albion Data Project. Wir fragen niemals nach Kontodaten und speichern keine sensiblen Serverdaten. Es werden nur die für Slash-Befehle und Nachrichten-Routing erforderlichen Berechtigungen benötigt.",
+    "techDiscord": "Discord.js v14",
+    "techNextJS": "Next.js Integriert",
+    "techOSS": "Open Source (MIT)",
+    "seoKeywords": "Albion Online Discord Bot, Albion Markt Bot, Albion Bandit Tracker Discord, Albion Online Preis Bot, Albion Killboard Bot, Albion Online Event Benachrichtigungen, Discord Bot für Albion Online, Albion Markt Intelligenz Bot",
+    "faqTitle": "Häufig gestellte Fragen",
+    "faq": {
+      "q1": "Wie viel kostet der Bot?",
+      "a1": "Der AlbionKit Bot ist 100 % kostenlos und Open-Source. Wir glauben daran, der Community Tools ohne Paywalls oder versteckte Gebühren zur Verfügung zu stellen.",
+      "q2": "Ist er sicher für meinen Server?",
+      "a2": "Ja. Der Bot wird auf einer sicheren Infrastruktur gehostet und nutzt das moderne Discord Slash Command System. Wir benötigen nur die minimal notwendigen Berechtigungen für die Funktion.",
+      "q3": "Woher kommen die Daten?",
+      "a3": "Alle Marktdaten stammen vom Albion Data Project, demselben zuverlässigen Community-Netzwerk, das auch unsere Web-Tools speist.",
+      "q4": "Kann ich die Alarme anpassen?",
+      "a4": "Absolut. Admins können den Befehl `/config` verwenden, um festzulegen, welche Kanäle Alarme für Banditenüberfälle oder Killboard-Feeds erhalten."
+    }
+  },
   "regions": {
     "Americas": "Amerika",
     "Asia": "Asien",
@@ -362,7 +403,8 @@
     "factionEfficiency": "Effizienz",
     "heartTransport": "Herztransport",
     "banditTracker": "Bandit Tracker",
-    "campaignTracker": "Kampagnen Tracker"
+    "campaignTracker": "Kampagnen Tracker",
+    "bot": "Bot"
   },
   "Footer": {
     "tools": "Werkzeuge",
@@ -390,6 +432,7 @@
     "community": "Community",
     "builds": "Builds",
     "about": "Über uns",
+    "bot": "Bot",
     "legal": "Rechtliches",
     "privacy": "Datenschutz",
     "terms": "Nutzungsbedingungen",

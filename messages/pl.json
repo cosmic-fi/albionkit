@@ -163,6 +163,47 @@
       "proTipDesc": "Aby zmaksymalizować nagrody, celuj w co najmniej Stopień 6 każdego miesiąca. Używaj wskaźnika Celu Dziennego, aby upewnić się, że masz dobre tempo. Udział w Atakach Bandytów to najszybszy sposób na wyprzedzenie harmonogramu."
     }
   },
+  "BotPage": {
+    "title": "Bot AlbionKit Discord - Inteligencja rynkowa i zdarzenia",
+    "description": "Dodaj AlbionKit do swojego serwera Discord. Otrzymuj ceny rynkowe w czasie rzeczywistym, trendy złota i alerty o atakach bandytów bezpośrednio na swoich kanałach.",
+    "heroTitle": "Bot AlbionKit",
+    "heroSubtitle": "Niezbędny towarzysz Discord dla każdego gracza Albion Online. Dostarcz dane rynkowe, alerty o zdarzeniach i intel PvP do swojej społeczności.",
+    "addToDiscord": "Dodaj do Discorda",
+    "viewOnGithub": "Zobacz na GitHub",
+    "featuresTitle": "Potężne funkcje",
+    "featureMarket": "Dane rynkowe",
+    "featureMarketDesc": "Sprawdzaj ceny dowolnego przedmiotu we wszystkich miastach w czasie rzeczywistym za pomocą `/price`. Monitoruj trendy złota dzięki `/gold`.",
+    "featureEvents": "Alerty o zdarzeniach",
+    "featureEventsDesc": "Otrzymuj automatyczne powiadomienia przed rozpoczęciem ataków bandytów. Używaj `/bandit` do odliczania na żywo.",
+    "featureKillboard": "Kanały Killboard",
+    "featureKillboardDesc": "Przesyłaj na żywo informacje o zabójstwach PvP swojej gildii lub ulubionych graczy bezpośrednio na dowolny kanał Discord.",
+    "featureSuggest": "Bezpośrednia opinia",
+    "featureSuggestDesc": "Masz pomysł? Użyj `/suggest`, aby wysłać swoją opinię bezpośrednio do naszego zespołu programistów.",
+    "howToUse": "Jak używać",
+    "step1Title": "Proste zaproszenie",
+    "step1": "Zaproś bota na swój serwer, używając powyższego przycisku.",
+    "step2Title": "Zunifikowana pomoc",
+    "step2": "Użyj `/help`, aby zobaczyć pełną listę dostępnych komend i sposób ich użycia.",
+    "step3Title": "Zaawansowana konfiguracja",
+    "step3": "Administratorzy mogą używać `/config`, aby skonfigurować automatyczne alerty i trackery.",
+    "securityTitle": "Bezpieczny, otwarty i napędzany przez społeczność",
+    "securityDesc": "Bot AlbionKit jest w pełni open-source i oparty na projekcie Albion Data. Nigdy nie prosimy o dane logowania ani nie przechowujemy wrażliwych danych serwera. Wymagane są tylko uprawnienia potrzebne do komend slash i przesyłania wiadomości.",
+    "techDiscord": "Discord.js v14",
+    "techNextJS": "Zintegrowany z Next.js",
+    "techOSS": "Open Source (MIT)",
+    "seoKeywords": "Albion Online Discord Bot, Albion Market Bot, Albion Bandit Tracker Discord, Albion Online Price Bot, Albion Killboard Bot, Albion Online powiadomienia o zdarzeniach, Discord Bot dla Albion Online, Albion Market Intelligence Bot",
+    "faqTitle": "Często zadawane pytania",
+    "faq": {
+      "q1": "Ile kosztuje bot?",
+      "a1": "Bot AlbionKit jest w 100% darmowy i open-source. Wierzymy w dostarczanie narzędzi społeczności bez paywalli i ukrytych opłat.",
+      "q2": "Czy jest bezpieczny dla mojego serwera?",
+      "a2": "Tak. Bot jest hostowany na bezpiecznej infrastrukturze i korzysta z nowoczesnego systemu Discord Slash Command. Wymagamy tylko minimalnych uprawnień niezbędnych do działania.",
+      "q3": "Skąd pochodzą dane?",
+      "a3": "Wszystkie dane rynkowe pochodzą z Albion Data Project, tej samej niezawodnej sieci społecznościowej, która zasila nasze narzędzia internetowe.",
+      "q4": "Czy mogę dostosować alerty?",
+      "a4": "Oczywiście. Administratorzy mogą użyć komendy `/config`, aby określić, które kanały otrzymują alerty o atakach bandytów lub kanały killboard."
+    }
+  },
   "regions": {
     "Americas": "Ameryki",
     "Asia": "Azja",
@@ -362,7 +403,8 @@
     "factionEfficiency": "Efektywność",
     "heartTransport": "Transport Serc",
     "banditTracker": "Tracker Bandytów",
-    "campaignTracker": "Tracker Kampanii"
+    "campaignTracker": "Tracker Kampanii",
+    "bot": "Bot"
   },
   "Footer": {
     "tools": "Narzędzia",
@@ -390,6 +432,7 @@
     "community": "Społeczność",
     "builds": "Buildy",
     "about": "O nas",
+    "bot": "Bot",
     "legal": "Prawne",
     "privacy": "Polityka Prywatności",
     "terms": "Warunki Korzystania",

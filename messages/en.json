@@ -163,6 +163,47 @@
       "proTipDesc": "To maximize your rewards, aim for at least Tier 6 every month. Use the Daily Goal metric above to ensure you are pacing correctly. Participating in Bandit Assaults is the fastest way to stay ahead of pace."
     }
   },
+  "BotPage": {
+    "title": "AlbionKit Discord Bot - Market & Event Intelligence",
+    "description": "Bring AlbionKit to your Discord server. Get real-time market prices, gold trends, and Bandit Assault alerts directly in your channels.",
+    "heroTitle": "AlbionKit Bot",
+    "heroSubtitle": "The ultimate Discord companion for every Albion Online player. Bring market data, event alerts, and PvP intel to your community.",
+    "addToDiscord": "Add to Discord",
+    "viewOnGithub": "View on GitHub",
+    "featuresTitle": "Powerful Features",
+    "featureMarket": "Market Intel",
+    "featureMarketDesc": "Check real-time prices for any item across all cities using `/price`. Monitor gold trends with `/gold`.",
+    "featureEvents": "Event Alerts",
+    "featureEventsDesc": "Get automated notifications before Bandit Assaults start. Use `/bandit` for live countdowns.",
+    "featureKillboard": "Killboard Feeds",
+    "featureKillboardDesc": "Route live PvP kill feeds for your guild or favorite players directly to any Discord channel.",
+    "featureSuggest": "Direct Feedback",
+    "featureSuggestDesc": "Have an idea? Use `/suggest` to send your feedback directly to our development team.",
+    "howToUse": "How to Use",
+    "step1Title": "Simple Invitation",
+    "step1": "Invite the bot to your server using the button above.",
+    "step2Title": "Unified Help",
+    "step2": "Use `/help` to see a full list of available commands and their usage.",
+    "step3Title": "Advanced Config",
+    "step3": "Admins can use `/config` to set up automated alerts and trackers.",
+    "securityTitle": "Secure, Open & Community Driven",
+    "securityDesc": "AlbionKit Bot is fully open-source and built on the Albion Data Project. We never ask for account credentials or store sensitive server data. Only the permissions needed for slash commands and message routing are required.",
+    "techDiscord": "Discord.js v14",
+    "techNextJS": "Next.js Integrated",
+    "techOSS": "Open Source (MIT)",
+    "seoKeywords": "Albion Online Discord Bot, Albion Market Bot, Albion Bandit Tracker Discord, Albion Online Price Bot, Albion Killboard Bot, Albion Online Event Notifications, Discord Bot for Albion Online, Albion Market Intelligence Bot",
+    "faqTitle": "Frequently Asked Questions",
+    "faq": {
+      "q1": "How much does the bot cost?",
+      "a1": "The AlbionKit Bot is 100% free and open-source. We believe in providing tools to the community without paywalls or hidden fees.",
+      "q2": "Is it safe for my server?",
+      "a2": "Yes. The bot is hosted on secure infrastructure and uses the modern Discord Slash Command system. We only require the minimum necessary permissions to function.",
+      "q3": "Where does the data come from?",
+      "a3": "All market data is sourced from the Albion Data Project, the same reliable community network that powers our web tools.",
+      "q4": "Can I customize the alerts?",
+      "a4": "Absolutely. Admins can use the `/config` command to specify which channels receive alerts for Bandit Assaults or Killboard feeds."
+    }
+  },
   "regions": {
     "Americas": "Americas",
     "Asia": "Asia",
@@ -360,7 +401,8 @@
     "factionEfficiency": "Efficiency",
     "heartTransport": "Heart Transport",
     "banditTracker": "Bandit Tracker",
-    "campaignTracker": "Campaign Tracker"
+    "campaignTracker": "Campaign Tracker",
+    "bot": "Bot"
   },
   "Footer": {
     "tools": "Tools",
@@ -389,6 +431,7 @@
     "builds": "Builds",
     "guides": "Guides",
     "about": "About",
+    "bot": "Bot",
     "legal": "Legal",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",

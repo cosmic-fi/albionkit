@@ -163,6 +163,47 @@
       "proTipDesc": "Pour maximiser vos récompenses, visez au moins le Palier 6 chaque mois. Utilisez l'objectif quotidien ci-dessus pour assurer votre rythme. Participer aux Assauts des Bandits est le moyen le plus rapide d'avancer."
     }
   },
+  "BotPage": {
+    "title": "AlbionKit Discord Bot - Intelligence de Marché et d'Evénements",
+    "description": "Amenez AlbionKit sur votre serveur Discord. Obtenez les prix du marché en temps réel, les tendances de l'or et les alertes d'Assaut Bandit directement dans vos salons.",
+    "heroTitle": "Bot AlbionKit",
+    "heroSubtitle": "Le compagnon Discord ultime pour chaque joueur d'Albion Online. Apportez des données de marché, des alertes d'événements et des infos PvP à votre communauté.",
+    "addToDiscord": "Ajouter à Discord",
+    "viewOnGithub": "Voir sur GitHub",
+    "featuresTitle": "Fonctionnalités Puissantes",
+    "featureMarket": "Infos Marché",
+    "featureMarketDesc": "Consultez les prix en temps réel pour n'importe quel objet dans toutes les villes avec `/price`. Suivez les tendances de l'or avec `/gold`.",
+    "featureEvents": "Alertes d'Evénements",
+    "featureEventsDesc": "Recevez des notifications automatiques avant le début des Assauts Bandits. Utilisez `/bandit` pour des comptes à rebours en direct.",
+    "featureKillboard": "Flux Killboard",
+    "featureKillboardDesc": "Redirigez les flux de kills PvP en direct pour votre guilde ou vos joueurs préférés directement vers n'importe quel salon Discord.",
+    "featureSuggest": "Suggestions Directes",
+    "featureSuggestDesc": "Une idée ? Utilisez `/suggest` pour envoyer vos commentaires à notre équipe de développement.",
+    "howToUse": "Comment Utiliser",
+    "step1Title": "Invitation Simple",
+    "step1": "Invitez le bot sur votre serveur en utilisant le bouton ci-dessus.",
+    "step2Title": "Aide Unifiée",
+    "step2": "Utilisez `/help` pour voir une liste complète des commandes disponibles et leur utilisation.",
+    "step3Title": "Configuration Avancée",
+    "step3": "Les administrateurs peuvent utiliser `/config` pour configurer des alertes et des suivis automatiques.",
+    "securityTitle": "Sécurisé, Ouvert et Piloté par la Communauté",
+    "securityDesc": "Le Bot AlbionKit est entièrement open-source et basé sur le projet Albion Data. Nous ne demandons jamais les identifiants de compte et ne stockons pas de données serveur sensibles. Seules les permissions nécessaires pour les commandes slash et le routage des messages sont requises.",
+    "techDiscord": "Discord.js v14",
+    "techNextJS": "Intégré à Next.js",
+    "techOSS": "Open Source (MIT)",
+    "seoKeywords": "Bot Discord Albion Online, Bot Marché Albion, Traqueur Bandit Albion Discord, Bot Prix Albion Online, Bot Killboard Albion, Notifications Evénements Albion Online, Bot Discord pour Albion Online, Bot Intelligence Marché Albion",
+    "faqTitle": "Foire Aux Questions",
+    "faq": {
+      "q1": "Combien coûte le bot ?",
+      "a1": "Le bot AlbionKit est 100 % gratuit et open-source. Nous croyons en la fourniture d'outils à la communauté sans murs de paiement ni frais cachés.",
+      "q2": "Est-ce sûr pour mon serveur ?",
+      "a2": "Oui. Le bot est hébergé sur une infrastructure sécurisée et utilise le système moderne de commandes Slash de Discord. Nous n'exigeons que les permissions minimales nécessaires au fonctionnement.",
+      "q3": "D'où viennent les données ?",
+      "a3": "Toutes les données du marché proviennent de l'Albion Data Project, le même réseau communautaire fiable qui alimente nos outils web.",
+      "q4": "Puis-je personnaliser les alertes ?",
+      "a4": "Absolument. Les administrateurs peuvent utiliser la commande `/config` pour spécifier quels salons reçoivent des alertes pour les Assauts de Bandits ou les flux Killboard."
+    }
+  },
   "regions": {
     "Americas": "Amériques",
     "Asia": "Asie",
@@ -362,7 +403,8 @@
     "factionEfficiency": "Efficacité",
     "heartTransport": "Transport de Cœurs",
     "banditTracker": "Suivi des Bandits",
-    "campaignTracker": "Suivi de Campagne"
+    "campaignTracker": "Suivi de Campagne",
+    "bot": "Bot"
   },
   "Footer": {
     "tools": "Outils",
@@ -390,6 +432,7 @@
     "community": "Communauté",
     "builds": "Builds",
     "about": "À Propos de Nous",
+    "bot": "Bot",
     "legal": "Mentions Légales",
     "privacy": "Politique de Confidentialité",
     "terms": "Conditions d'Utilisation",

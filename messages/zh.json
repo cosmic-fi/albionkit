@@ -163,6 +163,47 @@
       "proTipDesc": "为了最大化您的奖励，争取每月至少达到 6 级。使用上方的每日目标指标确保进度。参与强盗袭击是超前完成进度的最快方式。"
     }
   },
+  "BotPage": {
+    "title": "AlbionKit Discord 机器人 - 市场与事件情报",
+    "description": "将 AlbionKit 带到您的 Discord 服务器。直接在频道中获取实时市场价格、黄金趋势和强盗袭击警报。",
+    "heroTitle": "AlbionKit 机器人",
+    "heroSubtitle": "每位阿尔比恩在线玩家的终极 Discord 伴侣。为您的社区带来市场数据、事件警报和 PvP 情报。",
+    "addToDiscord": "添加到 Discord",
+    "viewOnGithub": "在 GitHub 上查看",
+    "featuresTitle": "强大功能",
+    "featureMarket": "市场情报",
+    "featureMarketDesc": "使用 `/price` 实时查询所有城市的任何物品价格。使用 `/gold` 监控黄金趋势。",
+    "featureEvents": "事件警报",
+    "featureEventsDesc": "在强盗袭击开始前获得自动通知。使用 `/bandit` 查看实时倒计时。",
+    "featureKillboard": "击杀榜推送",
+    "featureKillboardDesc": "将您的公会或喜爱玩家的实时 PvP 击杀推送直接路由到任何 Discord 频道。",
+    "featureSuggest": "直接反馈",
+    "featureSuggestDesc": "有好的想法？使用 `/suggest` 直接向我们的开发团队发送您的反馈。",
+    "howToUse": "如何使用",
+    "step1Title": "简单邀请",
+    "step1": "点击上方按钮将机器人邀请至您的服务器。",
+    "step2Title": "统一帮助",
+    "step2": "使用 `/help` 查看所有可用命令及其用法。",
+    "step3Title": "高级配置",
+    "step3": "管理员可以使用 `/config` 设置自动警报和追踪器。",
+    "securityTitle": "安全、开放且社区驱动",
+    "securityDesc": "AlbionKit Bot 完全开源，建立在 Albion Data Project 之上。我们从不索取账户凭证或存储敏感的服务器数据。只需要斜线命令和消息路由所必需的权限。",
+    "techDiscord": "Discord.js v14",
+    "techNextJS": "Next.js 集成",
+    "techOSS": "开源 (MIT)",
+    "seoKeywords": "阿尔比恩在线 Discord 机器人, 阿尔比恩市场机器人, 阿尔比恩强盗追踪 Discord, 阿尔比恩在线价格机器人, 阿尔比恩击杀榜机器人, 阿尔比恩在线事件通知, 阿尔比恩在线 Discord 机器人, 阿尔比恩市场情报机器人",
+    "faqTitle": "常见问题",
+    "faq": {
+      "q1": "机器人收费吗？",
+      "a1": "AlbionKit 机器人 100% 免费且开源。我们致力于为社区提供工具，不设任何付费墙或隐藏费用。",
+      "q2": "它对我的服务器安全吗？",
+      "a2": "是的。机器人托管在安全的基础设施上，并使用现代 Discord 斜杠命令系统。我们仅申请运行所需的最低限度权限。",
+      "q3": "数据来源是哪里？",
+      "a3": "所有市场数据均来自 Albion Data Project，这是为我们的网页工具提供支持的同一个可靠社区网络。",
+      "q4": "我可以自定义警报吗？",
+      "a4": "当然可以。管理员可以使用 `/config` 命令指定哪些频道接收强盗袭击或击杀榜推送的警报。"
+    }
+  },
   "Common": {
     "comingSoon": "敬请期待",
     "underConstructionDesc": "我们正在开发 {tool} 工具。请稍后再来查看更新！",
@@ -354,7 +395,8 @@
     "factionEfficiency": "效率",
     "heartTransport": "阵营心运输",
     "banditTracker": "强盗追踪",
-    "campaignTracker": "战役追踪"
+    "campaignTracker": "战役追踪",
+    "bot": "机器人"
   },
   "Footer": {
     "tools": "工具",
@@ -382,6 +424,7 @@
     "community": "社区",
     "builds": "Build",
     "about": "关于我们",
+    "bot": "机器人",
     "legal": "法律",
     "privacy": "隐私政策",
     "terms": "服务条款",

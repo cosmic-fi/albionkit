@@ -163,6 +163,47 @@
       "proTipDesc": "Para maximizar tus recompensas, apunta a alcanzar al menos el Nivel 6 cada mes. Usa la Métrica de Meta Diaria para asegurar tu ritmo. Participar en Asaltos de Bandidos es la forma más rápida de mantenerte a la vanguardia."
     }
   },
+  "BotPage": {
+    "title": "AlbionKit Discord Bot - Inteligencia de Mercado y Eventos",
+    "description": "Trae AlbionKit a tu servidor de Discord. Obtén precios de mercado en tiempo real, tendencias de oro y alertas de Asalto Bandido directamente en tus canales.",
+    "heroTitle": "Bot de AlbionKit",
+    "heroSubtitle": "El compañero definitivo de Discord para cada jugador de Albion Online. Trae datos de mercado, alertas de eventos e información de PvP a tu comunidad.",
+    "addToDiscord": "Añadir a Discord",
+    "viewOnGithub": "Ver en GitHub",
+    "featuresTitle": "Características Potentes",
+    "featureMarket": "Información de Mercado",
+    "featureMarketDesc": "Consulta precios en tiempo real para cualquier artículo en todas las ciudades usando `/price`. Monitorea las tendencias del oro con `/gold`.",
+    "featureEvents": "Alertas de Eventos",
+    "featureEventsDesc": "Recibe notificaciones automáticas antes de que comiencen los Asaltos Bandidos. Usa `/bandit` para cuentas regresivas en vivo.",
+    "featureKillboard": "Feeds de Killboard",
+    "featureKillboardDesc": "Dirige feeds de muertes PvP en vivo para tu gremio o jugadores favoritos directamente a cualquier canal de Discord.",
+    "featureSuggest": "Sugerencias Directas",
+    "featureSuggestDesc": "¿Tienes una idea? Usa `/suggest` para enviar tus comentarios directamente a nuestro equipo de desarrollo.",
+    "howToUse": "Cómo Usar",
+    "step1Title": "Invitación Simple",
+    "step1": "Invita al bot a tu servidor usando el botón de arriba.",
+    "step2Title": "Ayuda Unificada",
+    "step2": "Usa `/help` para ver una lista completa de los comandos disponibles y su uso.",
+    "step3Title": "Configuración Avanzada",
+    "step3": "Los administradores pueden usar `/config` para configurar alertas y rastreadores automáticos.",
+    "securityTitle": "Seguro, Abierto y Dirigido por la Comunidad",
+    "securityDesc": "El Bot de AlbionKit es totalmente de código abierto y está basado en el Albion Data Project. Nunca solicitamos credenciales de cuenta ni almacenamos datos sensibles del servidor. Solo se requieren los permisos necesarios para los comandos de barra y el enrutamiento de mensajes.",
+    "techDiscord": "Discord.js v14",
+    "techNextJS": "Integrado con Next.js",
+    "techOSS": "Código Abierto (MIT)",
+    "seoKeywords": "Bot de Discord de Albion Online, Bot de Mercado de Albion, Rastreador de Bandidos de Albion para Discord, Bot de Precios de Albion Online, Bot de Killboard de Albion, Notificaciones de Eventos de Albion Online, Bot de Discord para Albion Online, Bot de Inteligencia de Mercado de Albion",
+    "faqTitle": "Preguntas Frecuentes",
+    "faq": {
+      "q1": "¿Cuánto cuesta el bot?",
+      "a1": "El Bot de AlbionKit es 100% gratuito y de código abierto. Creemos en proporcionar herramientas a la comunidad sin muros de pago ni tarifas ocultas.",
+      "q2": "¿Es seguro para mi servidor?",
+      "a2": "Sí. El bot está alojado en una infraestructura segura y utiliza el moderno sistema de comandos de barra de Discord. Solo requerimos los permisos mínimos necesarios para funcionar.",
+      "q3": "¿De dónde provienen los datos?",
+      "a3": "Todos los datos de mercado provienen del Albion Data Project, la misma red comunitaria confiable que impulsa nuestras herramientas web.",
+      "q4": "¿Puedo personalizar las alertas?",
+      "a4": "Absolutamente. Los administradores pueden usar el comando `/config` para especificar qué canales reciben alertas de Asaltos de Bandidos o feeds de Killboard."
+    }
+  },
   "regions": {
     "Americas": "Américas",
     "Asia": "Asia",
@@ -362,7 +403,8 @@
     "factionEfficiency": "Eficiencia",
     "heartTransport": "Transporte de Corazones",
     "banditTracker": "Rastreador de Bandidos",
-    "campaignTracker": "Rastreador de Campaña"
+    "campaignTracker": "Rastreador de Campaña",
+    "bot": "Bot"
   },
   "Footer": {
     "tools": "Herramientas",
@@ -390,6 +432,7 @@
     "community": "Comunidad",
     "builds": "Builds",
     "about": "Sobre Nosotros",
+    "bot": "Bot",
     "legal": "Legal",
     "privacy": "Política de Privacidad",
     "terms": "Términos de Servicio",

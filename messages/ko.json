@@ -163,6 +163,47 @@
       "proTipDesc": "보상을 극대화하려면 매달 최소 6단계를 목표로 하세요. 위의 일일 목표를 사용하여 진행 속도를 확인하세요. 밴디트 습격에 참여하는 것이 진행 속도를 높이는 가장 빠른 방법입니다."
     }
   },
+  "BotPage": {
+    "title": "AlbionKit Discord 봇 - 시장 및 이벤트 인텔리전스",
+    "description": "AlbionKit을 Discord 서버에 추가하세요. 실시간 시장 가격, 골드 동향 및 밴디트 습격 알림을 채널에서 바로 확인하세요.",
+    "heroTitle": "AlbionKit 봇",
+    "heroSubtitle": "모든 알비온 온라인 플레이어를 위한 궁극의 Discord 동료. 시장 데이터, 이벤트 알림 및 PvP 정보를 커뮤니티에 제공하세요.",
+    "addToDiscord": "Discord에 추가",
+    "viewOnGithub": "GitHub에서 보기",
+    "featuresTitle": "강력한 기능",
+    "featureMarket": "시장 정보",
+    "featureMarketDesc": "/price를 사용하여 모든 도시의 아이템 실시간 가격을 확인하세요. /gold로 골드 동향을 모니터링하세요.",
+    "featureEvents": "이벤트 알림",
+    "featureEventsDesc": "밴디트 습격이 시작되기 전에 자동 알림을 받으세요. /bandit으로 실시간 카운트다운을 확인하세요.",
+    "featureKillboard": "킬보드 피드",
+    "featureKillboardDesc": "길드 또는 즐겨찾는 플레이어의 실시간 PvP 킬 피드를 Discord 채널로 직접 전송하세요.",
+    "featureSuggest": "직접 피드백",
+    "featureSuggestDesc": "아이디어가 있나요? /suggest를 사용하여 개발 팀에 직접 피드백을 보내주세요.",
+    "howToUse": "사용 방법",
+    "step1Title": "간단한 초대",
+    "step1": "위 버튼을 사용하여 봇을 서버에 초대하세요.",
+    "step2Title": "통합 도움말",
+    "step2": "/help를 사용하여 사용 가능한 전체 명령어 목록과 사용법을 확인하세요.",
+    "step3Title": "고급 설정",
+    "step3": "관리자는 /config를 사용하여 자동 알림 및 추적기를 설정할 수 있습니다.",
+    "securityTitle": "안전하고 개방적이며 커뮤니티 중심",
+    "securityDesc": "AlbionKit Bot은 완전한 오픈 소스이며 Albion Data Project를 기반으로 구축되었습니다. 당사는 계정 자격 증명을 요청하거나 민감한 서버 데이터를 저장하지 않습니다. 슬래시 명령 및 메시지 라우팅에 필요한 권한만 필요합니다.",
+    "techDiscord": "Discord.js v14",
+    "techNextJS": "Next.js 통합",
+    "techOSS": "오픈 소스 (MIT)",
+    "seoKeywords": "알비온 온라인 디스코드 봇, 알비온 시장 봇, 알비온 밴디트 추적기 디스코드, 알비온 온라인 가격 봇, 알비온 킬보드 봇, 알비온 온라인 이벤트 알림, 알비온 온라인용 디스코드 봇, 알비온 시장 정보 봇",
+    "faqTitle": "자주 묻는 질문",
+    "faq": {
+      "q1": "봇 이용 요금은 얼마인가요?",
+      "a1": "AlbionKit 봇은 100% 무료이며 오픈 소스입니다. 저희는 유료화나 숨겨진 비용 없이 커뮤니티에 도구를 제공하는 것을 원칙으로 합니다.",
+      "q2": "내 서버에 추가해도 안전한가요?",
+      "a2": "네. 봇은 안전한 인프라에서 호스팅되며 최신 디스코드 슬래시 명령 시스템을 사용합니다. 작동에 필요한 최소한의 권한만 요청합니다.",
+      "q3": "데이터는 어디서 가져오나요?",
+      "a3": "모든 시장 데이터는 저희 웹 도구와 동일한 신뢰할 수 있는 커뮤니티 네트워크인 Albion Data Project에서 제공됩니다.",
+      "q4": "알림을 맞춤 설정할 수 있나요?",
+      "a4": "물론입니다. 관리자는 `/config` 명령어를 사용하여 밴디트 습격이나 킬보드 피드 알림을 받을 채널을 지정할 수 있습니다."
+    }
+  },
   "regions": {
     "Americas": "아메리카",
     "Asia": "아시아",
@@ -362,7 +403,8 @@
     "factionEfficiency": "효율",
     "heartTransport": "하트 운송",
     "banditTracker": "밴디트 추적기",
-    "campaignTracker": "캠페인 추적기"
+    "campaignTracker": "캠페인 추적기",
+    "bot": "봇"
   },
   "Footer": {
     "tools": "도구",
@@ -390,6 +432,7 @@
     "community": "커뮤니티",
     "builds": "빌드",
     "about": "소개",
+    "bot": "봇",
     "legal": "법률",
     "privacy": "개인정보처리방침",
     "terms": "이용약관",

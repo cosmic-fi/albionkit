@@ -163,6 +163,47 @@
       "proTipDesc": "Para maximizar suas recompensas, mire pelo menos no Grau 6 todo mês. Use a Meta Diária acima para manter o ritmo. Participar de Ataques de Bandidos é a maneira mais rápida de se manter adiantado."
     }
   },
+  "BotPage": {
+    "title": "Bot AlbionKit Discord - Inteligência de Mercado e Eventos",
+    "description": "Traga o AlbionKit para o seu servidor Discord. Obtenha preços de mercado em tempo real, tendências de ouro e alertas de Assalto de Bandidos diretamente em seus canais.",
+    "heroTitle": "Bot AlbionKit",
+    "heroSubtitle": "O companheiro definitivo do Discord para cada jogador de Albion Online. Traga dados de mercado, alertas de eventos e intel PvP para sua comunidade.",
+    "addToDiscord": "Adicionar ao Discord",
+    "viewOnGithub": "Ver no GitHub",
+    "featuresTitle": "Recursos Poderosos",
+    "featureMarket": "Intel de Mercado",
+    "featureMarketDesc": "Verifique preços em tempo real para qualquer item em todas as cidades usando `/price`. Monitore as tendências do ouro com `/gold`.",
+    "featureEvents": "Alertas de Eventos",
+    "featureEventsDesc": "Receba notificações automáticas antes do início dos Assaltos de Bandidos. Use `/bandit` para contagens regressivas ao vivo.",
+    "featureKillboard": "Feeds de Killboard",
+    "featureKillboardDesc": "Encaminhe feeds de mortes PvP ao vivo para sua guilda ou jogadores favoritos diretamente para qualquer canal do Discord.",
+    "featureSuggest": "Feedback Direto",
+    "featureSuggestDesc": "Tem uma ideia? Use `/suggest` para enviar seu feedback diretamente para nossa equipe de desenvolvimento.",
+    "howToUse": "Como Usar",
+    "step1Title": "Convite Simples",
+    "step1": "Convide o bot para o seu servidor usando o botão acima.",
+    "step2Title": "Ajuda Unificada",
+    "step2": "Use `/help` para ver uma lista completa de comandos disponíveis e seu uso.",
+    "step3Title": "Configuração Avançada",
+    "step3": "Administradores podem usar `/config` para configurar alertas e rastreadores automatizados.",
+    "securityTitle": "Seguro, Aberto e Impulsionado pela Comunidade",
+    "securityDesc": "O AlbionKit Bot é totalmente de código aberto e construído no Albion Data Project. Nunca pedimos credenciais de conta ou armazenamos dados confidenciais do servidor. Apenas as permissões necessárias para comandos de barra e roteamento de mensagens são necessárias.",
+    "techDiscord": "Discord.js v14",
+    "techNextJS": "Integrado com Next.js",
+    "techOSS": "Código Aberto (MIT)",
+    "seoKeywords": "Albion Online Discord Bot, Albion Market Bot, Albion Bandit Tracker Discord, Albion Online Price Bot, Albion Killboard Bot, Albion Online Event Notifications, Discord Bot para Albion Online, Albion Market Intelligence Bot",
+    "faqTitle": "Perguntas Frequentes",
+    "faq": {
+      "q1": "Quanto custa o bot?",
+      "a1": "O AlbionKit Bot é 100% gratuito e de código aberto. Acreditamos em fornecer ferramentas para a comunidade sem paywalls ou taxas ocultas.",
+      "q2": "É seguro para o meu servidor?",
+      "a2": "Sim. O bot é hospedado em infraestrutura segura e usa o sistema moderno de Comandos de Barra do Discord. Solicitamos apenas as permissões mínimas necessárias para funcionar.",
+      "q3": "De onde vêm os dados?",
+      "a3": "Todos os dados de mercado são provenientes do Albion Data Project, a mesma rede comunitária confiável que alimenta nossas ferramentas web.",
+      "q4": "Posso personalizar os alertas?",
+      "a4": "Com certeza. Os administradores podem usar o comando `/config` para especificar quais canais recebem alertas de Assaltos de Bandidos ou feeds de Killboard."
+    }
+  },
   "regions": {
     "Americas": "Américas",
     "Asia": "Ásia",
@@ -362,7 +403,8 @@
     "factionEfficiency": "Eficiência",
     "heartTransport": "Transporte de Corações",
     "banditTracker": "Rastreador de Bandidos",
-    "campaignTracker": "Rastreador de Campanha"
+    "campaignTracker": "Rastreador de Campanha",
+    "bot": "Bot"
   },
   "Footer": {
     "tools": "Ferramentas",
@@ -390,6 +432,7 @@
     "community": "Comunidade",
     "builds": "Builds",
     "about": "Sobre Nós",
+    "bot": "Bot",
     "legal": "Jurídico",
     "privacy": "Política de Privacidade",
     "terms": "Termos de Serviço",

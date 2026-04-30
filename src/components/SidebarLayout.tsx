@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { BookOpen, Menu, X, Search, Sun, Moon, User as UserIcon, LogOut, Settings, Crown, Heart, Bell, ChevronDown, ChevronLeft, Coins, Store, Sword, Skull, Swords, Hammer, Sprout, ChefHat, PawPrint, FlaskConical, ForkKnife, Leaf, FishOff, Fish, Pickaxe, Shield, TrendingUp, Truck, Clock, Activity } from 'lucide-react';
+import { BookOpen, Menu, X, Search, Sun, Moon, User as UserIcon, LogOut, Settings, Crown, Heart, Bell, ChevronDown, ChevronLeft, Coins, Store, Sword, Skull, Swords, Hammer, Sprout, ChefHat, PawPrint, FlaskConical, ForkKnife, Leaf, FishOff, Fish, Pickaxe, Shield, TrendingUp, Truck, Clock, Activity, MessageSquare, Bot } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
@@ -32,7 +32,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['Tools', 'Calculators']);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  
+
   const { user, profile, logout } = useAuth();
   const { setTheme, resolvedTheme } = useTheme();
   const { openLoginModal } = useLoginModal();
@@ -79,6 +79,12 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       icon: <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>,
     },
     {
+      id: 'bot',
+      title: t('bot'),
+      href: '/bot',
+      icon: <Bot className="h-5 w-5" />,
+    },
+    {
       id: 'guides',
       title: t('guides'),
       icon: <BookOpen className="h-5 w-5" />,
@@ -110,9 +116,9 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         { id: 'farming', title: t('farming'), href: '/profits/farming', icon: <Sprout className="h-4 w-4" /> },
         { id: 'cooking', title: t('cooking'), href: '/profits/cooking', icon: <ForkKnife className="h-4 w-4" /> },
         { id: 'animal', title: t('animal'), href: '/profits/animal', icon: <PawPrint className="h-4 w-4" /> },
-        { id: 'alchemy', title: t('alchemy'), href: '/profits/alchemy', icon: <FlaskConical className='h-4 w-4' />},
-        { id: 'labour', title: t('labour'), href: '/profits/labour', icon: <Leaf className='h-4 w-4' />},
-        { id: 'chopped-fish', title: t('choppedFish'), href: '/profits/chopped-fish', icon: <Fish className='h-4 w-4' />},
+        { id: 'alchemy', title: t('alchemy'), href: '/profits/alchemy', icon: <FlaskConical className='h-4 w-4' /> },
+        { id: 'labour', title: t('labour'), href: '/profits/labour', icon: <Leaf className='h-4 w-4' /> },
+        { id: 'chopped-fish', title: t('choppedFish'), href: '/profits/chopped-fish', icon: <Fish className='h-4 w-4' /> },
         { id: 'enchanting', title: t('enchanting'), href: '/profits/enchanting', icon: <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg> },
       ],
     },
@@ -132,7 +138,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       title: t('builds'),
       href: '/builds',
       icon: <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>,
-    },
+    }
   ];
 
   const toggleGroup = (title: string) => {
@@ -192,106 +198,101 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
 
             {/* Navigation */}
             <nav className="flex-1 overflow-y-auto p-3 space-y-1">
-            {navItems.map((item) => {
-              const isActive = item.href === pathname;
-              const isExpanded = expandedGroups.includes(item.title);
-              const hasSubmenu = item.submenu && item.submenu.length > 0;
+              {navItems.map((item) => {
+                const isActive = item.href === pathname;
+                const isExpanded = expandedGroups.includes(item.title);
+                const hasSubmenu = item.submenu && item.submenu.length > 0;
 
-              if (hasSubmenu) {
+                if (hasSubmenu) {
+                  return (
+                    <div key={item.id}>
+                      <button
+                        onClick={() => toggleGroup(item.title)}
+                        className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${isExpanded ? 'text-primary bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                          } ${!isSidebarOpen && 'lg:justify-center'}`}
+                        title={!isSidebarOpen ? item.title : undefined}
+                      >
+                        <div className="shrink-0">
+                          {item.icon}
+                        </div>
+                        {isSidebarOpen && <span className="whitespace-nowrap">{item.title}</span>}
+                        {isSidebarOpen && (
+                          <svg className={`h-4 w-4 transition-transform ml-auto ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        )}
+                      </button>
+
+                      {isExpanded && (
+                        <div
+                          ref={submenuRef}
+                          className={`mt-1 space-y-0.5 ${isSidebarOpen
+                              ? 'ml-4 border-l-2 border-border pl-3'
+                              : 'lg:absolute lg:left-full lg:top-2 lg:ml-2 lg:bg-card lg:border lg:border-border lg:rounded-lg lg:shadow-xl lg:z-50 lg:p-2 lg:min-w-[200px]'
+                            }`}>
+                          {item.submenu?.map((sub) => (
+                            <Link
+                              key={sub.id}
+                              href={sub.href!}
+                              className={`flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors ${pathname === sub.href
+                                  ? 'text-primary bg-primary/10 font-medium'
+                                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                                }`}
+                            >
+                              {sub.icon}
+                              {sub.title}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
                 return (
-                  <div key={item.id}>
-                    <button
-                      onClick={() => toggleGroup(item.title)}
-                      className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
-                        isExpanded ? 'text-primary bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                      } ${!isSidebarOpen && 'lg:justify-center'}`}
-                      title={!isSidebarOpen ? item.title : undefined}
+                  !isSidebarOpen ? (
+                    // Collapsed state: just icon with link
+                    <Link
+                      key={item.id}
+                      href={item.href!}
+                      className={`w-full flex items-center justify-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive ? 'text-primary bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                        }`}
+                      title={item.title}
                     >
                       <div className="shrink-0">
                         {item.icon}
                       </div>
-                      {isSidebarOpen && <span className="whitespace-nowrap">{item.title}</span>}
-                      {isSidebarOpen && (
-                        <svg className={`h-4 w-4 transition-transform ml-auto ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      )}
-                    </button>
-
-                    {isExpanded && (
-                      <div 
-                        ref={submenuRef}
-                        className={`mt-1 space-y-0.5 ${
-                        isSidebarOpen
-                          ? 'ml-4 border-l-2 border-border pl-3'
-                          : 'lg:absolute lg:left-full lg:top-2 lg:ml-2 lg:bg-card lg:border lg:border-border lg:rounded-lg lg:shadow-xl lg:z-50 lg:p-2 lg:min-w-[200px]'
-                      }`}>
-                        {item.submenu?.map((sub) => (
-                          <Link
-                            key={sub.id}
-                            href={sub.href!}
-                            className={`flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors ${
-                              pathname === sub.href
-                                ? 'text-primary bg-primary/10 font-medium'
-                                : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                            }`}
-                          >
-                            {sub.icon}
-                            {sub.title}
-                          </Link>
-                        ))}
+                    </Link>
+                  ) : (
+                    // Expanded state: icon with text
+                    <Link
+                      key={item.id}
+                      href={item.href!}
+                      className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive
+                          ? 'text-primary bg-accent'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                        }`}
+                    >
+                      <div className="shrink-0">
+                        {item.icon}
                       </div>
-                    )}
-                  </div>
+                      <span className="whitespace-nowrap">{item.title}</span>
+                    </Link>
+                  )
                 );
-              }
+              })}
+            </nav>
 
-              return (
-                !isSidebarOpen ? (
-                  // Collapsed state: just icon with link
-                  <Link
-                    key={item.id}
-                    href={item.href!}
-                    className={`w-full flex items-center justify-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
-                      isActive ? 'text-primary bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                    }`}
-                    title={item.title}
-                  >
-                    <div className="shrink-0">
-                      {item.icon}
-                    </div>
-                  </Link>
-                ) : (
-                  // Expanded state: icon with text
-                  <Link
-                    key={item.id}
-                    href={item.href!}
-                    className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
-                      isActive
-                        ? 'text-primary bg-accent'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                    }`}
-                  >
-                    <div className="shrink-0">
-                      {item.icon}
-                    </div>
-                    <span className="whitespace-nowrap">{item.title}</span>
-                  </Link>
-                )
-              );
-            })}
-          </nav>
-
-          {/* Donate Section */}
-          <div className="p-3 border-t border-border shrink-0">
-            {!isSidebarOpen ? (
-              <DonateCard compact />
-            ) : (
-              <DonateCard />
-            )}
+            {/* Donate Section */}
+            <div className="p-3 border-t border-border shrink-0">
+              {!isSidebarOpen ? (
+                <DonateCard compact />
+              ) : (
+                <DonateCard />
+              )}
+            </div>
           </div>
-        </div>
-      </aside>
+        </aside>
 
         {/* Collapse Button (Outside sidebar, connected to right edge) - Mobile only */}
         {isMobileSidebarOpen && (

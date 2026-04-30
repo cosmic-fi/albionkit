@@ -4,22 +4,14 @@ import { useState, useEffect } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
 import { ItemIcon } from '@/components/ItemIcon';
-import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { getBuild, Build, getBuilds } from '@/lib/builds-service';
-import { deleteBuildAction, hideBuildAction } from '@/app/actions/builds';
-import { getUserProfile, UserProfile } from '@/lib/user-profile';
 import { getMarketPrices, LOCATIONS } from '@/lib/market-service';
 import { getItemNameService } from '@/lib/item-service';
 import { Loader2, User, Clock, Eye, Star, Share2, ThumbsUp, Calendar, Shield, Zap, Wind, BookOpen, Check, X as XIcon, ArrowLeft, ArrowRight, Heart, Link as LinkIcon, Copy, Sparkles, Coins, EyeOff, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { BuildCard } from '@/components/BuildCard';
-import { Tooltip } from '@/components/ui/Tooltip';
-import { formatDistanceToNow } from 'date-fns';
-import { incrementBuildViewAction } from '@/app/actions/builds';
-import { useLoginModal } from '@/context/LoginModalContext';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -36,7 +28,6 @@ export function BuildView({ id }: BuildViewProps) {
     const t = useTranslations('BuildView');
     const tCommon = useTranslations('Common');
     const tBuilds = useTranslations('Builds');
-    const { user, profile } = useAuth();
     const router = useRouter();
     const pathname = usePathname();
     const [build, setBuild] = useState<Build | null>(null);
@@ -56,72 +47,9 @@ export function BuildView({ id }: BuildViewProps) {
     const [copied, setCopied] = useState(false);
     const [similarBuilds, setSimilarBuilds] = useState<Build[]>([]);
     const [estPrice, setEstPrice] = useState<number | null>(null);
-    const [authorProfile, setAuthorProfile] = useState<UserProfile | null>(null);
-    const [isHidden, setIsHidden] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [isHiding, setIsHiding] = useState(false);
-    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-    const [showHideDialog, setShowHideDialog] = useState(false);
-    const { openLoginModal } = useLoginModal();
 
-    // Check if current user is author or admin
-    const isAuthor = user && build && user.uid === build.authorId;
-    const isAdmin = profile?.isAdmin === true;
-    const canManage = isAuthor || isAdmin;
 
-    // Build Management Functions
-    const handleDeleteBuild = async () => {
-        setShowDeleteDialog(false);
-        setIsDeleting(true);
-        const buildCategory = build?.category; // Capture category before delete
-        try {
-            const result = await deleteBuildAction(build!.id!, user!.uid);
-            if (result.success) {
-                toast.success(t('buildDeleted'));
-                // Smart redirect based on where user came from
-                if (pathname.includes('/user/')) {
-                    // Came from profile page - redirect to that user's profile
-                    const profileId = pathname.split('/user/')[1]?.split('/')[0];
-                    router.push(`/user/${profileId || user!.uid}`);
-                } else {
-                    // Came from builds list - redirect to category builds
-                    router.push(`/builds/${buildCategory || 'solo'}`);
-                }
-            } else {
-                toast.error(result.error || t('deleteError'));
-            }
-        } catch (error: any) {
-            console.error('Failed to delete build:', error);
-            toast.error(error.message || t('deleteError'));
-        } finally {
-            setIsDeleting(false);
-        }
-    };
 
-    const handleHideBuild = async () => {
-        setShowHideDialog(false);
-        setIsHiding(true);
-        try {
-            const result = await hideBuildAction(build!.id!, user!.uid, !isHidden);
-            if (result.success) {
-                setIsHidden(!isHidden);
-                toast.success(isHidden ? t('buildUnhidden') : t('buildHidden'));
-            } else {
-                toast.error(result.error || t('hideError'));
-            }
-        } catch (error: any) {
-            console.error('Failed to hide build:', error);
-            toast.error(error.message || t('hideError'));
-        } finally {
-            setIsHiding(false);
-        }
-    };
-
-    useEffect(() => {
-        if (build?.authorId) {
-            getUserProfile(build.authorId).then(setAuthorProfile);
-        }
-    }, [build?.authorId]);
 
     useEffect(() => {
         const fetchPrice = async () => {
@@ -171,7 +99,7 @@ export function BuildView({ id }: BuildViewProps) {
             try {
                 const data = await getBuild(id);
                 setBuild(data);
-                
+
                 if (data && data.id) {
                     // Fetch similar builds
                     const allBuilds = await getBuilds(20);
@@ -224,28 +152,7 @@ export function BuildView({ id }: BuildViewProps) {
             title={build.title}
             backgroundImage={`/background/ao-builds.jpg`}
             description={build.description}
-            headerActions={canManage ? (
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => setShowHideDialog(true)}
-                        className={`flex items-center gap-2 px-4 py-2 font-medium rounded-lg transition-colors text-sm ${
-                            isHidden 
-                                ? 'bg-green-600 hover:bg-green-700 text-white' 
-                                : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'
-                        }`}
-                    >
-                        {isHidden ? <Check className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-                        {isHidden ? t('unhide') : t('hide')}
-                    </button>
-                    <button
-                        onClick={() => setShowDeleteDialog(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground font-medium rounded-lg transition-colors text-sm"
-                    >
-                        <Trash2 className="h-4 w-4" />
-                        {t('delete')}
-                    </button>
-                </div>
-            ) : undefined}
+            headerActions={undefined}
         >
             <div className=" mx-auto">
                 <div className="mb-6 flex items-center justify-between">
@@ -577,31 +484,8 @@ export function BuildView({ id }: BuildViewProps) {
                 )}
             </div>
             <InfoStrip currentPage="builds" />
-            
-            {/* Confirmation Dialogs */}
-            <ConfirmDialog
-                isOpen={showDeleteDialog}
-                onClose={() => setShowDeleteDialog(false)}
-                onConfirm={handleDeleteBuild}
-                title={t('delete')}
-                description={t('confirmDelete')}
-                confirmText={t('delete')}
-                cancelText={tCommon('cancel')}
-                variant="danger"
-                isLoading={isDeleting}
-            />
 
-            <ConfirmDialog
-                isOpen={showHideDialog}
-                onClose={() => setShowHideDialog(false)}
-                onConfirm={handleHideBuild}
-                title={isHidden ? t('unhide') : t('hide')}
-                description={isHidden ? t('confirmUnhide') : t('confirmHide')}
-                confirmText={isHidden ? t('unhide') : t('hide')}
-                cancelText={tCommon('cancel')}
-                variant="warning"
-                isLoading={isHiding}
-            />
+            {/* Confirmation Dialogs */}
         </PageShell>
     );
 }

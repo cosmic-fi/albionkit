@@ -76,3 +76,5 @@ logs/
 # Temporary files
 tmp/
 temp/
+scratch/
+*_old

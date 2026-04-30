@@ -163,6 +163,47 @@
       "proTipDesc": "Ödüllerinizi en üst düzeye çıkarmak için her ay en az 6. Aşamayı hedefleyin. Hızınızı doğru ayarlamak için yukarıdaki Günlük Hedef metriğini kullanın. Haydut Saldırılarına katılmak hızınızı artırmanın en hızlı yoludur."
     }
   },
+  "BotPage": {
+    "title": "AlbionKit Discord Botu - Market ve Etkinlik Bilgisi",
+    "description": "AlbionKit'i Discord sunucunuza getirin. Doğrudan kanallarınızda gerçek zamanlı market fiyatları, altın trendleri ve Haydut Baskını uyarıları alın.",
+    "heroTitle": "AlbionKit Botu",
+    "heroSubtitle": "Her Albion Online oyuncusu için nihai Discord arkadaşı. Market verilerini, etkinlik uyarılarını ve PvP istihbaratını topluluğunuza getirin.",
+    "addToDiscord": "Discord'a Ekle",
+    "viewOnGithub": "GitHub'da Görüntüle",
+    "featuresTitle": "Güçlü Özellikler",
+    "featureMarket": "Market İstihbaratı",
+    "featureMarketDesc": "`/price` kullanarak tüm şehirlerdeki herhangi bir eşya için gerçek zamanlı fiyatları kontrol edin. `/gold` ile altın trendlerini izleyin.",
+    "featureEvents": "Etkinlik Uyarıları",
+    "featureEventsDesc": "Haydut Baskınları başlamadan önce otomatik bildirimler alın. Canlı geri sayımlar için `/bandit` kullanın.",
+    "featureKillboard": "Killboard Yayınları",
+    "featureKillboardDesc": "Loncanız veya favori oyuncularınız için canlı PvP ölüm yayınlarını doğrudan herhangi bir Discord kanalına yönlendirin.",
+    "featureSuggest": "Doğrudan Geri Bildirim",
+    "featureSuggestDesc": "Bir fikriniz mi var? Geri bildiriminizi doğrudan geliştirme ekibimize göndermek için `/suggest` komutunu kullanın.",
+    "howToUse": "Nasıl Kullanılır",
+    "step1Title": "Basit Davet",
+    "step1": "Yukarıdaki düğmeyi kullanarak botu sunucunuza davet edin.",
+    "step2Title": "Birleşik Yardım",
+    "step2": "Mevcut komutların tam listesini ve kullanımlarını görmek için `/help` kullanın.",
+    "step3Title": "Gelişmiş Yapılandırma",
+    "step3": "Yöneticiler, otomatik uyarılar ve takipçiler kurmak için `/config` komutunu kullanabilir.",
+    "securityTitle": "Güvenli, Açık ve Topluluk Odaklı",
+    "securityDesc": "AlbionKit Botu tamamen açık kaynaklıdır ve Albion Data Project üzerine inşa edilmiştir. Asla hesap kimlik bilgileri istemiyoruz veya hassas sunucu verilerini saklamıyoruz. Yalnızca slash komutları ve mesaj yönlendirme için gerekli izinler gereklidir.",
+    "techDiscord": "Discord.js v14",
+    "techNextJS": "Next.js Entegre",
+    "techOSS": "Açık Kaynak (MIT)",
+    "seoKeywords": "Albion Online Discord Botu, Albion Market Botu, Albion Bandit Takibi Discord, Albion Online Fiyat Botu, Albion Killboard Botu, Albion Online Etkinlik Bildirimleri, Albion Online için Discord Botu, Albion Market İstihbarat Botu",
+    "faqTitle": "Sıkça Sorulan Sorular",
+    "faq": {
+      "q1": "Botun maliyeti ne kadar?",
+      "a1": "AlbionKit Botu %100 ücretsiz ve açık kaynaklıdır. Topluluğa ödeme duvarları veya gizli ücretler olmadan araçlar sağlamaya inanıyoruz.",
+      "q2": "Sunucum için güvenli mi?",
+      "a2": "Evet. Bot güvenli bir altyapıda barındırılır ve modern Discord Slash Komut sistemini kullanır. Çalışmak için yalnızca gereken minimum izinleri talep ediyoruz.",
+      "q3": "Veriler nereden geliyor?",
+      "a3": "Tüm market verileri, web araçlarımızı besleyen aynı güvenilir topluluk ağı olan Albion Data Project'ten alınmaktadır.",
+      "q4": "Uyarıları özelleştirebilir miyim?",
+      "a4": "Kesinlikle. Yöneticiler, hangi kanalların Haydut Baskınları veya Killboard yayınları için uyarı alacağını belirtmek için `/config` komutunu kullanabilir."
+    }
+  },
   "regions": {
     "Americas": "Amerika",
     "Asia": "Asya",
@@ -362,7 +403,8 @@
     "factionEfficiency": "Verimlilik",
     "heartTransport": "Kalp Taşıma",
     "banditTracker": "Haydut Takibi",
-    "campaignTracker": "Kampanya Takibi"
+    "campaignTracker": "Kampanya Takibi",
+    "bot": "Bot"
   },
   "Footer": {
     "tools": "Araçlar",
@@ -390,6 +432,7 @@
     "community": "Topluluk",
     "builds": "Buildler",
     "about": "Hakkımızda",
+    "bot": "Bot",
     "legal": "Yasal",
     "privacy": "Gizlilik Politikası",
     "terms": "Hizmet Koşulları",

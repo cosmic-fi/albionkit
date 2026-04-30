@@ -128,6 +128,11 @@ export function Footer() {
                   {t('about')}
                 </Link>
               </li>
+              <li>
+                <Link href="/bot" className="text-muted-foreground hover:text-primary hover:translate-x-1 transition-all inline-block">
+                  {t('bot')}
+                </Link>
+              </li>
             </ul>
           </div>
 
