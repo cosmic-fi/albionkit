@@ -6,12 +6,18 @@ import { createPageMetadata } from '@/lib/screenshot-metadata';
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('BanditTrackerPage');
 
-  return createPageMetadata(
+  const base = createPageMetadata(
     'bandit-tracker',
     t('title'),
     t('description'),
     { canonicalUrl: 'https://albionkit.com/faction/bandit' }
   );
+
+  // Remove static image references to let opengraph-image.tsx handle it
+  if (base.openGraph) delete base.openGraph.images;
+  if (base.twitter) delete base.twitter.images;
+
+  return base;
 }
 
 export default function BanditTrackerPage() {

@@ -39,6 +39,10 @@ export async function generateMetadata(): Promise<Metadata> {
         'es': 'https://albionkit.com/es',
         'ru': 'https://albionkit.com/ru',
         'pt': 'https://albionkit.com/pt',
+        'ko': 'https://albionkit.com/ko',
+        'pl': 'https://albionkit.com/pl',
+        'tr': 'https://albionkit.com/tr',
+        'zh': 'https://albionkit.com/zh',
       },
     },
     appleWebApp: {
@@ -97,12 +101,26 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'AlbionKit',
+  alternateName: 'Albion Kit',
   url: 'https://albionkit.com',
-  logo: 'https://albionkit.com/logo.png', // Ensure this exists
+  logo: 'https://albionkit.com/logo.png',
+  description: 'The ultimate Albion Online companion featuring market data, build database, PvP tracker, and profit calculators.',
   sameAs: [
     'https://twitter.com/Albion_Kit',
     'https://github.com/albionkit',
+    'https://discord.gg/albionkit',
   ],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: 'contact@albionkit.com',
+    contactType: 'customer support'
+  },
+  knowsAbout: [
+    'Albion Online',
+    'MMORPG Tools',
+    'Game Analytics',
+    'Economy Simulation'
+  ]
 };
 
 export default async function RootLayout({

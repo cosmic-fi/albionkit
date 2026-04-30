@@ -7,6 +7,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 1. Core Pages (Highest Priority)
   const corePages = [
     { route: '', priority: 1, changeFrequency: 'daily' as const },
+    { route: '/bot', priority: 1, changeFrequency: 'weekly' as const },
     { route: '/builds', priority: 1, changeFrequency: 'daily' as const },
     { route: '/guides', priority: 1, changeFrequency: 'daily' as const },
   ].map(({ route, priority, changeFrequency }) => ({

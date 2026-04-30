@@ -59,7 +59,6 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     }
   };
 }
-
 export default async function MarketFlipperPage() {
   const t = await getTranslations('Pages.marketFlipper');
   
@@ -83,11 +82,40 @@ export default async function MarketFlipperPage() {
     featureList: 'Market tracking, Profit calculator, Price alerts, Watchlist, Real-time data, Multi-city comparison'
   };
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://albionkit.com',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Tools',
+        item: 'https://albionkit.com/tools',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: 'Market Flipper',
+        item: 'https://albionkit.com/tools/market-flipper',
+      },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <MarketFlipperClient />
     </>
