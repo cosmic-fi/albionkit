@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { BookOpen, Menu, X, Search, Sun, Moon, User as UserIcon, LogOut, Settings, Crown, Heart, Bell, ChevronDown, ChevronLeft, Coins, Store, Sword, Skull, Swords, Hammer, Sprout, ChefHat, PawPrint, FlaskConical, ForkKnife, Leaf, FishOff, Fish, Pickaxe, Shield, TrendingUp, Truck, Clock, Activity, MessageSquare, Bot } from 'lucide-react';
+import { BookOpen, Menu, X, Search, Sun, Moon, User as UserIcon, LogOut, Settings, Crown, Heart, Bell, ChevronDown, ChevronLeft, Coins, Store, Sword, Skull, Swords, Hammer, Sprout, ChefHat, PawPrint, FlaskConical, ForkKnife, Leaf, FishOff, Fish, Pickaxe, Shield, TrendingUp, Truck, Clock, Activity, MessageSquare, Bot, Coffee } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
@@ -11,7 +11,6 @@ import { useCommandMenu } from '@/context/CommandMenuContext';
 import { NotificationDropdown } from '@/components/notifications/NotificationDropdown';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useTranslations } from 'next-intl';
-import { DonateCard } from './DonateCard';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -283,14 +282,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
               })}
             </nav>
 
-            {/* Donate Section */}
-            <div className="p-3 border-t border-border shrink-0">
-              {!isSidebarOpen ? (
-                <DonateCard compact />
-              ) : (
-                <DonateCard />
-              )}
-            </div>
+
           </div>
         </aside>
 
@@ -372,6 +364,16 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
               )}
             </button>
 
+            {/* Donate Button */}
+            <Link
+              href="/donate"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-pink-600 to-red-600 hover:from-pink-500 hover:to-red-500 text-white text-sm font-medium rounded-lg transition-all duration-300 shadow-sm hover:shadow-md hover:shadow-pink-500/25"
+              title={t('donate')}
+            >
+              <Coffee className="h-4 w-4" />
+              <span className="hidden md:inline">{t('donate')}</span>
+            </Link>
+
             {/* Notifications */}
             <NotificationDropdown />
 
@@ -409,6 +411,17 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                       >
                         <Settings className="h-4 w-4" />
                         <span className="font-medium">{t('settings')}</span>
+                      </Link>
+                    </div>
+
+                    <div className="border-t border-border p-2">
+                      <Link
+                        href="/donate"
+                        className="flex items-center gap-3 px-3 py-2.5 text-sm text-muted-foreground hover:text-pink-500 hover:bg-pink-500/10 rounded-xl transition-all"
+                        onClick={() => setIsProfileDropdownOpen(false)}
+                      >
+                        <Coffee className="h-4 w-4" />
+                        <span className="font-medium">{t('donate')}</span>
                       </Link>
                     </div>
 
