@@ -49,6 +49,15 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
     setMounted(true);
   }, []);
 
+  // Close mobile sidebar and scroll to top on navigation
+  useEffect(() => {
+    setIsMobileSidebarOpen(false);
+    // Scroll the main content area to top (the scroll container is the <main> element, not window)
+    const mainElements = document.querySelectorAll('main');
+    mainElements.forEach((el) => el.scrollTo(0, 0));
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -76,6 +85,12 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       title: t('home'),
       href: '/',
       icon: <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>,
+    },
+    {
+      id: 'builds',
+      title: t('builds'),
+      href: '/builds',
+      icon: <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>,
     },
     {
       id: 'bot',
@@ -131,12 +146,6 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         { id: 'bandit-tracker', title: t('banditTracker'), href: '/faction/bandit', icon: <Clock className="h-4 w-4" /> },
         { id: 'campaign-tracker', title: t('campaignTracker'), href: '/faction/campaign', icon: <Activity className="h-4 w-4" /> },
       ],
-    },
-    {
-      id: 'builds',
-      title: t('builds'),
-      href: '/builds',
-      icon: <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>,
     }
   ];
 
@@ -163,7 +172,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       )}
 
       {/* Sidebar Container (for positioning collapse button) */}
-      <div className={`fixed lg:static inset-y-0 left-0 z-50 transition-all duration-300 ease-in-out ${!isSidebarOpen ? 'lg:w-20' : 'lg:w-64'} ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+      <div className={`fixed lg:static inset-y-0 left-0 z-50 w-[75vw] transition-all duration-300 ease-in-out ${!isSidebarOpen ? 'lg:w-20' : 'lg:w-64'} ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         {/* Sidebar */}
         <aside className="h-full bg-card border-r border-border overflow-hidden">
           <div className="flex flex-col h-full overflow-hidden">
@@ -171,11 +180,11 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
             <div className="h-16 flex items-center px-4 border-b border-border shrink-0">
               <Link href="/" className="flex items-center justify-center">
                 {!isSidebarOpen ? (
-                  <div className="relative p-2 w-full">
+                  <div className="relative h-8 w-10">
                     <img
                       src="/logo.png"
                       alt="AlbionKit"
-                      className="h-full w-auto object-contain"
+                      className="h-full w-full object-contain"
                     />
                   </div>
                 ) : (

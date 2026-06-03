@@ -337,6 +337,15 @@
         "footer": "Você está recebendo isso porque ativou os Alertas de Ouro em suas configurações.",
         "baseTitle": "Alerta de Ouro: Preço {trendText}!",
         "preview": "Volatilidade no mercado de ouro detectada: {price} Prata ({change}%)"
+      },
+      "flip": {
+        "subject": "Melhores Oportunidades de Flip 📊",
+        "body": "Aqui estão as melhores oportunidades de flip de hoje:",
+        "button": "Abrir Market Flipper",
+        "footer": "Os cálculos de lucro excluem custos de transporte e impostos.",
+        "noResults": "Nenhuma oportunidade de flip encontrada no momento. Volte mais tarde!",
+        "baseTitle": "Resumo de Flips da AlbionKit",
+        "preview": "Top {itemName} e mais oportunidades de flip — veja o que é lucrativo hoje!"
       }
     },
     "markAllRead": "Marcar todas como lidas",

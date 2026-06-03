@@ -337,6 +337,15 @@
         "footer": "Du erhältst dies, weil du Goldalarme in deinen Einstellungen aktiviert hast.",
         "baseTitle": "Gold Alarm: Preis ist {trendText}!",
         "preview": "Goldmarkt-Volatilität erkannt: {price} Silber ({change}%)"
+      },
+      "flip": {
+        "subject": "Top-Flip-Möglichkeiten 📊",
+        "body": "Hier sind die besten Flip-Möglichkeiten für heute:",
+        "button": "Market Flipper öffnen",
+        "footer": "Gewinnberechnungen schließen Transportkosten und Steuern aus.",
+        "noResults": "Derzeit keine Flip-Möglichkeiten gefunden. Schau später wieder vorbei!",
+        "baseTitle": "AlbionKit Flip-Digest",
+        "preview": "Top {itemName} und weitere Flip-Möglichkeiten — sieh, was heute profitabel ist!"
       }
     },
     "markAllRead": "Alle als gelesen markieren",

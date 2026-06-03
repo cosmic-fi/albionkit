@@ -337,6 +337,15 @@
         "footer": "Vous recevez ceci car vous avez activé les Alertes Or dans vos paramètres.",
         "baseTitle": "Alerte Or : Le prix est {trendText} !",
         "preview": "Volatilité du marché de l'or détectée : {price} Argent ({change}%)"
+      },
+      "flip": {
+        "subject": "Meilleures Opportunités de Flip 📊",
+        "body": "Voici les meilleures opportunités de flip du jour :",
+        "button": "Ouvrir Market Flipper",
+        "footer": "Les calculs de profit excluent les frais de transport et les taxes.",
+        "noResults": "Aucune opportunité de flip trouvée pour le moment. Revenez plus tard !",
+        "baseTitle": "Résumé des Flips AlbionKit",
+        "preview": "Top {itemName} et autres opportunités de flip — découvrez ce qui est rentable aujourd'hui !"
       }
     },
     "markAllRead": "Tout marquer comme lu",

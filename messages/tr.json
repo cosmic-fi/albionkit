@@ -337,6 +337,15 @@
         "footer": "Bunu, ayarlarınızda Altın Uyarılarını etkinleştirdiğiniz için alıyorsunuz.",
         "baseTitle": "Altın Uyarısı: Fiyat {trendText}!",
         "preview": "Altın piyasası oynaklığı tespit edildi: {price} Gümüş (%{change})"
+      },
+      "flip": {
+        "subject": "En İyi Flip Fırsatları 📊",
+        "body": "İşte bugünün en iyi flip fırsatları:",
+        "button": "Market Flipper'ı Aç",
+        "footer": "Kâr hesaplamaları nakliye masrafları ve vergileri içermez.",
+        "noResults": "Şu anda bulunabilir flip fırsatı yok. Daha sonra tekrar kontrol edin!",
+        "baseTitle": "AlbionKit Flip Özeti",
+        "preview": "En iyi {itemName} ve daha fazla flip fırsatı — bugün neyin kârlı olduğunu görün!"
       }
     },
     "markAllRead": "Tümünü okundu işaretle",

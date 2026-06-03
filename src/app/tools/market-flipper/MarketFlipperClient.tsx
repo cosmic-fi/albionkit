@@ -556,7 +556,10 @@ function FlipRow({ flip, watchlist, onToggleWatchlist, formatItemName, getTierLa
 
   return (
     <>
-      <tr className="group hover:bg-muted/30 transition-colors">
+      <tr 
+        className="group hover:bg-muted/30 transition-colors cursor-pointer"
+        onClick={() => setExpanded(!expanded)}
+      >
         <td className="px-6 py-4">
           <div className="flex items-center gap-3">
             <ItemIcon itemId={flip.itemId} className="w-12 h-12 rounded" />
@@ -586,24 +589,17 @@ function FlipRow({ flip, watchlist, onToggleWatchlist, formatItemName, getTierLa
           <div className="text-xs text-muted-foreground">{t('silver')}</div>
         </td>
         <td className="px-6 py-4 text-center">
-          <div className="flex items-center justify-center gap-2">
-            <Tooltip content={isWatchlisted ? t('removeFromWatchlist') : t('addToWatchlist')}>
-              <button
-                onClick={() => onToggleWatchlist(flip.itemId, flip.buyCity)}
-                className={`p-2 rounded-lg transition-all ${isWatchlisted ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-primary/10'}`}
-              >
-                <Star className={`h-4 w-4 ${isWatchlisted ? 'fill-current' : ''}`} />
-              </button>
-            </Tooltip>
-            <Tooltip content={t('viewDetails')}>
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="p-2 rounded-lg bg-muted text-muted-foreground hover:bg-primary/10 transition-all"
-              >
-                {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-              </button>
-            </Tooltip>
-          </div>
+          <Tooltip content={isWatchlisted ? t('removeFromWatchlist') : t('addToWatchlist')}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleWatchlist(flip.itemId, flip.buyCity);
+              }}
+              className={`p-2 rounded-lg transition-all ${isWatchlisted ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-primary/10'}`}
+            >
+              <Star className={`h-4 w-4 ${isWatchlisted ? 'fill-current' : ''}`} />
+            </button>
+          </Tooltip>
         </td>
       </tr>
 

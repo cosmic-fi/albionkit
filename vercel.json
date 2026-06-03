@@ -1,4 +1,14 @@
 {
+  "crons": [
+    {
+      "path": "/api/cron/check-gold",
+      "schedule": "0 */12 * * *"
+    },
+    {
+      "path": "/api/cron/check-flips",
+      "schedule": "0 12 * * 1"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

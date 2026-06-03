@@ -337,6 +337,15 @@
         "footer": "Otrzymujesz tę wiadomość, ponieważ włączyłeś Alerty Złota w swoich ustawieniach.",
         "baseTitle": "Alert Złota: Cena {trendText}!",
         "preview": "Wykryto zmienność rynku złota: {price} Srebra ({change}%)"
+      },
+      "flip": {
+        "subject": "Najlepsze Możliwości Flip 📊",
+        "body": "Oto najlepsze możliwości flip na dziś:",
+        "button": "Otwórz Market Flipper",
+        "footer": "Obliczenia zysku nie obejmują kosztów transportu i podatków.",
+        "noResults": "Brak możliwości flip w tej chwili. Sprawdź później!",
+        "baseTitle": "Podsumowanie Flipów AlbionKit",
+        "preview": "Top {itemName} i inne możliwości flip — sprawdź, co jest opłacalne dziś!"
       }
     },
     "markAllRead": "Oznacz wszystkie jako przeczytane",
@@ -352,6 +361,7 @@
     "searchByName": "Szukaj po nazwie...",
     "loadingItems": "Ładowanie przedmiotów..."
   },
+  "noNotifications": "Brak powiadomień",
   "CommandMenu": {
     "placeholder": "Wpisz polecenie lub szukaj...",
     "noResults": "Nie znaleziono wyników.",

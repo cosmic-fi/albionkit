@@ -339,6 +339,15 @@
         "footer": "You're receiving this because you enabled Gold Alerts in your settings.",
         "baseTitle": "Gold Alert: Price is {trendText}!",
         "preview": "Gold market volatility detected: {price} Silver ({change}%)"
+      },
+      "flip": {
+        "subject": "Top Flip Opportunities 📊",
+        "body": "Here are today's best flip opportunities:",
+        "button": "Open Market Flipper",
+        "footer": "Profit calculations exclude transport costs and taxes.",
+        "noResults": "No flip opportunities found right now. Check back later!",
+        "baseTitle": "AlbionKit Flip Digest",
+        "preview": "Top {itemName} and more flip opportunities — see what's profitable today!"
       }
     },
     "manageNotifications": "Manage notification preferences",

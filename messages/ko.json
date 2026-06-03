@@ -337,6 +337,15 @@
         "footer": "설정에서 골드 알림을 활성화했기 때문에 이 메일을 받고 있습니다.",
         "baseTitle": "골드 알림: 가격이 {trendText}입니다!",
         "preview": "골드 시장 변동성 감지: {price} 실버 ({change}%)"
+      },
+      "flip": {
+        "subject": "최고의 플립 기회 📊",
+        "body": "오늘의 최고의 플립 기회:",
+        "button": "Market Flipper 열기",
+        "footer": "이익 계산은 운송 비용과 세금을 제외합니다.",
+        "noResults": "현재 플립 기회가 없습니다. 나중에 다시 확인하세요!",
+        "baseTitle": "AlbionKit 플립 다이제스트",
+        "preview": "최고의 {itemName} 외 플립 기회 — 오늘 수익성 있는 기회를 확인하세요!"
       }
     },
     "markAllRead": "모두 읽음으로 표시",

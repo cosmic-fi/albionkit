@@ -340,6 +340,15 @@
         "footer": "你收到此邮件是因为你在设置中启用了金币警报。",
         "baseTitle": "金币警报：价格正在{trendText}！",
         "preview": "金币市场波动检测：{price} 银币 ({change}%)"
+      },
+      "flip": {
+        "subject": "最佳搬砖机会 📊",
+        "body": "以下是今天最好的搬砖机会：",
+        "button": "打开 Market Flipper",
+        "footer": "利润计算不包括运输成本和税费。",
+        "noResults": "目前没有找到搬砖机会。请稍后再来查看！",
+        "baseTitle": "AlbionKit 搬砖摘要",
+        "preview": "Top {itemName} 及更多搬砖机会 — 查看今天什么有利可图！"
       }
     },
     "markAllAsRead": "Mark all as read"
