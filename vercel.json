@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/check-gold",
-      "schedule": "0 */12 * * *"
+      "schedule": "0 0 * * *"
     },
     {
       "path": "/api/cron/check-flips",

@@ -8,7 +8,7 @@ const CRON_SECRET = process.env.CRON_SECRET;
 /**
  * Cron job: Check gold prices and send alerts when significant changes detected
  * 
- * Expected Vercel cron: every 12 hours (0 0,12 * * *)
+ * Expected Vercel cron: daily at 00:00 UTC (0 0 * * *)
  * Verifies via CRON_SECRET header
  * 
  * Stores last known prices in Firestore `cron_state/gold_prices`
