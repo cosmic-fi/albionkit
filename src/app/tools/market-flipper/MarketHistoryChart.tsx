@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { getMarketHistory, MarketHistory } from './actions';
-import { Loader2 } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
 
 import { useTranslations } from 'next-intl';
 
@@ -79,7 +79,7 @@ export default function MarketHistoryChart({ itemId, buyCity, region = 'west' }:
   if (loading) {
     return (
       <div className="h-64 flex items-center justify-center bg-muted/50 rounded-lg">
-        <Loader2 className="h-8 w-8 animate-spin text-info" />
+        <Preloader size="lg" />
       </div>
     );
   }

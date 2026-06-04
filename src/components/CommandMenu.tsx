@@ -21,7 +21,7 @@ import {
   Utensils,
   Skull,
   Box,
-  Loader2,
+  // Loader2 removed
   LineChart,
   FlaskConical,
   Rabbit,
@@ -32,6 +32,7 @@ import {
   Swords
 } from "lucide-react"
 import { globalSearch, SearchResult } from "@/app/actions/search"
+import { Preloader } from "@/components/ui/Preloader"
 
 interface CommandMenuProps {
   open: boolean
@@ -139,7 +140,7 @@ export function CommandMenu() {
               value={query}
               onValueChange={setQuery}
             />
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin text-muted-foreground" />}
+            {loading && <Preloader size="sm" className="mr-2" />}
             <button 
               onClick={() => setIsOpen(false)}
               className="ml-2 p-1 text-muted-foreground hover:text-foreground transition-colors"

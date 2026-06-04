@@ -12,9 +12,11 @@ import { useServer } from '@/hooks/useServer';
 import { NumberInput } from '@/components/ui/NumberInput';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/Button';
 
 export default function TransportClient() {
   const t = useTranslations('FactionTools.transport');
+  const tCommon = useTranslations('Common');
   const { server: region, setServer: setRegion } = useServer();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any[]>([]);
@@ -53,19 +55,21 @@ export default function TransportClient() {
       description={t('subtitle')}
       backgroundImage='/background/ak-factions.jpeg'
       headerActions={
-        <div className="flex items-center gap-3">
+        <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
           <ServerSelector
             selectedServer={region}
             onServerChange={setRegion}
           />
-          <button
+          <Button
+            variant="default"
+            size="sm"
             onClick={fetchData}
             disabled={loading}
-            className="p-2.5 rounded-xl bg-secondary/50 border border-border hover:bg-secondary transition-colors disabled:opacity-50"
-            title="Refresh Data"
+            className="gap-2"
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-          </button>
+            <span className="hidden sm:inline">{tCommon('refresh')}</span>
+          </Button>
         </div>
       }
     >

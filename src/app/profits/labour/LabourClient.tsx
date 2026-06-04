@@ -23,6 +23,7 @@ import { useServer } from '@/hooks/useServer';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { useTranslations, useLocale } from 'next-intl';
 import { getItemNameService } from '@/lib/item-service';
+import { Button } from '@/components/ui/Button';
 
 interface MaterialReturn {
   id: string;
@@ -67,6 +68,7 @@ interface LabourerTierResult {
 export default function LabourClient() {
   const t = useTranslations('Labour');
   const tCommon = useTranslations('Alchemy');
+  const tCommonKeys = useTranslations('Common');
   const locale = useLocale();
   const { profile } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -331,18 +333,21 @@ export default function LabourClient() {
       backgroundImage='/background/ao-crafting.jpg'  
       description={t('description')}
       headerActions={
-        <div className="flex items-center gap-4">
+        <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
           <ServerSelector
             selectedServer={region}
             onServerChange={setRegion}
           />
-          <button 
+          <Button 
+            variant="default"
+            size="sm"
             onClick={loadData}
             disabled={loading}
-            className="p-2 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-lg border border-border transition-colors disabled:opacity-50"
+            className="gap-2"
           >
             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
-          </button>
+            <span className="hidden sm:inline">{loading ? tCommonKeys('loading') : tCommonKeys('refresh')}</span>
+          </Button>
         </div>
       }
     >

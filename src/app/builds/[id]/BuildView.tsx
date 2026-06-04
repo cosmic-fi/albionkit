@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
 import { ItemIcon } from '@/components/ItemIcon';
+import { Preloader } from '@/components/Preloader';
 import { getBuild, Build, getBuilds } from '@/lib/builds-service';
 import { getMarketPrices, LOCATIONS } from '@/lib/market-service';
 import { getItemNameService } from '@/lib/item-service';
-import { Loader2, User, Clock, Eye, Star, Share2, ThumbsUp, Calendar, Shield, Zap, Wind, BookOpen, Check, X as XIcon, ArrowLeft, ArrowRight, Heart, Link as LinkIcon, Copy, Sparkles, Coins, EyeOff, Trash2 } from 'lucide-react';
+import { User, Clock, Eye, Star, Share2, ThumbsUp, Calendar, Shield, Zap, Wind, BookOpen, Check, X as XIcon, ArrowLeft, ArrowRight, Heart, Link as LinkIcon, Copy, Sparkles, Coins, EyeOff, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { toast } from 'sonner';
@@ -124,7 +125,7 @@ export function BuildView({ id }: BuildViewProps) {
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
-                <Loader2 className="animate-spin h-8 w-8 text-amber-500" />
+                <Preloader size="lg" />
             </div>
         );
     }

@@ -141,9 +141,6 @@
       "tier2": "Aşama 2",
       "tier3": "Aşama 3",
       "tier4": "Aşama 4",
-      "tier5": "Aşama 5",
-      "tier6": "Aşama 6",
-      "monthlyChest": "Aylık Sandık",
       "progress": "Kampanya İlerlemesi",
       "ahead": "İleride",
       "behind": "Geride",
@@ -160,7 +157,7 @@
       "whatIs": "Kampanya Takipçisi Nedir?",
       "whatIsDesc": "Fraksiyon Kampanyası, Albion Online'da aylık bir ilerleme sistemidir. Fraksiyon Savaşlarına katılarak, kitap, gümüş ve fraksiyon kalpleri içeren değerli aşama sandıklarını açmak için puan kazanırsınız.",
       "proTip": "İpucu",
-      "proTipDesc": "Ödüllerinizi en üst düzeye çıkarmak için her ay en az 6. Aşamayı hedefleyin. Hızınızı doğru ayarlamak için yukarıdaki Günlük Hedef metriğini kullanın. Haydut Saldırılarına katılmak hızınızı artırmanın en hızlı yoludur."
+      "proTipDesc": "Ödüllerinizi en üst düzeye çıkarmak için her ay en az 4. Aşamayı (Altın Kampanya Sandığı) hedefleyin. Hızınızı doğru ayarlamak için yukarıdaki Günlük Hedef metriğini kullanın. Haydut Saldırılarına katılmak hızınızı artırmanın en hızlı yoludur."
     }
   },
   "BotPage": {
@@ -359,7 +356,8 @@
     "resetToMarket": "Piyasa fiyatına sıfırla",
     "selectItem": "Eşya Seç",
     "searchByName": "İsimle ara...",
-    "loadingItems": "Eşyalar yükleniyor..."
+    "loadingItems": "Eşyalar yükleniyor...",
+    "refresh": "Yenile"
   },
   "CommandMenu": {
     "placeholder": "Komut yazın veya arama yapın...",
@@ -413,7 +411,14 @@
     "heartTransport": "Kalp Taşıma",
     "banditTracker": "Haydut Takibi",
     "campaignTracker": "Kampanya Takibi",
-    "bot": "Bot"
+    "bot": "Bot",
+    "badges": {
+      "new": "YENİ",
+      "hot": "HOT",
+      "beta": "BETA",
+      "updated": "GÜNC",
+      "comingSoon": "YAKINDA"
+    }
   },
   "Footer": {
     "tools": "Araçlar",
@@ -4633,5 +4638,26 @@
     "T1_FACTION_MOUNTAIN_TOKEN_1": "Dağ Kalbi",
     "T1_FACTION_STEPPE_TOKEN_1": "Canavar Kalbi",
     "T1_FACTION_CAERLEON_TOKEN_1": "Gölgekalbi"
+  },
+  "PlayerPage": {
+    "defaultTitle": "Oyuncu İstatistikleri - Albion Online",
+    "defaultDescription": "Albion Online'da oyuncu istatistikleri, PvP geçmişi ve savaş kayıtlarını arayın.",
+    "title": "Oyuncu İstatistikleri",
+    "description": "Albion Online'da oyuncu istatistikleri ve PvP geçmişini görüntüle",
+    "shareText": "{name} - Albion Online Oyuncu İstatistikleri",
+    "searchPlaceholder": "Oyuncu ara...",
+    "searching": "Aranıyor...",
+    "noGuild": "Lonca Yok",
+    "noAlliance": "İttifak Yok",
+    "search": "Ara",
+    "permalinkHint": "Bu bağlantıyı paylaş:",
+    "loading": "Oyuncu verileri yükleniyor...",
+    "notFoundTitle": "Oyuncu bulunamadı",
+    "errorTitle": "Oyuncu yükleme hatası",
+    "notFoundDescription": "\"{name}\" adında bir oyuncu bulunamadı. Tekrar deneyin.",
+    "errorDescription": "Oyuncu verileri yüklenirken bir hata oluştu. Lütfen tekrar deneyin.",
+    "tryAgain": "Tekrar Dene",
+    "emptyTitle": "Oyuncu ara",
+    "emptyDescription": "İstatistiklerini, silahlarını ve son savaşlarını görmek için yukarıya bir oyuncu adı girin."
   }
 }

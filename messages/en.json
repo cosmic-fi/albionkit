@@ -141,9 +141,6 @@
       "tier2": "Tier 2",
       "tier3": "Tier 3",
       "tier4": "Tier 4",
-      "tier5": "Tier 5",
-      "tier6": "Tier 6",
-      "monthlyChest": "Monthly Chest",
       "progress": "Campaign Progress",
       "ahead": "Ahead of Pace",
       "behind": "Behind Pace",
@@ -160,7 +157,7 @@
       "whatIs": "What is the Campaign Tracker?",
       "whatIsDesc": "The Faction Campaign is a monthly progression system in Albion Online. By participating in Faction Warfare, you earn points that unlock valuable tier chests containing tomes, silver, and faction hearts.",
       "proTip": "Pro Tip",
-      "proTipDesc": "To maximize your rewards, aim for at least Tier 6 every month. Use the Daily Goal metric above to ensure you are pacing correctly. Participating in Bandit Assaults is the fastest way to stay ahead of pace."
+      "proTipDesc": "To maximize your rewards, aim for at least Tier 4 (the Gold Campaign Chest) every month. Use the Daily Goal metric above to ensure you are pacing correctly. Participating in Bandit Assaults is the fastest way to stay ahead of pace."
     }
   },
   "BotPage": {
@@ -359,7 +356,8 @@
     "resetToMarket": "Reset to market price",
     "selectItem": "Select Item",
     "searchByName": "Search by name...",
-    "loadingItems": "Loading items..."
+    "loadingItems": "Loading items...",
+    "refresh": "Refresh"
   },
   "CommandMenu": {
     "placeholder": "Type a command or search...",
@@ -411,7 +409,14 @@
     "heartTransport": "Heart Transport",
     "banditTracker": "Bandit Tracker",
     "campaignTracker": "Campaign Tracker",
-    "bot": "Bot"
+    "bot": "Bot",
+    "badges": {
+      "new": "NEW",
+      "hot": "HOT",
+      "beta": "BETA",
+      "updated": "UPD",
+      "comingSoon": "SOON"
+    }
   },
   "Footer": {
     "tools": "Tools",
@@ -4583,5 +4588,26 @@
     "T1_FACTION_MOUNTAIN_TOKEN_1": "Mountain Heart",
     "T1_FACTION_STEPPE_TOKEN_1": "Beast Heart",
     "T1_FACTION_CAERLEON_TOKEN_1": "Shadowheart"
+  },
+  "PlayerPage": {
+    "defaultTitle": "Player Stats - Albion Online",
+    "defaultDescription": "Look up player statistics, PvP history, and combat records in Albion Online.",
+    "title": "Player Stats",
+    "description": "Look up Albion Online player statistics and PvP history",
+    "shareText": "{name} - Albion Online Player Stats",
+    "searchPlaceholder": "Search for a player...",
+    "searching": "Searching...",
+    "noGuild": "No Guild",
+    "noAlliance": "No Alliance",
+    "search": "Search",
+    "permalinkHint": "Share this link:",
+    "loading": "Loading player data...",
+    "notFoundTitle": "Player not found",
+    "errorTitle": "Error loading player",
+    "notFoundDescription": "Could not find a player named \"{name}\". Try searching again.",
+    "errorDescription": "An error occurred while loading the player data. Please try again.",
+    "tryAgain": "Try Again",
+    "emptyTitle": "Search for a player",
+    "emptyDescription": "Enter a player name above to view their stats, weapons, and recent battles."
   }
 }

@@ -20,6 +20,7 @@ import { Tooltip } from '@/components/ui/Tooltip';
 
 export default function EfficiencyClient() {
   const t = useTranslations('FactionTools.efficiency');
+  const tCommon = useTranslations('Common');
   const t_regions = useTranslations('regions');
   const locale = useLocale();
   const [loading, setLoading] = useState(true);
@@ -95,7 +96,7 @@ export default function EfficiencyClient() {
       backgroundImage='/background/ak-factions.jpeg'
       description={t('subtitle')}
       headerActions={
-        <div className="flex items-center gap-3">
+        <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
           <ServerSelector
             selectedServer={region}
             onServerChange={setRegion}
@@ -108,7 +109,7 @@ export default function EfficiencyClient() {
             className="gap-2"
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline">Update</span>
+            <span className="hidden sm:inline">{tCommon('refresh')}</span>
           </Button>
         </div>
       }
@@ -117,19 +118,7 @@ export default function EfficiencyClient() {
         {/* Filters Card */}
         <div className="bg-card border border-border rounded-2xl p-6">
           <div className="flex flex-col lg:flex-row gap-4 items-end">
-            <div className="w-full lg:w-64 space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('faction')}</label>
-              <Select
-                value={selectedFaction}
-                onChange={(value) => setSelectedFaction(value)}
-                options={[
-                  { value: 'all', label: t('allFactions') },
-                  ...FACTION_CITIES.map(city => ({ value: city, label: city }))
-                ]}
-              />
-            </div>
-
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 w-full space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('item')}</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -140,6 +129,17 @@ export default function EfficiencyClient() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
+            </div>
+            <div className="w-full lg:w-64 space-y-2">
+              <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('faction')}</label>
+              <Select
+                value={selectedFaction}
+                onChange={(value) => setSelectedFaction(value)}
+                options={[
+                  { value: 'all', label: t('allFactions') },
+                  ...FACTION_CITIES.map(city => ({ value: city, label: city }))
+                ]}
+              />
             </div>
           </div>
         </div>

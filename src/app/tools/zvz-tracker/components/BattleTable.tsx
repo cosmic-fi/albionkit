@@ -4,6 +4,7 @@ import { Swords, ChevronDown, ChevronUp } from 'lucide-react';
 import type { Battle } from '../types';
 import { BattleRow } from './BattleRow';
 import { Pagination } from '@/components/ui/Pagination';
+import { Preloader } from '@/components/Preloader';
 
 interface Props {
   battles: Battle[];
@@ -38,14 +39,7 @@ export function BattleTable({
     return (
       <div className="min-h-[400px] flex items-center justify-center bg-card/50 rounded-2xl border border-border/50">
         <div className="flex flex-col items-center gap-4">
-          {/* Bouncing dots */}
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-            <div className="w-3 h-3 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-            <div className="w-3 h-3 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-          </div>
-          {/* Loading text */}
-          <p className="text-sm font-medium text-muted-foreground animate-pulse">{t('loadingBattles')}</p>
+        <Preloader size="lg" showText text={t('loadingBattles')} />
         </div>
       </div>
     );

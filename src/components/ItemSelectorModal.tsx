@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, X, Loader2 } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { getItems, searchItemsMultilingual, SimpleItem } from '@/lib/item-service';
 import { ItemIcon } from './ItemIcon';
 import { createPortal } from 'react-dom';
 import { useTranslations, useLocale } from 'next-intl';
+import { Preloader } from '@/components/Preloader';
 
 interface ItemSelectorModalProps {
   isOpen: boolean;
@@ -90,8 +91,7 @@ export function ItemSelectorModal({ isOpen, onClose, onSelect, filter, title }: 
         <div className="flex-1 overflow-y-auto p-2 space-y-1 min-h-[300px]">
           {loading ? (
             <div className="flex items-center justify-center h-full text-muted-foreground">
-              <Loader2 className="animate-spin h-8 w-8 mr-2" />
-              {t('loadingItems')}
+            <Preloader size="lg" showText text={t('loadingItems')} />
             </div>
           ) : filteredItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground py-12">

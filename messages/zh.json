@@ -141,9 +141,6 @@
       "tier2": "2级",
       "tier3": "3级",
       "tier4": "4级",
-      "tier5": "5级",
-      "tier6": "6级",
-      "monthlyChest": "月度宝箱",
       "progress": "战役进度",
       "ahead": "进度超前",
       "behind": "进度落后",
@@ -160,7 +157,7 @@
       "whatIs": "什么是战役追踪器？",
       "whatIsDesc": "阵营战役是阿尔比恩在线中的每月进度系统。参与阵营战争可获得点数，解锁包含洞察之书、银币和阵营之心的珍贵宝箱。",
       "proTip": "专业提示",
-      "proTipDesc": "为了最大化您的奖励，争取每月至少达到 6 级。使用上方的每日目标指标确保进度。参与强盗袭击是超前完成进度的最快方式。"
+      "proTipDesc": "为了最大化您的奖励，争取每月至少达到 4 级（黄金战役宝箱）。使用上方的每日目标指标确保进度。参与强盗袭击是超前完成进度的最快方式。"
     }
   },
   "BotPage": {
@@ -351,7 +348,8 @@
         "preview": "Top {itemName} 及更多搬砖机会 — 查看今天什么有利可图！"
       }
     },
-    "markAllAsRead": "Mark all as read"
+    "markAllAsRead": "Mark all as read",
+    "refresh": "刷新"
   },
   "CommandMenu": {
     "placeholder": "输入命令或搜索...",
@@ -405,7 +403,14 @@
     "heartTransport": "阵营心运输",
     "banditTracker": "强盗追踪",
     "campaignTracker": "战役追踪",
-    "bot": "机器人"
+    "bot": "机器人",
+    "badges": {
+      "new": "新",
+      "hot": "HOT",
+      "beta": "测试",
+      "updated": "更新",
+      "comingSoon": "即将"
+    }
   },
   "Footer": {
     "tools": "工具",
@@ -4641,5 +4646,26 @@
     "T1_FACTION_MOUNTAIN_TOKEN_1": "山地之心",
     "T1_FACTION_STEPPE_TOKEN_1": "草原之心",
     "T1_FACTION_CAERLEON_TOKEN_1": "暗影之心"
+  },
+  "PlayerPage": {
+    "defaultTitle": "玩家统计 - 幻想大陆",
+    "defaultDescription": "搜索玩家统计、PvP历史记录和幻想大陆中的战斗记录。",
+    "title": "玩家统计",
+    "description": "查看幻想大陆中的玩家统计和PvP历史记录",
+    "shareText": "{name} - 幻想大陆玩家统计",
+    "searchPlaceholder": "搜索玩家...",
+    "searching": "搜索中...",
+    "noGuild": "无公会",
+    "noAlliance": "无联盟",
+    "search": "搜索",
+    "permalinkHint": "分享此链接：",
+    "loading": "加载玩家数据中...",
+    "notFoundTitle": "玩家未找到",
+    "errorTitle": "玩家加载错误",
+    "notFoundDescription": "找不到名称为\"{name}\"的玩家。请重试。",
+    "errorDescription": "加载玩家数据时出错。请重试。",
+    "tryAgain": "重试",
+    "emptyTitle": "搜索玩家",
+    "emptyDescription": "在上方输入玩家名称以查看他们的统计数据、武器和最近的战斗。"
   }
 }

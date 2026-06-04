@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Loader2, X, Mail, Lock, AlertCircle } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
+import { X, Mail, Lock, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { toast } from 'sonner';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -133,7 +134,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
             disabled={loading}
             className="w-full flex items-center justify-center gap-2 bg-card border border-border text-card-foreground font-bold py-2.5 rounded-lg hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : (
+            {loading ? <Preloader size="sm" /> : (
               <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
@@ -218,7 +219,7 @@ export function LoginModal({ isOpen, onClose, message }: LoginModalProps) {
               disabled={loading}
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-2.5 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+              {loading && <Preloader size="sm" />}
               {isRegistering ? t('signUp') : t('signIn')}
             </button>
           </form>

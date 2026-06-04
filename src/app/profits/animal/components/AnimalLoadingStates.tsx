@@ -1,6 +1,7 @@
 'use client';
 
-import { Loader2, PawPrint } from 'lucide-react';
+import { PawPrint } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
 
 interface Props {
   message?: string;
@@ -70,7 +71,7 @@ export function AnimalLoadingState({ message = 'Fetching market data...', showIc
           {/* Animated ring effect */}
           <div className="absolute inset-0 rounded-full border-4 border-primary/20 animate-ping" />
           <div className="relative bg-primary/10 p-4 rounded-full">
-            <Loader2 className="h-8 w-8 text-primary animate-spin" />
+            <Preloader size="lg" />
           </div>
         </div>
         

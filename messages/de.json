@@ -141,9 +141,6 @@
       "tier2": "Stufe 2",
       "tier3": "Stufe 3",
       "tier4": "Stufe 4",
-      "tier5": "Stufe 5",
-      "tier6": "Stufe 6",
-      "monthlyChest": "Monatliche Truhe",
       "progress": "Kampagnenfortschritt",
       "ahead": "Dem Zeitplan voraus",
       "behind": "Im Rückstand",
@@ -160,7 +157,7 @@
       "whatIs": "Was ist der Kampagnen-Tracker?",
       "whatIsDesc": "Die Fraktionskampagne ist ein monatliches Fortschrittssystem in Albion Online. Durch die Teilnahme am Fraktionskrieg erhältst du Punkte, um wertvolle Truhen mit Folianten, Silber und Fraktionsherzen freizuschalten.",
       "proTip": "Profi-Tipp",
-      "proTipDesc": "Um deine Belohnungen zu maximieren, peile jeden Monat mindestens Stufe 6 an. Nutze das Tagesziel oben, um dein Tempo zu halten. Die Teilnahme an Banditenüberfällen ist der schnellste Weg, um voranzukommen."
+      "proTipDesc": "Um deine Belohnungen zu maximieren, peile jeden Monat mindestens Stufe 4 (die Gold-Kampagnentruhe) an. Nutze das Tagesziel oben, um dein Tempo zu halten. Die Teilnahme an Banditenüberfällen ist der schnellste Weg, um voranzukommen."
     }
   },
   "BotPage": {
@@ -359,7 +356,8 @@
     "resetToMarket": "Auf Marktpreis zurücksetzen",
     "selectItem": "Gegenstand auswählen",
     "searchByName": "Nach Namen suchen...",
-    "loadingItems": "Gegenstände werden geladen..."
+    "loadingItems": "Gegenstände werden geladen...",
+    "refresh": "Aktualisieren"
   },
   "CommandMenu": {
     "placeholder": "Befehl eingeben oder suchen...",
@@ -413,7 +411,14 @@
     "heartTransport": "Herztransport",
     "banditTracker": "Bandit Tracker",
     "campaignTracker": "Kampagnen Tracker",
-    "bot": "Bot"
+    "bot": "Bot",
+    "badges": {
+      "new": "NEU",
+      "hot": "HOT",
+      "beta": "BETA",
+      "updated": "NEU",
+      "comingSoon": "BALD"
+    }
   },
   "Footer": {
     "tools": "Werkzeuge",
@@ -4638,5 +4643,26 @@
     "T1_FACTION_MOUNTAIN_TOKEN_1": "Bergherz",
     "T1_FACTION_STEPPE_TOKEN_1": "Bestienherz",
     "T1_FACTION_CAERLEON_TOKEN_1": "Schattenherz"
+  },
+  "PlayerPage": {
+    "defaultTitle": "Spielerstatistiken - Albion Online",
+    "defaultDescription": "Suchen Sie nach Spielerstatistiken, PvP-Verlauf und Kampfaufzeichnungen in Albion Online.",
+    "title": "Spielerstatistiken",
+    "description": "Spielerstatistiken und PvP-Verlauf in Albion Online anzeigen",
+    "shareText": "{name} - Albion Online Spielerstatistiken",
+    "searchPlaceholder": "Nach einem Spieler suchen...",
+    "searching": "Wird gesucht...",
+    "noGuild": "Keine Gilde",
+    "noAlliance": "Kein Bündnis",
+    "search": "Suchen",
+    "permalinkHint": "Diesen Link teilen:",
+    "loading": "Spielerdaten werden geladen...",
+    "notFoundTitle": "Spieler nicht gefunden",
+    "errorTitle": "Fehler beim Laden des Spielers",
+    "notFoundDescription": "Konnte keinen Spieler mit dem Namen \"{name}\" finden. Versuchen Sie es erneut.",
+    "errorDescription": "Ein Fehler ist beim Laden der Spielerdaten aufgetreten. Bitte versuchen Sie es erneut.",
+    "tryAgain": "Erneut versuchen",
+    "emptyTitle": "Nach einem Spieler suchen",
+    "emptyDescription": "Geben Sie oben einen Spielernamen ein, um seine Statistiken, Waffen und letzten Kämpfe anzuzeigen."
   }
 }

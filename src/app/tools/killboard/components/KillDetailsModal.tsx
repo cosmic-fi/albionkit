@@ -92,11 +92,16 @@ export function KillDetailsModal({ event, onClose, onShare }: KillDetailsModalPr
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose}>
-      <div 
-        className="bg-popover border border-border rounded-xl sm:rounded-2xl w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col shadow-2xl"
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center sm:p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose}>
+      <div
+        className="bg-popover border border-border rounded-t-2xl sm:rounded-2xl w-full max-w-6xl h-[100dvh] sm:h-auto sm:max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-in slide-in-from-bottom duration-300 sm:animate-in sm:slide-in-from-bottom-4 sm:zoom-in-95"
         onClick={e => e.stopPropagation()}
       >
+        {/* Drag handle (mobile only) */}
+        <div className="sm:hidden flex justify-center pt-2 pb-1 shrink-0" aria-hidden="true">
+          <div className="w-10 h-1.5 rounded-full bg-muted-foreground/30" />
+        </div>
+
         {/* Header */}
         <div className="p-3 sm:p-4 border-b border-border flex items-center justify-between bg-accent/20">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">

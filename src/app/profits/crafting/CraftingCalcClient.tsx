@@ -13,6 +13,7 @@ import { NumberInput } from '@/components/ui/NumberInput';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { ServerSelector } from '@/components/ServerSelector';
+import { Preloader } from '@/components/Preloader';
 import {
   Hammer, RefreshCw, Search, X, MapPin, Coins, Percent,
   TrendingUp, Package, DollarSign, CircleHelp, Settings,
@@ -325,7 +326,7 @@ export default function CraftingCalcClient() {
           
           {isImporting && (
             <div className="mt-4 p-4 bg-primary/10 border border-primary/20 rounded-xl text-center">
-              <RefreshCw className="h-6 w-6 animate-spin text-primary mx-auto mb-2" />
+              <Preloader size="lg" />
               <p className="text-sm text-muted-foreground">{t('fetchingRecipe')}</p>
             </div>
           )}

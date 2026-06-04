@@ -11,6 +11,7 @@ import { useCommandMenu } from '@/context/CommandMenuContext';
 import { NotificationDropdown } from '@/components/notifications/NotificationDropdown';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useTranslations } from 'next-intl';
+import { NavBadge, NavBadgeDot, type NavBadgeVariant } from '@/components/ui/NavBadge';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ interface NavItem {
   title: string;
   href?: string;
   icon: React.ReactNode;
+  badge?: NavBadgeVariant;
   submenu?: NavItem[];
 }
 
@@ -97,6 +99,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       title: t('bot'),
       href: '/bot',
       icon: <Bot className="h-5 w-5" />,
+      badge: 'new',
     },
     {
       id: 'guides',
@@ -115,10 +118,21 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       icon: <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
       submenu: [
         { id: 'gold-price', title: t('goldPrice'), href: '/tools/gold-price', icon: <Coins className="h-4 w-4" /> },
-        { id: 'market-flipper', title: t('marketFlipper'), href: '/tools/market-flipper', icon: <Store className="h-4 w-4" /> },
+        { id: 'market-flipper', title: t('marketFlipper'), href: '/tools/market-flipper', icon: <Store className="h-4 w-4" />, badge: 'hot' },
         { id: 'pvp-intel', title: t('pvpIntel'), href: '/tools/pvp-intel', icon: <Sword className="h-4 w-4" /> },
         { id: 'killboard', title: t('killboard'), href: '/tools/killboard', icon: <Skull className="h-4 w-4" /> },
         { id: 'zvz-tracker', title: t('zvzTracker'), href: '/tools/zvz-tracker', icon: <Swords className="h-4 w-4" /> },
+      ],
+    },
+    {
+      id: 'faction',
+      title: t('faction'),
+      icon: <Shield className="h-5 w-5" />,
+      submenu: [
+        { id: 'faction-efficiency', title: t('factionEfficiency'), href: '/faction/efficiency', icon: <TrendingUp className="h-4 w-4" /> },
+        { id: 'heart-transport', title: t('heartTransport'), href: '/faction/transport', icon: <Truck className="h-4 w-4" /> },
+        { id: 'bandit-tracker', title: t('banditTracker'), href: '/faction/bandit', icon: <Clock className="h-4 w-4" />, badge: 'beta'  },
+        { id: 'campaign-tracker', title: t('campaignTracker'), href: '/faction/campaign', icon: <Activity className="h-4 w-4"/>, badge: 'new' },
       ],
     },
     {
@@ -131,20 +145,9 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         { id: 'cooking', title: t('cooking'), href: '/profits/cooking', icon: <ForkKnife className="h-4 w-4" /> },
         { id: 'animal', title: t('animal'), href: '/profits/animal', icon: <PawPrint className="h-4 w-4" /> },
         { id: 'alchemy', title: t('alchemy'), href: '/profits/alchemy', icon: <FlaskConical className='h-4 w-4' /> },
-        { id: 'labour', title: t('labour'), href: '/profits/labour', icon: <Leaf className='h-4 w-4' /> },
+        { id: 'labour', title: t('labour'), href: '/profits/labour', icon: <Leaf className='h-4 w-4' />, badge: 'hot' },
         { id: 'chopped-fish', title: t('choppedFish'), href: '/profits/chopped-fish', icon: <Fish className='h-4 w-4' /> },
         { id: 'enchanting', title: t('enchanting'), href: '/profits/enchanting', icon: <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg> },
-      ],
-    },
-    {
-      id: 'faction',
-      title: t('faction'),
-      icon: <Shield className="h-5 w-5" />,
-      submenu: [
-        { id: 'faction-efficiency', title: t('factionEfficiency'), href: '/faction/efficiency', icon: <TrendingUp className="h-4 w-4" /> },
-        { id: 'heart-transport', title: t('heartTransport'), href: '/faction/transport', icon: <Truck className="h-4 w-4" /> },
-        { id: 'bandit-tracker', title: t('banditTracker'), href: '/faction/bandit', icon: <Clock className="h-4 w-4" /> },
-        { id: 'campaign-tracker', title: t('campaignTracker'), href: '/faction/campaign', icon: <Activity className="h-4 w-4" /> },
       ],
     }
   ];
@@ -162,7 +165,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
   };
 
   return (
-    <div className="flex h-screen bg-background overflow-hidden">
+    <div className="flex h-dvh bg-background overflow-hidden">
       {/* Mobile Sidebar Overlay */}
       {isMobileSidebarOpen && (
         <div
@@ -172,7 +175,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       )}
 
       {/* Sidebar Container (for positioning collapse button) */}
-      <div className={`fixed lg:static inset-y-0 left-0 z-50 w-[75vw] transition-all duration-300 ease-in-out ${!isSidebarOpen ? 'lg:w-20' : 'lg:w-64'} ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+      <div className={`fixed lg:sticky inset-y-0 left-0 top-0 z-50 h-dvh lg:h-dvh w-[75vw] transition-all duration-300 ease-in-out ${!isSidebarOpen ? 'lg:w-24' : 'lg:w-75'} ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         {/* Sidebar */}
         <aside className="h-full bg-card border-r border-border overflow-hidden">
           <div className="flex flex-col h-full overflow-hidden">
@@ -220,12 +223,22 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                           } ${!isSidebarOpen && 'lg:justify-center'}`}
                         title={!isSidebarOpen ? item.title : undefined}
                       >
-                        <div className="shrink-0">
+                        <div className="shrink-0 relative w-5 h-5 flex items-center justify-center">
                           {item.icon}
+                          {item.badge && !isSidebarOpen && (
+                            <span className="absolute -top-0.5 -right-0.5">
+                              <NavBadgeDot variant={item.badge} />
+                            </span>
+                          )}
                         </div>
-                        {isSidebarOpen && <span className="whitespace-nowrap">{item.title}</span>}
                         {isSidebarOpen && (
-                          <svg className={`h-4 w-4 transition-transform ml-auto ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <span className="whitespace-nowrap flex-1 text-left">{item.title}</span>
+                        )}
+                        {isSidebarOpen && item.badge && (
+                          <NavBadge variant={item.badge} />
+                        )}
+                        {isSidebarOpen && (
+                          <svg className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''} ${item.badge ? '' : 'ml-auto'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                           </svg>
                         )}
@@ -248,7 +261,8 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                                 }`}
                             >
                               {sub.icon}
-                              {sub.title}
+                              <span className="whitespace-nowrap flex-1">{sub.title}</span>
+                              {sub.badge && <NavBadge variant={sub.badge} />}
                             </Link>
                           ))}
                         </div>
@@ -267,8 +281,13 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                         }`}
                       title={item.title}
                     >
-                      <div className="shrink-0">
+                      <div className="shrink-0 relative w-5 h-5 flex items-center justify-center">
                         {item.icon}
+                        {item.badge && (
+                          <span className="absolute -top-0.5 -right-0.5">
+                            <NavBadgeDot variant={item.badge} />
+                          </span>
+                        )}
                       </div>
                     </Link>
                   ) : (
@@ -281,10 +300,11 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                           : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
                         }`}
                     >
-                      <div className="shrink-0">
+                      <div className="shrink-0 w-5 h-5 flex items-center justify-center">
                         {item.icon}
                       </div>
-                      <span className="whitespace-nowrap">{item.title}</span>
+                      <span className="whitespace-nowrap flex-1">{item.title}</span>
+                      {item.badge && <NavBadge variant={item.badge} />}
                     </Link>
                   )
                 );
@@ -307,7 +327,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden h-screen">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden h-dvh pb-[env(safe-area-inset-bottom)]">
         {/* Top Bar */}
         <header className="h-16 bg-card border-b border-border flex items-center justify-between px-4 shrink-0">
           <div className="flex items-center gap-3">

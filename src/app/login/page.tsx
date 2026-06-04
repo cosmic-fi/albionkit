@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLoginModal } from '@/context/LoginModalContext';
-import { Loader2 } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
 import { useTranslations } from 'next-intl';
 
 export default function LoginPage() {
@@ -20,8 +20,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-4">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground">{t('redirecting')}</p>
+        <Preloader size="lg" showText text={t('redirecting')} />
+
       </div>
     </div>
   );

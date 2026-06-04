@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { RefreshCw, TrendingUp, Star, DollarSign, Search, Filter, ChevronDown, ChevronUp, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { useAuth } from '@/context/AuthContext';
@@ -36,6 +37,7 @@ interface Flip {
 
 export default function MarketFlipperClient() {
   const t = useTranslations('MarketFlipper');
+  const tCommon = useTranslations('Common');
   const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -203,7 +205,7 @@ export default function MarketFlipperClient() {
       description={t('description')}
       stats={pageStats}
       headerActions={
-        <div className="flex items-center gap-3">
+        <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
           <ServerSelector
             selectedServer={region}
             onServerChange={setRegion}
@@ -216,7 +218,7 @@ export default function MarketFlipperClient() {
             className="gap-2"
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline">{loading ? t('loading') : t('refresh')}</span>
+            <span className="hidden sm:inline">{loading ? tCommon('loading') : tCommon('refresh')}</span>
           </Button>
         </div>
       }
@@ -421,12 +423,7 @@ function ResultsTable({ flips, totalFlips, currentPage, totalPages, onPageChange
   if (loading) {
     return (
       <div className="bg-card/50 rounded-2xl border border-border/50 p-12 text-center">
-        <div className="relative inline-block">
-          <div className="w-16 h-16 border-4 border-primary/20 rounded-full" />
-          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0" />
-        </div>
-        <p className="text-lg font-bold text-foreground mt-4">{t('loadingMarketData')}</p>
-        <p className="text-sm text-muted-foreground mt-1">{t('fetchingPrices')}</p>
+        <Preloader size="lg" showText text={t('loadingMarketData')} />
       </div>
     );
   }

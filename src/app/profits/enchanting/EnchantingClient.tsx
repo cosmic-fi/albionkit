@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, Fragment } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { useAuth } from '@/context/AuthContext';
 import { Sparkles, RefreshCw, CircleHelp, ChevronDown, ChevronUp, Plus, Minus, Info, Settings } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
 import { getMarketPrices, LOCATIONS } from '@/lib/market-service';
 import { SimpleItem, getItemNameService, searchItemsService } from '@/lib/item-service';
 import { getEnchantmentMaterialCount, getMaterialId, ENCHANTMENT_MATERIALS } from './constants';
@@ -18,6 +19,7 @@ import { Badge } from '@/components/ui/Badge';
 import { ItemIcon } from '@/components/ItemIcon';
 import { InfoStrip, InfoBanner } from '@/components/InfoStrip';
 import { useTranslations, useLocale } from 'next-intl';
+import { Button } from '@/components/ui/Button';
 
 // Types
 interface MaterialRequirement {
@@ -53,6 +55,7 @@ interface EnchantingCalculation {
 export default function EnchantingClient() {
   const t = useTranslations('Enchanting');
   const ta = useTranslations('Alchemy');
+  const tCommon = useTranslations('Common');
   const locale = useLocale();
 
   const QUALITIES = [
@@ -464,18 +467,21 @@ export default function EnchantingClient() {
       backgroundImage='/background/ao-crafting.jpg'  
       description={t('description')}
       headerActions={
-        <div className="flex items-center gap-4">
+        <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
            <ServerSelector
             selectedServer={region}
             onServerChange={setRegion}
           />
-          <button 
+          <Button
+            variant="default"
+            size="sm"
             onClick={loadData}
             disabled={loading || !selectedItem}
-            className="p-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg   transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="gap-2"
           >
             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
-          </button>
+            <span className="hidden sm:inline">{loading ? tCommon('loading') : tCommon('refresh')}</span>
+          </Button>
         </div>
       }
     >
@@ -513,7 +519,7 @@ export default function EnchantingClient() {
                             <div className="max-h-[300px] overflow-y-auto">
                                 {isSearching ? (
                                     <div className="p-4 text-sm text-center text-muted-foreground flex items-center justify-center gap-2">
-                                        <RefreshCw className="h-4 w-4 animate-spin" />
+                                        <Preloader size="sm" />
                                         {t('searching')}
                                     </div>
                                 ) : searchResults.length === 0 ? (

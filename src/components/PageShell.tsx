@@ -64,8 +64,8 @@ export function PageShell({
                   </div>
                 )}
                 <div>
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight">{title}</h1>
-                  <p className="text-muted-foreground text-base lg:text-lg mt-1 max-w-2xl">{description}</p>
+                  <h1 className="text-2xl sm:text-3xl md:text-3xl font-black text-foreground tracking-tight">{title}</h1>
+                  <p className="text-muted-foreground text-base lg:text-base mt-1 max-w-2xl">{description}</p>
                 </div>
               </div>
               {headerActions && (

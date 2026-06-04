@@ -1,6 +1,7 @@
 'use client';
 
 import { Calendar, TrendingUp, Flame, Swords } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
 import FactionDominanceChart from '../charts/FactionDominanceChart';
 import BattleIntensityChart from '../charts/BattleIntensityChart';
 
@@ -35,14 +36,7 @@ export function AnalyticsDashboard({
     return (
       <div className="bg-card/50 rounded-2xl border border-border/20 p-12 text-center mb-6">
         <div className="flex flex-col items-center gap-4">
-          {/* Bouncing dots */}
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-            <div className="w-3 h-3 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-            <div className="w-3 h-3 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-          </div>
-          {/* Loading text */}
-          <p className="text-sm font-medium text-muted-foreground animate-pulse">{t('loadingAnalytics')}</p>
+          <Preloader size="lg" showText text={t('loadingAnalytics')} />
         </div>
       </div>
     );

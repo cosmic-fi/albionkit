@@ -141,9 +141,6 @@
       "tier2": "Nivel 2",
       "tier3": "Nivel 3",
       "tier4": "Nivel 4",
-      "tier5": "Nivel 5",
-      "tier6": "Nivel 6",
-      "monthlyChest": "Cofre Mensual",
       "progress": "Progreso de Campaña",
       "ahead": "Por delante",
       "behind": "Por detrás",
@@ -160,7 +157,7 @@
       "whatIs": "¿Qué es el Rastreador de Campaña?",
       "whatIsDesc": "La Campaña de Facción es un sistema de progresión mensual en Albion Online. Al participar en Guerras de Facciones, ganas puntos que desbloquean valiosos cofres con tomos, plata y corazones de facción.",
       "proTip": "Consejo Pro",
-      "proTipDesc": "Para maximizar tus recompensas, apunta a alcanzar al menos el Nivel 6 cada mes. Usa la Métrica de Meta Diaria para asegurar tu ritmo. Participar en Asaltos de Bandidos es la forma más rápida de mantenerte a la vanguardia."
+      "proTipDesc": "Para maximizar tus recompensas, apunta a alcanzar al menos el Nivel 4 (el Cofre de Campaña de Oro) cada mes. Usa la Métrica de Meta Diaria para asegurar tu ritmo. Participar en Asaltos de Bandidos es la forma más rápida de mantenerte a la vanguardia."
     }
   },
   "BotPage": {
@@ -359,7 +356,8 @@
     "resetToMarket": "Restablecer al precio de mercado",
     "selectItem": "Seleccionar objeto",
     "searchByName": "Buscar por nombre...",
-    "loadingItems": "Cargando objetos..."
+    "loadingItems": "Cargando objetos...",
+    "refresh": "Actualizar"
   },
   "CommandMenu": {
     "placeholder": "Escribe un comando o busca...",
@@ -413,7 +411,14 @@
     "heartTransport": "Transporte de Corazones",
     "banditTracker": "Rastreador de Bandidos",
     "campaignTracker": "Rastreador de Campaña",
-    "bot": "Bot"
+    "bot": "Bot",
+    "badges": {
+      "new": "NUEVO",
+      "hot": "HOT",
+      "beta": "BETA",
+      "updated": "ACT",
+      "comingSoon": "PRONTO"
+    }
   },
   "Footer": {
     "tools": "Herramientas",
@@ -4656,5 +4661,26 @@
     "T1_FACTION_MOUNTAIN_TOKEN_1": "Corazón de Montaña",
     "T1_FACTION_STEPPE_TOKEN_1": "Corazón de Bestia",
     "T1_FACTION_CAERLEON_TOKEN_1": "Corazón de Sombra"
+  },
+  "PlayerPage": {
+    "defaultTitle": "Estadísticas de Jugador - Albion Online",
+    "defaultDescription": "Busca estadísticas de jugador, historial de PvP y registros de combate en Albion Online.",
+    "title": "Estadísticas de Jugador",
+    "description": "Ver estadísticas de jugador e historial de PvP en Albion Online",
+    "shareText": "{name} - Estadísticas de Jugador en Albion Online",
+    "searchPlaceholder": "Buscar un jugador...",
+    "searching": "Buscando...",
+    "noGuild": "Sin Gremio",
+    "noAlliance": "Sin Alianza",
+    "search": "Buscar",
+    "permalinkHint": "Compartir este enlace:",
+    "loading": "Cargando datos del jugador...",
+    "notFoundTitle": "Jugador no encontrado",
+    "errorTitle": "Error al cargar el jugador",
+    "notFoundDescription": "No se pudo encontrar un jugador llamado \"{name}\". Intenta de nuevo.",
+    "errorDescription": "Ocurrió un error al cargar los datos del jugador. Por favor, intenta de nuevo.",
+    "tryAgain": "Intentar de nuevo",
+    "emptyTitle": "Busca un jugador",
+    "emptyDescription": "Ingresa un nombre de jugador arriba para ver sus estadísticas, armas y batallas recientes."
   }
 }

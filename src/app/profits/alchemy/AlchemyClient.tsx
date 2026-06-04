@@ -5,7 +5,8 @@ import { useTranslations, useLocale } from 'next-intl';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip, InfoBanner } from '@/components/InfoStrip';
 import { ItemIcon } from '@/components/ItemIcon';
-import { FlaskConical, RefreshCw, Scale, ChevronDown, ChevronUp, Settings, TrendingUp, DollarSign, Package, MapPin, Calculator, ShoppingCart, Info, Loader2, CircleHelp } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
+import { FlaskConical, RefreshCw, Scale, ChevronDown, ChevronUp, Settings, TrendingUp, DollarSign, Package, MapPin, Calculator, ShoppingCart, Info, CircleHelp } from 'lucide-react';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { ServerSelector } from '@/components/ServerSelector';
 import { useServer } from '@/hooks/useServer';
@@ -16,6 +17,7 @@ import { RECIPES, AlchemyRecipe, Ingredient } from './constants';
 import { NumberInput } from '@/components/ui/NumberInput';
 import { Select } from '@/components/ui/Select';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { Button } from '@/components/ui/Button';
 
 // Interfaces for enhanced data structure
 interface EnhancedIngredient extends Ingredient {
@@ -53,6 +55,7 @@ const MOUNT_OPTIONS = [
 export default function AlchemyClient() {
   const t = useTranslations('Alchemy');
   const tCommon = useTranslations('CraftingCalc'); // Use CraftingCalc for cities translations
+  const tCommonKeys = useTranslations('Common');
   const locale = useLocale();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -559,11 +562,21 @@ export default function AlchemyClient() {
       backgroundImage='/background/ao-crafting.jpg'  
       description={t('description')}
       headerActions={
-        <div className="flex flex-wrap items-center gap-4">
-          <ServerSelector selectedServer={region} onServerChange={setRegion} />
-          <button onClick={fetchMarketData} disabled={loading} className="p-2 bg-secondary hover:bg-secondary/80 text-foreground rounded-lg border border-border transition-colors">
+        <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
+          <ServerSelector
+            selectedServer={region} 
+            onServerChange={setRegion}
+            />
+          <Button
+            variant="default"
+            size="sm"
+            onClick={fetchMarketData} 
+            disabled={loading} 
+            className="gap-2"
+            >
             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
-          </button>
+            <span className="hidden sm:inline">{loading ? tCommonKeys('loading') : tCommonKeys('refresh')}</span>
+          </Button>
         </div>
       }
     >
@@ -584,8 +597,8 @@ export default function AlchemyClient() {
                  </button>
              </div>
 
-             <div className="p-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
-                 <div className="md:col-span-4 space-y-1">
+             <div className="p-6 space-y-4">
+                 <div className="space-y-1">
                       <label className="text-xs font-bold text-muted-foreground flex items-center gap-1 mb-1">
                           <FlaskConical className="h-3 w-3" /> {t('recipe')}
                       </label>
@@ -597,7 +610,7 @@ export default function AlchemyClient() {
                          searchable={true}
                      />
                  </div>
-                <div className="md:col-span-3 space-y-1">
+                <div className="space-y-1">
                      <label className="text-xs font-bold text-muted-foreground flex items-center gap-1 mb-1">
                          <MapPin className="h-3 w-3" /> {t('sellCity')}
                      </label>
@@ -607,20 +620,20 @@ export default function AlchemyClient() {
                            options={cityOptions}
                       />
                  </div>
-                <div className="md:col-span-2 space-y-1">
+                <div className="space-y-1">
                      <label className="text-xs font-bold text-muted-foreground flex items-center gap-1 mb-1">
                          <Calculator className="h-3 w-3" /> {t('quantity')}
                      </label>
                      <NumberInput value={quantity} onChange={setQuantity} min={5} step={5} />
                 </div>
-                <div className="md:col-span-3 pb-1">
+                <div className="pt-2">
                      <Checkbox label={t('enchantedVariants')} checked={showEnchanted} onChange={(e) => setShowEnchanted(e.target.checked)} />
                 </div>
              </div>
 
              {/* Advanced Configuration (Collapsible) */}
              {showAdvanced && (
-                <div className="p-6 border-t border-border bg-muted/30 grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in slide-in-from-top-2 duration-200 rounded-b-xl">
+                <div className="p-6 border-t border-border bg-muted/30 space-y-6 animate-in fade-in slide-in-from-top-2 duration-200 rounded-b-xl">
                     {/* Market Strategy */}
                     <div className="bg-card/50 p-4 rounded-lg border border-border/50 space-y-4">
                         <div className="flex items-center gap-2 mb-2 pb-2 border-b border-border/50">
@@ -668,15 +681,15 @@ export default function AlchemyClient() {
                             <DollarSign className="h-4 w-4 text-warning" />
                             <h4 className="text-sm font-bold text-foreground">{t('bonusesAndFees')}</h4>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-4">
                             <NumberInput label={t('usageFee')} value={usageFee} onChange={setUsageFee} />
-                            <div className="pt-6">
+                            <div>
                                <Checkbox label={t('dailyBonus')} checked={dailyBonus} onChange={(e) => setDailyBonus(e.target.checked)} />
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4 items-center">
+                        <div className="space-y-4">
                              <NumberInput label={t('customRRR')} value={customRRR || 0} onChange={setCustomRRR} placeholder={t('override')} />
-                             <div className="text-right bg-muted/50 p-2 rounded border border-border/50 w-fit">
+                             <div className="bg-muted/50 p-2 rounded border border-border/50 w-fit">
                                  <span className="text-[10px] text-muted-foreground block uppercase font-bold">{t('effectiveRRR')}</span>
                                  <span className="text-lg font-mono text-success font-bold">{calculatedRRR}%</span>
                              </div>
@@ -732,7 +745,7 @@ export default function AlchemyClient() {
 
         {loading && (
             <div className="py-20 flex justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-success" />
+                <Preloader size="lg" />
             </div>
         )}
 
@@ -758,7 +771,7 @@ export default function AlchemyClient() {
             <DollarSign className="h-4 w-4 text-success" />
             <span>{t('priceConfigTitle')}</span>
           </div>
-          <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="p-4 space-y-4">
             {/* Product Price */}
             <div className="bg-muted/20 p-3 rounded border border-border/50">
                 <div className="flex items-center gap-2 mb-2">
@@ -816,7 +829,7 @@ export default function AlchemyClient() {
         </div>
 
                 {/* Summary Cards for Top Item */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="space-y-4">
                     <div className="bg-card p-4 rounded-xl border border-border">
                         <span className="text-xs text-muted-foreground uppercase font-bold">{t('totalRevenue')}</span>
                         <div className="text-xl font-mono text-foreground mt-1">{formatSilver(calculation[0].revenue)}</div>

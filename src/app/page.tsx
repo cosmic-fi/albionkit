@@ -138,7 +138,7 @@ export default async function Home() {
             src="/bg-2.jpg"
             alt="Albion Online Landscape"
             fill
-            className="object-cover opacity-60"
+            className="object-cover opacity-80"
             priority
             quality={100}
           />
@@ -152,7 +152,7 @@ export default async function Home() {
           <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto">
             {/* Hero Content */}
             <div className="space-y-8 sm:pt-10">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
                 {t('heroTitle')}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary">Albion Online</span>
               </h1>
@@ -185,7 +185,7 @@ export default async function Home() {
       {/* Stats Strip */}
       <section className="bg-muted/50 backdrop-blur-sm relative z-20 border-b-5 border-muted">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0 py-6 md:py-10 container mx-auto px-4">
-          <StatItem value="6,000+" label={t('itemsTracked')} />
+          <StatItem value="10,000+" label={t('itemsTracked')} />
           <StatItem value="50+" label={t('recentBattles')} />
           <StatItem value="24/7" label={t('marketUpdates')} />
           <StatItem value="99.9%" label={t('serverUptime')} />

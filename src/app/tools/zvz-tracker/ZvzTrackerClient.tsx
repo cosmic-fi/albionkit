@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { Swords, RefreshCw, BarChart3, List, Search } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
 import { useTranslations } from 'next-intl';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { PageShell } from '@/components/PageShell';
@@ -31,6 +32,7 @@ import type { Battle } from './types';
 
 export default function ZvzTrackerClient() {
   const t = useTranslations('ZvzTracker');
+  const tCommon = useTranslations('Common');
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { server: region, setServer: setRegion } = useServer();
@@ -119,7 +121,7 @@ export default function ZvzTrackerClient() {
         stats={[]}
         headerActions={
           <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-            <div className="flex flex-col md:flex-row gap-2 md:items-center">
+            <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
               <ServerSelector selectedServer={region} onServerChange={setRegion} />
               <LiveBattleIndicator lastRefresh={lastRefresh} hasLiveBattles={hasLiveBattles} onRefresh={refreshNow} />
               <Button
@@ -130,7 +132,7 @@ export default function ZvzTrackerClient() {
                 className="gap-2"
               >
                 <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-                <span className="hidden sm:inline">{loading ? t('loading') : t('refresh')}</span>
+                <span className="hidden sm:inline">{loading ? tCommon('loading') : tCommon('refresh')}</span>
               </Button>
             </div>
           </div>
@@ -200,12 +202,7 @@ export default function ZvzTrackerClient() {
           <div className="animate-fade-in-up delay-150">
             {loading && !expandedBattleId && !filters.searchQuery ? (
               <div className="bg-card/50 rounded-2xl border border-border/50 p-12 text-center">
-                <div className="relative inline-block">
-                  <div className="w-16 h-16 border-4 border-primary/20 rounded-full" />
-                  <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0" />
-                </div>
-                <p className="text-lg font-bold text-foreground mt-4">{t('loadingBattles')}</p>
-                <p className="text-sm text-muted-foreground mt-1">{t('fetchingBattleData')}</p>
+                <Preloader size="lg" showText text={t('loadingBattles')} />
               </div>
             ) : fetchError ? (
               <ApiError message={fetchError} onRetry={() => loadBattles(false)} t={t} />

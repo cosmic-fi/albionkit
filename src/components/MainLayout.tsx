@@ -27,21 +27,30 @@ function MainLayoutContent({ children }: { children: React.ReactNode }) {
   }, [profile?.preferences?.reducedMotion]);
 
   return (
-    <SidebarLayout>
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <NavigationProgress />
-        <ServerStatusBanner />
-        <VerificationBanner />
-        <CommandMenu />
-        <main className="flex-1 overflow-y-auto w-full">
-          <div className="min-h-full">
-            {children}
+    <div>
+      <SidebarLayout>
+      <ServerStatusBanner />
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          <NavigationProgress />
+          <VerificationBanner />
+          <CommandMenu />
+          {/* 
+            Single scroll container on both mobile and desktop.
+            Putting <main>, <Footer /> and <CookieBanner /> inside the same
+            scrolling wrapper prevents the previous layout (where <main> had
+            `flex-1` inside a `h-screen overflow-hidden` parent) from pushing
+            the footer below the visible viewport on mobile.
+          */}
+          <div className="flex-1 overflow-y-auto w-full">
+            <main className="min-h-full">
+              {children}
+            </main>
+            <Footer />
+            <CookieBanner />
           </div>
-        </main>
-        <Footer />
-        <CookieBanner />
-      </div>
-    </SidebarLayout>
+        </div>
+      </SidebarLayout>
+    </div>
   );
 }
 

@@ -11,19 +11,16 @@ import { CampaignProgressBar } from '@/components/faction/CampaignProgressBar';
 import { PaceMetricsCard } from '@/components/faction/PaceMetricsCard';
 
 const getTiers = (t: any) => [
-  { value: 10000, label: `${t('tier1')} (10,000)` },
-  { value: 30000, label: `${t('tier2')} (30,000)` },
+  { value: 25000, label: `${t('tier1')} (25,000)` },
+  { value: 50000, label: `${t('tier2')} (50,000)` },
   { value: 75000, label: `${t('tier3')} (75,000)` },
-  { value: 150000, label: `${t('tier4')} (150,000)` },
-  { value: 300000, label: `${t('tier5')} (300,000)` },
-  { value: 600000, label: `${t('tier6')} (600,000)` },
-  { value: 1000000, label: `${t('monthlyChest')} (1,000,000)` },
+  { value: 100000, label: `${t('tier4')} (100,000)` },
 ];
 
 export default function CampaignClient() {
   const t = useTranslations('FactionTools.campaign');
   const [currentPoints, setCurrentPoints] = useState<number>(0);
-  const [targetGoal, setTargetGoal] = useState<number>(1000000);
+  const [targetGoal, setTargetGoal] = useState<number>(100000);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -75,8 +72,6 @@ export default function CampaignClient() {
       title={t('title')}
       description={t('subtitle')}
       backgroundImage='/background/ak-factions.jpeg'
-
-      icon={<Target className="w-6 h-6 text-primary" />}
       stats={[
         {
           label: t('remaining'),

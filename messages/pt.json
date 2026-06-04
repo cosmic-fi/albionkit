@@ -141,9 +141,6 @@
       "tier2": "Grau 2",
       "tier3": "Grau 3",
       "tier4": "Grau 4",
-      "tier5": "Grau 5",
-      "tier6": "Grau 6",
-      "monthlyChest": "Baú Mensal",
       "progress": "Progresso da Campanha",
       "ahead": "Adiantado",
       "behind": "Atrasado",
@@ -160,7 +157,7 @@
       "whatIs": "O que é o Rastreador de Campanha?",
       "whatIsDesc": "A Campanha de Facção é um sistema de progressão mensal no Albion Online. Participando das Guerras, você ganha pontos para desbloquear baús com tomos, prata e corações de facção.",
       "proTip": "Dica Pro",
-      "proTipDesc": "Para maximizar suas recompensas, mire pelo menos no Grau 6 todo mês. Use a Meta Diária acima para manter o ritmo. Participar de Ataques de Bandidos é a maneira mais rápida de se manter adiantado."
+      "proTipDesc": "Para maximizar suas recompensas, mire pelo menos no Grau 4 (o Baú de Campanha de Ouro) todo mês. Use a Meta Diária acima para manter o ritmo. Participar de Ataques de Bandidos é a maneira mais rápida de se manter adiantado."
     }
   },
   "BotPage": {
@@ -359,7 +356,8 @@
     "resetToMarket": "Redefinir para preço de mercado",
     "selectItem": "Selecionar Item",
     "searchByName": "Buscar por nome...",
-    "loadingItems": "Carregando itens..."
+    "loadingItems": "Carregando itens...",
+    "refresh": "Atualizar"
   },
   "CommandMenu": {
     "placeholder": "Digite um comando ou busque...",
@@ -413,7 +411,14 @@
     "heartTransport": "Transporte de Corações",
     "banditTracker": "Rastreador de Bandidos",
     "campaignTracker": "Rastreador de Campanha",
-    "bot": "Bot"
+    "bot": "Bot",
+    "badges": {
+      "new": "NOVO",
+      "hot": "HOT",
+      "beta": "BETA",
+      "updated": "ATUAL",
+      "comingSoon": "EM BREVE"
+    }
   },
   "Footer": {
     "tools": "Ferramentas",
@@ -4630,5 +4635,26 @@
     "T1_FACTION_MOUNTAIN_TOKEN_1": "Coração de Montanha",
     "T1_FACTION_STEPPE_TOKEN_1": "Coração de Besta",
     "T1_FACTION_CAERLEON_TOKEN_1": "Coração de Sombra"
+  },
+  "PlayerPage": {
+    "defaultTitle": "Estatísticas do Jogador - Albion Online",
+    "defaultDescription": "Pesquise estatísticas de jogador, histórico de PvP e registros de combate em Albion Online.",
+    "title": "Estatísticas do Jogador",
+    "description": "Exibir estatísticas e histórico de PvP do jogador em Albion Online",
+    "shareText": "{name} - Estatísticas do Jogador em Albion Online",
+    "searchPlaceholder": "Pesquisar um jogador...",
+    "searching": "Pesquisando...",
+    "noGuild": "Sem Guilda",
+    "noAlliance": "Sem Aliança",
+    "search": "Pesquisar",
+    "permalinkHint": "Compartilhar este link:",
+    "loading": "Carregando dados do jogador...",
+    "notFoundTitle": "Jogador não encontrado",
+    "errorTitle": "Erro ao carregar o jogador",
+    "notFoundDescription": "Não foi possível encontrar um jogador chamado \"{name}\". Tente novamente.",
+    "errorDescription": "Ocorreu um erro ao carregar os dados do jogador. Por favor, tente novamente.",
+    "tryAgain": "Tentar Novamente",
+    "emptyTitle": "Pesquise um jogador",
+    "emptyDescription": "Digite um nome de jogador acima para visualizar suas estatísticas, armas e batalhas recentes."
   }
 }

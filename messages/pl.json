@@ -141,9 +141,6 @@
       "tier2": "Stopień 2",
       "tier3": "Stopień 3",
       "tier4": "Stopień 4",
-      "tier5": "Stopień 5",
-      "tier6": "Stopień 6",
-      "monthlyChest": "Miesięczna Skrzynia",
       "progress": "Postęp Kampanii",
       "ahead": "Przed czasem",
       "behind": "Opóźnienie",
@@ -160,7 +157,7 @@
       "whatIs": "Czym jest Tracker Kampanii?",
       "whatIsDesc": "Kampania Frakcji to miesięczny system postępów w Albion Online. Uczestnicząc w Wojnach Frakcji, zdobywasz punkty, które odblokowują cenne skrzynie zawierające księgi, srebro i serca frakcji.",
       "proTip": "Porada",
-      "proTipDesc": "Aby zmaksymalizować nagrody, celuj w co najmniej Stopień 6 każdego miesiąca. Używaj wskaźnika Celu Dziennego, aby upewnić się, że masz dobre tempo. Udział w Atakach Bandytów to najszybszy sposób na wyprzedzenie harmonogramu."
+      "proTipDesc": "Aby zmaksymalizować nagrody, celuj w co najmniej Stopień 4 (Złotą Skrzynię Kampanii) każdego miesiąca. Używaj wskaźnika Celu Dziennego, aby upewnić się, że masz dobre tempo. Udział w Atakach Bandytów to najszybszy sposób na wyprzedzenie harmonogramu."
     }
   },
   "BotPage": {
@@ -359,7 +356,8 @@
     "resetToMarket": "Przywróć cenę rynkową",
     "selectItem": "Wybierz przedmiot",
     "searchByName": "Szukaj po nazwie...",
-    "loadingItems": "Ładowanie przedmiotów..."
+    "loadingItems": "Ładowanie przedmiotów...",
+    "refresh": "Odśwież"
   },
   "noNotifications": "Brak powiadomień",
   "CommandMenu": {
@@ -414,7 +412,14 @@
     "heartTransport": "Transport Serc",
     "banditTracker": "Tracker Bandytów",
     "campaignTracker": "Tracker Kampanii",
-    "bot": "Bot"
+    "bot": "Bot",
+    "badges": {
+      "new": "NOWE",
+      "hot": "HOT",
+      "beta": "BETA",
+      "updated": "AKT",
+      "comingSoon": "WKRÓTCE"
+    }
   },
   "Footer": {
     "tools": "Narzędzia",
@@ -4631,5 +4636,26 @@
     "T1_FACTION_MOUNTAIN_TOKEN_1": "Serce Górskie",
     "T1_FACTION_STEPPE_TOKEN_1": "Serce Bestii",
     "T1_FACTION_CAERLEON_TOKEN_1": "Serce Cienia"
+  },
+  "PlayerPage": {
+    "defaultTitle": "Statystyki Gracza - Albion Online",
+    "defaultDescription": "Wyszukuj statystyki gracza, historię PvP i rejestry walk w Albion Online.",
+    "title": "Statystyki Gracza",
+    "description": "Wyświetl statystyki gracza i historię PvP w Albion Online",
+    "shareText": "{name} - Statystyki Gracza Albion Online",
+    "searchPlaceholder": "Szukaj gracza...",
+    "searching": "Wyszukiwanie...",
+    "noGuild": "Brak Gildii",
+    "noAlliance": "Brak Sojuszu",
+    "search": "Szukaj",
+    "permalinkHint": "Udostępnij ten link:",
+    "loading": "Ładowanie danych gracza...",
+    "notFoundTitle": "Gracz nie znaleziony",
+    "errorTitle": "Błąd podczas ładowania gracza",
+    "notFoundDescription": "Nie można znaleźć gracza o nazwie \"{name}\". Spróbuj ponownie.",
+    "errorDescription": "Podczas ładowania danych gracza wystąpił błąd. Spróbuj ponownie.",
+    "tryAgain": "Spróbuj ponownie",
+    "emptyTitle": "Wyszukaj gracza",
+    "emptyDescription": "Wprowadź nazwę gracza powyżej, aby wyświetlić jego statystyki, broń i ostatnie walki."
   }
 }

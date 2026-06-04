@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import ZvzTrackerClient from './ZvzTrackerClient';
 import { getBattles } from './actions';
-import { Loader2 } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
+// Loader2 removed - using Preloader component
 import { getTranslations } from 'next-intl/server';
 import { getScreenshotUrl, getFullScreenshotUrl, getScreenshot } from '@/lib/screenshot-metadata';
 
@@ -69,7 +70,7 @@ export default function ZvzTrackerPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Preloader size="lg" />
       </div>
     }>
       <ZvzTrackerClient />

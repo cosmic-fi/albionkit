@@ -139,7 +139,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`antialiased min-h-screen bg-background text-foreground flex flex-col transition-colors duration-300`}
+        className={`antialiased h-dvh bg-background text-foreground flex flex-col transition-colors duration-300`}
       >
         <noscript>
           <iframe

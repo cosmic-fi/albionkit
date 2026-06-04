@@ -3,16 +3,18 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Prevent body scroll - only content should scroll */
+/* Root sizing uses the dynamic viewport height (dvh) so the layout matches
+   the actually-visible area on mobile (accounts for the URL bar showing /
+   hiding and for the iOS home indicator / Android gesture bar). */
 html, body {
-  overflow: hidden;
-  height: 100%;
+  height: 100dvh;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 #root, #__next {
-  height: 100%;
+  height: 100dvh;
   overflow: hidden;
 }
 

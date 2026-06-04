@@ -8,7 +8,7 @@ import { searchAlbionCharacter, updateUserProfileAndBuildsAction } from './actio
 import {
   Search, Shield, User as UserIcon, Save, CheckCircle, AlertCircle,
   Crown, Users, ArrowRight, CreditCard, Settings as SettingsIcon,
-  LogOut, ExternalLink, Edit2, X, Loader2, Bell, Eye, Layout, Monitor, Lock,
+  LogOut, ExternalLink, Edit2, X, Bell, Eye, Layout, Monitor, Lock,
   Gamepad2, MessageCircle, Twitter, Twitch, Youtube,
   MapPin, Coins, Zap, Globe, TrendingUp, ShieldCheck, Key, Mail, Smartphone, FileText,
   Trophy, Flame, Heart
@@ -22,6 +22,7 @@ import { toast } from 'sonner';
 import { updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider, verifyBeforeUpdateEmail } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useLoginModal } from '@/context/LoginModalContext';
+import { Preloader } from '@/components/Preloader';
 import { useTranslations } from 'next-intl';
 
 function SettingsContent() {
@@ -427,7 +428,7 @@ function SettingsContent() {
   if (authLoading || !user) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Preloader size="lg" />
       </div>
     );
   }
@@ -581,7 +582,7 @@ function SettingsContent() {
                                         disabled={isSearching}
                                         className="px-4 py-2 bg-secondary hover:bg-secondary/80 text-foreground rounded-lg font-medium transition-colors flex items-center gap-2"
                                     >
-                                        {isSearching ? <div className="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full" /> : <Search className="h-4 w-4" />}
+                                        {isSearching ? <Preloader size="sm" /> : <Search className="h-4 w-4" />}
                                         {t('identity.find')}
                                     </button>
                                 </div>
@@ -928,7 +929,7 @@ function SettingsContent() {
                                 disabled={isSavingProfile}
                                 className="px-8 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-lg transition-colors flex items-center gap-2  "
                             >
-                                {isSavingProfile ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                                {isSavingProfile ? <Preloader size="sm" /> : <Save className="h-4 w-4" />}
                                 {t('profile.save')}
                             </button>
                         </div>
@@ -1190,7 +1191,7 @@ function SettingsContent() {
                                                 disabled={isUpdatingSecurity || !securityForm.newEmail || !securityForm.currentPassword}
                                                 className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-lg text-sm transition-colors flex items-center gap-2"
                                             >
-                                                {isUpdatingSecurity ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                                                {isUpdatingSecurity ? <Preloader size="sm" /> : <Save className="h-4 w-4" />}
                                                 {t('security.updateEmail')}
                                             </button>
                                         </form>
@@ -1250,7 +1251,7 @@ function SettingsContent() {
                                                 disabled={isUpdatingSecurity || !securityForm.newPassword || !securityForm.currentPassword}
                                                 className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-lg text-sm transition-colors flex items-center gap-2"
                                             >
-                                                {isUpdatingSecurity ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                                                {isUpdatingSecurity ? <Preloader size="sm" /> : <Save className="h-4 w-4" />}
                                                 {t('security.updatePassword')}
                                             </button>
                                         </form>

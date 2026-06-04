@@ -10,7 +10,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-card border-t-2 border-border mt-auto">
+    <footer className="w-full bg-card border-t-2 border-border">
       <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-10">
@@ -187,13 +187,13 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t-2 border-border flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-sm text-muted-foreground font-medium">
+        <div className="pt-8 border-t-2 border-border flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+          <div className="text-sm text-muted-foreground font-medium break-words">
             © {currentYear} AlbionKit. {t('allRightsReserved')}
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-muted-foreground font-medium break-words">
             <span>{t('madeWith')}</span>
-            <Heart className="h-4 w-4 text-red-500 fill-red-500" />
+            <Heart className="h-4 w-4 text-red-500 fill-red-500 shrink-0" />
             <span>{t('forCommunity')}</span>
           </div>
         </div>

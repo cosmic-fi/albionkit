@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Preloader } from '@/components/Preloader';
 import { PageShell } from '@/components/PageShell';
 import { Coins, RefreshCw, TrendingUp, TrendingDown, Minus, ArrowUp, ArrowDown, ArrowRightLeft, Calculator, Calendar } from 'lucide-react';
 import { getGoldHistory, GoldPricePoint } from '@/lib/gold-service';
@@ -13,9 +14,11 @@ import { useAuth } from '@/context/AuthContext';
 import { InfoStrip } from '@/components/InfoStrip';
 
 import { useTranslations } from 'next-intl';
+import { Button } from '@/components/ui/Button';
 
 export default function GoldPriceClient() {
   const t = useTranslations('GoldPrice');
+  const tCommon = useTranslations('Common');
   const { profile } = useAuth();
   const { server: region, setServer: setRegion } = useServer();
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('7d');
@@ -132,7 +135,7 @@ export default function GoldPriceClient() {
       backgroundImage='/background/ao-market.jpg'
       description={t('description')}
       headerActions={
-        <div className="flex flex-col md:flex-row md:items-end gap-4">
+        <div className="flex w-full md:w-fit flex-col md:flex-row md:items-end gap-4">
           <SegmentedControl
             options={[
               { label: t('ranges.24h'), value: '24h' },
@@ -145,19 +148,22 @@ export default function GoldPriceClient() {
             className='w-fit'
           />
           <div className="hidden md:block h-8 w-px bg-border" />
-          <div className='flex gap-2'>
+          <div className='w-full md:w-fit flex items-center justify-between gap-3 md:justify-start'>
             <ServerSelector
               selectedServer={region}
               onServerChange={setRegion}
             />
-            <button
+            <Button
+              variant="default"
+              size="sm"
               onClick={loadData}
               disabled={loading}
-              className="p-2.5 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
               aria-label={t('refreshData')}
+              className="gap-2"
             >
               <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
-            </button>
+              <span className="hidden sm:inline">{loading ? tCommon('loading') : tCommon('refresh')}</span>
+            </Button>
           </div>
         </div>
       }
@@ -247,8 +253,7 @@ export default function GoldPriceClient() {
               <div className="h-full flex items-center justify-center">
                 <div className="flex flex-col items-center gap-3">
                   <div className="relative">
-                    <div className="w-12 h-12 border-4 border-primary/20 rounded-full" />
-                    <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0" />
+                    <Preloader size="lg" />
                   </div>
                   <p className="text-sm font-semibold text-foreground">{t('loadingChart')}</p>
                   <p className="text-xs text-muted-foreground">{t('fetchingPrices')}</p>

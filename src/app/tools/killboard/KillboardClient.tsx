@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useServer } from '@/hooks/useServer';
 import { PageShell } from '@/components/PageShell';
+import { Preloader } from '@/components/Preloader';
 import { InfoStrip } from '@/components/InfoStrip';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
@@ -47,6 +48,7 @@ function formatCompactNumber(num: number) {
 
 export default function KillboardClient() {
   const t = useTranslations('KillFeed');
+  const tCommon = useTranslations('Common');
   const { server, setServer } = useServer();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -255,7 +257,7 @@ export default function KillboardClient() {
       description={t('description')}
       headerActions={
         <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-          <div className="flex flex-col md:flex-row gap-2 md:items-center">
+          <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
             <ServerSelector selectedServer={server} onServerChange={setServer} />
             <Button
               variant="default"
@@ -265,7 +267,7 @@ export default function KillboardClient() {
               className="gap-2"
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">{loading ? t('loading') : t('refresh')}</span>
+              <span className="hidden sm:inline">{loading ? tCommon('loading') : tCommon('refresh')}</span>
             </Button>
           </div>
         </div>
@@ -275,7 +277,7 @@ export default function KillboardClient() {
         {/* ===== CONTROLS ===== */}
         <div className="flex flex-col gap-4">
           {/* View Tabs & Controls */}
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="flex w-full md:w-fit md:flex-row gap-4 items-center">
             <div className="flex border border-border rounded-lg p-1 bg-card shadow-sm">
               <button
                 onClick={() => setView('live')}
@@ -301,9 +303,9 @@ export default function KillboardClient() {
               </button>
             </div>
 
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4"> */}
               {/* Auto Refresh Toggle */}
-              <Button
+              {/* <Button
                 variant={autoRefresh ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setAutoRefresh(!autoRefresh)}
@@ -311,8 +313,8 @@ export default function KillboardClient() {
               >
                 {autoRefresh ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                 <span className="hidden sm:inline">{autoRefresh ? t('pause') : t('play')}</span>
-              </Button>
-            </div>
+              </Button> */}
+            {/* </div> */}
           </div>
         </div>
 
@@ -640,13 +642,7 @@ export default function KillboardClient() {
 
             {loading && filteredEvents.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
-                <div className="relative">
-                  <div className="w-16 h-16 border-4 border-primary/20 rounded-full" />
-                  <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0" />
-                </div>
-                <p className="text-lg font-semibold text-muted-foreground animate-pulse">
-                  {t('loadingFeed')}
-                </p>
+                <Preloader size="lg" showText text={t('loadingFeed')} />
               </div>
             ) : filteredEvents.length === 0 && searchQuery ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">

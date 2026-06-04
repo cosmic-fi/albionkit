@@ -77,11 +77,16 @@ export const FACTION_CITIES = [
   'Caerleon'
 ];
 
+// Albion Online's monthly Faction Campaign requires players to earn
+// Faction Points to unlock campaign chests. Reaching these milestones
+// typically requires Premium status. Players earn points through PvP,
+// PvE, and passive Faction Defense rewards. Higher faction ranks also
+// provide point multipliers.
+//
+// Four tiers, ending at 100,000 points (Gold Campaign Chest).
 export const CAMPAIGN_TIERS = [
-  { tier: 1, points: 50000, reward: 'Iron Campaign Chest' },
-  { tier: 2, points: 150000, reward: 'Bronze Campaign Chest' },
-  { tier: 3, points: 300000, reward: 'Silver Campaign Chest' },
-  { tier: 4, points: 500000, reward: 'Gold Campaign Chest' },
-  { tier: 5, points: 750000, reward: 'Premium Campaign Chest' },
-  { tier: 6, points: 1000000, reward: 'Elite Campaign Chest' },
+  { tier: 1, points: 25000, reward: 'Iron Campaign Chest' },
+  { tier: 2, points: 50000, reward: 'Bronze Campaign Chest' },
+  { tier: 3, points: 75000, reward: 'Silver Campaign Chest' },
+  { tier: 4, points: 100000, reward: 'Gold Campaign Chest' },
 ];

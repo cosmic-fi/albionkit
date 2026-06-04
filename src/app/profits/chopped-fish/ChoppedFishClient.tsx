@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { useAuth } from '@/context/AuthContext';
 import { AlertCircle, ChevronDown, ChevronUp, CircleHelp, Fish, RefreshCw } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
 import { ServerSelector } from '@/components/ServerSelector';
 import { useServer } from '@/hooks/useServer';
 import { getMarketPrices, getMarketVolume, LOCATIONS } from '@/lib/market-service';
@@ -15,6 +16,7 @@ import { Checkbox } from '@/components/ui/Checkbox';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { useTranslations, useLocale } from 'next-intl';
 import ExpandableFishRow from './components/ExpandableFishRow';
+import { Button } from '@/components/ui/Button';
 
 // Helper to generate fish stats
 const getFishStats = (tier: number, isRare: boolean = false, id: string): Partial<FishType> => {
@@ -71,6 +73,7 @@ const CITY_OPTIONS = LOCATIONS.filter(l => l !== 'Black Market').map(city => ({ 
 export default function ChoppedFishClient() {
   const t = useTranslations('ChoppedFish');
   const tCommon = useTranslations('CraftingCalc');
+  const tCommonKeys = useTranslations('Common');
   const { profile } = useAuth();
   
   // Create translated city options
@@ -340,18 +343,21 @@ export default function ChoppedFishClient() {
       backgroundImage='/background/ao-crafting.jpg'  
       description={t('description')}
       headerActions={
-        <div className="flex items-center gap-4">
+        <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
            <ServerSelector
             selectedServer={region}
             onServerChange={setRegion}
           />
-          <button
+          <Button
+            variant="default"
+            size="sm"
             disabled={loading}
             onClick={loadData}
-            className="p-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors   disabled:opacity-50"
+            className="gap-2"
           >
             <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
-          </button>
+            <span className="hidden sm:inline">{loading ? tCommonKeys('loading') : tCommonKeys('refresh')}</span>
+          </Button>
         </div>
       }
     >
@@ -502,7 +508,7 @@ export default function ChoppedFishClient() {
                   <tr>
                     <td colSpan={showPrices ? 3 : 2} className="p-8 text-center text-muted-foreground">
                       <div className="flex items-center justify-center gap-2">
-                        <RefreshCw className="h-4 w-4 animate-spin" />
+                <Preloader size="sm" />
                         {t('loading')}
                       </div>
                     </td>

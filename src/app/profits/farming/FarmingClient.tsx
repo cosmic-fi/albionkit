@@ -6,6 +6,7 @@ import { useServer } from '@/hooks/useServer';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
 import { ItemIcon } from '@/components/ItemIcon';
+import { Preloader } from '@/components/Preloader';
 import { Button } from '@/components/ui/Button';
 import { Select } from '@/components/ui/Select';
 import { NumberInput } from '@/components/ui/NumberInput';
@@ -72,6 +73,7 @@ const getCropStats = (tier: number, id: string, type: 'crop' | 'herb'): Partial<
 
 export default function FarmingClient() {
   const t = useTranslations('Farming');
+  const tCommon = useTranslations('Common');
   const { server: region, setServer: setRegion } = useServer();
   const { profile } = useAuth();
 
@@ -246,7 +248,7 @@ export default function FarmingClient() {
       backgroundImage='/background/ao-crafting.jpg'
       description={t('description')}
       headerActions={
-        <div className="flex items-center gap-4">
+        <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
           <ServerSelector selectedServer={region} onServerChange={setRegion} />
           <Button
             onClick={loadData}
@@ -256,7 +258,7 @@ export default function FarmingClient() {
             className="gap-2"
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline">{loading ? t('loading') : t('refresh')}</span>
+            <span className="hidden sm:inline">{loading ? tCommon('loading') : tCommon('refresh')}</span>
           </Button>
         </div>
       }
@@ -381,11 +383,7 @@ export default function FarmingClient() {
                   <tr>
                     <td colSpan={4} className="p-16 text-center">
                       <div className="flex flex-col items-center gap-4">
-                        <RefreshCw className="h-10 w-10 animate-spin text-green-500" />
-                        <div>
-                          <p className="font-bold text-foreground">{t('loading')}</p>
-                          <p className="text-sm text-muted-foreground">Fetching real-time market data...</p>
-                        </div>
+                        <Preloader size="lg" showText text={t('loading')} />
                       </div>
                     </td>
                   </tr>

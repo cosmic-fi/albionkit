@@ -4,7 +4,8 @@ import { useState, useEffect, useMemo, useCallback, Fragment } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
 import { ItemIcon } from '@/components/ItemIcon';
-import { Utensils, RefreshCw, Scale, ChevronDown, ChevronUp, Settings, TrendingUp, DollarSign, Package, MapPin, Calculator, ShoppingCart, Info, Loader2, CircleHelp } from 'lucide-react';
+import { Preloader } from '@/components/Preloader';
+import { Utensils, RefreshCw, Scale, ChevronDown, ChevronUp, Settings, TrendingUp, DollarSign, Package, MapPin, Calculator, ShoppingCart, Info, CircleHelp } from 'lucide-react';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { ServerSelector } from '@/components/ServerSelector';
 import { useServer } from '@/hooks/useServer';
@@ -55,6 +56,7 @@ export default function CookingClient() {
     const t = useTranslations('Cooking');
     const tAlchemy = useTranslations('Alchemy');
     const tCrafting = useTranslations('CraftingCalc');
+    const tCommon = useTranslations('Common');
     const locale = useLocale();
     const { profile } = useAuth();
     const [loading, setLoading] = useState(false);
@@ -411,7 +413,7 @@ export default function CookingClient() {
             backgroundImage='/background/ao-crafting.jpg'
             description={t('description')}
             headerActions={
-                <div className="flex items-center gap-4">
+                <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
                     <ServerSelector selectedServer={region} onServerChange={setRegion} />
                     <Button
                         onClick={fetchData}
@@ -421,7 +423,7 @@ export default function CookingClient() {
                         className="gap-2"
                     >
                         <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-                        <span className="hidden sm:inline">{t('refresh')}</span>
+                        <span className="hidden sm:inline">{loading ? tCommon('loading') : tCommon('refresh')}</span>
                     </Button>
                 </div>
             }
@@ -600,7 +602,7 @@ export default function CookingClient() {
 
                 {loading && (
                     <div className="py-20 flex justify-center">
-                        <Loader2 className="h-8 w-8 animate-spin text-success" />
+                        <Preloader size="lg" />
                     </div>
                 )}
 

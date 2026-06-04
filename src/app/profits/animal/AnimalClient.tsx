@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
+import { Preloader } from '@/components/Preloader';
 import { PawPrint, RefreshCw, Info, Leaf, ChevronDown, ChevronUp, ArrowRight, Scale, Wheat, Beef, Egg, CircleDollarSign, AlertTriangle, RotateCcw, CircleHelp } from 'lucide-react';
 import { ANIMAL_DEFINITIONS, Animal } from './constants';
 import { getMarketPrices, getMarketVolume, LOCATIONS, getGameInfoItemData } from '@/lib/market-service';
@@ -18,6 +19,7 @@ import { CategoryTabs } from '@/components/ui/CategoryTabs';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { useTranslations } from 'next-intl';
 import { ItemIcon } from '@/components/ItemIcon';
+import { Button } from '@/components/ui/Button';
 
 // Helper to generate animal stats based on Tier and Type
 const getAnimalStats = (tier: number, id: string, type: 'pasture' | 'mount'): Partial<Animal> => {
@@ -170,6 +172,7 @@ type Tab = 'breeding' | 'products' | 'butchering';
 
 export default function AnimalClient() {
   const t = useTranslations('Animal');
+  const tCommon = useTranslations('Common');
   const [activeTab, setActiveTab] = useState<Tab>('breeding');
   const { server: region, setServer: setRegion } = useServer();
   const [buyCity, setBuyCity] = useState<string>('Martlock');
@@ -565,15 +568,18 @@ export default function AnimalClient() {
       backgroundImage='/background/ao-crafting.jpg'
       description={t('description')}
       headerActions={
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="w-full md:w-fit flex items-center justify-between gap-3 md:justify-start">
           <ServerSelector selectedServer={region} onServerChange={setRegion} />
-          <button
+          <Button
+            variant="default"
+            size="sm"
             onClick={loadData}
             disabled={loading}
-            className="p-2 bg-success hover:bg-success/90 text-success-foreground rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="gap-2"
           >
-            <RefreshCw className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
-          </button>
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">{loading ? tCommon('loading') : tCommon('refresh')}</span>
+          </Button>
         </div>
       }
     >
@@ -705,7 +711,7 @@ export default function AnimalClient() {
                   <tr>
                     <td colSpan={5} className="p-12 text-center text-muted-foreground">
                       <div className="flex flex-col items-center justify-center gap-3">
-                        <Loader2 className="h-8 w-8 animate-spin text-success" />
+                        <Preloader size="lg" />
                         <p>{t('fetchingData')}</p>
                       </div>
                     </td>
