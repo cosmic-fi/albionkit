@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { BookOpen, Menu, X, Search, Sun, Moon, User as UserIcon, LogOut, Settings, Crown, Heart, Bell, ChevronDown, ChevronLeft, Coins, Store, Sword, Skull, Swords, Hammer, Sprout, ChefHat, PawPrint, FlaskConical, ForkKnife, Leaf, FishOff, Fish, Pickaxe, Shield, TrendingUp, Truck, Clock, Activity, MessageSquare, Bot, Coffee } from 'lucide-react';
+import { BookOpen, Menu, X, Search, Sun, Moon, User as UserIcon, LogOut, Settings, Crown, Heart, Bell, ChevronDown, ChevronLeft, Coins, Store, Sword, Skull, Hammer, Sprout, ChefHat, PawPrint, FlaskConical, ForkKnife, Leaf, FishOff, Fish, Pickaxe, Shield, TrendingUp, Truck, Clock, Activity, MessageSquare, Bot, Coffee } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
@@ -121,7 +121,6 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
         { id: 'market-flipper', title: t('marketFlipper'), href: '/tools/market-flipper', icon: <Store className="h-4 w-4" />, badge: 'hot' },
         { id: 'pvp-intel', title: t('pvpIntel'), href: '/tools/pvp-intel', icon: <Sword className="h-4 w-4" /> },
         { id: 'killboard', title: t('killboard'), href: '/tools/killboard', icon: <Skull className="h-4 w-4" /> },
-        { id: 'zvz-tracker', title: t('zvzTracker'), href: '/tools/zvz-tracker', icon: <Swords className="h-4 w-4" /> },
       ],
     },
     {
@@ -393,15 +392,20 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
               )}
             </button>
 
-            {/* Donate Button */}
-            <Link
-              href="/donate"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-pink-600 to-red-600 hover:from-pink-500 hover:to-red-500 text-white text-sm font-medium rounded-lg transition-all duration-300 shadow-sm hover:shadow-md hover:shadow-pink-500/25"
-              title={t('donate')}
+            {/* BMC Button */}
+            <a
+              href="https://www.buymeacoffee.com/cosmic_fi"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Buy me a Coffee"
+              className="hidden sm:block"
             >
-              <Coffee className="h-4 w-4" />
-              <span className="hidden md:inline">{t('donate')}</span>
-            </Link>
+              <img
+                src="https://img.buymeacoffee.com/button-api/?text=Buy+me+a+Coffee&emoji=☕&slug=cosmic_fi&button_colour=FF5F5F&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff"
+                alt="Buy me a Coffee"
+                className="h-9"
+              />
+            </a>
 
             {/* Notifications */}
             <NotificationDropdown />
@@ -444,14 +448,16 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                     </div>
 
                     <div className="border-t border-border p-2">
-                      <Link
-                        href="/donate"
-                        className="flex items-center gap-3 px-3 py-2.5 text-sm text-muted-foreground hover:text-pink-500 hover:bg-pink-500/10 rounded-xl transition-all"
+                      <a
+                        href="https://www.buymeacoffee.com/cosmic_fi"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         onClick={() => setIsProfileDropdownOpen(false)}
+                        className="flex items-center gap-3 px-3 py-2.5 text-sm text-muted-foreground hover:text-pink-500 hover:bg-pink-500/10 rounded-xl transition-all"
                       >
                         <Coffee className="h-4 w-4" />
                         <span className="font-medium">{t('donate')}</span>
-                      </Link>
+                      </a>
                     </div>
 
                     <div className="border-t border-border p-2">

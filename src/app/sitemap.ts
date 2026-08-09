@@ -23,7 +23,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/tools/pvp-intel',
     '/tools/gold-price',
     '/tools/killboard',
-    '/tools/zvz-tracker',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),

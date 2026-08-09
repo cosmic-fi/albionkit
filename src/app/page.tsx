@@ -7,35 +7,19 @@ import {
   TrendingUp,
   Swords,
   ArrowRight,
-  Users,
-  Zap,
   Shield,
-  BarChart3,
-  Globe,
-  MessageCircle,
-  CheckCircle2,
-  Search,
-  Menu,
   ChevronDown,
   Lock,
   Server,
-  Crown,
-  Skull,
-  Activity,
   Twitter,
   Mail
 } from "lucide-react";
 
-import { ItemIcon } from "@/components/ItemIcon";
-import { MarketTicker } from "@/components/MarketTicker";
-import { InfoStrip, InfoBanner } from "@/components/InfoStrip";
-import { FeatureSection } from "@/components/FeatureSection";
 import { SocialShare } from "@/components/SocialShare";
-import { StatsSection } from "@/components/StatsSection";
-import { useTranslations } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { Metadata } from 'next';
 import { createPageMetadata } from '@/lib/screenshot-metadata';
+import { FeatureSection } from "@/components/FeatureSection";
 
 // Base metadata with screenshot
 const baseMetadata = createPageMetadata(
@@ -216,13 +200,14 @@ export default async function Home() {
         />
 
         <FeatureSection
-          title={t('zvzTitle')}
-          description={t('zvzDescription')}
-          link="/tools/zvz-tracker"
-          linkText={t('analyzeBattles')}
-          backgroundImage="/background/ao-zvz.jpg"
-          previewImageLight="/background/ak-zvztracker-light.png"
-          previewImageDark="/background/ak-zvztracker-dark.png"
+          title={t('factionTitle')}
+          description={t('factionDescription')}
+          link="/faction/bandit"
+          linkText={t('exploreFaction')}
+          backgroundImage="/background/ak-factions.jpeg"
+          previewImageLight="/background/ak-factions.jpeg"
+          previewImageDark="/background/ak-factions.jpeg"
+          reverse
         />
       </div>
 

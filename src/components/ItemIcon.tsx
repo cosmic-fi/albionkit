@@ -7,7 +7,7 @@ import { useLocale } from 'next-intl';
 
 interface ItemIconProps {
   item?: {
-    Type?: string; // ZvZ tracker uses Type
+    Type?: string;
     id?: string;   // Other places use id
     Count?: number;
     Quality?: number;

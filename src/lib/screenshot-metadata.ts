@@ -164,7 +164,7 @@ export function createPageMetadata(
  */
 export function getScreenshotsByCategory(category: string): ScreenshotKey[] {
   const categoryMapping: Record<string, ScreenshotKey[]> = {
-    tools: ['market-flipper', 'gold-price', 'crafting-calc', 'pvp-intel', 'zvz-tracker'],
+    tools: ['market-flipper', 'gold-price', 'crafting-calc', 'pvp-intel'],
     profits: ['farming-calc', 'cooking-calc', 'alchemy-calc', 'animal-calc', 'chopped-fish-calc', 'enchanting-calc', 'labour-calc'],
     builds: ['builds-list', 'build-detail'],
     forum: ['forum-list', 'thread-detail'],
@@ -201,7 +201,6 @@ function getScreenshotPathMapping(key: ScreenshotKey): string {
     'gold-price': 'tools',
     'crafting-calc': 'tools',
     'pvp-intel': 'tools',
-    'zvz-tracker': 'tools',
     
     // Profits
     'farming-calc': 'profits',

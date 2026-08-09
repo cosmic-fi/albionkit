@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MessageSquare, Crown, TrendingUp, Shield, Zap, Heart, Coins, Hammer, Lightbulb, Bug, Sword, ScrollText, Utensils, Coffee, Github } from 'lucide-react';
+import { MessageSquare, Crown, TrendingUp, Zap, Heart, Coins, Hammer, Lightbulb, Bug, Sword, ScrollText, Utensils, Coffee, Github } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
-export type PageId = 'home' | 'pvp-intel' | 'zvz-tracker' | 'market-flipper' | 'crafting-calc' | 'killboard' | 'gold-price' | 'builds' | 'profits' | 'profits-alchemy' | 'profits-cooking' | 'profits-animal' | 'profits-farming' | 'profits-labour' | 'profits-enchanting' | 'profits-chopped-fish' | 'faction-campaign' | 'faction-efficiency' | 'faction-transport' | 'faction-bandit';
+export type PageId = 'home' | 'pvp-intel' | 'market-flipper' | 'crafting-calc' | 'killboard' | 'gold-price' | 'builds' | 'profits' | 'profits-alchemy' | 'profits-cooking' | 'profits-animal' | 'profits-farming' | 'profits-labour' | 'profits-enchanting' | 'profits-chopped-fish' | 'faction-campaign' | 'faction-efficiency' | 'faction-transport' | 'faction-bandit';
 
 interface InfoItem {
   id: string;
@@ -44,14 +44,6 @@ const INFO_ITEMS: InfoItem[] = [
     translationKey: 'marketFlipper',
     actionLink: "/tools/market-flipper",
     color: "text-green-400"
-  },
-  {
-    id: 'zvz-tracker',
-    excludePages: ['zvz-tracker'],
-    icon: Shield,
-    translationKey: 'zvzTracker',
-    actionLink: "/tools/zvz-tracker",
-    color: "text-purple-400"
   },
   {
     id: 'pvp-intel',
@@ -124,8 +116,9 @@ const INFO_ITEMS: InfoItem[] = [
     id: 'donate',
     icon: Coffee,
     translationKey: 'donateInfo',
-    actionLink: "/donate",
+    actionLink: "https://www.buymeacoffee.com/cosmic_fi",
     color: "text-pink-400",
+    isExternal: true
   },
   {
     id: 'contribute',

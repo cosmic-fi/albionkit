@@ -19,7 +19,6 @@ const STATIC_PAGES: SearchResult[] = [
   // Tools
   { id: 'tool-market', type: 'tool', title: 'Market Flipper', subtitle: 'Find arbitrage opportunities', href: '/tools/market-flipper', icon: 'Coins' },
   { id: 'tool-pvp', type: 'tool', title: 'PvP Intel', subtitle: 'Analyze battles and killboards', href: '/tools/pvp-intel', icon: 'Sword' },
-  { id: 'tool-zvz', type: 'tool', title: 'ZvZ Tracker', subtitle: 'Large scale battle analysis', href: '/tools/zvz-tracker', icon: 'Shield' },
   { id: 'tool-craft', type: 'tool', title: 'Crafting Calculator', subtitle: 'Optimize crafting profits', href: '/profits/crafting', icon: 'Hammer' },
   { id: 'tool-gold', type: 'tool', title: 'Gold Price', subtitle: 'Gold market charts', href: '/tools/gold-price', icon: 'LineChart' },
   
@@ -34,7 +33,6 @@ const STATIC_PAGES: SearchResult[] = [
   
   // Build Categories
   { id: 'builds-solo', type: 'page', title: 'Solo Builds', subtitle: 'Best builds for solo play', href: '/builds?category=solo', icon: 'User' },
-  { id: 'builds-zvz', type: 'page', title: 'ZvZ Builds', subtitle: 'Meta builds for large scale', href: '/builds?category=zvz', icon: 'Skull' },
   { id: 'builds-small', type: 'page', title: 'Small Scale Builds', subtitle: 'Builds for small groups', href: '/builds?category=small-scale', icon: 'Users' },
   { id: 'builds-pvp', type: 'page', title: 'PvP Builds', subtitle: 'General PvP builds', href: '/builds?category=pvp', icon: 'Swords' },
   

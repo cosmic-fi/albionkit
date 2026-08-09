@@ -232,13 +232,6 @@ export function CommandMenu() {
                     <Sword className="mr-2 h-4 w-4" />
                     <span>{tNavbar('pvpIntel')}</span>
                   </Command.Item>
-                  <Command.Item
-                    onSelect={() => runCommand(() => router.push('/tools/zvz-tracker'))}
-                    className="flex items-center gap-2 px-2 py-2 text-sm text-foreground rounded-lg aria-selected:bg-accent aria-selected:text-accent-foreground cursor-pointer"
-                  >
-                    <Shield className="mr-2 h-4 w-4" />
-                    <span>{tNavbar('zvzTracker')}</span>
-                  </Command.Item>
                 </Command.Group>
               )
             )}

@@ -188,38 +188,6 @@
     ],
     "page": "/tools/pvp-intel"
   },
-  "zvz-tracker": {
-    "alt": "ZvZ Battle Tracker showing live guild battles",
-    "title": "ZvZ Tracker",
-    "caption": "Track massive open-world battles",
-    "keywords": [
-      "zvz",
-      "guild battles",
-      "open world",
-      "large scale pvp",
-      "albion zvz",
-      "battle tracker",
-      "guild wars",
-      "massive battles",
-      "albion guild battles",
-      "zvz tracker",
-      "battle statistics",
-      "guild statistics",
-      "open world pvp",
-      "albion open world",
-      "battle feed",
-      "live battles",
-      "guild combat",
-      "zvz analysis",
-      "battle analysis",
-      "albion warfare",
-      "guild warfare",
-      "large scale battles",
-      "pvp battles",
-      "albion zvz 2026"
-    ],
-    "page": "/tools/zvz-tracker"
-  },
   "farming-calc": {
     "alt": "Farming Profit Calculator showing crop yields",
     "title": "Farming Calculator",

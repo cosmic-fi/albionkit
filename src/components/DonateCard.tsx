@@ -53,18 +53,18 @@ export function DonateCard({ compact = false }: DonateCardProps) {
         </p>
 
 
-        {/* Donate Button */}
+        {/* BMC Button */}
         <a
-          href="https://buymeacoffee.com/cosmic_fi"
+          href="https://www.buymeacoffee.com/cosmic_fi"
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative flex items-center justify-center gap-2 w-full py-3 px-4 bg-gradient-to-r from-pink-600 to-red-600 hover:from-pink-500 hover:to-red-500 text-white font-sm rounded-xl transition-all duration-300 shadow-md hover:shadow-pink-500/25 hover:shadow-md hover:-translate-y-0.5 overflow-hidden"
+          className="flex items-center justify-center"
         >
-          {/* Shine effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-
-          <Coffee className="h-5 w-5" />
-          <span className='text-[0.9rem]'>{t('buttonText')}</span>
+          <img
+            src="https://img.buymeacoffee.com/button-api/?text=Buy+me+a+Coffee&emoji=☕&slug=cosmic_fi&button_colour=FF5F5F&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff"
+            alt="Buy me a Coffee"
+            className="w-full"
+          />
         </a>
       </div>
     </div>

@@ -1,15 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useServer } from '@/hooks/useServer';
 import { ServerSelector } from '@/components/ServerSelector';
 import { BanditTrackerCard } from '@/components/faction/BanditTrackerCard';
 import { BanditScheduleList } from '@/components/faction/BanditScheduleList';
-import { BanditReminder } from '@/components/faction/BanditReminder';
 import { useTranslations } from 'next-intl';
 import { PageShell } from '@/components/PageShell';
 import { InfoStrip } from '@/components/InfoStrip';
-import { Clock, Info, Shield, Bell, Calendar, Activity } from 'lucide-react';
+import { Clock, Info, Shield, Calendar, Activity } from 'lucide-react';
 import { getNextWindow } from '@/lib/bandit-service';
 
 export default function BanditTrackerClient() {
@@ -17,9 +16,8 @@ export default function BanditTrackerClient() {
   const t = useTranslations('BanditTrackerPage');
   const tBandit = useTranslations('FactionTools.bandit');
 
-  const [reminderEnabled, setReminderEnabled] = useState(false);
-  const [reminderLeadTime, setReminderLeadTime] = useState(10);
-  const [audioEnabled, setAudioEnabled] = useState(true);
+  const [reminderEnabled] = useState(false);
+  const [reminderLeadTime] = useState(10);
   const [now, setNow] = useState(new Date());
 
   // Keep time updated for header stats
@@ -121,20 +119,6 @@ export default function BanditTrackerClient() {
 
         {/* Sidebar Area */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="space-y-2">
-            <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2 px-2">
-              <Bell className="h-4 w-4" />
-              {tBandit('notificationSettings')}
-            </h3>
-            <BanditReminder
-              onReminderChange={(enabled, leadTime) => {
-                setReminderEnabled(enabled);
-                setReminderLeadTime(leadTime);
-              }}
-              onAudioChange={setAudioEnabled}
-            />
-          </div>
-
           <div className="space-y-2">
             <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2 px-2">
               <Calendar className="h-4 w-4" />

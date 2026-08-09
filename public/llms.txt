@@ -16,7 +16,7 @@ AlbionKit is a comprehensive toolkit for Albion Online players, providing builds
 - Crafting Calculator: /tools/crafting-calc - Calculate crafting profits
 - Gold Price: /tools/gold-price - Track gold prices
 - Kill Feed: /tools/kill-feed - Live kill feed tracker
-- ZvZ Tracker: /tools/zvz-tracker - Zone vs Zone battle tracker
+- Faction Warfare: /faction - Faction tools including Bandit Tracker, Campaign Tracker, and Efficiency Calculator
 
 # Profit Calculators
 - Alchemy: /profits/alchemy
