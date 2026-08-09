@@ -313,7 +313,7 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
 
             {/* Sidebar Ad - only visible when sidebar is expanded */}
             {isSidebarOpen && (
-              <div className="p-4 border-t border-border shrink-0">
+              <div className="p-4 border-t border-border shrink-0 h-[120px]">
                 <AdBanner
                   slot="9876543210"
                   format="vertical"
