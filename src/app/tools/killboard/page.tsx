@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import KillboardClient from './KillboardClient';
 import { getTranslations } from 'next-intl/server';
 import { getScreenshotUrl, getFullScreenshotUrl, getScreenshot } from '@/lib/screenshot-metadata';
+import { AdBanner } from '@/components/AdBanner';
 
 export const revalidate = 30;
 
@@ -93,6 +94,12 @@ export default async function KillboardPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
       />
+      <div className="mb-4">
+        <AdBanner
+          slot="5678901234"
+          format="horizontal"
+        />
+      </div>
       <KillboardClient />
     </>
   );

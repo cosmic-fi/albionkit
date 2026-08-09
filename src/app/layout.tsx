@@ -138,6 +138,14 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <meta name="google-adsense-account" content="ca-pub-2727426305626479" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2727426305626479"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body
         className={`antialiased h-dvh bg-background text-foreground flex flex-col transition-colors duration-300`}
       >

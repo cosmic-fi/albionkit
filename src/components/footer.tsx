@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Twitter, Mail, Github, Heart } from 'lucide-react';
+import { AdBanner } from '@/components/AdBanner';
 
 export function Footer() {
   const t = useTranslations('Footer');
@@ -184,6 +185,15 @@ export function Footer() {
               </li>
             </ul>
           </div>
+        </div>
+
+        {/* Ad Banner */}
+        <div className="py-6 border-t-2 border-border">
+          <AdBanner
+            slot="1234567890"
+            format="horizontal"
+            className="max-w-4xl mx-auto"
+          />
         </div>
 
         {/* Bottom Bar */}
