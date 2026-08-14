@@ -3,7 +3,6 @@ import MarketFlipperClient from './MarketFlipperClient';
 import { getItemNameService } from '@/lib/item-service';
 import { getTranslations, getLocale } from 'next-intl/server';
 import { getScreenshotUrl, getFullScreenshotUrl, getScreenshot } from '@/lib/screenshot-metadata';
-import { AdBanner } from '@/components/AdBanner';
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -118,12 +117,6 @@ export default async function MarketFlipperPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="mb-4">
-        <AdBanner
-          slot="9876543210"
-          format="horizontal"
-        />
-      </div>
       <MarketFlipperClient />
     </>
   );

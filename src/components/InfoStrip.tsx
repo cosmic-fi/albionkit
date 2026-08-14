@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { MessageSquare, Crown, TrendingUp, Zap, Heart, Coins, Hammer, Lightbulb, Bug, Sword, ScrollText, Utensils, Coffee, Github } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { AdBanner } from '@/components/AdBanner';
+
 
 export type PageId = 'home' | 'pvp-intel' | 'market-flipper' | 'crafting-calc' | 'killboard' | 'gold-price' | 'builds' | 'profits' | 'profits-alchemy' | 'profits-cooking' | 'profits-animal' | 'profits-farming' | 'profits-labour' | 'profits-enchanting' | 'profits-chopped-fish' | 'faction-campaign' | 'faction-efficiency' | 'faction-transport' | 'faction-bandit';
 
@@ -181,12 +181,6 @@ export function InfoStrip({ currentPage, children }: InfoStripProps) {
 
       {randomItem && <RandomInfoCard item={randomItem} />}
 
-      {/* Ad Banner */}
-      <AdBanner
-        slot="3456789012"
-        format="horizontal"
-        className="mt-4"
-      />
     </div>
   );
 }

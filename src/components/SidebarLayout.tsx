@@ -12,7 +12,6 @@ import { NotificationDropdown } from '@/components/notifications/NotificationDro
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useTranslations } from 'next-intl';
 import { NavBadge, NavBadgeDot, type NavBadgeVariant } from '@/components/ui/NavBadge';
-import { AdBanner } from '@/components/AdBanner';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -310,17 +309,6 @@ export function SidebarLayout({ children }: SidebarLayoutProps) {
                 );
               })}
             </nav>
-
-            {/* Sidebar Ad - only visible when sidebar is expanded */}
-            {isSidebarOpen && (
-              <div className="p-4 border-t border-border shrink-0 h-[120px]">
-                <AdBanner
-                  slot="9876543210"
-                  format="vertical"
-                  className="h-[250px]"
-                />
-              </div>
-            )}
 
           </div>
         </aside>

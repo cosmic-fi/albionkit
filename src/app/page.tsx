@@ -20,7 +20,6 @@ import { getTranslations } from 'next-intl/server';
 import { Metadata } from 'next';
 import { createPageMetadata } from '@/lib/screenshot-metadata';
 import { FeatureSection } from "@/components/FeatureSection";
-import { AdBanner } from "@/components/AdBanner";
 
 // Base metadata with screenshot
 const baseMetadata = createPageMetadata(
@@ -199,15 +198,6 @@ export default async function Home() {
           previewImageDark="/background/ak-killfeed-dark.png"
           reverse
         />
-
-        {/* Ad Banner - between feature sections */}
-        <div className="py-8">
-          <AdBanner
-            slot="1234567890"
-            format="horizontal"
-            className="max-w-4xl mx-auto"
-          />
-        </div>
 
         <FeatureSection
           title={t('factionTitle')}
