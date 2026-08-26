@@ -66,12 +66,12 @@ AlbionKit is a comprehensive web platform designed to help Albion Online players
 
 AlbionKit is not open source, but community contributions are welcome in specific areas:
 
-- **Translations** — Help translate the app into more languages. See [`src/i18n/local/CONTRIBUTING_TRANSLATIONS.md`](src/i18n/local/CONTRIBUTING_TRANSLATIONS.md) and [`docs/TRANSLATION_GUIDE.md`](docs/TRANSLATION_GUIDE.md).
+- **Translations** — Help translate the app into more languages. See [`src/i18n/local/CONTRIBUTING_TRANSLATIONS.md`](https://github.com/cosmic-fi/albionkit/blob/main/src/i18n/locale/CONTRIBUTING_TRANSLATIONS.md) and [`docs/TRANSLATION_GUIDE.md`](https://github.com/cosmic-fi/albionkit/blob/main/src/i18n/locale/TRANSLATION_STATUS.md).
 - **Bug Reports** — Open an issue with steps to reproduce.
 - **Feature Requests** — Suggest new tools or improvements via GitHub Issues.
 - **Feedback** — Join the Discord and share your thoughts.
 
-For general contribution guidelines, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+For general contribution guidelines, see [`CONTRIBUTING.md`](https://github.com/cosmic-fi/albionkit/blob/main/CONTRIBUTING.md).
 
 ## License
 
