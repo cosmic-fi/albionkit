@@ -1,3 +1,5 @@
+<img width="1582" height="366" alt="albionkit-banner" src="https://github.com/user-attachments/assets/b6f0fe61-a865-461c-93aa-dd41d6ccea3d" />
+
 # AlbionKit
 
 **AlbionKit** is the official companion toolkit for [Albion Online](https://albiononline.com/), built and maintained by [Cosmic-fi](https://github.com/cosmic-fi).
@@ -59,16 +61,6 @@ AlbionKit is a comprehensive web platform designed to help Albion Online players
 
 - **Website:** [https://albionkit.com](https://albionkit.com)
 - **Discord:** [https://discord.gg/92GbV3QVs3](https://discord.gg/92GbV3QVs3)
-- **GitHub:** [https://github.com/cosmic-fi/albionkit](https://github.com/cosmic-fi/albionkit)
-
-## Tech Stack
-
-- **Framework:** SvelteKit
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **Charts:** Layerchart / Chart.js
-- **Icons:** Lucide
-- **Deployment:** Cloudflare Pages
 
 ## Contributing
 
