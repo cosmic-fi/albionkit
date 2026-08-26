@@ -1,193 +1,95 @@
-<img width="1582" height="366" alt="albionkit-banner" src="https://github.com/user-attachments/assets/b6f0fe61-a865-461c-93aa-dd41d6ccea3d" />
+# AlbionKit
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-19-blue?logo=react)](https://react.dev/)
+**AlbionKit** is the official companion toolkit for [Albion Online](https://albiononline.com/), built and maintained by [Cosmic-fi](https://github.com/cosmic-fi).
 
-# AlbionKit - Albion Online Toolkit
-A comprehensive toolkit for Albion Online players featuring market analysis, build databases, PvP intelligence, and profit calculators.
+This repository contains the public-facing source for the AlbionKit platform. The project is **not open source**. All rights are reserved.
 
-## 🎯 Features
+## What is AlbionKit?
+
+AlbionKit is a comprehensive web platform designed to help Albion Online players make better decisions, track performance, and optimize their gameplay. It brings together market intelligence, PvP analytics, profit calculations, and community tools into one fast, ad-free experience.
+
+## Features
 
 ### Market Tools
-- **Market Flipper** - Real-time arbitrage opportunities across all cities
-- **Gold Price Tracker** - Monitor gold market trends and history
-- **Price Alerts** - Get notified for profitable market opportunities
+- **Market Flipper** — Real-time arbitrage opportunities across all Royal Cities and the Black Market
+- **Gold Price Tracker** — Live gold prices with historical charts and trend analysis
+- **Price Alerts** — Notifications when profitable opportunities appear on your watchlist
 
 ### Profit Calculators
-- **Crafting Calculator** - Calculate crafting profits with return rates
-- **Farming Profits** - Crop and animal yield calculator
-- **Cooking Profits** - Food crafting profitability
-- **Alchemy Profits** - Potion brewing calculator
-- **Animal Breeding** - Breeding profit calculator
-- **Enchanting Profits** - Enchanting success rate calculator
-- **Labourer Profits** - Labourer yield calculator
-- **Chopped Fish Profits** - Fish processing calculator
+- **Farming** — Crop planting, yield, and profit projections
+- **Animal Breeding** — Breeding cycles, offspring chances, and profit analysis
+- **Cooking** — Meal crafting profitability with ingredient sourcing
+- **Alchemy** — Potion brewing costs, returns, and ROI
+- **Enchanting** — Enchantment material costs and break-even analysis
+- **Labourers** — Journal yield, expected silver, and optimization
+- **Chopped Fish** — Fish processing profit calculations
 
-### PvP Tools
-- **PvP Intel** - Player statistics, killboards, and battle analysis
-- **Killboard** - Real-time kill notifications
-- **ZvZ Tracker** - Large-scale battle analytics and leaderboards
+### PvP Intel
+- **Player Statistics** — Kill fame, death fame, K/D ratios, win rates, and weapon mastery
+- **Killboard** — Real-time kill feed with large-scale ZvZ event tracking
+- **Combat Analysis** — IP advantages, gear comparisons, and fight history
 
 ### Build Database
-- **Character Builds** - Community-submitted builds for all game modes
-- **Build Sharing** - Share and discover meta builds
-- **Equipment Planner** - Plan your gear setups
+- **Meta Armory** — Community-curated builds for every playstyle
+- **Build Sharing** — Share and discover optimized gear setups
+- **Weapon Rotations** — Rotation guides and ability usage tips
+
+### Faction Warfare
+- **Bandit Assault Tracker** — Live countdown and notifications for Bandit Assault events
+- **Heart Transport Calculator** — City-to-city heart transport profitability
+- **Faction Reward Efficiency** — Maximize silver per faction point
+
+### Guild Tools
+- **Guild Stats** — Track guild performance, member stats, and fame rankings
+- **Guild Wars** — GvG match tracking and rivalries
+
+### Guides
+- **Getting Started** — New player roadmap for the first 7 days
+- **Gathering Routes** — Biome-specific resource routes and zone risk levels
+- **Silver Farming** — Daily silver methods ranked by efficiency
+- **Combat Positioning** — Role-based positioning for tanks, DPS, and healers
 
 ### Additional Features
-- **Multi-language Support** - Available in 10+ languages
-- **PWA Support** - Install as a progressive web app
-- **Dark/Light Theme** - Customizable UI themes
+- **Multi-language Support** — Available in 10+ languages
+- **PWA Support** — Installable as a progressive web app
+- **Dark / Light Theme** — System-aware theme switching
+- **Notifications** — Market alerts, gold price movements, and watchlist updates
 
-## 🚀 Getting Started
+## Live Site
 
-### Prerequisites
+- **Website:** [https://albionkit.com](https://albionkit.com)
+- **Discord:** [https://discord.gg/92GbV3QVs3](https://discord.gg/92GbV3QVs3)
+- **GitHub:** [https://github.com/cosmic-fi/albionkit](https://github.com/cosmic-fi/albionkit)
 
-- Node.js 20+ and npm
-- Albion Online API access (via Albion Data Project)
+## Tech Stack
 
-### Installation
+- **Framework:** SvelteKit
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Charts:** Layerchart / Chart.js
+- **Icons:** Lucide
+- **Deployment:** Cloudflare Pages
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/albionkit.git
-   cd albionkit
-   ```
+## Contributing
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+AlbionKit is not open source, but community contributions are welcome in specific areas:
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
-   
-   Edit `.env.local` and fill in your API keys:
-   - Firebase credentials (Optional)
+- **Translations** — Help translate the app into more languages. See [`src/i18n/local/CONTRIBUTING_TRANSLATIONS.md`](src/i18n/local/CONTRIBUTING_TRANSLATIONS.md) and [`docs/TRANSLATION_GUIDE.md`](docs/TRANSLATION_GUIDE.md).
+- **Bug Reports** — Open an issue with steps to reproduce.
+- **Feature Requests** — Suggest new tools or improvements via GitHub Issues.
+- **Feedback** — Join the Discord and share your thoughts.
 
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
+For general contribution guidelines, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-5. **Open the application**
-   
-   Navigate to [http://localhost:3000](http://localhost:3000)
+## License
 
-## 📁 Project Structure
+This project is **not open source**. All source code, assets, and content are the proprietary property of Cosmic-fi.
 
-```
-albionkit/
-├── src/
-│   ├── app/                 # Next.js App Router pages
-│   │   ├── tools/           # Market flipper, PvP intel, ZvZ tracker
-│   │   ├── profits/         # Profit calculators
-│   │   ├── builds/          # Build database
-│   │   └── api/             # API routes
-│   ├── components/          # React components
-│   │   ├── ui/              # Reusable UI components
-│   │   └── [feature]/       # Feature-specific components
-│   ├── lib/                 # Utility libraries and services
-│   ├── hooks/               # Custom React hooks
-│   ├── context/             # React Context providers
-│   ├── i18n/                # Internationalization config
-│   └── data/                # Static data files
-├── messages/                # Translation files (10 languages)
-├── public/                  # Static assets
-├── docs/                    # Documentation
-└── scripts/                 # Utility scripts
-```
+See the [LICENSE](LICENSE) file for details.
 
-## 🛠️ Tech Stack
+## Contact
 
-- **Framework:** Next.js 16 (App Router)
-- **Language:** TypeScript 5
-- **UI:** React 19 with Tailwind CSS 4
-- **State:** React Context + Custom Hooks
-- **Backend:** Firebase (Auth + Firestore)
-- **i18n:** next-intl
-- **Charts:** Recharts
-- **Icons:** Lucide React
-- **Deployment:** Vercel
-
-## 🌍 Internationalization
-
-AlbionKit supports 10 languages:
-
-- English (en)
-- German (de)
-- Spanish (es)
-- French (fr)
-- Korean (ko)
-- Polish (pl)
-- Portuguese (pt)
-- Russian (ru)
-- Turkish (tr)
-- Chinese (zh)
-
-See [docs/TRANSLATION_GUIDE.md](docs/TRANSLATION_GUIDE.md) for contribution guidelines.
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Ways to Contribute
-
-- 🌍 **Translations** - Help translate the app to more languages
-- 🐛 **Bug Reports** - Submit issues for bugs you find
-- 💡 **Feature Requests** - Suggest new features
-- 📝 **Documentation** - Improve docs and guides
-- 💻 **Code** - Submit PRs for features or fixes
-
-### Development Workflow
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📚 Documentation
-
-- [Architecture Overview](docs/ARCHITECTURE.md)
-- [Development Setup](docs/DEVELOPMENT.md)
-- [Translation Guide](docs/TRANSLATION_GUIDE.md)
-- [Open Source Guide](docs/OPEN_SOURCE_GUIDE.md)
-
-## 🔒 Security
-
-Please review our [Security Policy](SECURITY.md) for reporting vulnerabilities.
-
-**Important:** Never commit `.env.local` or any file containing API keys to version control.
-
-## 🙏 Sponsors
-
-Support this project by becoming a sponsor!
-
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_a_Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/cosmic_fi)
-[![GitHub Sponsors](https://img.shields.io/badge/GitHub_Sponsors-ea4aaa?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sponsors/cosmic-fi)
-
-Your support helps keep AlbionKit free and ad-free for everyone!
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Albion Online by Sandbox Interactive
-- Albion Data Project for API access
-- All contributors and supporters
-
-## 📞 Support
-
-- **Discord:** (Coming soon!)
-- **Twitter:** [@Albion_Kit](https://twitter.com/Albion_Kit)
+- **Developer:** Cosmic Boucher
+- **GitHub:** [@cosmic-fi](https://github.com/cosmic-fi)
+- **Discord:** [AlbionKit Community](https://discord.gg/92GbV3QVs3)
 - **Email:** support@albionkit.com
-
----
-
-Built with ❤️ for Albion Online Community by Cosmic-fi (Albion Team)

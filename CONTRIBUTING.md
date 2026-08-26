@@ -1,213 +1,82 @@
 # Contributing to AlbionKit
 
-Thank you for your interest in contributing to AlbionKit! This guide will help you get started.
+Thank you for your interest in contributing to AlbionKit! This guide explains how you can help improve the project, even though the source code is not open source.
 
 ## 📋 Table of Contents
 
 - [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
 - [How to Contribute](#how-to-contribute)
-- [Development Guidelines](#development-guidelines)
-- [Pull Request Process](#pull-request-process)
 - [Translation Contributions](#translation-contributions)
+- [Bug Reports](#bug-reports)
+- [Feature Requests](#feature-requests)
+- [Feedback & Community](#feedback--community)
+- [Recognition](#recognition)
 
 ## Code of Conduct
 
 Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md). Be respectful and inclusive in all interactions.
 
-## Getting Started
-
-1. **Fork the repository**
-2. **Clone your fork**
-   ```bash
-   git clone https://github.com/your-username/albionkit.git
-   cd albionkit
-   ```
-3. **Install dependencies**
-   ```bash
-   npm install
-   ```
-4. **Set up environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
-5. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
 ## How to Contribute
 
-### 🐛 Reporting Bugs
+AlbionKit is not open source, but there are several ways you can contribute:
 
-- Check existing issues first
+- **Translations** — Help translate the app into more languages
+- **Bug Reports** — Open an issue with steps to reproduce
+- **Feature Requests** — Suggest new tools or improvements
+- **Feedback** — Join the Discord and share your thoughts
+
+## Translation Contributions
+
+We welcome translation contributions for all supported languages. See the dedicated guides for details:
+
+- [`src/i18n/locale/CONTRIBUTING_TRANSLATIONS.md`](../src/i18n/locale/CONTRIBUTING_TRANSLATIONS.md) — Step-by-step translation guide
+- [`docs/TRANSLATION_GUIDE.md`](docs/TRANSLATION_GUIDE.md) — Detailed translation instructions
+- [`src/i18n/locale/TRANSLATION_STATUS.md`](../src/i18n/locale/TRANSLATION_STATUS.md) — Current translation progress
+
+### Quick Start
+
+1. Open a locale file in `src/i18n/locale/` (e.g. `fr.json`, `de.json`)
+2. Find keys that still have English values
+3. Replace only the string values with your translations
+4. Keep all placeholders like `{name}`, `{count}`, `{region}` intact
+5. Submit a pull request with only translation changes
+
+## Bug Reports
+
+Found a bug? Help us fix it by opening an issue:
+
+- Check existing issues first to avoid duplicates
 - Use the bug report template
 - Include:
   - Steps to reproduce
   - Expected behavior
   - Actual behavior
   - Screenshots (if applicable)
-  - Environment details (browser, OS)
+  - Environment details (browser, OS, locale)
 
-### 💡 Feature Requests
+## Feature Requests
 
-- Check existing feature requests
+Have an idea for a new tool or feature? We'd love to hear it:
+
+- Check existing feature requests first
 - Use the feature request template
 - Describe:
   - The problem you want to solve
   - Proposed solution
   - Alternatives considered
-  - Use cases
+  - Use cases and who would benefit
 
-### 🌍 Translations
+## Feedback & Community
 
-We support 10+ languages and always welcome translation contributions:
-
-1. Read the [Translation Guide](docs/TRANSLATION_GUIDE.md)
-2. Find missing translations in `messages/` directory
-3. Submit a PR with your translations
-4. Include only translations, no code changes
-
-### 💻 Code Contributions
-
-#### Good First Issues
-
-Look for issues labeled:
-- `good first issue` - Perfect for beginners
-- `help wanted` - Needs community help
-- `translations` - Translation tasks
-
-#### Working on Issues
-
-1. Comment on the issue to claim it
-2. Create a branch from `main`:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. Make your changes
-4. Test thoroughly
-5. Submit a PR
-
-## Development Guidelines
-
-### Code Style
-
-- Use TypeScript for all new code
-- Follow existing code patterns
-- Use meaningful variable names
-- Add comments for complex logic
-- Keep functions small and focused
-
-### Component Structure
-
-```tsx
-'use client';
-
-import { } from '';
-
-// Types and interfaces
-interface Props {
-  // ...
-}
-
-// Component
-export function ComponentName({ }: Props) {
-  // Implementation
-}
-```
-
-### Commit Messages
-
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-feat: add new market flipper feature
-fix: resolve crash in ZvZ tracker
-docs: update translation guide
-style: format code according to standards
-refactor: improve build cache performance
-test: add unit tests for auth service
-```
-
-### Testing
-
-Before submitting:
-
-- [ ] Build passes: `npm run build`
-- [ ] No TypeScript errors
-- [ ] Tested in development mode
-- [ ] Checked on mobile viewport
-
-## Pull Request Process
-
-### Before Submitting
-
-1. Update documentation if needed
-2. Add tests if applicable
-3. Run `npm run build` to ensure no errors
-4. Check your code for console logs
-
-### PR Template
-
-When creating a PR, include:
-
-```markdown
-## Description
-Brief description of changes
-
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Translation update
-- [ ] Documentation update
-- [ ] Refactor
-
-## Testing
-Describe how you tested this
-
-## Checklist
-- [ ] Code builds without errors
-- [ ] Tested locally
-- [ ] Documentation updated
-- [ ] No breaking changes
-```
-
-### Review Process
-
-1. Maintainer reviews code
-2. Automated checks run
-3. Requested changes are made
-4. PR is merged to `main`
-
-## Translation Contributions
-
-### Adding a New Language
-
-1. Create `messages/xx.json` (xx = language code)
-2. Copy structure from `messages/en.json`
-3. Translate all keys
-4. Update i18n configuration in `src/i18n/`
-5. Add language to supported list
-
-### Updating Translations
-
-1. Find missing keys in your language file
-2. Add translations maintaining JSON structure
-3. Test in the application
-4. Submit PR with only translation changes
-
-See [docs/TRANSLATION_GUIDE.md](docs/TRANSLATION_GUIDE.md) for detailed instructions.
-
-## Questions?
-
-- Open an issue for questions
-- Join our Discord community
-- Check existing documentation
+- **Discord:** [https://discord.gg/92GbV3QVs3](https://discord.gg/92GbV3QVs3)
+- **GitHub Issues:** Open an issue for questions or feedback
+- **Email:** support@albionkit.com
 
 ## Recognition
 
 Contributors are recognized in:
-- README.md contributors section
+
+- Translation credits in the app
 - Release notes for significant contributions
 - Discord contributor role
 
@@ -218,6 +87,6 @@ If you find AlbionKit useful, consider supporting its development:
 - [Buy Me a Coffee](https://www.buymeacoffee.com/cosmic_fi)
 - [GitHub Sponsors](https://github.com/sponsors/cosmic-fi)
 
-Your support helps keep the project free and ad-free!
+Your support helps keep AlbionKit free and ad-free!
 
 Thank you for contributing to AlbionKit! 🎉
