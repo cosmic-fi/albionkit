@@ -29,9 +29,8 @@ AlbionKit is not open source, but there are several ways you can contribute:
 
 We welcome translation contributions for all supported languages. See the dedicated guides for details:
 
-- [`src/i18n/locale/CONTRIBUTING_TRANSLATIONS.md`](../src/i18n/locale/CONTRIBUTING_TRANSLATIONS.md) — Step-by-step translation guide
-- [`docs/TRANSLATION_GUIDE.md`](docs/TRANSLATION_GUIDE.md) — Detailed translation instructions
-- [`src/i18n/locale/TRANSLATION_STATUS.md`](../src/i18n/locale/TRANSLATION_STATUS.md) — Current translation progress
+- [`src/i18n/locale/CONTRIBUTING_TRANSLATIONS.md`](src/i18n/locale/CONTRIBUTING_TRANSLATIONS.md) — Step-by-step translation guide
+- [`src/i18n/locale/TRANSLATION_STATUS.md`](src/i18n/locale/TRANSLATION_STATUS.md) — Current translation progress
 
 ### Quick Start
 
