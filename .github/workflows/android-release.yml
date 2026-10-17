@@ -1,0 +1,99 @@
+name: Android release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build and publish Android release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.7"
+          channel: stable
+          cache: true
+
+      - name: Check release tag matches app version
+        shell: bash
+        run: |
+          set -euo pipefail
+          app_version="$(sed -n 's/^version: //p' pubspec.yaml | head -n 1)"
+          app_name="${app_version%%+*}"
+          tag_name="${GITHUB_REF_NAME#v}"
+          if [[ "$tag_name" != "$app_name" ]]; then
+            echo "::error::Tag $GITHUB_REF_NAME must match pubspec.yaml version v$app_name (currently $app_version)."
+            exit 1
+          fi
+          if [[ ! "$app_version" =~ \+[0-9]+$ ]]; then
+            echo "::error::pubspec.yaml version must include a numeric build number, for example 1.2.3+4."
+            exit 1
+          fi
+
+      - name: Configure Android release signing
+        shell: bash
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          : "${ANDROID_KEYSTORE_BASE64:?Missing GitHub Actions secret ANDROID_KEYSTORE_BASE64}"
+          : "${ANDROID_KEYSTORE_PASSWORD:?Missing GitHub Actions secret ANDROID_KEYSTORE_PASSWORD}"
+          : "${ANDROID_KEY_ALIAS:?Missing GitHub Actions secret ANDROID_KEY_ALIAS}"
+          : "${ANDROID_KEY_PASSWORD:?Missing GitHub Actions secret ANDROID_KEY_PASSWORD}"
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/upload-keystore.jks
+          {
+            printf 'storeFile=upload-keystore.jks\n'
+            printf 'storePassword=%s\n' "$ANDROID_KEYSTORE_PASSWORD"
+            printf 'keyAlias=%s\n' "$ANDROID_KEY_ALIAS"
+            printf 'keyPassword=%s\n' "$ANDROID_KEY_PASSWORD"
+          } > android/key.properties
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Analyze source
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build signed APK and Play Store bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          app_version="$(sed -n 's/^version: //p' pubspec.yaml | head -n 1)"
+          build_name="${app_version%%+*}"
+          build_number="${app_version##*+}"
+          mkdir -p release-artifacts
+          flutter build apk --release --build-name "$build_name" --build-number "$build_number"
+          flutter build appbundle --release --build-name "$build_name" --build-number "$build_number"
+          cp build/app/outputs/flutter-apk/app-release.apk "release-artifacts/albionkit-mobile-${GITHUB_REF_NAME}.apk"
+          cp build/app/outputs/bundle/release/app-release.aab "release-artifacts/albionkit-mobile-${GITHUB_REF_NAME}.aab"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: release-artifacts/*
