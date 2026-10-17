@@ -89,8 +89,8 @@ jobs:
           mkdir -p release-artifacts
           flutter build apk --release --build-name "$build_name" --build-number "$build_number"
           flutter build appbundle --release --build-name "$build_name" --build-number "$build_number"
-          cp build/app/outputs/flutter-apk/app-release.apk "release-artifacts/albionkit-mobile-${GITHUB_REF_NAME}.apk"
-          cp build/app/outputs/bundle/release/app-release.aab "release-artifacts/albionkit-mobile-${GITHUB_REF_NAME}.aab"
+          cp build/app/outputs/flutter-apk/app-release.apk "release-artifacts/AlbionKit-mobile-release-${GITHUB_REF_NAME}.apk"
+          cp build/app/outputs/bundle/release/app-release.aab "release-artifacts/AlbionKit-mobile-release-${GITHUB_REF_NAME}.aab"
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
