@@ -1,0 +1,2 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/albionkit_notification,@drawable/gold_icon,@drawable/market_icon,@drawable/raid_icon" />

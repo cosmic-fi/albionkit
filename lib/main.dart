@@ -88,37 +88,39 @@ class _AlbionKitBootstrapState extends State<AlbionKitBootstrap> {
       ],
       theme: AlbionKitTheme.light,
       darkTheme: AlbionKitTheme.dark,
-      home: Scaffold(
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/brand/albionkit-mark.png',
-                  width: 72,
-                  height: 72,
-                ),
-                const SizedBox(height: 20),
-                if (_loading)
-                  const CircularProgressIndicator()
-                else ...[
-                  Text(
-                    appText(
-                      context,
-                      'Could not start AlbionKit: {error}',
-                    ).replaceAll('{error}', '$_error'),
-                    textAlign: TextAlign.center,
+      home: Builder(
+        builder: (context) => Scaffold(
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/brand/albionkit-mark.png',
+                    width: 72,
+                    height: 72,
                   ),
-                  const SizedBox(height: 16),
-                  FilledButton.icon(
-                    onPressed: _loadSettings,
-                    icon: const Icon(LucideIcons.refreshCw),
-                    label: Text(appText(context, 'Try again')),
-                  ),
+                  const SizedBox(height: 20),
+                  if (_loading)
+                    const CircularProgressIndicator()
+                  else ...[
+                    Text(
+                      appText(
+                        context,
+                        'Could not start AlbionKit: {error}',
+                      ).replaceAll('{error}', '$_error'),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    FilledButton.icon(
+                      onPressed: _loadSettings,
+                      icon: const Icon(LucideIcons.refreshCw),
+                      label: Text(appText(context, 'Try again')),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),

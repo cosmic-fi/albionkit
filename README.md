@@ -45,6 +45,10 @@ reports a specific security threat.
 Release assets ending in `.aab` are for Google Play publishing and cannot be
 installed directly.
 
+The installed app version and build number appear in **Settings**. Beta
+versions, such as `1.0.0-beta`, are shown there with the beta label and are
+published as GitHub pre-releases.
+
 AlbionKit Mobile is a fan-made companion and is not affiliated with or endorsed
 by Sandbox Interactive GmbH. Albion Online and its related trademarks belong
 to their respective owners.
